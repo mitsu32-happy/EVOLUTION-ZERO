@@ -1,205 +1,333 @@
 {
   "source": "public/assets/dinos/evolutions/sheets/velociraptor_zero_sheet.png",
-  "backup": "docs/assets/backup/abyssraps_direction_fix/velociraptor_zero_sheet_before.png",
-  "operation": "per-cell horizontal flip to restore right-facing baseline while preserving 4x4 grid",
-  "sheetSize": [
-    1024,
-    1024
+  "operations": [
+    {
+      "name": "horizontal_flip_per_cell",
+      "reason": "Abyssraps / velociraptor_zero frames were facing left; runtime expects right-facing sheets.",
+      "cellSize": 256,
+      "frameCount": 16
+    },
+    {
+      "name": "fragment_cleanup_per_cell",
+      "reason": "Remove visible cross-cell fragments, side slivers, and tiny alpha/chromakey debris without touching the main silhouette.",
+      "backup": "docs/assets/backup/abyssraps_direction_fix/velociraptor_zero_sheet_before_fragment_cleanup.png",
+      "removedComponentCount": 215,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "safe_margin_scale_and_recenter",
+      "reason": "Prevent clipping and adjacent-cell contamination in motion rows while preserving animation readability.",
+      "backup": "docs/assets/backup/abyssraps_direction_fix/velociraptor_zero_sheet_before_safe_margin_scale.png",
+      "marginX": 22,
+      "marginTop": 18,
+      "marginBottom": 16,
+      "scaledFrameCount": 11,
+      "frameEdgeIssues": []
+    }
   ],
-  "cellSize": 256,
-  "frames": [
+  "qa": {
+    "sheetSize": [
+      1024,
+      1024
+    ],
+    "cellSize": 256,
+    "frameCount": 16,
+    "frameEdgeIssueCount": 0,
+    "accepted": true,
+    "notes": [
+      "All frames remain in 4x4 1024x1024 layout.",
+      "Move/attack/death rows were scaled inward where needed to avoid visible cutoffs.",
+      "No frame reports alpha touching the cell edge after cleanup."
+    ]
+  },
+  "finalFrames": [
     {
       "row": 1,
       "col": 1,
-      "bbox": [
+      "bboxBefore": [
         32,
         39,
         225,
         216
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 15988
+      "bboxAfter": [
+        32,
+        39,
+        225,
+        216
+      ],
+      "scale": 1.0,
+      "edgeIssueAfter": false
     },
     {
       "row": 1,
       "col": 2,
-      "bbox": [
+      "bboxBefore": [
         35,
         38,
         221,
         218
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 15752
+      "bboxAfter": [
+        35,
+        38,
+        221,
+        218
+      ],
+      "scale": 1.0,
+      "edgeIssueAfter": false
     },
     {
       "row": 1,
       "col": 3,
-      "bbox": [
+      "bboxBefore": [
         24,
         40,
         232,
         216
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 15213
+      "bboxAfter": [
+        24,
+        40,
+        232,
+        216
+      ],
+      "scale": 1.0,
+      "edgeIssueAfter": false
     },
     {
       "row": 1,
       "col": 4,
-      "bbox": [
+      "bboxBefore": [
         28,
         41,
         228,
         215
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 15341
+      "bboxAfter": [
+        28,
+        41,
+        228,
+        215
+      ],
+      "scale": 1.0,
+      "edgeIssueAfter": false
     },
     {
       "row": 2,
       "col": 1,
-      "bbox": [
+      "bboxBefore": [
         10,
         23,
         246,
         233
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 12986
+      "bboxAfter": [
+        22,
+        130,
+        234,
+        233
+      ],
+      "scale": 0.8983,
+      "edgeIssueAfter": false
     },
     {
       "row": 2,
       "col": 2,
-      "bbox": [
+      "bboxBefore": [
         10,
         26,
         246,
         230
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 10659
+      "bboxAfter": [
+        22,
+        132,
+        234,
+        230
+      ],
+      "scale": 0.8983,
+      "edgeIssueAfter": false
     },
     {
       "row": 2,
       "col": 3,
-      "bbox": [
+      "bboxBefore": [
         10,
         23,
         246,
         232
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 10648
+      "bboxAfter": [
+        27,
+        129,
+        234,
+        232
+      ],
+      "scale": 0.8983,
+      "edgeIssueAfter": false
     },
     {
       "row": 2,
       "col": 4,
-      "bbox": [
+      "bboxBefore": [
         10,
         16,
         246,
         240
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 11218
+      "bboxAfter": [
+        22,
+        132,
+        234,
+        240
+      ],
+      "scale": 0.8983,
+      "edgeIssueAfter": false
     },
     {
       "row": 3,
       "col": 1,
-      "bbox": [
+      "bboxBefore": [
         20,
         53,
-        237,
-        202
+        235,
+        199
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 11186
+      "bboxAfter": [
+        29,
+        65,
+        224,
+        199
+      ],
+      "scale": 0.92,
+      "edgeIssueAfter": false
     },
     {
       "row": 3,
       "col": 2,
-      "bbox": [
+      "bboxBefore": [
         10,
         54,
         246,
         202
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 10574
+      "bboxAfter": [
+        60,
+        70,
+        234,
+        202
+      ],
+      "scale": 0.8983,
+      "edgeIssueAfter": false
     },
     {
       "row": 3,
       "col": 3,
-      "bbox": [
+      "bboxBefore": [
         10,
         70,
         246,
         186
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 10542
+      "bboxAfter": [
+        63,
+        82,
+        234,
+        186
+      ],
+      "scale": 0.8983,
+      "edgeIssueAfter": false
     },
     {
       "row": 3,
       "col": 4,
-      "bbox": [
+      "bboxBefore": [
         22,
-        47,
+        51,
         235,
         208
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 11108
+      "bboxAfter": [
+        30,
+        74,
+        226,
+        208
+      ],
+      "scale": 0.92,
+      "edgeIssueAfter": false
     },
     {
       "row": 4,
       "col": 1,
-      "bbox": [
+      "bboxBefore": [
         27,
         55,
         229,
         201
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 10986
+      "bboxAfter": [
+        27,
+        55,
+        229,
+        201
+      ],
+      "scale": 1.0,
+      "edgeIssueAfter": false
     },
     {
       "row": 4,
       "col": 2,
-      "bbox": [
+      "bboxBefore": [
         13,
-        70,
+        74,
         244,
         185
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 11228
+      "bboxAfter": [
+        22,
+        98,
+        234,
+        185
+      ],
+      "scale": 0.9177,
+      "edgeIssueAfter": false
     },
     {
       "row": 4,
       "col": 3,
-      "bbox": [
+      "bboxBefore": [
         17,
-        69,
+        74,
         240,
         187
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 11351
+      "bboxAfter": [
+        26,
+        93,
+        231,
+        187
+      ],
+      "scale": 0.92,
+      "edgeIssueAfter": false
     },
     {
       "row": 4,
       "col": 4,
-      "bbox": [
+      "bboxBefore": [
         12,
-        78,
+        80,
         244,
         178
       ],
-      "edgeIssue": false,
-      "opaquePixelsAlphaGt16": 8404
+      "bboxAfter": [
+        22,
+        110,
+        234,
+        178
+      ],
+      "scale": 0.9138,
+      "edgeIssueAfter": false
     }
-  ],
-  "frameEdgeIssues": []
+  ]
 }
