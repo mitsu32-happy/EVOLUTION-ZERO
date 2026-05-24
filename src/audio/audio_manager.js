@@ -107,12 +107,7 @@ export class AudioManager {
         return;
       }
 
-      if (this.pageAudioSuspended) {
-        this.resumeFromPageShow({ userGesture: true });
-      } else {
-        this.resumeAudioContext({ userGesture: true });
-        this.resumeCurrentBgmIfNeeded();
-      }
+      this.resumeFromPageShow({ userGesture: true });
     };
     this.handleWindowBlur = () => {
       this.clearPageBlurSuspendTimer();
@@ -132,6 +127,8 @@ export class AudioManager {
     window.addEventListener('focus', this.handlePageShown, { passive: true });
     window.addEventListener('pointerdown', this.handleAudioResumeGesture, { passive: true, capture: true });
     window.addEventListener('touchstart', this.handleAudioResumeGesture, { passive: true, capture: true });
+    document.addEventListener('pointerdown', this.handleAudioResumeGesture, { passive: true, capture: true });
+    document.addEventListener('touchstart', this.handleAudioResumeGesture, { passive: true, capture: true });
   }
 
   clearPageBlurSuspendTimer() {
@@ -197,11 +194,19 @@ export class AudioManager {
   resumeFromPageShow({ userGesture = false } = {}) {
     if (!this.pageAudioSuspended) {
       this.clearPageBlurSuspendTimer();
+      if (userGesture) {
+        this.resetTransientPlaybackStateForResume();
+        this.ensureAudioContext();
+        this.resumeAudioContext({ userGesture: true });
+        this.resumeCurrentBgmIfNeeded();
+      }
       return;
     }
 
     this.clearPageBlurSuspendTimer();
     this.pageAudioSuspended = false;
+    this.resetTransientPlaybackStateForResume();
+    this.ensureAudioContext();
 
     this.resumeAudioContext({ userGesture });
 
@@ -217,6 +222,34 @@ export class AudioManager {
     this.wasBgmPlayingBeforePageHide = false;
     this.suspendedBgmId = null;
     this.suspendedBgmTime = 0;
+  }
+
+  resetTransientPlaybackStateForResume() {
+    this.activeCounts = {};
+    [
+      'ui_select',
+      'ui_click',
+      'ui_decide',
+      'ui_confirm',
+      'ui_cancel',
+      'ui_tab',
+      'ui_reward',
+      'attack',
+      'raptor_attack_se',
+      'triceratops_attack_se',
+      'tyrannosaurus_bite_se',
+      'enemy_hit',
+      'boss_damage',
+      'player_damage',
+      'hit',
+      'boss_warning',
+      'zero_boss_warning',
+      'zero_warning',
+      'zero_phase_warning',
+      'zero_final_protocol',
+    ].forEach((id) => {
+      delete this.lastPlayedAt[id];
+    });
   }
 
   ensureAudioContext() {
@@ -238,7 +271,7 @@ export class AudioManager {
   }
 
   resumeAudioContext({ userGesture = false } = {}) {
-    const context = this.audioContext;
+    const context = this.ensureAudioContext();
 
     if (!context) {
       return;

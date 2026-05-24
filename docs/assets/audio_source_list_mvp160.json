@@ -280,19 +280,19 @@
   },
   {
     "key": "player_damage",
-    "file": "public/assets/audio/se/player_damage_full.mp3",
+    "file": "public/assets/audio/se/triceratops_impact_full.mp3",
     "source": "効果音ラボ",
     "sourceUrl": "https://soundeffect-lab.info/sound/battle/",
     "licenseUrl": "https://soundeffect-lab.info/agreement/",
     "author": "効果音ラボ",
-    "materialName": "sword-slash6.mp3",
-    "usage": "Player damage",
+    "materialName": "best-step-into1.mp3",
+    "usage": "Player damage heavy impact / legacy hit alias",
     "category": "se",
     "creditRequired": false,
     "commercialAllowed": true,
     "modificationAllowed": "Allowed for use in works; modified素材 redistribution prohibited.",
     "confirmedAt": "2026-05-24",
-    "notes": "Mapped to legacy hit alias."
+    "notes": "Reassigned after play QA because the previous sword-slash cue did not match player damage. Shared with triceratops heavy impact for a short zushi-style thud."
   },
   {
     "key": "boss_warning",

@@ -52,7 +52,7 @@ MVP-160 replaces the MVP-158 placeholder-only mix with higher-quality locally st
 | `pickup_exp` / `pickup_heal` / `pickup_magnet` | `public/assets/audio/se/pickup_full.mp3` | `gauge-recovery2.mp3` | https://soundeffect-lab.info/sound/button/ | Pickup |
 | `attack` / `enemy_hit` / `boss_damage` | `public/assets/audio/se/enemy_hit_full.mp3` | `sword-slash5.mp3` | https://soundeffect-lab.info/sound/battle/ | Hit / slash feedback |
 | `enemy_defeat` | `public/assets/audio/se/enemy_defeat_full.mp3` | `text-impact2.mp3` | https://soundeffect-lab.info/sound/anime/ | Enemy defeat |
-| `player_damage` / `hit` | `public/assets/audio/se/player_damage_full.mp3` | `sword-slash6.mp3` | https://soundeffect-lab.info/sound/battle/ | Player damage |
+| `player_damage` / `hit` | `public/assets/audio/se/triceratops_impact_full.mp3` | `best-step-into1.mp3` | https://soundeffect-lab.info/sound/battle/ | Player damage heavy impact |
 | `boss_warning` / `zero_boss_warning` | `public/assets/audio/boss/boss_warning_full.mp3` | `warning2.mp3` | https://soundeffect-lab.info/sound/button/ | Boss warning |
 | `zero_warning` / `zero_phase_warning` / `zero_final_protocol` | `public/assets/audio/boss/zero_warning_full.mp3` | `emergency-alert1.mp3` | https://soundeffect-lab.info/sound/anime/ | ZERO warning |
 | `boss_defeat` / `gameover` | `public/assets/audio/boss/boss_defeat_full.mp3` | `metal-logo3.mp3` | https://soundeffect-lab.info/sound/anime/ | Boss defeat / gameover |
@@ -97,3 +97,9 @@ License conditions are the same 効果音ラボ terms recorded above: commercial
 - `enemy_hit`, pickup, defeat, player damage, and ZERO / normal ultimate SE now have shorter runtime tails and conservative volumes.
 - ZERO ultimate SE share the `ultimate` interrupt group, so repeated/debug activations stop the previous long tail instead of stacking.
 - The tyrannosaurus `trexBiteShock` timing now uses `tyrannosaurus_bite_se`, tuned to a short low-impact cue.
+
+## Player Damage SE Polish
+
+Confirmation date: 2026-05-24
+
+The player damage cue now uses `triceratops_impact_full.mp3` (`best-step-into1.mp3`, 効果音ラボ) instead of the previous slash-like `sword-slash6.mp3`. This better matches a short heavy "zushi" impact and keeps the tail short enough not to mask BGM or normal attack feedback.

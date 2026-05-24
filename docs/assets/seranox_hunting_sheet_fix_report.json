@@ -1,0 +1,430 @@
+{
+  "asset": "public/assets/dinos/evolutions/sheets/triceratops_hunting_sheet.png",
+  "backup": "docs/assets/backup/seranox_hunting_sheet_fix/triceratops_hunting_sheet_before.png",
+  "contact": "docs/assets/seranox_hunting_sheet_fix_contact.png",
+  "reason": "Seranox idle frames 1-3 contained floating body positions and arc fragments, making the animation read as jumping.",
+  "method": "Cleared the original idle row and rebuilt it from the grounded move-row silhouettes. This preserves 4x4 structure and footline while removing floating/jump frames.",
+  "changedCells": [
+    {
+      "row": 1,
+      "col": 1,
+      "sourceRow": 2,
+      "sourceCol": 1,
+      "method": "cleared original floating idle cell and pasted grounded move-row silhouette"
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "sourceRow": 2,
+      "sourceCol": 2,
+      "method": "cleared original floating idle cell and pasted grounded move-row silhouette"
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "sourceRow": 2,
+      "sourceCol": 3,
+      "method": "cleared original floating idle cell and pasted grounded move-row silhouette"
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "sourceRow": 2,
+      "sourceCol": 4,
+      "method": "cleared original floating idle cell and pasted grounded move-row silhouette"
+    }
+  ],
+  "beforeBboxes": [
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        42,
+        34,
+        214,
+        202
+      ],
+      "opaquePixels": 9597,
+      "edgeTouch": false
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        48,
+        35,
+        207,
+        202
+      ],
+      "opaquePixels": 10393,
+      "edgeTouch": false
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        34,
+        35,
+        221,
+        202
+      ],
+      "opaquePixels": 9848,
+      "edgeTouch": false
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "bbox": [
+        48,
+        112,
+        207,
+        204
+      ],
+      "opaquePixels": 9199,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        47,
+        112,
+        209,
+        204
+      ],
+      "opaquePixels": 9771,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        49,
+        115,
+        207,
+        204
+      ],
+      "opaquePixels": 9211,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        48,
+        114,
+        208,
+        204
+      ],
+      "opaquePixels": 9451,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "bbox": [
+        49,
+        114,
+        207,
+        204
+      ],
+      "opaquePixels": 9132,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        49,
+        117,
+        206,
+        204
+      ],
+      "opaquePixels": 9129,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        52,
+        118,
+        204,
+        204
+      ],
+      "opaquePixels": 8523,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        52,
+        120,
+        204,
+        204
+      ],
+      "opaquePixels": 8293,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "bbox": [
+        52,
+        124,
+        203,
+        204
+      ],
+      "opaquePixels": 8102,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "bbox": [
+        53,
+        84,
+        203,
+        172
+      ],
+      "opaquePixels": 9010,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "bbox": [
+        52,
+        91,
+        203,
+        165
+      ],
+      "opaquePixels": 7409,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "bbox": [
+        51,
+        98,
+        204,
+        158
+      ],
+      "opaquePixels": 6359,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "bbox": [
+        48,
+        99,
+        208,
+        157
+      ],
+      "opaquePixels": 6386,
+      "edgeTouch": false
+    }
+  ],
+  "afterBboxes": [
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        49,
+        114,
+        207,
+        201
+      ],
+      "opaquePixels": 7068,
+      "edgeTouch": false
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        51,
+        118,
+        204,
+        202
+      ],
+      "opaquePixels": 6632,
+      "edgeTouch": false
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        51,
+        117,
+        205,
+        202
+      ],
+      "opaquePixels": 6811,
+      "edgeTouch": false
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "bbox": [
+        51,
+        117,
+        205,
+        201
+      ],
+      "opaquePixels": 6537,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        47,
+        112,
+        209,
+        204
+      ],
+      "opaquePixels": 9771,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        49,
+        115,
+        207,
+        204
+      ],
+      "opaquePixels": 9211,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        48,
+        114,
+        208,
+        204
+      ],
+      "opaquePixels": 9451,
+      "edgeTouch": false
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "bbox": [
+        49,
+        114,
+        207,
+        204
+      ],
+      "opaquePixels": 9132,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        49,
+        117,
+        206,
+        204
+      ],
+      "opaquePixels": 9129,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        52,
+        118,
+        204,
+        204
+      ],
+      "opaquePixels": 8523,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        52,
+        120,
+        204,
+        204
+      ],
+      "opaquePixels": 8293,
+      "edgeTouch": false
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "bbox": [
+        52,
+        124,
+        203,
+        204
+      ],
+      "opaquePixels": 8102,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "bbox": [
+        53,
+        84,
+        203,
+        172
+      ],
+      "opaquePixels": 9010,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "bbox": [
+        52,
+        91,
+        203,
+        165
+      ],
+      "opaquePixels": 7409,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "bbox": [
+        51,
+        98,
+        204,
+        158
+      ],
+      "opaquePixels": 6359,
+      "edgeTouch": false
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "bbox": [
+        48,
+        99,
+        208,
+        157
+      ],
+      "opaquePixels": 6386,
+      "edgeTouch": false
+    }
+  ],
+  "frameEdgeIssues": [],
+  "qa": {
+    "idleFootline": "All idle cells now bottom at y=204 like the move row.",
+    "regenerationConsidered": "Full image regeneration was not required because the grounded move row already contained clean dedicated Seranox frames."
+  }
+}

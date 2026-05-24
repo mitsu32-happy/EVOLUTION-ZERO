@@ -913,14 +913,14 @@ export const ASSET_MANIFEST = {
       path: 'assets/dinos/evolutions/sheets/triceratops_hunting_sheet.png',
       spriteSheet: true,
       fallbackKey: 'dinos.triceratopsSheet',
-      note: 'MVP-127 hunting evolution triceratops 4x4 sprite sheet. Falls back to base triceratops sheet.',
+      note: 'MVP-127 hunting evolution triceratops 4x4 sprite sheet. Idle row grounded in final polish to remove jump-like floating frames. Falls back to base triceratops sheet.',
       postprocess: {
         tool: 'tools/sprite_sheet_postprocess.py',
         targetWidth: 236,
         targetHeight: 170,
         footLine: 204,
         overlap: 84,
-        report: 'docs/assets/triceratops_hunting_sheet_mvp127_report.json',
+        report: 'docs/assets/seranox_hunting_sheet_fix_report.json',
       },
       sheet: {
         columns: 4,
@@ -4510,7 +4510,7 @@ export const AUDIO_ASSET_REFERENCES = {
   se: {
     enemyHit: 'assets/audio/se/enemy_hit_full.mp3',
     enemyDefeat: 'assets/audio/se/enemy_defeat_full.mp3',
-    playerDamage: 'assets/audio/se/player_damage_full.mp3',
+    playerDamage: 'assets/audio/se/triceratops_impact_full.mp3',
     pickup: 'assets/audio/se/pickup_full.mp3',
     levelup: 'assets/audio/se/levelup_full.mp3',
     raptorAttack: 'assets/audio/se/raptor_claw_full.mp3',

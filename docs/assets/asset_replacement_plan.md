@@ -3060,3 +3060,15 @@ Runtime rules:
 - `docs/assets/backup/` and `docs/assets/generated_raw/` are sizable but kept as development provenance for now.
 - `tmp/` is explicitly ignored because it contains browser profile/cache data and must not be published.
 - Public repository consumers should refer to audio and asset license notes before reusing individual assets outside this project.
+
+## Seranox Hunting Sheet / Player Damage SE Final Polish
+
+- `public/assets/dinos/evolutions/sheets/triceratops_hunting_sheet.png`
+  - セラノクスの idle 行にあった浮いた体勢/弧状の混入を、接地が揃っている move 行ベースの4フレームへ差し替えた。
+  - 4x4構造、右向き基準、接地ラインを維持し、`frameEdgeIssues: 0` を確認。
+  - 比較/検査: `docs/assets/seranox_hunting_sheet_fix_contact.png`, `docs/assets/seranox_hunting_sheet_fix_report.json`
+- `player_damage` / `hit`
+  - 斬撃寄りだった `player_damage_full.mp3` から、重めの被弾感に近い `triceratops_impact_full.mp3` へ割り当てを変更。
+  - SEの尾を短く保つため、`durationHintMs` と `fadeOutMs` を維持している。
+- Page resume audio:
+  - ページ復帰後の初回タップで UI/SE が沈黙しないよう、AudioContext 復帰時に一時SEの cooldown / active count をリセットする。
