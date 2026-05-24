@@ -173,6 +173,12 @@ export class OptionsScreen {
     this.settingRows = [];
     this.activeSlider = null;
     this.activeSliderPointerId = null;
+    this.view.eventMode = 'static';
+    this.view.hitArea = new Rectangle(0, 0, this.width, this.height);
+    this.view.on('pointermove', (event) => this.updateActiveSliderInput(event));
+    this.view.on('pointerup', (event) => this.endActiveSliderInput(event));
+    this.view.on('pointerupoutside', (event) => this.endActiveSliderInput(event));
+    this.view.on('pointercancel', (event) => this.endActiveSliderInput(event));
 
     this.backgroundSprite.visible = false;
     this.panelSprite.visible = false;
@@ -270,6 +276,7 @@ export class OptionsScreen {
         fill: new Graphics(),
         knobSprite: new Sprite(Texture.EMPTY),
         knob: new Graphics(),
+        hit: new Graphics(),
         label: this.createText(item.label, 13, '#f4f7f5', 108),
         sub: this.createText(item.sub, 8, '#91aaa4', 116),
         value: this.createText('', 11, '#ffd36b', 48),
@@ -278,6 +285,7 @@ export class OptionsScreen {
       slider.view.position.set(SAFE.rowX, 150 + index * 58);
       slider.view.eventMode = 'static';
       slider.view.cursor = 'pointer';
+      slider.view.hitArea = new Rectangle(0, 0, SAFE.rowWidth, SAFE.sliderHeight);
       slider.view.on('pointerdown', (event) => this.startSliderInput(event, slider));
       slider.view.on('pointermove', (event) => this.updateSliderInput(event, slider));
       slider.view.on('pointerup', (event) => this.endSliderInput(event, slider));
@@ -290,7 +298,12 @@ export class OptionsScreen {
       slider.frame.visible = false;
       slider.knobSprite.visible = false;
       slider.knobSprite.anchor.set(0.5);
-      slider.view.addChild(slider.frame, slider.bg, slider.track, slider.fill, slider.knobSprite, slider.knob, slider.label, slider.sub, slider.value);
+      slider.hit
+        .rect(0, 0, SAFE.rowWidth, SAFE.sliderHeight)
+        .fill({ color: 0xffffff, alpha: 0.001 });
+      slider.hit.eventMode = 'static';
+      slider.hit.cursor = 'pointer';
+      slider.view.addChild(slider.frame, slider.bg, slider.track, slider.fill, slider.knobSprite, slider.knob, slider.hit, slider.label, slider.sub, slider.value);
       this.sliders.push(slider);
       this.view.addChild(slider.view);
     });
@@ -428,6 +441,14 @@ export class OptionsScreen {
     this.handleSliderInput(event, slider);
   }
 
+  updateActiveSliderInput(event) {
+    if (!this.activeSlider) {
+      return;
+    }
+
+    this.updateSliderInput(event, this.activeSlider);
+  }
+
   endSliderInput(event, slider) {
     if (this.activeSlider !== slider) {
       return;
@@ -442,6 +463,14 @@ export class OptionsScreen {
     event?.stopPropagation?.();
     this.activeSlider = null;
     this.activeSliderPointerId = null;
+  }
+
+  endActiveSliderInput(event) {
+    if (!this.activeSlider) {
+      return;
+    }
+
+    this.endSliderInput(event, this.activeSlider);
   }
 
   getPointerId(event) {

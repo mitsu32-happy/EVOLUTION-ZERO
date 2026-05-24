@@ -27,6 +27,7 @@ export class AudioManager {
     this.lifecycleHandlersInstalled = false;
     this.pageAudioSuspended = false;
     this.wasBgmPlayingBeforePageHide = false;
+    this.lastBgmEnsureAt = 0;
   }
 
   setVolume(volume) {
@@ -39,8 +40,6 @@ export class AudioManager {
     this.muted = muted;
 
     if (this.currentBgm) {
-      this.currentBgm.muted = muted;
-
       if (muted) {
         this.currentBgm.pause();
       } else if (!this.pageAudioSuspended) {
@@ -93,6 +92,7 @@ export class AudioManager {
     document.addEventListener('visibilitychange', this.handleVisibilityChange, { passive: true });
     window.addEventListener('pagehide', this.handlePageHidden, { passive: true });
     window.addEventListener('freeze', this.handlePageHidden, { passive: true });
+    window.addEventListener('blur', this.handlePageHidden, { passive: true });
     window.addEventListener('pageshow', this.handlePageShown, { passive: true });
     window.addEventListener('focus', this.handlePageShown, { passive: true });
   }
@@ -114,6 +114,8 @@ export class AudioManager {
     if (this.audioContext?.state === 'running') {
       this.audioContext.suspend().catch(() => {});
     }
+
+    this.setMediaSessionState('paused');
   }
 
   resumeFromPageShow() {
@@ -128,16 +130,18 @@ export class AudioManager {
     }
 
     if (this.wasBgmPlayingBeforePageHide && this.currentBgm && !this.muted) {
+      this.ensureAudioRouting(this.currentBgm);
       this.currentBgm.play().catch((error) => {
         this.warnOnce(this.currentBgmId ?? 'bgm', 'BGM resume skipped after page show', error);
       });
+      this.setMediaSessionState('playing');
     }
 
     this.wasBgmPlayingBeforePageHide = false;
   }
 
   unlockAudio() {
-    if (this.isUnlocked || typeof window === 'undefined') {
+    if (typeof window === 'undefined') {
       return;
     }
 
@@ -150,7 +154,16 @@ export class AudioManager {
         if (this.audioContext.state === 'suspended') {
           this.audioContext.resume().catch(() => {});
         }
+      } else if (this.audioContext?.state === 'suspended') {
+        this.audioContext.resume().catch(() => {});
+      }
 
+      if (this.isUnlocked) {
+        this.refreshAudioRouting();
+        return;
+      }
+
+      if (this.audioContext) {
         const source = this.audioContext.createBufferSource();
         source.buffer = this.audioContext.createBuffer(1, 1, 22050);
         source.connect(this.audioContext.destination);
@@ -158,6 +171,7 @@ export class AudioManager {
       }
 
       this.isUnlocked = true;
+      this.refreshAudioRouting();
     } catch (error) {
       this.warnOnce('unlock', 'Audio unlock skipped', error);
     }
@@ -197,6 +211,7 @@ export class AudioManager {
     try {
       const audio = this.createAudio(entry, options);
 
+      this.ensureAudioRouting(audio);
       this.applyPlaybackControls(id, entry, audio, options);
       this.incrementActive(id);
       this.activeAudios.add(audio);
@@ -241,6 +256,7 @@ export class AudioManager {
 
       try {
         const audio = this.createAudio(entry, { volume: 0 });
+        this.ensureAudioRouting(audio);
         audio.preload = entry.category === 'bgm' ? 'metadata' : 'auto';
         this.preloaded.set(id, audio);
       } catch (error) {
@@ -281,6 +297,8 @@ export class AudioManager {
     }
 
     if (this.currentBgmId === id && this.currentBgm) {
+      this.ensureAudioRouting(this.currentBgm);
+      this.updateCurrentBgmVolume();
       if (this.currentBgm.paused) {
         this.currentBgm.play().catch((error) => {
           this.warnOnce(id, `BGM playback skipped: ${entry.path}`, error);
@@ -298,6 +316,8 @@ export class AudioManager {
       audio.loop = options.loop ?? true;
       this.currentBgm = audio;
       this.currentBgmId = id;
+      this.ensureAudioRouting(audio);
+      this.updateCurrentBgmVolume();
       audio.play().catch((error) => {
         this.warnOnce(id, `BGM playback skipped: ${entry.path}`, error);
       });
@@ -359,6 +379,37 @@ export class AudioManager {
     return audio;
   }
 
+  ensureAudioRouting(audio) {
+    if (!audio || !this.audioContext || audio.__ezGainNode || audio.__ezRoutingFailed) {
+      return;
+    }
+
+    try {
+      const source = this.audioContext.createMediaElementSource(audio);
+      const gain = this.audioContext.createGain();
+      source.connect(gain);
+      gain.connect(this.audioContext.destination);
+      audio.__ezSourceNode = source;
+      audio.__ezGainNode = gain;
+      this.applyVolumeToAudio(audio);
+    } catch (error) {
+      audio.__ezRoutingFailed = true;
+      this.warnOnce('media-routing', 'WebAudio media routing skipped', error);
+    }
+  }
+
+  refreshAudioRouting() {
+    if (this.currentBgm) {
+      this.ensureAudioRouting(this.currentBgm);
+      this.updateCurrentBgmVolume();
+    }
+
+    this.activeAudios.forEach((audio) => {
+      this.ensureAudioRouting(audio);
+    });
+    this.updateActiveAudioVolumes();
+  }
+
   applyPlaybackControls(id, entry, audio, options = {}) {
     const groupId = options.interruptGroup ?? entry.interruptGroup;
 
@@ -404,7 +455,7 @@ export class AudioManager {
   }
 
   fadeOutAndStop(audio, fadeOutMs = 120) {
-    const startVolume = audio.volume;
+    const startVolume = this.getRuntimeAudioLevel(audio);
     const startedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
     const interval = window.setInterval(() => {
       if (audio.paused || audio.ended) {
@@ -414,7 +465,7 @@ export class AudioManager {
 
       const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
       const progress = Math.min(1, (now - startedAt) / fadeOutMs);
-      audio.volume = startVolume * (1 - progress);
+      this.setRuntimeAudioLevel(audio, startVolume * (1 - progress));
 
       if (progress >= 1) {
         window.clearInterval(interval);
@@ -432,15 +483,34 @@ export class AudioManager {
     }
   }
 
+  getRuntimeAudioLevel(audio) {
+    if (audio?.__ezGainNode) {
+      return audio.__ezGainNode.gain.value;
+    }
+
+    return audio?.volume ?? 0;
+  }
+
+  setRuntimeAudioLevel(audio, value) {
+    if (audio?.__ezGainNode) {
+      audio.__ezGainNode.gain.value = Math.max(0, Math.min(1, value));
+      return;
+    }
+
+    try {
+      audio.volume = Math.max(0, Math.min(1, value));
+    } catch {
+      // Media element volume can be ignored on iOS Safari.
+    }
+  }
+
   updateCurrentBgmVolume() {
     if (!this.currentBgm) {
       return;
     }
 
-    const entry = AUDIO_PATHS[this.currentBgmId];
-
-    this.currentBgm.volume = this.computeAudioVolume(entry, this.currentBgm.__ezAudioBaseVolume ?? 1);
-    this.currentBgm.muted = this.muted;
+    this.ensureAudioRouting(this.currentBgm);
+    this.applyVolumeToAudio(this.currentBgm, AUDIO_PATHS[this.currentBgmId]);
   }
 
   updateActiveAudioVolumes() {
@@ -451,8 +521,72 @@ export class AudioManager {
         return;
       }
 
-      audio.muted = this.muted;
-      audio.volume = this.computeAudioVolume(entry, audio.__ezAudioBaseVolume ?? 1);
+      this.ensureAudioRouting(audio);
+      this.applyVolumeToAudio(audio, entry);
+    });
+  }
+
+  applyVolumeToAudio(audio, entry = audio?.__ezAudioEntry) {
+    if (!audio) {
+      return;
+    }
+
+    const targetVolume = this.computeAudioVolume(entry, audio.__ezAudioBaseVolume ?? 1);
+
+    if (audio.__ezGainNode) {
+      audio.__ezGainNode.gain.value = this.muted ? 0 : targetVolume;
+      audio.muted = false;
+      try {
+        audio.volume = 1;
+      } catch {
+        // iOS Safari can ignore volume writes; WebAudio gain handles volume there.
+      }
+      return;
+    }
+
+    audio.muted = this.muted;
+    try {
+      audio.volume = this.muted ? 0 : targetVolume;
+    } catch {
+      // Media element volume may be read-only on some mobile browsers.
+    }
+  }
+
+  ensureBgmPlaying(expectedId = this.currentBgmId) {
+    if (this.muted || this.pageAudioSuspended || typeof Audio === 'undefined') {
+      return;
+    }
+
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (now - this.lastBgmEnsureAt < 900) {
+      return;
+    }
+    this.lastBgmEnsureAt = now;
+
+    if (expectedId && this.currentBgmId !== expectedId) {
+      this.playBgm(expectedId, { unlock: false, loop: true });
+      return;
+    }
+
+    if (!this.currentBgm || !this.currentBgmId) {
+      if (expectedId) {
+        this.playBgm(expectedId, { unlock: false, loop: true });
+      }
+      return;
+    }
+
+    this.ensureAudioRouting(this.currentBgm);
+    this.updateCurrentBgmVolume();
+
+    if (!this.currentBgm.paused) {
+      this.setMediaSessionState('playing');
+      return;
+    }
+
+    this.currentBgm.play().then(() => {
+      this.setMediaSessionState('playing');
+    }).catch((error) => {
+      this.warnOnce(this.currentBgmId ?? 'bgm', 'BGM resume skipped by watchdog', error);
     });
   }
 
@@ -461,6 +595,16 @@ export class AudioManager {
     const entryVolume = entry?.volume ?? 1;
 
     return Math.max(0, Math.min(1, baseVolume * entryVolume * this.masterVolume * categoryVolume));
+  }
+
+  setMediaSessionState(state) {
+    try {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = state;
+      }
+    } catch {
+      // Media Session is optional and inconsistent across browsers.
+    }
   }
 
   clampVolume(value) {

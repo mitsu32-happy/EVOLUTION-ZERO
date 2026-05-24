@@ -488,6 +488,7 @@ export class PlayScene {
     this.pauseUi.update?.(delta);
     this.resultUi.update?.(delta);
     this.updateZeroPhaseNotice(delta);
+    this.ensureRunBgm();
 
     if (this.isLevelUpSequenceActive()) {
       this.updateLevelUpSequence(delta);
@@ -572,6 +573,17 @@ export class PlayScene {
     this.updateResultUi();
     this.updateEvolutionWarning(delta);
     this.queueEvolutionReadyIfNeeded();
+  }
+
+  ensureRunBgm() {
+    if (!this.isActive || this.gameState.isGameOver) {
+      return;
+    }
+
+    const boss = this.getActiveBoss();
+    const expectedBgmId = boss ? this.getBossBgmId(boss) : this.getBaseBgmId();
+
+    this.audioManager?.ensureBgmPlaying?.(expectedBgmId);
   }
 
   updatePauseUi() {
