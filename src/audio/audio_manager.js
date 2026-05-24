@@ -34,6 +34,7 @@ export class AudioManager {
     this.suspendedBgmTime = 0;
     this.lastBgmEnsureAt = 0;
     this.pageBlurSuspendTimer = null;
+    this.audioResumeRetryTimer = null;
   }
 
   setVolume(volume) {
@@ -83,6 +84,7 @@ export class AudioManager {
 
     this.handlePageHidden = () => {
       this.clearPageBlurSuspendTimer();
+      this.clearAudioResumeRetryTimer();
       this.suspendForPageHide();
     };
     this.handleVisibilityChange = () => {
@@ -98,6 +100,18 @@ export class AudioManager {
       this.clearPageBlurSuspendTimer();
       if (!document.hidden) {
         this.resumeFromPageShow();
+      }
+    };
+    this.handleAudioResumeGesture = () => {
+      if (document.hidden) {
+        return;
+      }
+
+      if (this.pageAudioSuspended) {
+        this.resumeFromPageShow({ userGesture: true });
+      } else {
+        this.resumeAudioContext({ userGesture: true });
+        this.resumeCurrentBgmIfNeeded();
       }
     };
     this.handleWindowBlur = () => {
@@ -116,6 +130,8 @@ export class AudioManager {
     window.addEventListener('blur', this.handleWindowBlur, { passive: true });
     window.addEventListener('pageshow', this.handlePageShown, { passive: true });
     window.addEventListener('focus', this.handlePageShown, { passive: true });
+    window.addEventListener('pointerdown', this.handleAudioResumeGesture, { passive: true, capture: true });
+    window.addEventListener('touchstart', this.handleAudioResumeGesture, { passive: true, capture: true });
   }
 
   clearPageBlurSuspendTimer() {
@@ -125,6 +141,15 @@ export class AudioManager {
 
     window.clearTimeout(this.pageBlurSuspendTimer);
     this.pageBlurSuspendTimer = null;
+  }
+
+  clearAudioResumeRetryTimer() {
+    if (!this.audioResumeRetryTimer || typeof window === 'undefined') {
+      return;
+    }
+
+    window.clearTimeout(this.audioResumeRetryTimer);
+    this.audioResumeRetryTimer = null;
   }
 
   ensurePageActiveForPlayback() {
@@ -145,7 +170,7 @@ export class AudioManager {
     }
 
     this.pageAudioSuspended = true;
-    this.wasBgmPlayingBeforePageHide = Boolean(this.currentBgm && !this.currentBgm.paused && !this.muted);
+    this.wasBgmPlayingBeforePageHide = Boolean(this.currentBgmId && !this.muted);
 
     if (this.currentBgm) {
       this.currentBgm.pause();
@@ -169,7 +194,7 @@ export class AudioManager {
     this.setMediaSessionState('paused');
   }
 
-  resumeFromPageShow() {
+  resumeFromPageShow({ userGesture = false } = {}) {
     if (!this.pageAudioSuspended) {
       this.clearPageBlurSuspendTimer();
       return;
@@ -178,9 +203,7 @@ export class AudioManager {
     this.clearPageBlurSuspendTimer();
     this.pageAudioSuspended = false;
 
-    if (this.audioContext?.state === 'suspended' && this.isUnlocked) {
-      this.audioContext.resume().catch(() => {});
-    }
+    this.resumeAudioContext({ userGesture });
 
     if (this.wasBgmPlayingBeforePageHide && this.suspendedBgmId && !this.muted) {
       this.playBgm(this.suspendedBgmId, {
@@ -196,6 +219,56 @@ export class AudioManager {
     this.suspendedBgmTime = 0;
   }
 
+  ensureAudioContext() {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    const Context = window.AudioContext || window.webkitAudioContext;
+    if (!Context) {
+      return null;
+    }
+
+    if (!this.audioContext || this.audioContext.state === 'closed') {
+      this.audioContext = new Context();
+      this.isUnlocked = false;
+    }
+
+    return this.audioContext;
+  }
+
+  resumeAudioContext({ userGesture = false } = {}) {
+    const context = this.audioContext;
+
+    if (!context) {
+      return;
+    }
+
+    if (context.state === 'running') {
+      this.clearAudioResumeRetryTimer();
+      this.refreshAudioRouting();
+      this.warmupEssentialBuffers();
+      return;
+    }
+
+    if (context.state === 'closed') {
+      this.audioContext = null;
+      this.isUnlocked = false;
+      return;
+    }
+
+    context.resume().then(() => {
+      this.clearAudioResumeRetryTimer();
+      this.refreshAudioRouting();
+      this.warmupEssentialBuffers();
+      this.resumeCurrentBgmIfNeeded();
+    }).catch((error) => {
+      if (userGesture) {
+        this.warnOnce('audio-resume', 'Audio context resume skipped', error);
+      }
+    });
+  }
+
   unlockAudio() {
     if (typeof window === 'undefined') {
       return;
@@ -203,20 +276,12 @@ export class AudioManager {
 
     try {
       this.ensurePageActiveForPlayback();
-      const Context = window.AudioContext || window.webkitAudioContext;
-
-      if (Context) {
-        this.audioContext = this.audioContext ?? new Context();
-
-        if (this.audioContext.state === 'suspended') {
-          this.audioContext.resume().catch(() => {});
-        }
-      } else if (this.audioContext?.state === 'suspended') {
-        this.audioContext.resume().catch(() => {});
-      }
+      this.ensureAudioContext();
+      this.resumeAudioContext({ userGesture: true });
 
       if (this.isUnlocked) {
         this.refreshAudioRouting();
+        this.warmupEssentialBuffers();
         this.resumeCurrentBgmIfNeeded();
         return;
       }
@@ -230,6 +295,7 @@ export class AudioManager {
 
       this.isUnlocked = true;
       this.refreshAudioRouting();
+      this.warmupEssentialBuffers();
       this.resumeCurrentBgmIfNeeded();
     } catch (error) {
       this.warnOnce('unlock', 'Audio unlock skipped', error);
@@ -511,7 +577,11 @@ export class AudioManager {
   }
 
   playBufferedAudio(id, entry, options = {}) {
-    if (!this.shouldUseBufferedPlayback(entry) || !this.audioContext) {
+    if (
+      !this.shouldUseBufferedPlayback(entry)
+      || !this.audioContext
+      || this.audioContext.state !== 'running'
+    ) {
       return false;
     }
 
@@ -575,6 +645,43 @@ export class AudioManager {
     });
 
     return true;
+  }
+
+  warmupEssentialBuffers() {
+    this.warmupBufferedAudio([
+      'ui_select',
+      'ui_click',
+      'ui_decide',
+      'ui_confirm',
+      'ui_cancel',
+      'attack',
+      'raptor_attack_se',
+      'triceratops_attack_se',
+      'tyrannosaurus_bite_se',
+      'enemy_hit',
+      'boss_warning',
+      'zero_boss_warning',
+      'zero_warning',
+      'zero_phase_warning',
+      'zero_final_protocol',
+    ]);
+  }
+
+  warmupBufferedAudio(ids = []) {
+    if (!this.audioContext || this.audioContext.state !== 'running') {
+      return;
+    }
+
+    ids.forEach((id) => {
+      const entry = AUDIO_PATHS[id];
+      if (!entry || !this.shouldUseBufferedPlayback(entry)) {
+        return;
+      }
+
+      this.getAudioBuffer(entry).catch((error) => {
+        this.warnOnce(id, `Audio buffer warmup skipped: ${entry.path}`, error);
+      });
+    });
   }
 
   applyBufferInterruptControls(record, options = {}) {

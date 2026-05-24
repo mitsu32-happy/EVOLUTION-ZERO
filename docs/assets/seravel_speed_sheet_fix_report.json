@@ -1,0 +1,201 @@
+{
+  "source": "public\\assets\\dinos\\evolutions\\sheets\\triceratops_speed_sheet.png",
+  "backup": "docs\\assets\\backup\\seravel_speed_sheet_fix\\triceratops_speed_sheet_before.png",
+  "fixedAt": "2026-05-24T21:14:40",
+  "method": "Rebuilt move row and attack row from clean in-sheet cells, with small scale/position/rotation variants to avoid cross-cell leftovers.",
+  "frameEdgeIssues": [],
+  "frames": [
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        68,
+        133,
+        188,
+        202
+      ],
+      "pixels": 5481,
+      "edge": 0
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        67,
+        134,
+        188,
+        202
+      ],
+      "pixels": 5397,
+      "edge": 0
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        67,
+        134,
+        188,
+        202
+      ],
+      "pixels": 5432,
+      "edge": 0
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "bbox": [
+        67,
+        134,
+        188,
+        202
+      ],
+      "pixels": 5358,
+      "edge": 0
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        58,
+        135,
+        178,
+        202
+      ],
+      "pixels": 5288,
+      "edge": 0
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        64,
+        130,
+        188,
+        199
+      ],
+      "pixels": 5642,
+      "edge": 0
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        76,
+        137,
+        196,
+        203
+      ],
+      "pixels": 5292,
+      "edge": 0
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "bbox": [
+        72,
+        139,
+        189,
+        204
+      ],
+      "pixels": 5002,
+      "edge": 0
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        63,
+        143,
+        177,
+        204
+      ],
+      "pixels": 4797,
+      "edge": 0
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        65,
+        136,
+        186,
+        200
+      ],
+      "pixels": 5420,
+      "edge": 0
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        73,
+        133,
+        198,
+        199
+      ],
+      "pixels": 5763,
+      "edge": 0
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "bbox": [
+        76,
+        148,
+        185,
+        205
+      ],
+      "pixels": 4335,
+      "edge": 0
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "bbox": [
+        71,
+        95,
+        186,
+        161
+      ],
+      "pixels": 5373,
+      "edge": 0
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "bbox": [
+        70,
+        101,
+        185,
+        155
+      ],
+      "pixels": 4346,
+      "edge": 0
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "bbox": [
+        69,
+        106,
+        186,
+        150
+      ],
+      "pixels": 3797,
+      "edge": 0
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "bbox": [
+        67,
+        107,
+        189,
+        149
+      ],
+      "pixels": 3788,
+      "edge": 0
+    }
+  ]
+}

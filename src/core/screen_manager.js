@@ -74,6 +74,9 @@ export class ScreenManager {
       'jungle_bgm',
       'zero_bgm',
       'normal_boss_bgm',
+      'boss_warning',
+      'zero_boss_warning',
+      'zero_warning',
       'result_clear_jingle',
       'result_zero_clear_jingle',
     ]);

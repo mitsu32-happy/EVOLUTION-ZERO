@@ -885,14 +885,14 @@ export const ASSET_MANIFEST = {
       path: 'assets/dinos/evolutions/sheets/triceratops_speed_sheet.png',
       spriteSheet: true,
       fallbackKey: 'dinos.triceratopsSheet',
-      note: 'MVP-127 speed evolution triceratops 4x4 sprite sheet. Falls back to base triceratops sheet.',
+      note: 'MVP-127 speed evolution triceratops 4x4 sprite sheet. Post-release RC cleaned move/attack row cross-cell leftovers; falls back to base triceratops sheet.',
       postprocess: {
         tool: 'tools/sprite_sheet_postprocess.py',
         targetWidth: 230,
         targetHeight: 168,
         footLine: 204,
         overlap: 82,
-        report: 'docs/assets/triceratops_speed_sheet_mvp127_report.json',
+        report: 'docs/assets/seravel_speed_sheet_fix_report.json',
       },
       sheet: {
         columns: 4,
