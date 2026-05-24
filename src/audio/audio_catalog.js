@@ -7,6 +7,7 @@ export const AUDIO_PATHS = {
   ui_reward: { category: 'ui', path: 'assets/audio/ui/ui_reward_full.mp3', label: 'Reward UI', volume: 0.7 },
   ui_click: { category: 'ui', path: 'assets/audio/ui/ui_select_full.mp3', label: 'UI click alias', volume: 0.74 },
   ui_confirm: { category: 'ui', path: 'assets/audio/ui/ui_decide_full.mp3', label: 'UI confirm alias', volume: 0.72 },
+  intro_opening: { category: 'ui', path: 'assets/audio/intro/opening_intro.mp3', label: 'Opening intro voice', volume: 0.8, durationHintMs: 11800, fadeOutMs: 120, interruptGroup: 'intro_opening', stopPrevious: true },
 
   attack: { category: 'se', path: 'assets/audio/se/enemy_hit_full.mp3', label: 'Attack slash', volume: 0.36, durationHintMs: 240, fadeOutMs: 45 },
   raptor_attack_se: { category: 'se', path: 'assets/audio/se/raptor_claw_full.mp3', label: 'Raptor claw', volume: 0.42, durationHintMs: 210, fadeOutMs: 40 },
@@ -84,6 +85,7 @@ export const AUDIO_COOLDOWNS = {
   ui_error: 0.2,
   ui_tab: 0.08,
   ui_reward: 0.35,
+  intro_opening: 0,
   attack: 0.12,
   raptor_attack_se: 0.16,
   triceratops_attack_se: 0.22,
@@ -137,6 +139,7 @@ export const AUDIO_MAX_INSTANCES = {
   ui_error: 1,
   ui_tab: 2,
   ui_reward: 1,
+  intro_opening: 1,
   attack: 3,
   raptor_attack_se: 2,
   triceratops_attack_se: 2,

@@ -31,6 +31,12 @@ export class IntroOverlay {
     this.shouldMarkSeen = false;
     this.isFinishing = false;
     this.audioEnabled = true;
+    this.audioBufferPromise = null;
+    this.audioContext = null;
+    this.audioGain = null;
+    this.audioSource = null;
+    this.audioStartedAt = 0;
+    this.audioOffset = 0;
 
     this.root = document.createElement('div');
     this.root.className = 'ez-intro-overlay';
@@ -57,6 +63,8 @@ export class IntroOverlay {
     this.audio.className = 'ez-intro-audio';
     this.audio.src = assetUrl(INTRO_AUDIO_PATH);
     this.audio.preload = 'auto';
+
+    this.preloadIntroAudioBuffer();
 
     this.skipButton = document.createElement('button');
     this.skipButton.type = 'button';
@@ -100,9 +108,9 @@ export class IntroOverlay {
       console.warn('[EVOLUTION ZERO] opening intro audio could not be loaded');
     };
 
-    this.gate.addEventListener('pointerup', this.handleGatePointer);
-    this.skipButton.addEventListener('pointerup', this.handleSkipPointer);
-    this.audioToggle.addEventListener('pointerup', this.handleAudioTogglePointer);
+    this.gate.addEventListener('pointerdown', this.handleGatePointer);
+    this.skipButton.addEventListener('pointerdown', this.handleSkipPointer);
+    this.audioToggle.addEventListener('pointerdown', this.handleAudioTogglePointer);
     this.video.addEventListener('ended', this.handleEnded);
     this.video.addEventListener('error', this.handleVideoError);
     this.audio.addEventListener('error', this.handleAudioError);
@@ -169,7 +177,6 @@ export class IntroOverlay {
     this.root.classList.add('is-playing');
     this.audioManager?.stopBgm?.();
     this.audioManager?.stopTransientAudio?.();
-    this.audioManager?.unlockAudio?.();
 
     try {
       this.video.currentTime = 0;
@@ -183,6 +190,7 @@ export class IntroOverlay {
       // Audio can still attempt to play from start once metadata is available.
     }
 
+    this.audioManager?.unlockAudio?.();
     const audioPlay = this.playIntroAudio();
 
     try {
@@ -201,18 +209,131 @@ export class IntroOverlay {
     this.syncAudioStateFromSettings();
 
     if (!this.audioEnabled) {
-      this.audio.pause();
+      this.stopIntroAudio();
       return;
     }
+
+    const offset = Number.isFinite(this.video.currentTime) ? this.video.currentTime : 0;
+
+    this.audioManager?.playOptional?.('intro_opening', {
+      cooldown: 0,
+      maxInstances: 1,
+      volume: 1,
+    });
 
     this.audio.muted = false;
     this.audio.volume = this.getIntroVolume();
 
     try {
-      await this.audio.play();
-    } catch (error) {
-      console.warn('[EVOLUTION ZERO] opening intro audio playback skipped', error);
+      this.audio.currentTime = offset;
+    } catch {
+      // Audio can still attempt to play from its current position.
     }
+
+    const elementPlay = this.audio.play()
+      .catch((error) => {
+        console.warn('[EVOLUTION ZERO] opening intro audio playback skipped', error);
+      });
+
+    this.playIntroAudioWithWebAudio(offset)
+      .then((playedWithWebAudio) => {
+        if (playedWithWebAudio && !this.audio.paused) {
+          this.audio.pause();
+        }
+        if (playedWithWebAudio) {
+          this.audioManager?.stopTransientAudio?.();
+        }
+      })
+      .catch((error) => {
+        console.warn('[EVOLUTION ZERO] opening intro WebAudio playback skipped', error);
+      });
+
+    await elementPlay;
+  }
+
+  preloadIntroAudioBuffer() {
+    if (typeof fetch !== 'function') {
+      return;
+    }
+
+    this.audioBufferPromise = fetch(assetUrl(INTRO_AUDIO_PATH))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        return response.arrayBuffer();
+      })
+      .catch((error) => {
+        console.warn('[EVOLUTION ZERO] opening intro audio preload skipped', error);
+        return null;
+      });
+  }
+
+  async ensureIntroAudioContext() {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    const Context = window.AudioContext || window.webkitAudioContext;
+
+    if (!Context) {
+      return null;
+    }
+
+    this.audioContext = this.audioContext ?? new Context();
+
+    if (this.audioContext.state === 'suspended') {
+      await this.audioContext.resume();
+    }
+
+    return this.audioContext;
+  }
+
+  async getIntroAudioBuffer(context) {
+    if (!context || !this.audioBufferPromise) {
+      return null;
+    }
+
+    if (this.decodedAudioBuffer) {
+      return this.decodedAudioBuffer;
+    }
+
+    const arrayBuffer = await this.audioBufferPromise;
+
+    if (!arrayBuffer) {
+      return null;
+    }
+
+    this.decodedAudioBuffer = await context.decodeAudioData(arrayBuffer.slice(0));
+    return this.decodedAudioBuffer;
+  }
+
+  async playIntroAudioWithWebAudio(offset = 0) {
+    const context = await this.ensureIntroAudioContext();
+    const buffer = await this.getIntroAudioBuffer(context);
+
+    if (!context || !buffer) {
+      return false;
+    }
+
+    this.stopIntroAudio({ stopManagedAudio: false });
+
+    this.audioGain = context.createGain();
+    this.audioGain.gain.value = this.getIntroVolume();
+    this.audioGain.connect(context.destination);
+
+    this.audioSource = context.createBufferSource();
+    this.audioSource.buffer = buffer;
+    this.audioSource.connect(this.audioGain);
+    this.audioOffset = Math.max(0, Math.min(offset, Math.max(0, buffer.duration - 0.05)));
+    this.audioStartedAt = context.currentTime - this.audioOffset;
+    this.audioSource.start(0, this.audioOffset);
+    this.audioSource.onended = () => {
+      this.audioSource = null;
+    };
+
+    return true;
   }
 
   toggleAudio() {
@@ -231,8 +352,7 @@ export class IntroOverlay {
     this.updateAudioToggleLabel();
 
     if (!this.audioEnabled) {
-      this.audio.muted = true;
-      this.audio.pause();
+      this.stopIntroAudio();
       return;
     }
 
@@ -257,6 +377,9 @@ export class IntroOverlay {
     this.audioEnabled = !muted;
     this.audio.muted = muted;
     this.audio.volume = this.getIntroVolume(settings);
+    if (this.audioGain) {
+      this.audioGain.gain.value = this.audioEnabled ? this.getIntroVolume(settings) : 0;
+    }
     this.updateAudioToggleLabel();
   }
 
@@ -294,8 +417,33 @@ export class IntroOverlay {
 
   stopMedia() {
     this.video.pause();
-    this.audio.pause();
+    this.stopIntroAudio();
     this.resetMedia();
+  }
+
+  stopIntroAudio({ stopManagedAudio = true } = {}) {
+    this.audio.pause();
+    if (stopManagedAudio) {
+      this.audioManager?.stopTransientAudio?.();
+    }
+
+    if (this.audioSource) {
+      try {
+        this.audioSource.stop(0);
+      } catch {
+        // Already stopped.
+      }
+      this.audioSource = null;
+    }
+
+    if (this.audioGain) {
+      try {
+        this.audioGain.disconnect();
+      } catch {
+        // Already disconnected.
+      }
+      this.audioGain = null;
+    }
   }
 
   resetMedia() {

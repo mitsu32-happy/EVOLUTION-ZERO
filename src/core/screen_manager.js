@@ -62,7 +62,7 @@ export class ScreenManager {
     this.introOverlay = new IntroOverlay({
       audioManager: this.audioManager,
       saveManager: this.saveManager,
-      onComplete: () => this.showTitle(),
+      onComplete: () => this.showTitle({ forceCue: true }),
     });
     this.audioManager.preload([
       'ui_select',
@@ -244,7 +244,12 @@ export class ScreenManager {
     this.show('home');
   }
 
-  showTitle() {
+  showTitle({ forceCue = false } = {}) {
+    if (forceCue) {
+      this.titleCuePlayedForVisit = false;
+      this.pendingTitleCue = false;
+    }
+
     this.show('title');
   }
 
@@ -259,6 +264,8 @@ export class ScreenManager {
   }
 
   playIntroFromTitle() {
+    this.titleCuePlayedForVisit = false;
+    this.pendingTitleCue = false;
     Object.values(this.screens).forEach((screen) => {
       screen.hide?.();
       screen.view.visible = false;
@@ -323,10 +330,10 @@ export class ScreenManager {
     this.pendingTitleCue = false;
     this.titleCuePlayedForVisit = true;
     this.audioManager.playOptional('zero_warning', {
-      volume: 0.5,
+      volume: 0.52,
       cooldown: 0,
-      durationHintMs: 1100,
-      fadeOutMs: 180,
+      durationHintMs: 1800,
+      fadeOutMs: 260,
       maxInstances: 1,
     });
   }
