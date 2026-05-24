@@ -171,6 +171,8 @@ export class OptionsScreen {
     });
     this.sliders = [];
     this.settingRows = [];
+    this.activeSlider = null;
+    this.activeSliderPointerId = null;
 
     this.backgroundSprite.visible = false;
     this.panelSprite.visible = false;
@@ -276,12 +278,11 @@ export class OptionsScreen {
       slider.view.position.set(SAFE.rowX, 150 + index * 58);
       slider.view.eventMode = 'static';
       slider.view.cursor = 'pointer';
-      slider.view.on('pointerdown', (event) => this.handleSliderInput(event, slider));
-      slider.view.on('pointermove', (event) => {
-        if (event.buttons === 1) {
-          this.handleSliderInput(event, slider);
-        }
-      });
+      slider.view.on('pointerdown', (event) => this.startSliderInput(event, slider));
+      slider.view.on('pointermove', (event) => this.updateSliderInput(event, slider));
+      slider.view.on('pointerup', (event) => this.endSliderInput(event, slider));
+      slider.view.on('pointerupoutside', (event) => this.endSliderInput(event, slider));
+      slider.view.on('pointercancel', (event) => this.endSliderInput(event, slider));
       slider.label.position.set(22, 9);
       slider.sub.position.set(22, 28);
       slider.value.anchor.set(1, 0);
@@ -397,12 +398,68 @@ export class OptionsScreen {
   }
 
   handleSliderInput(event, slider) {
-    const local = event.getLocalPosition(slider.view);
+    const local = this.getLocalPointer(event, slider.view);
     const startX = 132;
     const width = 134;
     const value = Math.max(0, Math.min(1, (local.x - startX) / width));
 
     this.setAudioSetting(slider.item.key, value);
+  }
+
+  startSliderInput(event, slider) {
+    event?.stopPropagation?.();
+    this.activeSlider = slider;
+    this.activeSliderPointerId = this.getPointerId(event);
+    this.handleSliderInput(event, slider);
+  }
+
+  updateSliderInput(event, slider) {
+    if (this.activeSlider !== slider) {
+      return;
+    }
+
+    const pointerId = this.getPointerId(event);
+
+    if (this.activeSliderPointerId !== null && pointerId !== null && pointerId !== this.activeSliderPointerId) {
+      return;
+    }
+
+    event?.stopPropagation?.();
+    this.handleSliderInput(event, slider);
+  }
+
+  endSliderInput(event, slider) {
+    if (this.activeSlider !== slider) {
+      return;
+    }
+
+    const pointerId = this.getPointerId(event);
+
+    if (this.activeSliderPointerId !== null && pointerId !== null && pointerId !== this.activeSliderPointerId) {
+      return;
+    }
+
+    event?.stopPropagation?.();
+    this.activeSlider = null;
+    this.activeSliderPointerId = null;
+  }
+
+  getPointerId(event) {
+    const pointerId = event?.pointerId ?? event?.data?.identifier ?? null;
+
+    return pointerId === undefined ? null : pointerId;
+  }
+
+  getLocalPointer(event, target) {
+    if (event?.getLocalPosition) {
+      return event.getLocalPosition(target);
+    }
+
+    if (event?.global && target?.toLocal) {
+      return target.toLocal(event.global);
+    }
+
+    return { x: 0, y: 0 };
   }
 
   handleMuteToggle(event) {

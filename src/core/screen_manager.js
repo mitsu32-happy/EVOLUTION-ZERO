@@ -59,6 +59,7 @@ export class ScreenManager {
     this.applyDebugDailyMissions();
     this.assetLoader = new AssetLoader();
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
+    this.audioManager.installPageLifecycleHandlers();
     this.introOverlay = new IntroOverlay({
       audioManager: this.audioManager,
       saveManager: this.saveManager,

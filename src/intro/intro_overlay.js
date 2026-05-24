@@ -107,6 +107,16 @@ export class IntroOverlay {
     this.handleAudioError = () => {
       console.warn('[EVOLUTION ZERO] opening intro audio could not be loaded');
     };
+    this.handlePageHidden = () => {
+      if (this.mode === 'introPlaying') {
+        this.stopIntroAudio();
+      }
+    };
+    this.handleVisibilityChange = () => {
+      if (document.hidden && this.mode === 'introPlaying') {
+        this.stopIntroAudio();
+      }
+    };
 
     this.gate.addEventListener('pointerdown', this.handleGatePointer);
     this.skipButton.addEventListener('pointerdown', this.handleSkipPointer);
@@ -114,6 +124,9 @@ export class IntroOverlay {
     this.video.addEventListener('ended', this.handleEnded);
     this.video.addEventListener('error', this.handleVideoError);
     this.audio.addEventListener('error', this.handleAudioError);
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, { passive: true });
+    window.addEventListener('pagehide', this.handlePageHidden, { passive: true });
+    window.addEventListener('freeze', this.handlePageHidden, { passive: true });
   }
 
   shouldShowOnBoot() {

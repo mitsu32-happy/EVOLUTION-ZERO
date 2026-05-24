@@ -40,6 +40,7 @@ export class TitleScreen {
     this.textures = new Map();
     this.starting = false;
     this.glowTimer = null;
+    this.assetsReady = false;
 
     this.view = new Container();
     this.background = new Graphics();
@@ -57,6 +58,7 @@ export class TitleScreen {
     this.version = this.createText('EVOLUTION ZERO PROTOCOL INITIATED\nVERSION 0.0.1', 10, '#c94b43', 310);
     this.startButton = this.createStartButton();
     this.introButton = this.createIntroButton();
+    this.loadingOverlay = this.createLoadingOverlay();
 
     this.view.addChild(
       this.background,
@@ -74,6 +76,7 @@ export class TitleScreen {
       this.startButton.view,
       this.introButton.view,
       this.version,
+      this.loadingOverlay.view,
     );
 
     this.startButton.view.on('pointerdown', () => this.setStartPressed(true));
@@ -137,9 +140,10 @@ export class TitleScreen {
     this.renderFallbackStart();
     this.renderIntroButton();
     this.applyTextures();
+    this.renderLoadingOverlay();
   }
 
-  loadAssets() {
+  async loadAssets() {
     const requests = [
       ['background', ASSET_KEYS.titleUi?.titleBackground, TITLE_ASSET_PATHS.background],
       ['logo', ASSET_KEYS.homeUi?.evolutionZeroLogo, TITLE_ASSET_PATHS.logo],
@@ -149,18 +153,30 @@ export class TitleScreen {
       ['startPressed', ASSET_KEYS.titleUi?.startButtonPressed, TITLE_ASSET_PATHS.startPressed],
     ];
 
-    requests.forEach(([name, key, path]) => {
-      this.loadTexture(key, path).then((texture) => {
-        if (texture) {
-          this.textures.set(name, texture);
-          this.applyTextures();
-        }
-      });
+    const loaded = await Promise.all(requests.map(async ([name, key, path]) => {
+      const texture = await this.loadTexture(key, path);
+
+      return { name, texture };
+    }));
+
+    loaded.forEach(({ name, texture }) => {
+      if (texture) {
+        this.textures.set(name, texture);
+      }
     });
+    this.assetsReady = true;
+    this.applyTextures();
+    this.renderLoadingOverlay();
   }
 
   async loadTexture(key, path) {
-    const loaded = key ? await this.assetLoader?.load(key) : null;
+    let loaded = null;
+
+    try {
+      loaded = key ? await this.assetLoader?.load(key) : null;
+    } catch {
+      loaded = null;
+    }
 
     if (loaded || !path) {
       return loaded;
@@ -211,6 +227,37 @@ export class TitleScreen {
     this.startButton.idle.visible = hasStartAssets && !this.starting;
     this.startButton.glow.visible = hasStartAssets && !this.starting;
     this.startButton.pressed.visible = hasStartAssets && this.starting;
+  }
+
+  createLoadingOverlay() {
+    const view = new Container();
+    const bg = new Graphics();
+    const text = this.createText('LOADING...', 16, '#d7fff2', 220);
+    const sub = this.createText('ASSETS INITIALIZING', 9, '#7cf7d4', 220);
+
+    text.anchor.set(0.5);
+    text.position.set(this.width / 2, this.height / 2 - 8);
+    sub.anchor.set(0.5);
+    sub.position.set(this.width / 2, this.height / 2 + 22);
+    view.addChild(bg, text, sub);
+
+    return { view, bg, text, sub };
+  }
+
+  renderLoadingOverlay() {
+    if (!this.loadingOverlay?.view) {
+      return;
+    }
+
+    this.loadingOverlay.bg
+      .clear()
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x020406, alpha: 0.96 })
+      .rect(72, this.height / 2 + 42, this.width - 144, 2)
+      .fill({ color: UI_COLORS.dna, alpha: 0.58 });
+    this.loadingOverlay.view.visible = !this.assetsReady;
+    this.startButton.view.eventMode = this.assetsReady ? 'static' : 'none';
+    this.introButton.view.eventMode = this.assetsReady ? 'static' : 'none';
   }
 
   updateDebugBadge() {

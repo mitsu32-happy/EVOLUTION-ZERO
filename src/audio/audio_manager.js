@@ -24,11 +24,15 @@ export class AudioManager {
     this.preloaded = new Map();
     this.interruptGroups = new Map();
     this.activeAudios = new Set();
+    this.lifecycleHandlersInstalled = false;
+    this.pageAudioSuspended = false;
+    this.wasBgmPlayingBeforePageHide = false;
   }
 
   setVolume(volume) {
     this.masterVolume = Math.max(0, Math.min(1, volume));
     this.updateCurrentBgmVolume();
+    this.updateActiveAudioVolumes();
   }
 
   setMuted(muted) {
@@ -39,12 +43,14 @@ export class AudioManager {
 
       if (muted) {
         this.currentBgm.pause();
-      } else {
+      } else if (!this.pageAudioSuspended) {
         this.currentBgm.play().catch((error) => {
           this.warnOnce(this.currentBgmId ?? 'bgm', 'BGM resume skipped', error);
         });
       }
     }
+
+    this.updateActiveAudioVolumes();
   }
 
   applySettings(settings = {}) {
@@ -57,6 +63,77 @@ export class AudioManager {
     this.categoryVolumes.ui = this.clampVolume(settings.uiVolume ?? this.categoryVolumes.ui);
     this.setMuted(Boolean(settings.muted ?? this.muted));
     this.updateCurrentBgmVolume();
+    this.updateActiveAudioVolumes();
+  }
+
+  installPageLifecycleHandlers() {
+    if (this.lifecycleHandlersInstalled || typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    this.lifecycleHandlersInstalled = true;
+
+    this.handlePageHidden = () => {
+      this.suspendForPageHide();
+    };
+    this.handleVisibilityChange = () => {
+      if (document.hidden) {
+        this.suspendForPageHide();
+        return;
+      }
+
+      this.resumeFromPageShow();
+    };
+    this.handlePageShown = () => {
+      if (!document.hidden) {
+        this.resumeFromPageShow();
+      }
+    };
+
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, { passive: true });
+    window.addEventListener('pagehide', this.handlePageHidden, { passive: true });
+    window.addEventListener('freeze', this.handlePageHidden, { passive: true });
+    window.addEventListener('pageshow', this.handlePageShown, { passive: true });
+    window.addEventListener('focus', this.handlePageShown, { passive: true });
+  }
+
+  suspendForPageHide() {
+    if (this.pageAudioSuspended) {
+      return;
+    }
+
+    this.pageAudioSuspended = true;
+    this.wasBgmPlayingBeforePageHide = Boolean(this.currentBgm && !this.currentBgm.paused && !this.muted);
+
+    if (this.currentBgm) {
+      this.currentBgm.pause();
+    }
+
+    this.stopTransientAudio();
+
+    if (this.audioContext?.state === 'running') {
+      this.audioContext.suspend().catch(() => {});
+    }
+  }
+
+  resumeFromPageShow() {
+    if (!this.pageAudioSuspended) {
+      return;
+    }
+
+    this.pageAudioSuspended = false;
+
+    if (this.audioContext?.state === 'suspended' && this.isUnlocked) {
+      this.audioContext.resume().catch(() => {});
+    }
+
+    if (this.wasBgmPlayingBeforePageHide && this.currentBgm && !this.muted) {
+      this.currentBgm.play().catch((error) => {
+        this.warnOnce(this.currentBgmId ?? 'bgm', 'BGM resume skipped after page show', error);
+      });
+    }
+
+    this.wasBgmPlayingBeforePageHide = false;
   }
 
   unlockAudio() {
@@ -271,12 +348,13 @@ export class AudioManager {
 
   createAudio(entry, options = {}) {
     const audio = new Audio(getAudioUrl(entry));
-    const categoryVolume = this.categoryVolumes[entry.category] ?? 1;
-    const entryVolume = entry.volume ?? 1;
+    const baseVolume = options.volume ?? 1;
 
     audio.preload = entry.category === 'bgm' ? 'auto' : 'metadata';
     audio.muted = this.muted;
-    audio.volume = Math.max(0, Math.min(1, (options.volume ?? 1) * entryVolume * this.masterVolume * categoryVolume));
+    audio.volume = this.computeAudioVolume(entry, baseVolume);
+    audio.__ezAudioEntry = entry;
+    audio.__ezAudioBaseVolume = baseVolume;
 
     return audio;
   }
@@ -360,10 +438,29 @@ export class AudioManager {
     }
 
     const entry = AUDIO_PATHS[this.currentBgmId];
+
+    this.currentBgm.volume = this.computeAudioVolume(entry, this.currentBgm.__ezAudioBaseVolume ?? 1);
+    this.currentBgm.muted = this.muted;
+  }
+
+  updateActiveAudioVolumes() {
+    this.activeAudios.forEach((audio) => {
+      const entry = audio.__ezAudioEntry;
+
+      if (!entry) {
+        return;
+      }
+
+      audio.muted = this.muted;
+      audio.volume = this.computeAudioVolume(entry, audio.__ezAudioBaseVolume ?? 1);
+    });
+  }
+
+  computeAudioVolume(entry, baseVolume = 1) {
+    const categoryVolume = this.categoryVolumes[entry?.category] ?? 1;
     const entryVolume = entry?.volume ?? 1;
 
-    this.currentBgm.volume = Math.max(0, Math.min(1, this.masterVolume * this.categoryVolumes.bgm * entryVolume));
-    this.currentBgm.muted = this.muted;
+    return Math.max(0, Math.min(1, baseVolume * entryVolume * this.masterVolume * categoryVolume));
   }
 
   clampVolume(value) {
