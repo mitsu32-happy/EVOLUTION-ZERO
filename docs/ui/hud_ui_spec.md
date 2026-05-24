@@ -255,3 +255,10 @@
 - Heal pickup burst color is green to separate recovery from damage/fire feedback.
 - Stage and boss warning guides are drawn on the play-world warning layer and are hidden when Options `警告ガイド` is OFF.
 - `タッチ補助` reduces the movement drag dead zone and max drag distance so small-screen thumb movement starts more easily.
+
+## ZERO Boss Notice Rule
+
+- ZERO mode does not show the standard boss-arrival text banner.
+- Reason: ZERO phase notices already communicate the phase/boss escalation, and the duplicate banner competes with that UI.
+- Boss warning SE, boss BGM switching, screen shake, and the boss HP/name HUD remain active.
+- Normal / HARD / EXPERT boss-arrival text banners remain unchanged.

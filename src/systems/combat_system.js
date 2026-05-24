@@ -27,18 +27,20 @@ export class CombatSystem {
     this.evolutionNormalAttackEffectTexture = null;
     this.evolutionNormalAttackEffectKey = null;
     this.evolutionNormalAttackEffectId = null;
+    this.adaptationDamageMultiplier = 1;
     this.adaptationSkillStates = new Map();
     this.projectiles = [];
   }
 
   applyUpgrade(upgradeId, level) {
-    if (upgradeId === 'attack_speed_up') {
-      this.attackInterval = Math.max(0.28, this.attackInterval * (0.82 - level * 0.025));
+    if (upgradeId === 'attack_speed_up' || upgradeId === 'attack_range_up') {
+      return;
     }
 
-    if (upgradeId === 'attack_range_up') {
-      this.attackRange += 24 + level * 5;
-      this.targetAcquireRange = Math.max(this.targetAcquireRange, this.attackRange + 18);
+    if (upgradeId === 'attack_power_up' || upgradeId === 'predator_instinct') {
+      this.damage += 2 + level;
+      this.adaptationDamageMultiplier += 0.07 + level * 0.015;
+      return;
     }
 
     if (upgradeId === 'poison_bite') {
@@ -53,10 +55,6 @@ export class CombatSystem {
       this.statusOnHit.slow = { duration: 1.1 + level * 0.16, power: 1 };
     }
 
-    if (upgradeId === 'predator_instinct') {
-      this.damage += 2 + level;
-      this.targetAcquireRange += 18 + level * 4;
-    }
   }
 
   applyEvolution(evolution) {
@@ -117,6 +115,7 @@ export class CombatSystem {
     this.evolutionNormalAttackEffectTexture = null;
     this.evolutionNormalAttackEffectKey = null;
     this.evolutionNormalAttackEffectId = null;
+    this.adaptationDamageMultiplier = 1;
     this.adaptationSkillStates.clear();
     this.currentEnemies = null;
     this.effects.forEach((effect) => effect.view.destroy());
@@ -657,7 +656,7 @@ export class CombatSystem {
     const level = state.level ?? 1;
     const scaling = state.skill.scaling?.damage ?? 0.12;
 
-    return Math.max(1, Math.round(base * multiplier * (1 + (level - 1) * scaling)));
+    return Math.max(1, Math.round(base * multiplier * (1 + (level - 1) * scaling) * this.adaptationDamageMultiplier));
   }
 
   performNormalAttack(player, target, enemies, effectLayer) {

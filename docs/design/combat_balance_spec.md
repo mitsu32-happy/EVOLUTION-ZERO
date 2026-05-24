@@ -58,3 +58,20 @@
 - Intent:
   - Early play should still be readable, but normal attacks alone should not erase the need for adaptation skill growth.
   - In ZERO, the player should feel a stronger need for adaptation levels and research upgrades instead of clearing mainly through normal attack DPS.
+
+## Post-RC Balance Adjustment: Level-Up Normal Attack Scaling
+
+- Level-up choices no longer offer normal attack frequency or normal attack range upgrades.
+- Removed from the active level-up pool:
+  - `attack_speed_up`
+  - `attack_range_up`
+- New baseline non-adaptation attack upgrade:
+  - `attack_power_up`
+  - Raises normal attack damage and adaptation skill damage together.
+- Legacy `attack_speed_up` and `attack_range_up` runtime IDs are treated as no-op safeguards so old transient states cannot keep the balance-breaking speed/range scaling.
+- Intended non-adaptation level-up roles are now:
+  - max HP
+  - movement speed
+  - attack power
+  - pickup range
+- Adaptation skills remain the main source of range, target count, projectile count, and frequency growth.

@@ -80,15 +80,10 @@ function compactText(text = '', maxLength = 32) {
 }
 
 const SKILL_COPY = {
-  attack_speed_up: {
-    name: '神経加速',
-    type: '攻撃頻度',
-    description: '通常攻撃の間隔を短縮する。',
-  },
-  attack_range_up: {
-    name: '爪域拡張',
-    type: '攻撃範囲',
-    description: '通常攻撃の届く範囲を広げる。',
+  attack_power_up: {
+    name: '攻撃出力',
+    type: '基礎火力',
+    description: '通常技と適応技の威力を少し高める。',
   },
   move_speed_up: {
     name: '脚力強化',
@@ -118,7 +113,7 @@ const SKILL_COPY = {
   predator_instinct: {
     name: '捕食本能',
     type: '狩猟補助',
-    description: '索敵距離と攻撃性能を少し高める。',
+    description: '通常技と適応技の威力を少し高める。',
   },
   shock_roar: {
     name: '電磁咆哮',

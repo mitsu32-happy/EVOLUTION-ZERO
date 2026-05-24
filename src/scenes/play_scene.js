@@ -3778,14 +3778,21 @@ export class PlayScene {
   }
 
   triggerBossWarning(boss) {
-    this.bossWarningText.text = `${boss.displayLabel ?? 'APEX'}接近: ${boss.name}`;
-    this.bossWarningArrow.rotation = Math.atan2(
-      boss.position.y - this.player.position.y,
-      boss.position.x - this.player.position.x,
-    );
-    this.bossWarningTimer = 2.1;
-    this.bossWarningLayer.visible = true;
-    this.bossWarningLayer.alpha = 1;
+    const shouldShowTextWarning = this.gameState.selectedMode !== 'zero';
+    if (shouldShowTextWarning) {
+      this.bossWarningText.text = `${boss.displayLabel ?? 'APEX'}接近: ${boss.name}`;
+      this.bossWarningArrow.rotation = Math.atan2(
+        boss.position.y - this.player.position.y,
+        boss.position.x - this.player.position.x,
+      );
+      this.bossWarningTimer = 2.1;
+      this.bossWarningLayer.visible = true;
+      this.bossWarningLayer.alpha = 1;
+    } else {
+      this.bossWarningTimer = 0;
+      this.bossWarningLayer.visible = false;
+      this.bossWarningLayer.alpha = 0;
+    }
     this.audioManager?.play(this.getBossWarningAudioId(boss));
     this.audioManager?.playBgm(this.getBossBgmId(boss), { unlock: false, loop: true });
     this.triggerScreenShake(3.2);

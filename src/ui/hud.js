@@ -60,6 +60,7 @@ const HUD_ASSETS = {
 };
 
 const SKILL_DISPLAY = {
+  attack_power_up: { label: 'ATK', color: 0xffc739, mark: 'slash', icon: 'Attack' },
   attack_speed_up: { label: 'SPD', color: 0x35d7ff, mark: 'speed', icon: 'Speed' },
   attack_range_up: { label: 'CLAW', color: 0xff4d38, mark: 'slash', icon: 'Attack' },
   move_speed_up: { label: 'RUN', color: 0x35d7ff, mark: 'speed', icon: 'Speed' },
