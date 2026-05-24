@@ -1,0 +1,370 @@
+{
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0fa5d0f13a01bef1016a0c6ff8a5dc8191aad1f3aa26b69af1.png",
+  "output": "public\\assets\\enemies\\bosses\\volcano_boss_sheet.png",
+  "columns": 4,
+  "rows": 4,
+  "cellSize": 256,
+  "scale": 0.8614,
+  "sourceMaxBounds": {
+    "width": 267,
+    "height": 204
+  },
+  "frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "sourceBbox": [
+        9,
+        64,
+        261,
+        247
+      ],
+      "finalBbox": [
+        21,
+        55,
+        234,
+        208
+      ],
+      "margins": {
+        "left": 21,
+        "top": 55,
+        "right": 22,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "sourceBbox": [
+        99,
+        68,
+        343,
+        247
+      ],
+      "finalBbox": [
+        25,
+        58,
+        231,
+        207
+      ],
+      "margins": {
+        "left": 25,
+        "top": 58,
+        "right": 25,
+        "bottom": 49
+      }
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "sourceBbox": [
+        89,
+        54,
+        326,
+        247
+      ],
+      "finalBbox": [
+        28,
+        46,
+        227,
+        207
+      ],
+      "margins": {
+        "left": 28,
+        "top": 46,
+        "right": 29,
+        "bottom": 49
+      }
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "sourceBbox": [
+        78,
+        53,
+        313,
+        248
+      ],
+      "finalBbox": [
+        29,
+        44,
+        227,
+        207
+      ],
+      "margins": {
+        "left": 29,
+        "top": 44,
+        "right": 29,
+        "bottom": 49
+      }
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "sourceBbox": [
+        6,
+        166,
+        265,
+        332
+      ],
+      "finalBbox": [
+        19,
+        69,
+        236,
+        208
+      ],
+      "margins": {
+        "left": 19,
+        "top": 69,
+        "right": 20,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "sourceBbox": [
+        103,
+        174,
+        356,
+        333
+      ],
+      "finalBbox": [
+        21,
+        75,
+        234,
+        208
+      ],
+      "margins": {
+        "left": 21,
+        "top": 75,
+        "right": 22,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "sourceBbox": [
+        101,
+        168,
+        332,
+        334
+      ],
+      "finalBbox": [
+        30,
+        70,
+        225,
+        207
+      ],
+      "margins": {
+        "left": 30,
+        "top": 70,
+        "right": 31,
+        "bottom": 49
+      }
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "sourceBbox": [
+        79,
+        171,
+        322,
+        333
+      ],
+      "finalBbox": [
+        25,
+        72,
+        230,
+        207
+      ],
+      "margins": {
+        "left": 25,
+        "top": 72,
+        "right": 26,
+        "bottom": 49
+      }
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "sourceBbox": [
+        1,
+        128,
+        225,
+        332
+      ],
+      "finalBbox": [
+        34,
+        36,
+        221,
+        208
+      ],
+      "margins": {
+        "left": 34,
+        "top": 36,
+        "right": 35,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "sourceBbox": [
+        90,
+        181,
+        333,
+        333
+      ],
+      "finalBbox": [
+        25,
+        79,
+        232,
+        208
+      ],
+      "margins": {
+        "left": 25,
+        "top": 79,
+        "right": 24,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "sourceBbox": [
+        102,
+        134,
+        339,
+        332
+      ],
+      "finalBbox": [
+        28,
+        39,
+        230,
+        208
+      ],
+      "margins": {
+        "left": 28,
+        "top": 39,
+        "right": 26,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "sourceBbox": [
+        81,
+        176,
+        348,
+        331
+      ],
+      "finalBbox": [
+        13,
+        78,
+        242,
+        208
+      ],
+      "margins": {
+        "left": 13,
+        "top": 78,
+        "right": 14,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "sourceBbox": [
+        2,
+        171,
+        256,
+        313
+      ],
+      "finalBbox": [
+        21,
+        70,
+        235,
+        187
+      ],
+      "margins": {
+        "left": 21,
+        "top": 70,
+        "right": 21,
+        "bottom": 69
+      }
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "sourceBbox": [
+        99,
+        171,
+        329,
+        313
+      ],
+      "finalBbox": [
+        31,
+        69,
+        224,
+        187
+      ],
+      "margins": {
+        "left": 31,
+        "top": 69,
+        "right": 32,
+        "bottom": 69
+      }
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "sourceBbox": [
+        88,
+        217,
+        326,
+        313
+      ],
+      "finalBbox": [
+        27,
+        86,
+        227,
+        167
+      ],
+      "margins": {
+        "left": 27,
+        "top": 86,
+        "right": 29,
+        "bottom": 89
+      }
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "sourceBbox": [
+        76,
+        215,
+        327,
+        313
+      ],
+      "finalBbox": [
+        22,
+        88,
+        234,
+        168
+      ],
+      "margins": {
+        "left": 22,
+        "top": 88,
+        "right": 22,
+        "bottom": 88
+      }
+    }
+  ],
+  "edgeCleanup": {
+    "edgeResidueReplaced": 18237,
+    "edgeAlphaSoftened": 7523
+  }
+}

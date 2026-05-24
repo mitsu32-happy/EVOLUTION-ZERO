@@ -1,0 +1,539 @@
+{
+  "source": "docs\\assets\\generated_raw\\tyrannosaurus_sheet_mvp106_raw.png",
+  "output": "public\\assets\\dinos\\tyrannosaurus_sheet.png",
+  "columns": 4,
+  "rows": 4,
+  "cellSize": 256,
+  "scale": 0.8358,
+  "sourceMaxBounds": {
+    "width": 268,
+    "height": 152
+  },
+  "frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "sourceBbox": [
+        10,
+        80,
+        260,
+        232
+      ],
+      "finalBbox": [
+        25,
+        79,
+        230,
+        202
+      ],
+      "margins": {
+        "left": 25,
+        "top": 79,
+        "right": 26,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "sourceBbox": [
+        80,
+        81,
+        327,
+        232
+      ],
+      "finalBbox": [
+        28,
+        81,
+        229,
+        202
+      ],
+      "margins": {
+        "left": 28,
+        "top": 81,
+        "right": 27,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "sourceBbox": [
+        73,
+        81,
+        320,
+        232
+      ],
+      "finalBbox": [
+        27,
+        80,
+        228,
+        202
+      ],
+      "margins": {
+        "left": 27,
+        "top": 80,
+        "right": 28,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "sourceBbox": [
+        66,
+        81,
+        313,
+        232
+      ],
+      "finalBbox": [
+        27,
+        80,
+        228,
+        202
+      ],
+      "margins": {
+        "left": 27,
+        "top": 80,
+        "right": 28,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "sourceBbox": [
+        6,
+        160,
+        274,
+        294
+      ],
+      "finalBbox": [
+        19,
+        94,
+        240,
+        202
+      ],
+      "margins": {
+        "left": 19,
+        "top": 94,
+        "right": 16,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "sourceBbox": [
+        75,
+        155,
+        331,
+        295
+      ],
+      "finalBbox": [
+        21,
+        90,
+        233,
+        201
+      ],
+      "margins": {
+        "left": 21,
+        "top": 90,
+        "right": 23,
+        "bottom": 55
+      }
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "sourceBbox": [
+        72,
+        158,
+        323,
+        294
+      ],
+      "finalBbox": [
+        25,
+        92,
+        231,
+        202
+      ],
+      "margins": {
+        "left": 25,
+        "top": 92,
+        "right": 25,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "sourceBbox": [
+        67,
+        155,
+        326,
+        295
+      ],
+      "finalBbox": [
+        22,
+        89,
+        234,
+        201
+      ],
+      "margins": {
+        "left": 22,
+        "top": 89,
+        "right": 22,
+        "bottom": 55
+      }
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "sourceBbox": [
+        6,
+        147,
+        259,
+        277
+      ],
+      "finalBbox": [
+        24,
+        97,
+        231,
+        202
+      ],
+      "margins": {
+        "left": 24,
+        "top": 97,
+        "right": 25,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "sourceBbox": [
+        75,
+        145,
+        329,
+        277
+      ],
+      "finalBbox": [
+        22,
+        97,
+        232,
+        202
+      ],
+      "margins": {
+        "left": 22,
+        "top": 97,
+        "right": 24,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "sourceBbox": [
+        73,
+        140,
+        318,
+        278
+      ],
+      "finalBbox": [
+        27,
+        92,
+        228,
+        202
+      ],
+      "margins": {
+        "left": 27,
+        "top": 92,
+        "right": 28,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "sourceBbox": [
+        65,
+        182,
+        326,
+        278
+      ],
+      "finalBbox": [
+        20,
+        126,
+        235,
+        202
+      ],
+      "margins": {
+        "left": 20,
+        "top": 126,
+        "right": 21,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "sourceBbox": [
+        10,
+        129,
+        247,
+        248
+      ],
+      "finalBbox": [
+        31,
+        80,
+        225,
+        175
+      ],
+      "margins": {
+        "left": 31,
+        "top": 80,
+        "right": 31,
+        "bottom": 81
+      }
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "sourceBbox": [
+        77,
+        155,
+        314,
+        249
+      ],
+      "finalBbox": [
+        31,
+        90,
+        225,
+        165
+      ],
+      "margins": {
+        "left": 31,
+        "top": 90,
+        "right": 31,
+        "bottom": 91
+      }
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "sourceBbox": [
+        68,
+        162,
+        307,
+        248
+      ],
+      "finalBbox": [
+        30,
+        94,
+        226,
+        162
+      ],
+      "margins": {
+        "left": 30,
+        "top": 94,
+        "right": 30,
+        "bottom": 94
+      }
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "sourceBbox": [
+        62,
+        177,
+        312,
+        249
+      ],
+      "finalBbox": [
+        25,
+        101,
+        230,
+        156
+      ],
+      "margins": {
+        "left": 25,
+        "top": 101,
+        "right": 26,
+        "bottom": 100
+      }
+    }
+  ],
+  "edgeCleanup": {
+    "edgeResidueReplaced": 9854,
+    "edgeAlphaSoftened": 5353
+  },
+  "cleanup": {
+    "method": "keep largest connected alpha component per 256px cell",
+    "totalRemovedPixels": 720,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "removedPixels": 4,
+        "largestRemovedComponents": [
+          3,
+          1
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "removedPixels": 11,
+        "largestRemovedComponents": [
+          6,
+          3,
+          2
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "removedPixels": 2,
+        "largestRemovedComponents": [
+          2
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "removedPixels": 4,
+        "largestRemovedComponents": [
+          2,
+          2
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "removedPixels": 45,
+        "largestRemovedComponents": [
+          15,
+          10,
+          10,
+          6,
+          3
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "removedPixels": 348,
+        "largestRemovedComponents": [
+          335,
+          3,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "removedPixels": 22,
+        "largestRemovedComponents": [
+          13,
+          8,
+          1
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "removedPixels": 4,
+        "largestRemovedComponents": [
+          2,
+          2
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "removedPixels": 30,
+        "largestRemovedComponents": [
+          10,
+          7,
+          4,
+          3,
+          2
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "removedPixels": 14,
+        "largestRemovedComponents": [
+          10,
+          2,
+          1,
+          1
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "removedPixels": 89,
+        "largestRemovedComponents": [
+          9,
+          6,
+          5,
+          5,
+          5
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "removedPixels": 71,
+        "largestRemovedComponents": [
+          10,
+          8,
+          8,
+          6,
+          5
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "removedPixels": 1,
+        "largestRemovedComponents": [
+          1
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "removedPixels": 46,
+        "largestRemovedComponents": [
+          17,
+          15,
+          11,
+          3
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "removedPixels": 0,
+        "largestRemovedComponents": []
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "removedPixels": 29,
+        "largestRemovedComponents": [
+          16,
+          5,
+          3,
+          2,
+          1
+        ]
+      }
+    ]
+  }
+}

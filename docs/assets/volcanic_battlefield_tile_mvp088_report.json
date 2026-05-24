@@ -1,0 +1,20 @@
+{
+  "input": "public\\assets\\maps\\backgrounds\\mvp088_originals\\volcanic_battlefield_tile.png",
+  "output": "public\\assets\\maps\\backgrounds\\volcanic_battlefield_tile.png",
+  "preset": "volcano",
+  "originalSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "outputSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "edgeBand": 96,
+  "readabilityTuning": {
+    "brightness": 1.2,
+    "contrast": 1.01,
+    "color": 1.1
+  },
+  "note": "Raise red-brown terrain readability without over-amplifying lava glow."
+}

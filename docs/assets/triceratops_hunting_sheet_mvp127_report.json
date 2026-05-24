@@ -1,0 +1,370 @@
+{
+  "source": "public\\assets\\dinos\\evolutions\\sheets\\triceratops_hunting_sheet.png",
+  "output": "public\\assets\\dinos\\evolutions\\sheets\\triceratops_hunting_sheet.png",
+  "columns": 4,
+  "rows": 4,
+  "cellSize": 256,
+  "scale": 0.6939,
+  "sourceMaxBounds": {
+    "width": 269,
+    "height": 245
+  },
+  "frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "sourceBbox": [
+        13,
+        81,
+        261,
+        326
+      ],
+      "finalBbox": [
+        45,
+        36,
+        212,
+        202
+      ],
+      "margins": {
+        "left": 45,
+        "top": 36,
+        "right": 44,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "sourceBbox": [
+        97,
+        83,
+        326,
+        326
+      ],
+      "finalBbox": [
+        49,
+        37,
+        207,
+        202
+      ],
+      "margins": {
+        "left": 49,
+        "top": 37,
+        "right": 49,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "sourceBbox": [
+        96,
+        83,
+        365,
+        326
+      ],
+      "finalBbox": [
+        36,
+        37,
+        221,
+        202
+      ],
+      "margins": {
+        "left": 36,
+        "top": 37,
+        "right": 35,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "sourceBbox": [
+        97,
+        82,
+        326,
+        214
+      ],
+      "finalBbox": [
+        50,
+        114,
+        205,
+        202
+      ],
+      "margins": {
+        "left": 50,
+        "top": 114,
+        "right": 51,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "sourceBbox": [
+        11,
+        166,
+        244,
+        299
+      ],
+      "finalBbox": [
+        49,
+        114,
+        208,
+        202
+      ],
+      "margins": {
+        "left": 49,
+        "top": 114,
+        "right": 48,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "sourceBbox": [
+        98,
+        169,
+        326,
+        297
+      ],
+      "finalBbox": [
+        51,
+        117,
+        204,
+        202
+      ],
+      "margins": {
+        "left": 51,
+        "top": 117,
+        "right": 52,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "sourceBbox": [
+        97,
+        168,
+        327,
+        297
+      ],
+      "finalBbox": [
+        51,
+        116,
+        206,
+        202
+      ],
+      "margins": {
+        "left": 51,
+        "top": 116,
+        "right": 50,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "sourceBbox": [
+        98,
+        169,
+        325,
+        298
+      ],
+      "finalBbox": [
+        51,
+        116,
+        205,
+        202
+      ],
+      "margins": {
+        "left": 51,
+        "top": 116,
+        "right": 51,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "sourceBbox": [
+        14,
+        173,
+        240,
+        299
+      ],
+      "finalBbox": [
+        50,
+        119,
+        204,
+        202
+      ],
+      "margins": {
+        "left": 50,
+        "top": 119,
+        "right": 52,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "sourceBbox": [
+        101,
+        175,
+        320,
+        299
+      ],
+      "finalBbox": [
+        54,
+        120,
+        202,
+        202
+      ],
+      "margins": {
+        "left": 54,
+        "top": 120,
+        "right": 54,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "sourceBbox": [
+        102,
+        178,
+        321,
+        299
+      ],
+      "finalBbox": [
+        53,
+        122,
+        202,
+        202
+      ],
+      "margins": {
+        "left": 53,
+        "top": 122,
+        "right": 54,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "sourceBbox": [
+        102,
+        182,
+        320,
+        298
+      ],
+      "finalBbox": [
+        55,
+        126,
+        201,
+        202
+      ],
+      "margins": {
+        "left": 55,
+        "top": 126,
+        "right": 55,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "sourceBbox": [
+        19,
+        149,
+        235,
+        276
+      ],
+      "finalBbox": [
+        54,
+        86,
+        201,
+        170
+      ],
+      "margins": {
+        "left": 54,
+        "top": 86,
+        "right": 55,
+        "bottom": 86
+      }
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "sourceBbox": [
+        102,
+        159,
+        319,
+        265
+      ],
+      "finalBbox": [
+        54,
+        93,
+        201,
+        163
+      ],
+      "margins": {
+        "left": 54,
+        "top": 93,
+        "right": 55,
+        "bottom": 93
+      }
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "sourceBbox": [
+        101,
+        168,
+        322,
+        255
+      ],
+      "finalBbox": [
+        54,
+        100,
+        202,
+        156
+      ],
+      "margins": {
+        "left": 54,
+        "top": 100,
+        "right": 54,
+        "bottom": 100
+      }
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "sourceBbox": [
+        96,
+        170,
+        327,
+        254
+      ],
+      "finalBbox": [
+        51,
+        101,
+        205,
+        155
+      ],
+      "margins": {
+        "left": 51,
+        "top": 101,
+        "right": 51,
+        "bottom": 101
+      }
+    }
+  ],
+  "edgeCleanup": {
+    "edgeResidueReplaced": 55,
+    "edgeAlphaSoftened": 9
+  }
+}

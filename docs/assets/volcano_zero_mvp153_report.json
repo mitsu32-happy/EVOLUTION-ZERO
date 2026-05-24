@@ -1,0 +1,2322 @@
+{
+  "generatedSources": {
+    "volcano_zero_effects_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a124520572c8191b7b7eca08d710fd8.png",
+    "volcano_zero_final_boss_sheet_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a1244dc99c08191b0f2b58db1c39c48.png",
+    "triceratops_zero_sheet_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a124490549c81919f4b21807fcd0b68.png",
+    "triceratops_zero_special_effects_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a124449cdc081918cf9edfa64178e51.png",
+    "special_zero_triceratops_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a124408e094819195796bef82b4e6fc.png",
+    "volcano_zero_second_boss_sheet_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a1243c7ea788191bf379b43edc13ca3.png",
+    "triceratops_zero_hero_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042f9c779ea4ea75016a1243962c848191845c25b5ce580b23.png"
+  },
+  "assets": {
+    "triceratops_zero_hero.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\heroes\\triceratops_zero_hero.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\triceratops_zero_hero_source.png",
+      "bbox": [
+        124,
+        69,
+        899,
+        698
+      ],
+      "alphaMean": 89.35,
+      "opaquePixels": 278641
+    },
+    "triceratops_zero_portrait.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\portraits\\triceratops_zero_portrait.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\triceratops_zero_hero_source.png",
+      "bbox": [
+        46,
+        85,
+        465,
+        426
+      ],
+      "alphaMean": 78.57,
+      "opaquePixels": 82308
+    },
+    "special_zero_triceratops.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\ui\\hud\\special_icons\\special_zero_triceratops.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\special_zero_triceratops_source.png",
+      "bbox": [
+        26,
+        23,
+        230,
+        232
+      ],
+      "alphaMean": 113.37,
+      "opaquePixels": 30309
+    },
+    "triceratops_zero_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\sheets\\triceratops_zero_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\triceratops_zero_sheet_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 22.63,
+      "alphaMeanMax": 64.13,
+      "frames": [
+        {
+          "bbox": [
+            22,
+            41,
+            233,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 64.13,
+          "opaquePixels": 16565,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            27,
+            40,
+            228,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 61.26,
+          "opaquePixels": 16449,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            18,
+            53,
+            238,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 61.83,
+          "opaquePixels": 15946,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            24,
+            52,
+            231,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.47,
+          "opaquePixels": 15608,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            16,
+            70,
+            240,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 55.47,
+          "opaquePixels": 14949,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            20,
+            87,
+            236,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 50.56,
+          "opaquePixels": 13043,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            89,
+            240,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 50.19,
+          "opaquePixels": 13513,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            16,
+            83,
+            240,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.48,
+          "opaquePixels": 13332,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            17,
+            85,
+            239,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.07,
+          "opaquePixels": 13955,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            40,
+            233,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 48.89,
+          "opaquePixels": 13285,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            18,
+            40,
+            238,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 53.49,
+          "opaquePixels": 14860,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            35,
+            40,
+            221,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 43.37,
+          "opaquePixels": 11992,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            16,
+            57,
+            240,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.61,
+          "opaquePixels": 14934,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            90,
+            233,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 44.43,
+          "opaquePixels": 11590,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            35,
+            120,
+            220,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 29.6,
+          "opaquePixels": 7772,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            40,
+            149,
+            216,
+            218
+          ],
+          "edgeIssue": false,
+          "alphaMean": 22.63,
+          "opaquePixels": 5875,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "special_zero_triceratops_core_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_triceratops_core_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\triceratops_zero_special_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 10.17,
+      "alphaMeanMax": 106.82,
+      "frames": [
+        {
+          "bbox": [
+            30,
+            55,
+            225,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 79.63,
+          "opaquePixels": 21095,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            26,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 88.35,
+          "opaquePixels": 23204,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            20,
+            43,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 82.01,
+          "opaquePixels": 21570,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            33,
+            66,
+            222,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.56,
+          "opaquePixels": 18620,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            21,
+            89,
+            235,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 45.9,
+          "opaquePixels": 12312,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            15,
+            84,
+            241,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 52.97,
+          "opaquePixels": 14216,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            72,
+            240,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.16,
+          "opaquePixels": 16058,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            21,
+            96,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 43.92,
+          "opaquePixels": 11641,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            22,
+            50,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.48,
+          "opaquePixels": 18752,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            15,
+            42,
+            241,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 92.38,
+          "opaquePixels": 24347,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            18,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 85.65,
+          "opaquePixels": 22638,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            15,
+            39,
+            240,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 106.82,
+          "opaquePixels": 28264,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            39,
+            41,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 17.93,
+          "opaquePixels": 4858,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            21,
+            49,
+            235,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 10.17,
+          "opaquePixels": 2809,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            30,
+            84,
+            225,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 17.36,
+          "opaquePixels": 4678,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 27.39,
+          "opaquePixels": 7305,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "special_zero_triceratops_charge_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_triceratops_charge_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\triceratops_zero_special_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 10.17,
+      "alphaMeanMax": 106.82,
+      "frames": [
+        {
+          "bbox": [
+            30,
+            55,
+            225,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 79.63,
+          "opaquePixels": 21095,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            26,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 88.35,
+          "opaquePixels": 23204,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            20,
+            43,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 82.01,
+          "opaquePixels": 21570,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            33,
+            66,
+            222,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.56,
+          "opaquePixels": 18620,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            21,
+            89,
+            235,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 45.9,
+          "opaquePixels": 12312,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            15,
+            84,
+            241,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 52.97,
+          "opaquePixels": 14216,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            72,
+            240,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.16,
+          "opaquePixels": 16058,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            21,
+            96,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 43.92,
+          "opaquePixels": 11641,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            22,
+            50,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.48,
+          "opaquePixels": 18752,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            15,
+            42,
+            241,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 92.38,
+          "opaquePixels": 24347,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            18,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 85.65,
+          "opaquePixels": 22638,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            15,
+            39,
+            240,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 106.82,
+          "opaquePixels": 28264,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            39,
+            41,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 17.93,
+          "opaquePixels": 4858,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            21,
+            49,
+            235,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 10.17,
+          "opaquePixels": 2809,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            30,
+            84,
+            225,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 17.36,
+          "opaquePixels": 4678,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 27.39,
+          "opaquePixels": 7305,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "special_zero_triceratops_impact_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_triceratops_impact_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\triceratops_zero_special_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 10.17,
+      "alphaMeanMax": 106.82,
+      "frames": [
+        {
+          "bbox": [
+            30,
+            55,
+            225,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 79.63,
+          "opaquePixels": 21095,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            26,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 88.35,
+          "opaquePixels": 23204,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            20,
+            43,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 82.01,
+          "opaquePixels": 21570,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            33,
+            66,
+            222,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.56,
+          "opaquePixels": 18620,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            21,
+            89,
+            235,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 45.9,
+          "opaquePixels": 12312,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            15,
+            84,
+            241,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 52.97,
+          "opaquePixels": 14216,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            72,
+            240,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.16,
+          "opaquePixels": 16058,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            21,
+            96,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 43.92,
+          "opaquePixels": 11641,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            22,
+            50,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.48,
+          "opaquePixels": 18752,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            15,
+            42,
+            241,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 92.38,
+          "opaquePixels": 24347,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            18,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 85.65,
+          "opaquePixels": 22638,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            15,
+            39,
+            240,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 106.82,
+          "opaquePixels": 28264,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            39,
+            41,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 17.93,
+          "opaquePixels": 4858,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            21,
+            49,
+            235,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 10.17,
+          "opaquePixels": 2809,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            30,
+            84,
+            225,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 17.36,
+          "opaquePixels": 4678,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 27.39,
+          "opaquePixels": 7305,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_second_boss_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_second_boss_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\volcano_zero_second_boss_sheet_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 24.27,
+      "alphaMeanMax": 49.2,
+      "frames": [
+        {
+          "bbox": [
+            16,
+            91,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 48.0,
+          "opaquePixels": 12912,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            16,
+            92,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 47.92,
+          "opaquePixels": 12834,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            90,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 47.93,
+          "opaquePixels": 12872,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            16,
+            91,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 47.86,
+          "opaquePixels": 12833,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            16,
+            100,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 44.3,
+          "opaquePixels": 11880,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            16,
+            113,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 40.81,
+          "opaquePixels": 10970,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            113,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 38.69,
+          "opaquePixels": 10441,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            16,
+            117,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 43.13,
+          "opaquePixels": 11574,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            16,
+            113,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 46.01,
+          "opaquePixels": 12325,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            16,
+            106,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 45.89,
+          "opaquePixels": 12287,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            16,
+            99,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 48.66,
+          "opaquePixels": 12985,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            16,
+            97,
+            240,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.2,
+          "opaquePixels": 13482,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            31,
+            104,
+            225,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 47.87,
+          "opaquePixels": 12380,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            21,
+            97,
+            235,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 41.82,
+          "opaquePixels": 10849,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            18,
+            103,
+            238,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 39.62,
+          "opaquePixels": 10255,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            20,
+            110,
+            235,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 24.27,
+          "opaquePixels": 6353,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_second_boss.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_second_boss.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_second_boss_sheet.png",
+      "bbox": [
+        46,
+        129,
+        465,
+        381
+      ]
+    },
+    "volcano_zero_second_boss_portrait.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_second_boss_portrait.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_second_boss_sheet.png",
+      "bbox": [
+        46,
+        129,
+        465,
+        381
+      ]
+    },
+    "volcano_zero_final_boss_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_final_boss_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\volcano_zero_final_boss_sheet_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 25.45,
+      "alphaMeanMax": 76.13,
+      "frames": [
+        {
+          "bbox": [
+            26,
+            63,
+            230,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 63.46,
+          "opaquePixels": 16495,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            65,
+            234,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 66.12,
+          "opaquePixels": 17164,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            21,
+            72,
+            235,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 66.49,
+          "opaquePixels": 17273,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            20,
+            69,
+            235,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 66.24,
+          "opaquePixels": 17194,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            12,
+            83,
+            244,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 61.04,
+          "opaquePixels": 16537,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            12,
+            87,
+            244,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 63.73,
+          "opaquePixels": 17309,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            12,
+            82,
+            244,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.5,
+          "opaquePixels": 16412,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            15,
+            67,
+            241,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 62.75,
+          "opaquePixels": 16289,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            17,
+            43,
+            238,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 76.13,
+          "opaquePixels": 19728,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            18,
+            72,
+            237,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 71.62,
+          "opaquePixels": 18776,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            12,
+            99,
+            244,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 59.5,
+          "opaquePixels": 16437,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            12,
+            104,
+            244,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 59.06,
+          "opaquePixels": 15926,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            17,
+            52,
+            239,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.87,
+          "opaquePixels": 18370,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            17,
+            80,
+            238,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 56.62,
+          "opaquePixels": 14733,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            14,
+            97,
+            242,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 46.06,
+          "opaquePixels": 11968,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            12,
+            115,
+            244,
+            226
+          ],
+          "edgeIssue": false,
+          "alphaMean": 25.45,
+          "opaquePixels": 7180,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_final_boss.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_final_boss.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_final_boss_sheet.png",
+      "bbox": [
+        46,
+        88,
+        465,
+        423
+      ]
+    },
+    "volcano_zero_final_boss_portrait.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_final_boss_portrait.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\volcano_zero_final_boss_sheet.png",
+      "bbox": [
+        46,
+        88,
+        465,
+        423
+      ]
+    },
+    "volcano_zero_second_warning_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_second_warning_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\volcano_zero_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 39.14,
+      "alphaMeanMax": 121.74,
+      "frames": [
+        {
+          "bbox": [
+            22,
+            82,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 41.27,
+          "opaquePixels": 10672,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            101,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 39.14,
+          "opaquePixels": 10179,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            80,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 59.29,
+          "opaquePixels": 15487,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            13,
+            30,
+            243,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.8,
+          "opaquePixels": 20334,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            29,
+            91,
+            226,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.5,
+          "opaquePixels": 12745,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            27,
+            10,
+            228,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 67.77,
+          "opaquePixels": 18607,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            38,
+            13,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.72,
+          "opaquePixels": 20266,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            23,
+            10,
+            233,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 102.05,
+          "opaquePixels": 27563,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            28,
+            89,
+            227,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.77,
+          "opaquePixels": 14081,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            18,
+            50,
+            237,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.84,
+          "opaquePixels": 20208,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            17,
+            43,
+            238,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 86.15,
+          "opaquePixels": 22623,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            10,
+            10,
+            245,
+            243
+          ],
+          "edgeIssue": false,
+          "alphaMean": 121.74,
+          "opaquePixels": 32889,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            26,
+            101,
+            229,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.84,
+          "opaquePixels": 14096,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            97,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.59,
+          "opaquePixels": 15594,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.11,
+          "opaquePixels": 18047,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            24,
+            90,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.4,
+          "opaquePixels": 12822,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_second_warning.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_second_warning.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_second_warning_sheet.png",
+      "bbox": [
+        23,
+        49,
+        232,
+        207
+      ]
+    },
+    "volcano_zero_second_attack_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_second_attack_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\volcano_zero_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 39.14,
+      "alphaMeanMax": 121.74,
+      "frames": [
+        {
+          "bbox": [
+            22,
+            82,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 41.27,
+          "opaquePixels": 10672,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            101,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 39.14,
+          "opaquePixels": 10179,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            80,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 59.29,
+          "opaquePixels": 15487,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            13,
+            30,
+            243,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.8,
+          "opaquePixels": 20334,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            29,
+            91,
+            226,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.5,
+          "opaquePixels": 12745,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            27,
+            10,
+            228,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 67.77,
+          "opaquePixels": 18607,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            38,
+            13,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.72,
+          "opaquePixels": 20266,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            23,
+            10,
+            233,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 102.05,
+          "opaquePixels": 27563,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            28,
+            89,
+            227,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.77,
+          "opaquePixels": 14081,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            18,
+            50,
+            237,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.84,
+          "opaquePixels": 20208,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            17,
+            43,
+            238,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 86.15,
+          "opaquePixels": 22623,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            10,
+            10,
+            245,
+            243
+          ],
+          "edgeIssue": false,
+          "alphaMean": 121.74,
+          "opaquePixels": 32889,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            26,
+            101,
+            229,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.84,
+          "opaquePixels": 14096,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            97,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.59,
+          "opaquePixels": 15594,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.11,
+          "opaquePixels": 18047,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            24,
+            90,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.4,
+          "opaquePixels": 12822,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_second_attack.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_second_attack.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_second_attack_sheet.png",
+      "bbox": [
+        23,
+        49,
+        232,
+        207
+      ]
+    },
+    "volcano_zero_final_warning_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_final_warning_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\volcano_zero_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 39.14,
+      "alphaMeanMax": 121.74,
+      "frames": [
+        {
+          "bbox": [
+            22,
+            82,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 41.27,
+          "opaquePixels": 10672,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            101,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 39.14,
+          "opaquePixels": 10179,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            80,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 59.29,
+          "opaquePixels": 15487,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            13,
+            30,
+            243,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.8,
+          "opaquePixels": 20334,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            29,
+            91,
+            226,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.5,
+          "opaquePixels": 12745,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            27,
+            10,
+            228,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 67.77,
+          "opaquePixels": 18607,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            38,
+            13,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.72,
+          "opaquePixels": 20266,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            23,
+            10,
+            233,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 102.05,
+          "opaquePixels": 27563,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            28,
+            89,
+            227,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.77,
+          "opaquePixels": 14081,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            18,
+            50,
+            237,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.84,
+          "opaquePixels": 20208,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            17,
+            43,
+            238,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 86.15,
+          "opaquePixels": 22623,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            10,
+            10,
+            245,
+            243
+          ],
+          "edgeIssue": false,
+          "alphaMean": 121.74,
+          "opaquePixels": 32889,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            26,
+            101,
+            229,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.84,
+          "opaquePixels": 14096,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            97,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.59,
+          "opaquePixels": 15594,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.11,
+          "opaquePixels": 18047,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            24,
+            90,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.4,
+          "opaquePixels": 12822,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_final_warning.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_final_warning.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_final_warning_sheet.png",
+      "bbox": [
+        23,
+        49,
+        232,
+        207
+      ]
+    },
+    "volcano_zero_final_attack_sheet.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_final_attack_sheet.png",
+      "backup": null,
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp153_volcano_zero\\volcano_zero_effects_source.png",
+      "frameEdgeIssues": 0,
+      "alphaMeanMin": 39.14,
+      "alphaMeanMax": 121.74,
+      "frames": [
+        {
+          "bbox": [
+            22,
+            82,
+            234,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 41.27,
+          "opaquePixels": 10672,
+          "row": 0,
+          "col": 0
+        },
+        {
+          "bbox": [
+            23,
+            101,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 39.14,
+          "opaquePixels": 10179,
+          "row": 0,
+          "col": 1
+        },
+        {
+          "bbox": [
+            19,
+            80,
+            236,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 59.29,
+          "opaquePixels": 15487,
+          "row": 0,
+          "col": 2
+        },
+        {
+          "bbox": [
+            13,
+            30,
+            243,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.8,
+          "opaquePixels": 20334,
+          "row": 0,
+          "col": 3
+        },
+        {
+          "bbox": [
+            29,
+            91,
+            226,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.5,
+          "opaquePixels": 12745,
+          "row": 1,
+          "col": 0
+        },
+        {
+          "bbox": [
+            27,
+            10,
+            228,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 67.77,
+          "opaquePixels": 18607,
+          "row": 1,
+          "col": 1
+        },
+        {
+          "bbox": [
+            38,
+            13,
+            217,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.72,
+          "opaquePixels": 20266,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "bbox": [
+            23,
+            10,
+            233,
+            245
+          ],
+          "edgeIssue": false,
+          "alphaMean": 102.05,
+          "opaquePixels": 27563,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "bbox": [
+            28,
+            89,
+            227,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.77,
+          "opaquePixels": 14081,
+          "row": 2,
+          "col": 0
+        },
+        {
+          "bbox": [
+            18,
+            50,
+            237,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 77.84,
+          "opaquePixels": 20208,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "bbox": [
+            17,
+            43,
+            238,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 86.15,
+          "opaquePixels": 22623,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "bbox": [
+            10,
+            10,
+            245,
+            243
+          ],
+          "edgeIssue": false,
+          "alphaMean": 121.74,
+          "opaquePixels": 32889,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "bbox": [
+            26,
+            101,
+            229,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 54.84,
+          "opaquePixels": 14096,
+          "row": 3,
+          "col": 0
+        },
+        {
+          "bbox": [
+            22,
+            97,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 60.59,
+          "opaquePixels": 15594,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "bbox": [
+            22,
+            86,
+            233,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 70.11,
+          "opaquePixels": 18047,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "bbox": [
+            24,
+            90,
+            232,
+            242
+          ],
+          "edgeIssue": false,
+          "alphaMean": 49.4,
+          "opaquePixels": 12822,
+          "row": 3,
+          "col": 3
+        }
+      ]
+    },
+    "volcano_zero_final_attack.png": {
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_final_attack.png",
+      "backup": null,
+      "sourceSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\volcano_zero_final_attack_sheet.png",
+      "bbox": [
+        23,
+        49,
+        232,
+        207
+      ]
+    }
+  },
+  "createdAt": "2026-05-24T09:28:32+0900",
+  "contactSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\volcano_zero_mvp153_contact.png"
+}

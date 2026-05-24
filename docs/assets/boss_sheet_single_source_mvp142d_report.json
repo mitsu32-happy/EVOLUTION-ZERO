@@ -1,0 +1,340 @@
+[
+  {
+    "target": "public/assets/enemies/bosses/swamp_boss_sheet.png",
+    "fallbackUpdated": "public/assets/enemies/bosses/swamp_boss.png",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcf74478c819196bf006e9859a2e1.png",
+    "raw": "docs/assets/generated_raw/mvp142d_boss_sheet_single_source/swamp_boss_sheet_single_source_raw.png",
+    "backup": "docs/assets/backup/mvp142d_boss_sheet_single_source/swamp_boss_sheet.png.bak",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          38,
+          71,
+          214,
+          190
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          39,
+          69,
+          217,
+          189
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          42,
+          71,
+          218,
+          190
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          41,
+          74,
+          215,
+          191
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          34,
+          74,
+          208,
+          191
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          38,
+          69,
+          214,
+          188
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          44,
+          71,
+          221,
+          191
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "bbox": [
+          41,
+          71,
+          217,
+          190
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          37,
+          71,
+          213,
+          190
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          40,
+          66,
+          221,
+          188
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          43,
+          61,
+          229,
+          187
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "bbox": [
+          40,
+          69,
+          219,
+          190
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "bbox": [
+          42,
+          78,
+          214,
+          194
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "bbox": [
+          42,
+          86,
+          209,
+          199
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "bbox": [
+          43,
+          94,
+          204,
+          203
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "bbox": [
+          47,
+          102,
+          201,
+          206
+        ]
+      }
+    ]
+  },
+  {
+    "target": "public/assets/enemies/bosses/ruins_boss_sheet.png",
+    "fallbackUpdated": "public/assets/enemies/bosses/ruins_boss.png",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcfd17dc48191885a6f4e15141472.png",
+    "raw": "docs/assets/generated_raw/mvp142d_boss_sheet_single_source/ruins_boss_sheet_single_source_raw.png",
+    "backup": "docs/assets/backup/mvp142d_boss_sheet_single_source/ruins_boss_sheet.png.bak",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          37,
+          64,
+          215,
+          190
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          38,
+          62,
+          218,
+          189
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          41,
+          64,
+          219,
+          190
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          40,
+          67,
+          216,
+          191
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          33,
+          67,
+          209,
+          191
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          37,
+          62,
+          215,
+          188
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          43,
+          64,
+          222,
+          191
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "bbox": [
+          40,
+          64,
+          218,
+          190
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          36,
+          64,
+          214,
+          190
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          39,
+          59,
+          222,
+          188
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          42,
+          54,
+          230,
+          187
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "bbox": [
+          39,
+          62,
+          220,
+          190
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "bbox": [
+          41,
+          71,
+          215,
+          194
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "bbox": [
+          41,
+          80,
+          210,
+          199
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "bbox": [
+          42,
+          88,
+          205,
+          203
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "bbox": [
+          46,
+          96,
+          202,
+          206
+        ]
+      }
+    ]
+  }
+]

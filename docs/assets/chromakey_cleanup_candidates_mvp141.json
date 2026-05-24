@@ -1,0 +1,3068 @@
+[
+  {
+    "path": "public/assets/ui/codex/codex_origin_card_v3.png",
+    "size": [
+      760,
+      260
+    ],
+    "bbox": [
+      0,
+      0,
+      759,
+      259
+    ],
+    "issues": [
+      "near-magenta pixels 375",
+      "cyan fringe pixels 4414",
+      "low-alpha noise 1751",
+      "visible pixels touch outer edge 924"
+    ],
+    "metrics": {
+      "nearMagenta": 375,
+      "cyanFringe": 4414,
+      "lowAlpha": 1751,
+      "edgeVisible": 924,
+      "visible": 188187
+    },
+    "score": 132.28
+  },
+  {
+    "path": "public/assets/ui/dino_select/branch_count_badge.png",
+    "size": [
+      144,
+      82
+    ],
+    "bbox": [
+      0,
+      0,
+      143,
+      81
+    ],
+    "issues": [
+      "near-magenta pixels 16",
+      "cyan fringe pixels 120",
+      "visible pixels touch outer edge 720"
+    ],
+    "metrics": {
+      "nearMagenta": 16,
+      "cyanFringe": 120,
+      "lowAlpha": 0,
+      "edgeVisible": 720,
+      "visible": 11485
+    },
+    "score": 125
+  },
+  {
+    "path": "public/assets/ui/dino_select/combat_type_badge.png",
+    "size": [
+      127,
+      113
+    ],
+    "bbox": [
+      1,
+      0,
+      121,
+      111
+    ],
+    "issues": [
+      "near-magenta pixels 72",
+      "cyan fringe pixels 349",
+      "visible pixels touch outer edge 235"
+    ],
+    "metrics": {
+      "nearMagenta": 72,
+      "cyanFringe": 349,
+      "lowAlpha": 0,
+      "edgeVisible": 235,
+      "visible": 12486
+    },
+    "score": 125
+  },
+  {
+    "path": "public/assets/ui/dino_select/dino_card_frame_selected.png",
+    "size": [
+      217,
+      328
+    ],
+    "bbox": [
+      0,
+      0,
+      216,
+      327
+    ],
+    "issues": [
+      "near-magenta pixels 315",
+      "cyan fringe pixels 2182",
+      "visible pixels touch outer edge 1625"
+    ],
+    "metrics": {
+      "nearMagenta": 315,
+      "cyanFringe": 2182,
+      "lowAlpha": 0,
+      "edgeVisible": 1625,
+      "visible": 70474
+    },
+    "score": 125
+  },
+  {
+    "path": "public/assets/ui/hud/adapt_icons/adapt_slot_speed.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      7,
+      5,
+      120,
+      122
+    ],
+    "issues": [
+      "near-magenta pixels 62",
+      "cyan fringe pixels 808",
+      "low-alpha noise 270"
+    ],
+    "metrics": {
+      "nearMagenta": 62,
+      "cyanFringe": 808,
+      "lowAlpha": 270,
+      "edgeVisible": 0,
+      "visible": 11081
+    },
+    "score": 120
+  },
+  {
+    "path": "public/assets/ui/hud/special_icons/special_speed.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      12,
+      12,
+      114,
+      115
+    ],
+    "issues": [
+      "near-magenta pixels 35",
+      "cyan fringe pixels 952",
+      "low-alpha noise 371"
+    ],
+    "metrics": {
+      "nearMagenta": 35,
+      "cyanFringe": 952,
+      "lowAlpha": 371,
+      "edgeVisible": 0,
+      "visible": 8863
+    },
+    "score": 120
+  },
+  {
+    "path": "public/assets/ui/hud/adapt_icons/adapt_slot_crystal.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      5,
+      5,
+      121,
+      122
+    ],
+    "issues": [
+      "near-magenta pixels 75",
+      "cyan fringe pixels 55",
+      "low-alpha noise 306"
+    ],
+    "metrics": {
+      "nearMagenta": 75,
+      "cyanFringe": 55,
+      "lowAlpha": 306,
+      "edgeVisible": 0,
+      "visible": 11038
+    },
+    "score": 118.57
+  },
+  {
+    "path": "public/assets/ui/options/mute_toggle_on.png",
+    "size": [
+      254,
+      125
+    ],
+    "bbox": [
+      0,
+      0,
+      253,
+      124
+    ],
+    "issues": [
+      "near-magenta pixels 34",
+      "cyan fringe pixels 5059",
+      "visible pixels touch outer edge 481"
+    ],
+    "metrics": {
+      "nearMagenta": 34,
+      "cyanFringe": 5059,
+      "lowAlpha": 0,
+      "edgeVisible": 481,
+      "visible": 28747
+    },
+    "score": 118.54
+  },
+  {
+    "path": "public/assets/ui/codex/codex_branch_card_unknown_v3.png",
+    "size": [
+      760,
+      260
+    ],
+    "bbox": [
+      0,
+      0,
+      759,
+      259
+    ],
+    "issues": [
+      "near-magenta pixels 262",
+      "cyan fringe pixels 357",
+      "low-alpha noise 1551",
+      "visible pixels touch outer edge 1092"
+    ],
+    "metrics": {
+      "nearMagenta": 262,
+      "cyanFringe": 357,
+      "lowAlpha": 1551,
+      "edgeVisible": 1092,
+      "visible": 189921
+    },
+    "score": 117.44
+  },
+  {
+    "path": "public/assets/enemies/bosses/ruins_boss_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      9,
+      15,
+      1014,
+      982
+    ],
+    "issues": [
+      "near-magenta pixels 6442",
+      "low-alpha noise 35973",
+      "cell-edge contact r1c3:95, r3c2:118, r3c3:156, r4c2:115, r4c3:121"
+    ],
+    "metrics": {
+      "nearMagenta": 6442,
+      "cyanFringe": 0,
+      "lowAlpha": 35973,
+      "edgeVisible": 0,
+      "visible": 326531
+    },
+    "score": 115
+  },
+  {
+    "path": "public/assets/ui/stage_select/card_frame_selected.png",
+    "size": [
+      82,
+      144
+    ],
+    "bbox": [
+      1,
+      15,
+      80,
+      127
+    ],
+    "issues": [
+      "near-magenta pixels 158",
+      "low-alpha noise 393",
+      "visible pixels touch outer edge 168"
+    ],
+    "metrics": {
+      "nearMagenta": 158,
+      "cyanFringe": 0,
+      "lowAlpha": 393,
+      "edgeVisible": 168,
+      "visible": 8911
+    },
+    "score": 115
+  },
+  {
+    "path": "public/assets/ui/hud/gauge_bar_frame_raw.png",
+    "size": [
+      2172,
+      724
+    ],
+    "bbox": [
+      0,
+      0,
+      2171,
+      723
+    ],
+    "issues": [
+      "near-magenta pixels 1295353",
+      "cyan fringe pixels 16788",
+      "visible pixels touch outer edge 11568"
+    ],
+    "metrics": {
+      "nearMagenta": 1295353,
+      "cyanFringe": 16788,
+      "lowAlpha": 0,
+      "edgeVisible": 11568,
+      "visible": 1572528
+    },
+    "score": 113.39
+  },
+  {
+    "path": "public/assets/ui/hud/hud_icon_sheet_generated_raw.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "bbox": [
+      0,
+      0,
+      1253,
+      1253
+    ],
+    "issues": [
+      "near-magenta pixels 844499",
+      "cyan fringe pixels 18963",
+      "visible pixels touch outer edge 10016"
+    ],
+    "metrics": {
+      "nearMagenta": 844499,
+      "cyanFringe": 18963,
+      "lowAlpha": 0,
+      "edgeVisible": 10016,
+      "visible": 1572516
+    },
+    "score": 110.92
+  },
+  {
+    "path": "public/assets/ui/hud/hud_top_panel_generated_raw.png",
+    "size": [
+      1862,
+      845
+    ],
+    "bbox": [
+      0,
+      0,
+      1861,
+      844
+    ],
+    "issues": [
+      "near-magenta pixels 1307343",
+      "cyan fringe pixels 4762",
+      "visible pixels touch outer edge 10812"
+    ],
+    "metrics": {
+      "nearMagenta": 1307343,
+      "cyanFringe": 4762,
+      "lowAlpha": 0,
+      "edgeVisible": 10812,
+      "visible": 1573390
+    },
+    "score": 107.45
+  },
+  {
+    "path": "public/assets/ui/adaptations/icon_adapt_speed.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      61,
+      17,
+      202,
+      161
+    ],
+    "issues": [
+      "near-magenta pixels 50",
+      "cyan fringe pixels 1164",
+      "low-alpha noise 524"
+    ],
+    "metrics": {
+      "nearMagenta": 50,
+      "cyanFringe": 1164,
+      "lowAlpha": 524,
+      "edgeVisible": 0,
+      "visible": 16973
+    },
+    "score": 98.15
+  },
+  {
+    "path": "public/assets/enemies/ruins/ruins_electro_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      0,
+      59,
+      1001,
+      1023
+    ],
+    "issues": [
+      "near-magenta pixels 4016",
+      "low-alpha noise 31751",
+      "visible pixels touch outer edge 1",
+      "cell-edge contact r4c2:77, r4c3:99"
+    ],
+    "metrics": {
+      "nearMagenta": 4016,
+      "cyanFringe": 0,
+      "lowAlpha": 31751,
+      "edgeVisible": 1,
+      "visible": 309216
+    },
+    "score": 97.01
+  },
+  {
+    "path": "public/assets/enemies/ruins/ruins_shooter_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      9,
+      60,
+      1016,
+      972
+    ],
+    "issues": [
+      "near-magenta pixels 3548",
+      "low-alpha noise 20996",
+      "cell-edge contact r4c3:44"
+    ],
+    "metrics": {
+      "nearMagenta": 3548,
+      "cyanFringe": 0,
+      "lowAlpha": 20996,
+      "edgeVisible": 0,
+      "visible": 174732
+    },
+    "score": 91
+  },
+  {
+    "path": "public/assets/ui/codex/archive_panel.png",
+    "size": [
+      350,
+      620
+    ],
+    "bbox": [
+      0,
+      0,
+      349,
+      619
+    ],
+    "issues": [
+      "cyan fringe pixels 5850",
+      "low-alpha noise 6194",
+      "visible pixels touch outer edge 3534"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 5850,
+      "lowAlpha": 6194,
+      "edgeVisible": 3534,
+      "visible": 216271
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/codex/branch_node_known.png",
+    "size": [
+      72,
+      72
+    ],
+    "bbox": [
+      0,
+      0,
+      71,
+      71
+    ],
+    "issues": [
+      "cyan fringe pixels 592",
+      "low-alpha noise 1789",
+      "visible pixels touch outer edge 134"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 592,
+      "lowAlpha": 1789,
+      "edgeVisible": 134,
+      "visible": 3983
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/codex/codex_background.png",
+    "size": [
+      390,
+      844
+    ],
+    "bbox": [
+      0,
+      0,
+      389,
+      843
+    ],
+    "issues": [
+      "cyan fringe pixels 7500",
+      "low-alpha noise 7506",
+      "visible pixels touch outer edge 4770"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 7500,
+      "lowAlpha": 7506,
+      "edgeVisible": 4770,
+      "visible": 328959
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/codex/lineage_card.png",
+    "size": [
+      330,
+      96
+    ],
+    "bbox": [
+      0,
+      0,
+      329,
+      95
+    ],
+    "issues": [
+      "cyan fringe pixels 2536",
+      "low-alpha noise 2876",
+      "visible pixels touch outer edge 1396"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 2536,
+      "lowAlpha": 2876,
+      "edgeVisible": 1396,
+      "visible": 31123
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/common/confirm_button_no.png",
+    "size": [
+      330,
+      100
+    ],
+    "bbox": [
+      0,
+      0,
+      329,
+      99
+    ],
+    "issues": [
+      "cyan fringe pixels 3173",
+      "low-alpha noise 5808",
+      "visible pixels touch outer edge 1310"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 3173,
+      "lowAlpha": 5808,
+      "edgeVisible": 1310,
+      "visible": 32073
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/common/confirm_dialog_panel.png",
+    "size": [
+      760,
+      430
+    ],
+    "bbox": [
+      0,
+      0,
+      759,
+      429
+    ],
+    "issues": [
+      "cyan fringe pixels 12665",
+      "low-alpha noise 15946",
+      "visible pixels touch outer edge 4252"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 12665,
+      "lowAlpha": 15946,
+      "edgeVisible": 4252,
+      "visible": 325431
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/dino_select/stat_panel.png",
+    "size": [
+      660,
+      194
+    ],
+    "bbox": [
+      0,
+      0,
+      659,
+      193
+    ],
+    "issues": [
+      "near-magenta pixels 342",
+      "visible pixels touch outer edge 2222"
+    ],
+    "metrics": {
+      "nearMagenta": 342,
+      "cyanFringe": 178,
+      "lowAlpha": 0,
+      "edgeVisible": 2222,
+      "visible": 126514
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/hud/pause_button_frame.png",
+    "size": [
+      58,
+      58
+    ],
+    "bbox": [
+      0,
+      0,
+      57,
+      57
+    ],
+    "issues": [
+      "cyan fringe pixels 304",
+      "low-alpha noise 470",
+      "visible pixels touch outer edge 310"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 304,
+      "lowAlpha": 470,
+      "edgeVisible": 310,
+      "visible": 3168
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/hud/skill_slot_empty.png",
+    "size": [
+      68,
+      68
+    ],
+    "bbox": [
+      1,
+      1,
+      66,
+      62
+    ],
+    "issues": [
+      "cyan fringe pixels 396",
+      "low-alpha noise 706",
+      "visible pixels touch outer edge 122"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 396,
+      "lowAlpha": 706,
+      "edgeVisible": 122,
+      "visible": 3920
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/hud/skill_slot_frame.png",
+    "size": [
+      68,
+      68
+    ],
+    "bbox": [
+      1,
+      1,
+      66,
+      62
+    ],
+    "issues": [
+      "cyan fringe pixels 546",
+      "low-alpha noise 706",
+      "visible pixels touch outer edge 122"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 546,
+      "lowAlpha": 706,
+      "edgeVisible": 122,
+      "visible": 3920
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/hud_mock/special_icon_hunting_trace.png",
+    "size": [
+      96,
+      96
+    ],
+    "bbox": [
+      0,
+      0,
+      95,
+      95
+    ],
+    "issues": [
+      "cyan fringe pixels 713",
+      "low-alpha noise 1174",
+      "visible pixels touch outer edge 270"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 713,
+      "lowAlpha": 1174,
+      "edgeVisible": 270,
+      "visible": 7957
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/options/options_background.png",
+    "size": [
+      390,
+      844
+    ],
+    "bbox": [
+      0,
+      0,
+      389,
+      843
+    ],
+    "issues": [
+      "cyan fringe pixels 7500",
+      "low-alpha noise 7506",
+      "visible pixels touch outer edge 4770"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 7500,
+      "lowAlpha": 7506,
+      "edgeVisible": 4770,
+      "visible": 328959
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/options/options_panel.png",
+    "size": [
+      350,
+      620
+    ],
+    "bbox": [
+      0,
+      0,
+      349,
+      619
+    ],
+    "issues": [
+      "cyan fringe pixels 5850",
+      "low-alpha noise 6194",
+      "visible pixels touch outer edge 3534"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 5850,
+      "lowAlpha": 6194,
+      "edgeVisible": 3534,
+      "visible": 216271
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/options/option_button_frame.png",
+    "size": [
+      310,
+      56
+    ],
+    "bbox": [
+      2,
+      2,
+      308,
+      54
+    ],
+    "issues": [
+      "cyan fringe pixels 1560",
+      "low-alpha noise 1932",
+      "visible pixels touch outer edge 308"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 1560,
+      "lowAlpha": 1932,
+      "edgeVisible": 308,
+      "visible": 16019
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/options/slider_frame.png",
+    "size": [
+      270,
+      36
+    ],
+    "bbox": [
+      2,
+      0,
+      269,
+      35
+    ],
+    "issues": [
+      "cyan fringe pixels 1760",
+      "low-alpha noise 2069",
+      "visible pixels touch outer edge 966"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 1760,
+      "lowAlpha": 2069,
+      "edgeVisible": 966,
+      "visible": 9309
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/options/toggle_off.png",
+    "size": [
+      86,
+      38
+    ],
+    "bbox": [
+      2,
+      0,
+      85,
+      37
+    ],
+    "issues": [
+      "cyan fringe pixels 639",
+      "low-alpha noise 1004",
+      "visible pixels touch outer edge 230"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 639,
+      "lowAlpha": 1004,
+      "edgeVisible": 230,
+      "visible": 2821
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/pause/pause_button_options.png",
+    "size": [
+      430,
+      66
+    ],
+    "bbox": [
+      2,
+      2,
+      428,
+      64
+    ],
+    "issues": [
+      "cyan fringe pixels 2098",
+      "low-alpha noise 2582",
+      "visible pixels touch outer edge 438"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 2098,
+      "lowAlpha": 2582,
+      "edgeVisible": 438,
+      "visible": 26649
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/pause/pause_button_title.png",
+    "size": [
+      430,
+      66
+    ],
+    "bbox": [
+      2,
+      2,
+      428,
+      64
+    ],
+    "issues": [
+      "cyan fringe pixels 2098",
+      "low-alpha noise 2582",
+      "visible pixels touch outer edge 438"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 2098,
+      "lowAlpha": 2582,
+      "edgeVisible": 438,
+      "visible": 26649
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/pause/pause_status_panel.png",
+    "size": [
+      500,
+      112
+    ],
+    "bbox": [
+      0,
+      0,
+      499,
+      111
+    ],
+    "issues": [
+      "cyan fringe pixels 3676",
+      "low-alpha noise 3992",
+      "visible pixels touch outer edge 2140"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 3676,
+      "lowAlpha": 3992,
+      "edgeVisible": 2140,
+      "visible": 55443
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/result/result_reward_chip.png",
+    "size": [
+      220,
+      58
+    ],
+    "bbox": [
+      0,
+      0,
+      186,
+      56
+    ],
+    "issues": [
+      "cyan fringe pixels 45",
+      "low-alpha noise 167",
+      "visible pixels touch outer edge 514"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 45,
+      "lowAlpha": 167,
+      "edgeVisible": 514,
+      "visible": 10271
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/choice_card_frame.png",
+    "size": [
+      540,
+      110
+    ],
+    "bbox": [
+      0,
+      0,
+      539,
+      109
+    ],
+    "issues": [
+      "cyan fringe pixels 3904",
+      "low-alpha noise 4220",
+      "visible pixels touch outer edge 2292"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 3904,
+      "lowAlpha": 4220,
+      "edgeVisible": 2292,
+      "visible": 58843
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/reroll_button.png",
+    "size": [
+      244,
+      62
+    ],
+    "bbox": [
+      2,
+      2,
+      242,
+      60
+    ],
+    "issues": [
+      "cyan fringe pixels 1332",
+      "low-alpha noise 1632",
+      "visible pixels touch outer edge 248"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 1332,
+      "lowAlpha": 1632,
+      "edgeVisible": 248,
+      "visible": 13967
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/reroll_button_disabled.png",
+    "size": [
+      184,
+      56
+    ],
+    "bbox": [
+      0,
+      0,
+      183,
+      55
+    ],
+    "issues": [
+      "cyan fringe pixels 41",
+      "low-alpha noise 131",
+      "visible pixels touch outer edge 547"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 41,
+      "lowAlpha": 131,
+      "edgeVisible": 547,
+      "visible": 9809
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/reroll_button_idle.png",
+    "size": [
+      184,
+      56
+    ],
+    "bbox": [
+      0,
+      0,
+      183,
+      55
+    ],
+    "issues": [
+      "cyan fringe pixels 88",
+      "low-alpha noise 66",
+      "visible pixels touch outer edge 604"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 88,
+      "lowAlpha": 66,
+      "edgeVisible": 604,
+      "visible": 9855
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/reroll_button_pressed.png",
+    "size": [
+      184,
+      56
+    ],
+    "bbox": [
+      0,
+      0,
+      183,
+      55
+    ],
+    "issues": [
+      "cyan fringe pixels 710",
+      "low-alpha noise 88",
+      "visible pixels touch outer edge 582"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 710,
+      "lowAlpha": 88,
+      "edgeVisible": 582,
+      "visible": 9836
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/selection_footer_panel.png",
+    "size": [
+      300,
+      84
+    ],
+    "bbox": [
+      0,
+      0,
+      299,
+      83
+    ],
+    "issues": [
+      "cyan fringe pixels 242",
+      "low-alpha noise 239",
+      "visible pixels touch outer edge 923"
+    ],
+    "metrics": {
+      "nearMagenta": 7,
+      "cyanFringe": 242,
+      "lowAlpha": 239,
+      "edgeVisible": 923,
+      "visible": 24212
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/selection_header_panel.png",
+    "size": [
+      320,
+      96
+    ],
+    "bbox": [
+      0,
+      0,
+      319,
+      95
+    ],
+    "issues": [
+      "cyan fringe pixels 835",
+      "low-alpha noise 584",
+      "visible pixels touch outer edge 345"
+    ],
+    "metrics": {
+      "nearMagenta": 4,
+      "cyanFringe": 835,
+      "lowAlpha": 584,
+      "edgeVisible": 345,
+      "visible": 25094
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/selection/selection_panel.png",
+    "size": [
+      600,
+      640
+    ],
+    "bbox": [
+      0,
+      0,
+      599,
+      639
+    ],
+    "issues": [
+      "cyan fringe pixels 7470",
+      "low-alpha noise 7814",
+      "visible pixels touch outer edge 4614"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 7470,
+      "lowAlpha": 7814,
+      "edgeVisible": 4614,
+      "visible": 383271
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/stage_select/badge_adaptation_mvp070.png",
+    "size": [
+      92,
+      26
+    ],
+    "bbox": [
+      0,
+      0,
+      91,
+      25
+    ],
+    "issues": [
+      "cyan fringe pixels 432",
+      "low-alpha noise 48",
+      "visible pixels touch outer edge 424"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 432,
+      "lowAlpha": 48,
+      "edgeVisible": 424,
+      "visible": 2360
+    },
+    "score": 90
+  },
+  {
+    "path": "public/assets/ui/pause/pause_panel.png",
+    "size": [
+      596,
+      690
+    ],
+    "bbox": [
+      0,
+      0,
+      595,
+      689
+    ],
+    "issues": [
+      "cyan fringe pixels 7730",
+      "low-alpha noise 8136",
+      "visible pixels touch outer edge 4768"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 7730,
+      "lowAlpha": 8136,
+      "edgeVisible": 4768,
+      "visible": 410401
+    },
+    "score": 89.04
+  },
+  {
+    "path": "public/assets/enemies/bosses/ruins_boss.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      7,
+      16,
+      255,
+      236
+    ],
+    "issues": [
+      "near-magenta pixels 412",
+      "low-alpha noise 2222",
+      "visible pixels touch outer edge 30"
+    ],
+    "metrics": {
+      "nearMagenta": 412,
+      "cyanFringe": 0,
+      "lowAlpha": 2222,
+      "edgeVisible": 30,
+      "visible": 22424
+    },
+    "score": 88.34
+  },
+  {
+    "path": "public/assets/ui/options/options_panel_v3.png",
+    "size": [
+      629,
+      244
+    ],
+    "bbox": [
+      0,
+      0,
+      628,
+      243
+    ],
+    "issues": [
+      "near-magenta pixels 100",
+      "cyan fringe pixels 593",
+      "visible pixels touch outer edge 1172"
+    ],
+    "metrics": {
+      "nearMagenta": 100,
+      "cyanFringe": 593,
+      "lowAlpha": 0,
+      "edgeVisible": 1172,
+      "visible": 148950
+    },
+    "score": 87.25
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      254,
+      2047,
+      2047
+    ],
+    "issues": [
+      "near-magenta pixels 8551",
+      "low-alpha noise 45283",
+      "visible pixels touch outer edge 8"
+    ],
+    "metrics": {
+      "nearMagenta": 8551,
+      "cyanFringe": 0,
+      "lowAlpha": 45283,
+      "edgeVisible": 8,
+      "visible": 97468
+    },
+    "score": 85.21
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      254,
+      2047,
+      2047
+    ],
+    "issues": [
+      "near-magenta pixels 8551",
+      "low-alpha noise 45283",
+      "visible pixels touch outer edge 8"
+    ],
+    "metrics": {
+      "nearMagenta": 8551,
+      "cyanFringe": 0,
+      "lowAlpha": 45283,
+      "edgeVisible": 8,
+      "visible": 97468
+    },
+    "score": 85.21
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_beam_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      251,
+      2029,
+      2047
+    ],
+    "issues": [
+      "near-magenta pixels 18325",
+      "low-alpha noise 34553",
+      "visible pixels touch outer edge 4"
+    ],
+    "metrics": {
+      "nearMagenta": 18325,
+      "cyanFringe": 0,
+      "lowAlpha": 34553,
+      "edgeVisible": 4,
+      "visible": 203909
+    },
+    "score": 85.05
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_beam_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      251,
+      2029,
+      2047
+    ],
+    "issues": [
+      "near-magenta pixels 18325",
+      "low-alpha noise 34553",
+      "visible pixels touch outer edge 4"
+    ],
+    "metrics": {
+      "nearMagenta": 18325,
+      "cyanFringe": 0,
+      "lowAlpha": 34553,
+      "edgeVisible": 4,
+      "visible": 203909
+    },
+    "score": 85.05
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_summon_field_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      145,
+      2015,
+      2047
+    ],
+    "issues": [
+      "near-magenta pixels 11372",
+      "low-alpha noise 140224",
+      "visible pixels touch outer edge 4"
+    ],
+    "metrics": {
+      "nearMagenta": 11372,
+      "cyanFringe": 0,
+      "lowAlpha": 140224,
+      "edgeVisible": 4,
+      "visible": 1046063
+    },
+    "score": 85.01
+  },
+  {
+    "path": "public/assets/enemies/bosses/ruins_boss_portrait.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      22,
+      15,
+      246,
+      235
+    ],
+    "issues": [
+      "near-magenta pixels 453",
+      "low-alpha noise 2182"
+    ],
+    "metrics": {
+      "nearMagenta": 453,
+      "cyanFringe": 0,
+      "lowAlpha": 2182,
+      "edgeVisible": 0,
+      "visible": 22720
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/bosses/swamp_boss.png",
+    "size": [
+      512,
+      384
+    ],
+    "bbox": [
+      34,
+      64,
+      477,
+      318
+    ],
+    "issues": [
+      "near-magenta pixels 1049",
+      "low-alpha noise 4671"
+    ],
+    "metrics": {
+      "nearMagenta": 1049,
+      "cyanFringe": 0,
+      "lowAlpha": 4671,
+      "edgeVisible": 0,
+      "visible": 51774
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/bosses/swamp_boss_portrait.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      42,
+      133,
+      469,
+      378
+    ],
+    "issues": [
+      "near-magenta pixels 954",
+      "low-alpha noise 4267"
+    ],
+    "metrics": {
+      "nearMagenta": 954,
+      "cyanFringe": 0,
+      "lowAlpha": 4267,
+      "edgeVisible": 0,
+      "visible": 48128
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/bosses/swamp_boss_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      16,
+      98,
+      1007,
+      995
+    ],
+    "issues": [
+      "near-magenta pixels 3355",
+      "low-alpha noise 15492"
+    ],
+    "metrics": {
+      "nearMagenta": 3355,
+      "cyanFringe": 0,
+      "lowAlpha": 15492,
+      "edgeVisible": 0,
+      "visible": 196098
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/ruins/ruins_summoner_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      20,
+      31,
+      977,
+      972
+    ],
+    "issues": [
+      "near-magenta pixels 5685",
+      "low-alpha noise 31476"
+    ],
+    "metrics": {
+      "nearMagenta": 5685,
+      "cyanFringe": 0,
+      "lowAlpha": 31476,
+      "edgeVisible": 0,
+      "visible": 195750
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/swamp/swamp_poison_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      26,
+      70,
+      996,
+      975
+    ],
+    "issues": [
+      "near-magenta pixels 3187",
+      "low-alpha noise 5285"
+    ],
+    "metrics": {
+      "nearMagenta": 3187,
+      "cyanFringe": 0,
+      "lowAlpha": 5285,
+      "edgeVisible": 0,
+      "visible": 145144
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/swamp/swamp_slow_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      19,
+      65,
+      1004,
+      980
+    ],
+    "issues": [
+      "near-magenta pixels 5424",
+      "low-alpha noise 6112"
+    ],
+    "metrics": {
+      "nearMagenta": 5424,
+      "cyanFringe": 0,
+      "lowAlpha": 6112,
+      "edgeVisible": 0,
+      "visible": 192804
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/enemies/swamp/swamp_toxic_bomber_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      16,
+      33,
+      1007,
+      995
+    ],
+    "issues": [
+      "near-magenta pixels 2709",
+      "low-alpha noise 7589"
+    ],
+    "metrics": {
+      "nearMagenta": 2709,
+      "cyanFringe": 0,
+      "lowAlpha": 7589,
+      "edgeVisible": 0,
+      "visible": 358932
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_pulse.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      30,
+      66,
+      488,
+      498
+    ],
+    "issues": [
+      "near-magenta pixels 1932",
+      "low-alpha noise 13187"
+    ],
+    "metrics": {
+      "nearMagenta": 1932,
+      "cyanFringe": 0,
+      "lowAlpha": 13187,
+      "edgeVisible": 0,
+      "visible": 106941
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_pulse_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      30,
+      86,
+      2003,
+      1976
+    ],
+    "issues": [
+      "near-magenta pixels 18886",
+      "low-alpha noise 137613"
+    ],
+    "metrics": {
+      "nearMagenta": 18886,
+      "cyanFringe": 0,
+      "lowAlpha": 137613,
+      "edgeVisible": 0,
+      "visible": 747754
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      73,
+      132,
+      419,
+      444
+    ],
+    "issues": [
+      "near-magenta pixels 934",
+      "low-alpha noise 6667"
+    ],
+    "metrics": {
+      "nearMagenta": 934,
+      "cyanFringe": 0,
+      "lowAlpha": 6667,
+      "edgeVisible": 0,
+      "visible": 47765
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_beam.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      15,
+      181,
+      481,
+      305
+    ],
+    "issues": [
+      "near-magenta pixels 1722",
+      "low-alpha noise 3376"
+    ],
+    "metrics": {
+      "nearMagenta": 1722,
+      "cyanFringe": 0,
+      "lowAlpha": 3376,
+      "edgeVisible": 0,
+      "visible": 25969
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_summon_field.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      34,
+      65,
+      472,
+      486
+    ],
+    "issues": [
+      "near-magenta pixels 756",
+      "low-alpha noise 10071"
+    ],
+    "metrics": {
+      "nearMagenta": 756,
+      "cyanFringe": 0,
+      "lowAlpha": 10071,
+      "edgeVisible": 0,
+      "visible": 92791
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_mist.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      49,
+      470,
+      461
+    ],
+    "issues": [
+      "near-magenta pixels 1701",
+      "low-alpha noise 2518"
+    ],
+    "metrics": {
+      "nearMagenta": 1701,
+      "cyanFringe": 0,
+      "lowAlpha": 2518,
+      "edgeVisible": 0,
+      "visible": 114945
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      23,
+      83,
+      2027,
+      2018
+    ],
+    "issues": [
+      "near-magenta pixels 29748",
+      "low-alpha noise 43586"
+    ],
+    "metrics": {
+      "nearMagenta": 29748,
+      "cyanFringe": 0,
+      "lowAlpha": 43586,
+      "edgeVisible": 0,
+      "visible": 1719352
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      54,
+      470,
+      457
+    ],
+    "issues": [
+      "near-magenta pixels 4476",
+      "low-alpha noise 4896"
+    ],
+    "metrics": {
+      "nearMagenta": 4476,
+      "cyanFringe": 0,
+      "lowAlpha": 4896,
+      "edgeVisible": 0,
+      "visible": 96409
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      23,
+      87,
+      2027,
+      2013
+    ],
+    "issues": [
+      "near-magenta pixels 77064",
+      "low-alpha noise 89448"
+    ],
+    "metrics": {
+      "nearMagenta": 77064,
+      "cyanFringe": 0,
+      "lowAlpha": 89448,
+      "edgeVisible": 0,
+      "visible": 1448720
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_summon_spore.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      52,
+      470,
+      459
+    ],
+    "issues": [
+      "near-magenta pixels 2504",
+      "low-alpha noise 5444"
+    ],
+    "metrics": {
+      "nearMagenta": 2504,
+      "cyanFringe": 0,
+      "lowAlpha": 5444,
+      "edgeVisible": 0,
+      "visible": 67806
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_summon_spore_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      23,
+      85,
+      2027,
+      2015
+    ],
+    "issues": [
+      "near-magenta pixels 45815",
+      "low-alpha noise 95420"
+    ],
+    "metrics": {
+      "nearMagenta": 45815,
+      "cyanFringe": 0,
+      "lowAlpha": 95420,
+      "edgeVisible": 0,
+      "visible": 1024681
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_toxic_pool.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      110,
+      470,
+      400
+    ],
+    "issues": [
+      "near-magenta pixels 480",
+      "low-alpha noise 1964"
+    ],
+    "metrics": {
+      "nearMagenta": 480,
+      "cyanFringe": 0,
+      "lowAlpha": 1964,
+      "edgeVisible": 0,
+      "visible": 84158
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_toxic_pool_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      23,
+      134,
+      2027,
+      1951
+    ],
+    "issues": [
+      "near-magenta pixels 7976",
+      "low-alpha noise 35601"
+    ],
+    "metrics": {
+      "nearMagenta": 7976,
+      "cyanFringe": 0,
+      "lowAlpha": 35601,
+      "edgeVisible": 0,
+      "visible": 1258893
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_electro_pulse.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      30,
+      66,
+      488,
+      498
+    ],
+    "issues": [
+      "near-magenta pixels 1932",
+      "low-alpha noise 13187"
+    ],
+    "metrics": {
+      "nearMagenta": 1932,
+      "cyanFringe": 0,
+      "lowAlpha": 13187,
+      "edgeVisible": 0,
+      "visible": 106941
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_electro_pulse_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      30,
+      86,
+      2003,
+      1976
+    ],
+    "issues": [
+      "near-magenta pixels 18886",
+      "low-alpha noise 137613"
+    ],
+    "metrics": {
+      "nearMagenta": 18886,
+      "cyanFringe": 0,
+      "lowAlpha": 137613,
+      "edgeVisible": 0,
+      "visible": 747754
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_beam.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      15,
+      181,
+      481,
+      305
+    ],
+    "issues": [
+      "near-magenta pixels 1722",
+      "low-alpha noise 3376"
+    ],
+    "metrics": {
+      "nearMagenta": 1722,
+      "cyanFringe": 0,
+      "lowAlpha": 3376,
+      "edgeVisible": 0,
+      "visible": 25969
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/stage_select/detail_panel.png",
+    "size": [
+      346,
+      230
+    ],
+    "bbox": [
+      2,
+      69,
+      343,
+      159
+    ],
+    "issues": [
+      "near-magenta pixels 205",
+      "low-alpha noise 878"
+    ],
+    "metrics": {
+      "nearMagenta": 205,
+      "cyanFringe": 0,
+      "lowAlpha": 878,
+      "edgeVisible": 0,
+      "visible": 30626
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/hud/adapt_icons/adapt_slot_attack.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      5,
+      8,
+      122,
+      119
+    ],
+    "issues": [
+      "near-magenta pixels 64",
+      "low-alpha noise 436"
+    ],
+    "metrics": {
+      "nearMagenta": 64,
+      "cyanFringe": 0,
+      "lowAlpha": 436,
+      "edgeVisible": 0,
+      "visible": 10282
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/hud/adapt_icons/adapt_slot_defense.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      5,
+      5,
+      121,
+      122
+    ],
+    "issues": [
+      "near-magenta pixels 43",
+      "low-alpha noise 322"
+    ],
+    "metrics": {
+      "nearMagenta": 43,
+      "cyanFringe": 0,
+      "lowAlpha": 322,
+      "edgeVisible": 0,
+      "visible": 11027
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/hud/adapt_icons/adapt_slot_hunting.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      5,
+      5,
+      121,
+      122
+    ],
+    "issues": [
+      "near-magenta pixels 49",
+      "low-alpha noise 299"
+    ],
+    "metrics": {
+      "nearMagenta": 49,
+      "cyanFringe": 0,
+      "lowAlpha": 299,
+      "edgeVisible": 0,
+      "visible": 10997
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/hud/adapt_icons/adapt_slot_toxic.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      6,
+      5,
+      120,
+      122
+    ],
+    "issues": [
+      "near-magenta pixels 64",
+      "low-alpha noise 307"
+    ],
+    "metrics": {
+      "nearMagenta": 64,
+      "cyanFringe": 0,
+      "lowAlpha": 307,
+      "edgeVisible": 0,
+      "visible": 10881
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/hud/special_icons/special_attack.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      12,
+      12,
+      115,
+      114
+    ],
+    "issues": [
+      "near-magenta pixels 44",
+      "low-alpha noise 428"
+    ],
+    "metrics": {
+      "nearMagenta": 44,
+      "cyanFringe": 0,
+      "lowAlpha": 428,
+      "edgeVisible": 0,
+      "visible": 8514
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/hud/special_icons/special_hunting.png",
+    "size": [
+      128,
+      128
+    ],
+    "bbox": [
+      12,
+      12,
+      115,
+      115
+    ],
+    "issues": [
+      "near-magenta pixels 27",
+      "low-alpha noise 316"
+    ],
+    "metrics": {
+      "nearMagenta": 27,
+      "cyanFringe": 0,
+      "lowAlpha": 316,
+      "edgeVisible": 0,
+      "visible": 8729
+    },
+    "score": 85
+  },
+  {
+    "path": "public/assets/ui/options/option_section_panel_v3.png",
+    "size": [
+      286,
+      116
+    ],
+    "bbox": [
+      0,
+      0,
+      285,
+      115
+    ],
+    "issues": [
+      "near-magenta pixels 10",
+      "cyan fringe pixels 227",
+      "visible pixels touch outer edge 1008"
+    ],
+    "metrics": {
+      "nearMagenta": 10,
+      "cyanFringe": 227,
+      "lowAlpha": 0,
+      "edgeVisible": 1008,
+      "visible": 31912
+    },
+    "score": 80.07
+  },
+  {
+    "path": "public/assets/ui/skills/icon_afterimage_claw.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      16,
+      18,
+      239,
+      237
+    ],
+    "issues": [
+      "near-magenta pixels 26",
+      "cyan fringe pixels 4241",
+      "low-alpha noise 1540"
+    ],
+    "metrics": {
+      "nearMagenta": 26,
+      "cyanFringe": 4241,
+      "lowAlpha": 1540,
+      "edgeVisible": 0,
+      "visible": 31440
+    },
+    "score": 79.84
+  },
+  {
+    "path": "public/assets/ui/dino_select/screen_backdrop.png",
+    "size": [
+      932,
+      345
+    ],
+    "bbox": [
+      0,
+      0,
+      931,
+      344
+    ],
+    "issues": [
+      "near-magenta pixels 319",
+      "visible pixels touch outer edge 5078"
+    ],
+    "metrics": {
+      "nearMagenta": 319,
+      "cyanFringe": 125,
+      "lowAlpha": 0,
+      "edgeVisible": 5078,
+      "visible": 321526
+    },
+    "score": 79.61
+  },
+  {
+    "path": "public/assets/effects/adaptation_skills/accel_blades.png",
+    "size": [
+      360,
+      260
+    ],
+    "bbox": [
+      34,
+      8,
+      324,
+      251
+    ],
+    "issues": [
+      "near-magenta pixels 36",
+      "cyan fringe pixels 3079",
+      "low-alpha noise 5965"
+    ],
+    "metrics": {
+      "nearMagenta": 36,
+      "cyanFringe": 3079,
+      "lowAlpha": 5965,
+      "edgeVisible": 0,
+      "visible": 18616
+    },
+    "score": 79.23
+  },
+  {
+    "path": "public/assets/ui/dino_select/locked_dino_frame.png",
+    "size": [
+      217,
+      364
+    ],
+    "bbox": [
+      2,
+      25,
+      216,
+      363
+    ],
+    "issues": [
+      "near-magenta pixels 125",
+      "visible pixels touch outer edge 529"
+    ],
+    "metrics": {
+      "nearMagenta": 125,
+      "cyanFringe": 0,
+      "lowAlpha": 0,
+      "edgeVisible": 529,
+      "visible": 70734
+    },
+    "score": 78.7
+  },
+  {
+    "path": "public/assets/ui/hud/boss_bar_frame_raw.png",
+    "size": [
+      2172,
+      724
+    ],
+    "bbox": [
+      0,
+      0,
+      2171,
+      723
+    ],
+    "issues": [
+      "near-magenta pixels 1243654",
+      "visible pixels touch outer edge 11568"
+    ],
+    "metrics": {
+      "nearMagenta": 1243654,
+      "cyanFringe": 169,
+      "lowAlpha": 0,
+      "edgeVisible": 11568,
+      "visible": 1572528
+    },
+    "score": 78.39
+  },
+  {
+    "path": "public/assets/ui/selection/adaptation_card_none_panel_selected.png",
+    "size": [
+      720,
+      240
+    ],
+    "bbox": [
+      0,
+      0,
+      719,
+      239
+    ],
+    "issues": [
+      "cyan fringe pixels 14242",
+      "low-alpha noise 1314",
+      "visible pixels touch outer edge 1058"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 14242,
+      "lowAlpha": 1314,
+      "edgeVisible": 1058,
+      "visible": 165957
+    },
+    "score": 75.94
+  },
+  {
+    "path": "public/assets/ui/selection/adaptation_card_speed_panel.png",
+    "size": [
+      720,
+      240
+    ],
+    "bbox": [
+      0,
+      0,
+      719,
+      239
+    ],
+    "issues": [
+      "cyan fringe pixels 4712",
+      "low-alpha noise 1314",
+      "visible pixels touch outer edge 1058"
+    ],
+    "metrics": {
+      "nearMagenta": 5,
+      "cyanFringe": 4712,
+      "lowAlpha": 1314,
+      "edgeVisible": 1058,
+      "visible": 165957
+    },
+    "score": 75.94
+  },
+  {
+    "path": "public/assets/ui/adaptations/icon_adapt_attack.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      18,
+      21,
+      238,
+      234
+    ],
+    "issues": [
+      "near-magenta pixels 66",
+      "low-alpha noise 875"
+    ],
+    "metrics": {
+      "nearMagenta": 66,
+      "cyanFringe": 0,
+      "lowAlpha": 875,
+      "edgeVisible": 0,
+      "visible": 36913
+    },
+    "score": 75.35
+  },
+  {
+    "path": "public/assets/ui/options/mute_toggle_off.png",
+    "size": [
+      254,
+      124
+    ],
+    "bbox": [
+      0,
+      0,
+      253,
+      123
+    ],
+    "issues": [
+      "near-magenta pixels 28",
+      "visible pixels touch outer edge 670"
+    ],
+    "metrics": {
+      "nearMagenta": 28,
+      "cyanFringe": 0,
+      "lowAlpha": 0,
+      "edgeVisible": 670,
+      "visible": 28716
+    },
+    "score": 74.45
+  },
+  {
+    "path": "public/assets/ui/selection/dna_analysis_glow.png",
+    "size": [
+      210,
+      210
+    ],
+    "bbox": [
+      0,
+      0,
+      209,
+      209
+    ],
+    "issues": [
+      "cyan fringe pixels 2201",
+      "low-alpha noise 4617",
+      "visible pixels touch outer edge 196"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 2201,
+      "lowAlpha": 4617,
+      "edgeVisible": 196,
+      "visible": 34681
+    },
+    "score": 74.13
+  },
+  {
+    "path": "public/assets/ui/options/option_row_panel_wide_v3.png",
+    "size": [
+      608,
+      178
+    ],
+    "bbox": [
+      0,
+      0,
+      607,
+      177
+    ],
+    "issues": [
+      "near-magenta pixels 45",
+      "cyan fringe pixels 1196",
+      "visible pixels touch outer edge 715"
+    ],
+    "metrics": {
+      "nearMagenta": 45,
+      "cyanFringe": 1196,
+      "lowAlpha": 0,
+      "edgeVisible": 715,
+      "visible": 102415
+    },
+    "score": 73.24
+  },
+  {
+    "path": "public/assets/ui/skills/icon_accel_blades.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      16,
+      18,
+      239,
+      236
+    ],
+    "issues": [
+      "near-magenta pixels 17",
+      "cyan fringe pixels 3473",
+      "low-alpha noise 1059"
+    ],
+    "metrics": {
+      "nearMagenta": 17,
+      "cyanFringe": 3473,
+      "lowAlpha": 1059,
+      "edgeVisible": 0,
+      "visible": 35832
+    },
+    "score": 72.97
+  },
+  {
+    "path": "public/assets/ui/skills/icon_gale_blade.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      15,
+      12,
+      247,
+      243
+    ],
+    "issues": [
+      "near-magenta pixels 17",
+      "cyan fringe pixels 2806",
+      "low-alpha noise 834"
+    ],
+    "metrics": {
+      "nearMagenta": 17,
+      "cyanFringe": 2806,
+      "lowAlpha": 834,
+      "edgeVisible": 0,
+      "visible": 46475
+    },
+    "score": 72.97
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      42,
+      214,
+      467,
+      272
+    ],
+    "issues": [
+      "near-magenta pixels 247",
+      "low-alpha noise 2354"
+    ],
+    "metrics": {
+      "nearMagenta": 247,
+      "cyanFringe": 0,
+      "lowAlpha": 2354,
+      "edgeVisible": 0,
+      "visible": 3784
+    },
+    "score": 72.11
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      42,
+      214,
+      467,
+      272
+    ],
+    "issues": [
+      "near-magenta pixels 247",
+      "low-alpha noise 2354"
+    ],
+    "metrics": {
+      "nearMagenta": 247,
+      "cyanFringe": 0,
+      "lowAlpha": 2354,
+      "edgeVisible": 0,
+      "visible": 3784
+    },
+    "score": 72.11
+  },
+  {
+    "path": "public/assets/ui/dino_select/dino_detail_panel.png",
+    "size": [
+      660,
+      496
+    ],
+    "bbox": [
+      0,
+      0,
+      659,
+      495
+    ],
+    "issues": [
+      "near-magenta pixels 429",
+      "visible pixels touch outer edge 990"
+    ],
+    "metrics": {
+      "nearMagenta": 429,
+      "cyanFringe": 275,
+      "lowAlpha": 0,
+      "edgeVisible": 990,
+      "visible": 319908
+    },
+    "score": 67.74
+  },
+  {
+    "path": "public/assets/ui/selection/selection_background_panel.png",
+    "size": [
+      390,
+      620
+    ],
+    "bbox": [
+      0,
+      0,
+      389,
+      619
+    ],
+    "issues": [
+      "cyan fringe pixels 2272",
+      "low-alpha noise 1171",
+      "visible pixels touch outer edge 716"
+    ],
+    "metrics": {
+      "nearMagenta": 1,
+      "cyanFringe": 2272,
+      "lowAlpha": 1171,
+      "edgeVisible": 716,
+      "visible": 231186
+    },
+    "score": 66.96
+  },
+  {
+    "path": "public/assets/ui/codex/adaptation_tag_chip_v2.png",
+    "size": [
+      153,
+      47
+    ],
+    "bbox": [
+      0,
+      1,
+      152,
+      46
+    ],
+    "issues": [
+      "cyan fringe pixels 171",
+      "visible pixels touch outer edge 506"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 171,
+      "lowAlpha": 5,
+      "edgeVisible": 506,
+      "visible": 6835
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/common/confirm_cost_badge_v2.png",
+    "size": [
+      295,
+      180
+    ],
+    "bbox": [
+      0,
+      0,
+      294,
+      179
+    ],
+    "issues": [
+      "cyan fringe pixels 1211",
+      "visible pixels touch outer edge 851"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 1211,
+      "lowAlpha": 0,
+      "edgeVisible": 851,
+      "visible": 50480
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/evolution/new_evolution_chip.png",
+    "size": [
+      412,
+      135
+    ],
+    "bbox": [
+      0,
+      0,
+      398,
+      134
+    ],
+    "issues": [
+      "cyan fringe pixels 637",
+      "visible pixels touch outer edge 1106"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 637,
+      "lowAlpha": 8,
+      "edgeVisible": 1106,
+      "visible": 52130
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/hud_mock/hud_top_panel_v2.png",
+    "size": [
+      330,
+      72
+    ],
+    "bbox": [
+      0,
+      0,
+      329,
+      71
+    ],
+    "issues": [
+      "cyan fringe pixels 821",
+      "visible pixels touch outer edge 1592"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 821,
+      "lowAlpha": 27,
+      "edgeVisible": 1592,
+      "visible": 23760
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/hud_mock/pause_button_frame_v2.png",
+    "size": [
+      40,
+      40
+    ],
+    "bbox": [
+      0,
+      0,
+      39,
+      39
+    ],
+    "issues": [
+      "cyan fringe pixels 177",
+      "visible pixels touch outer edge 304"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 177,
+      "lowAlpha": 27,
+      "edgeVisible": 304,
+      "visible": 1600
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/hud_mock/skill_slot_frame.png",
+    "size": [
+      58,
+      46
+    ],
+    "bbox": [
+      0,
+      0,
+      57,
+      45
+    ],
+    "issues": [
+      "cyan fringe pixels 225",
+      "visible pixels touch outer edge 400"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 225,
+      "lowAlpha": 27,
+      "edgeVisible": 400,
+      "visible": 2668
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/options/option_chip_cyan_v3.png",
+    "size": [
+      226,
+      154
+    ],
+    "bbox": [
+      0,
+      0,
+      225,
+      153
+    ],
+    "issues": [
+      "cyan fringe pixels 1076",
+      "visible pixels touch outer edge 542"
+    ],
+    "metrics": {
+      "nearMagenta": 3,
+      "cyanFringe": 1076,
+      "lowAlpha": 0,
+      "edgeVisible": 542,
+      "visible": 32782
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/options/option_section_panel_v2.png",
+    "size": [
+      522,
+      172
+    ],
+    "bbox": [
+      0,
+      0,
+      521,
+      171
+    ],
+    "issues": [
+      "cyan fringe pixels 544",
+      "visible pixels touch outer edge 2329"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 544,
+      "lowAlpha": 1,
+      "edgeVisible": 2329,
+      "visible": 88351
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/options/slider_frame_v3.png",
+    "size": [
+      361,
+      86
+    ],
+    "bbox": [
+      0,
+      0,
+      360,
+      85
+    ],
+    "issues": [
+      "cyan fringe pixels 289",
+      "visible pixels touch outer edge 921"
+    ],
+    "metrics": {
+      "nearMagenta": 6,
+      "cyanFringe": 289,
+      "lowAlpha": 0,
+      "edgeVisible": 921,
+      "visible": 29473
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/options/slider_knob_v2.png",
+    "size": [
+      93,
+      93
+    ],
+    "bbox": [
+      0,
+      0,
+      92,
+      92
+    ],
+    "issues": [
+      "cyan fringe pixels 170",
+      "visible pixels touch outer edge 151"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 170,
+      "lowAlpha": 4,
+      "edgeVisible": 151,
+      "visible": 6766
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/options/slider_knob_v3.png",
+    "size": [
+      165,
+      160
+    ],
+    "bbox": [
+      0,
+      0,
+      164,
+      159
+    ],
+    "issues": [
+      "cyan fringe pixels 378",
+      "visible pixels touch outer edge 786"
+    ],
+    "metrics": {
+      "nearMagenta": 6,
+      "cyanFringe": 378,
+      "lowAlpha": 0,
+      "edgeVisible": 786,
+      "visible": 25114
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/pause/pause_adaptation_slot.png",
+    "size": [
+      182,
+      170
+    ],
+    "bbox": [
+      0,
+      0,
+      181,
+      169
+    ],
+    "issues": [
+      "cyan fringe pixels 233",
+      "visible pixels touch outer edge 882"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 233,
+      "lowAlpha": 0,
+      "edgeVisible": 882,
+      "visible": 29612
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/pause/pause_adaptation_slot_empty.png",
+    "size": [
+      184,
+      170
+    ],
+    "bbox": [
+      2,
+      0,
+      183,
+      168
+    ],
+    "issues": [
+      "cyan fringe pixels 236",
+      "visible pixels touch outer edge 660"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 236,
+      "lowAlpha": 0,
+      "edgeVisible": 660,
+      "visible": 29594
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/pause/pause_button_options_v2.png",
+    "size": [
+      419,
+      166
+    ],
+    "bbox": [
+      0,
+      0,
+      418,
+      165
+    ],
+    "issues": [
+      "cyan fringe pixels 2379",
+      "visible pixels touch outer edge 941"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 2379,
+      "lowAlpha": 9,
+      "edgeVisible": 941,
+      "visible": 66167
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/pause/pause_icon_title.png",
+    "size": [
+      138,
+      162
+    ],
+    "bbox": [
+      0,
+      0,
+      135,
+      159
+    ],
+    "issues": [
+      "cyan fringe pixels 840",
+      "visible pixels touch outer edge 217"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 840,
+      "lowAlpha": 0,
+      "edgeVisible": 217,
+      "visible": 16878
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/pause/pause_status_panel_v2.png",
+    "size": [
+      418,
+      240
+    ],
+    "bbox": [
+      0,
+      0,
+      417,
+      239
+    ],
+    "issues": [
+      "cyan fringe pixels 898",
+      "visible pixels touch outer edge 1177"
+    ],
+    "metrics": {
+      "nearMagenta": 0,
+      "cyanFringe": 898,
+      "lowAlpha": 77,
+      "edgeVisible": 1177,
+      "visible": 96597
+    },
+    "score": 65
+  },
+  {
+    "path": "public/assets/ui/selection/badge_new.png",
+    "size": [
+      88,
+      32
+    ],
+    "bbox": [
+      0,
+      0,
+      87,
+      31
+    ],
+    "issues": [
+      "cyan fringe pixels 242",
+      "visible pixels touch outer edge 372"
+    ],
+    "metrics": {
+      "nearMagenta": 1,
+      "cyanFringe": 242,
+      "lowAlpha": 38,
+      "edgeVisible": 372,
+      "visible": 2708
+    },
+    "score": 65
+  }
+]

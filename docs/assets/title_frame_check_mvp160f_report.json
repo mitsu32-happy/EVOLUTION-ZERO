@@ -1,0 +1,186 @@
+{
+  "regenerated": {
+    "title_frame_zero_jungle": {
+      "source": "docs\\assets\\generated_raw\\mvp160f_title_frame_check\\title_frame_zero_jungle_source.png",
+      "output": "public\\assets\\ui\\titles\\title_frame_zero_jungle.png",
+      "source_size": [
+        2172,
+        724
+      ],
+      "source_visible_bbox": [
+        17,
+        143,
+        2152,
+        632
+      ],
+      "output_size": [
+        232,
+        38
+      ],
+      "output_alpha_bbox": [
+        0,
+        0,
+        232,
+        38
+      ],
+      "sha256_16": "f632a4f2bec75d19"
+    },
+    "title_frame_zero_swamp": {
+      "source": "docs\\assets\\generated_raw\\mvp160f_title_frame_check\\title_frame_zero_swamp_source.png",
+      "output": "public\\assets\\ui\\titles\\title_frame_zero_swamp.png",
+      "source_size": [
+        2172,
+        724
+      ],
+      "source_visible_bbox": [
+        35,
+        110,
+        2138,
+        632
+      ],
+      "output_size": [
+        232,
+        38
+      ],
+      "output_alpha_bbox": [
+        0,
+        0,
+        232,
+        38
+      ],
+      "sha256_16": "69f9d4dcf9860863"
+    }
+  },
+  "inventory": [
+    {
+      "name": "title_frame_expert.png",
+      "sha256_16": "9b676afc0eb8316e",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        232,
+        37
+      ]
+    },
+    {
+      "name": "title_frame_hard.png",
+      "sha256_16": "8be5df3ef870edcc",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        232,
+        37
+      ]
+    },
+    {
+      "name": "title_frame_normal.png",
+      "sha256_16": "c9e1369b4033b5b8",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        232,
+        37
+      ]
+    },
+    {
+      "name": "title_frame_zero_deluxe.png",
+      "sha256_16": "b0b2e93506d02814",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        232,
+        38
+      ]
+    },
+    {
+      "name": "title_frame_zero_jungle.png",
+      "sha256_16": "f632a4f2bec75d19",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        232,
+        38
+      ]
+    },
+    {
+      "name": "title_frame_zero_swamp.png",
+      "sha256_16": "69f9d4dcf9860863",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        232,
+        38
+      ]
+    },
+    {
+      "name": "title_frame_zero_volcano.png",
+      "sha256_16": "e5a3596c3c259b22",
+      "size": [
+        232,
+        38
+      ],
+      "alpha_bbox": [
+        9,
+        0,
+        223,
+        38
+      ]
+    }
+  ],
+  "zero_pair_rms": [
+    {
+      "a": "title_frame_zero_deluxe.png",
+      "b": "title_frame_zero_jungle.png",
+      "rms": 119.91
+    },
+    {
+      "a": "title_frame_zero_deluxe.png",
+      "b": "title_frame_zero_swamp.png",
+      "rms": 114.74
+    },
+    {
+      "a": "title_frame_zero_deluxe.png",
+      "b": "title_frame_zero_volcano.png",
+      "rms": 206.42
+    },
+    {
+      "a": "title_frame_zero_jungle.png",
+      "b": "title_frame_zero_swamp.png",
+      "rms": 102.29
+    },
+    {
+      "a": "title_frame_zero_jungle.png",
+      "b": "title_frame_zero_volcano.png",
+      "rms": 193.34
+    },
+    {
+      "a": "title_frame_zero_swamp.png",
+      "b": "title_frame_zero_volcano.png",
+      "rms": 194.52
+    }
+  ]
+}

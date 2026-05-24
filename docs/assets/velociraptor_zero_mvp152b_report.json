@@ -1,0 +1,761 @@
+{
+  "assets": {
+    "sprite_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_05dd0a5f95c2fb6b016a10761af21c8191b86684656cd0a4af.png",
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp152b_velociraptor_zero_assets\\sprite_sheet_generated_source.png",
+      "backup": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\backup\\mvp152b_velociraptor_zero_assets\\velociraptor_zero_sheet.png",
+      "dest": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\sheets\\velociraptor_zero_sheet.png",
+      "key": [
+        248,
+        5,
+        248
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            31,
+            39,
+            224,
+            216
+          ]
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            35,
+            38,
+            221,
+            218
+          ]
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            24,
+            40,
+            232,
+            216
+          ]
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            28,
+            41,
+            228,
+            215
+          ]
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            10,
+            23,
+            246,
+            233
+          ]
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            10,
+            26,
+            246,
+            230
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            10,
+            23,
+            246,
+            232
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            10,
+            16,
+            246,
+            240
+          ]
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            19,
+            53,
+            236,
+            202
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            10,
+            54,
+            246,
+            202
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            10,
+            70,
+            246,
+            186
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            21,
+            47,
+            234,
+            208
+          ]
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            27,
+            55,
+            229,
+            201
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            70,
+            243,
+            185
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            16,
+            69,
+            239,
+            187
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            78,
+            244,
+            178
+          ]
+        }
+      ],
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 29.185028076171875,
+      "alphaMeanMax": 59.46270751953125,
+      "opaquePixelMin": 8355,
+      "opaquePixelMax": 15929
+    },
+    "icon": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_05dd0a5f95c2fb6b016a10767417808191a9562eca81a70621.png",
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp152b_velociraptor_zero_assets\\icon_generated_source.png",
+      "backup": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\backup\\mvp152b_velociraptor_zero_assets\\special_zero_velociraptor.png",
+      "dest": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\ui\\hud\\special_icons\\special_zero_velociraptor.png",
+      "key": [
+        5,
+        248,
+        4
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        16,
+        16,
+        239,
+        240
+      ],
+      "opaquePixels": 31906
+    },
+    "core_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_05dd0a5f95c2fb6b016a1076b94e5881919c665d9844ccf441.png",
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp152b_velociraptor_zero_assets\\core_sheet_generated_source.png",
+      "backup": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\backup\\mvp152b_velociraptor_zero_assets\\special_zero_raptor_core_sheet.png",
+      "dest": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_raptor_core_sheet.png",
+      "key": [
+        4,
+        248,
+        3
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            68,
+            72,
+            188,
+            184
+          ]
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            63,
+            58,
+            193,
+            197
+          ]
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            47,
+            49,
+            208,
+            206
+          ]
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            46,
+            48,
+            210,
+            208
+          ]
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            43,
+            13,
+            213,
+            243
+          ]
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            39,
+            11,
+            217,
+            245
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            34,
+            32,
+            221,
+            223
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            27,
+            30,
+            228,
+            226
+          ]
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            24,
+            10,
+            232,
+            246
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            21,
+            10,
+            234,
+            246
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            39,
+            10,
+            217,
+            246
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            20,
+            31,
+            235,
+            225
+          ]
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            27,
+            31,
+            229,
+            225
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            28,
+            33,
+            227,
+            223
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            37,
+            36,
+            219,
+            220
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            61,
+            66,
+            194,
+            189
+          ]
+        }
+      ],
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 11.521377563476562,
+      "alphaMeanMax": 89.51554870605469,
+      "opaquePixelMin": 3506,
+      "opaquePixelMax": 24018
+    },
+    "slash_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_05dd0a5f95c2fb6b016a10770eb6ec8191b4f7391f806684bc.png",
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp152b_velociraptor_zero_assets\\slash_sheet_generated_source.png",
+      "backup": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\backup\\mvp152b_velociraptor_zero_assets\\special_zero_raptor_slash_sheet.png",
+      "dest": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_raptor_slash_sheet.png",
+      "key": [
+        6,
+        248,
+        3
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            27,
+            32,
+            228,
+            224
+          ]
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            20,
+            37,
+            236,
+            219
+          ]
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            26,
+            28,
+            230,
+            227
+          ]
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            13,
+            33,
+            243,
+            223
+          ]
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            14,
+            21,
+            241,
+            234
+          ]
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            17,
+            23,
+            239,
+            232
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            15,
+            24,
+            240,
+            231
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            15,
+            27,
+            240,
+            228
+          ]
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            16,
+            31,
+            240,
+            224
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            22,
+            33,
+            234,
+            222
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            20,
+            29,
+            236,
+            226
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            24,
+            29,
+            231,
+            226
+          ]
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            29,
+            28,
+            227,
+            228
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            27,
+            26,
+            228,
+            229
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            28,
+            26,
+            227,
+            230
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            31,
+            223,
+            225
+          ]
+        }
+      ],
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 8.084442138671875,
+      "alphaMeanMax": 90.26335144042969,
+      "opaquePixelMin": 3291,
+      "opaquePixelMax": 24512
+    },
+    "dash_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_05dd0a5f95c2fb6b016a107768ffa48191a14fb41c57bf927a.png",
+      "rawCopy": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp152b_velociraptor_zero_assets\\dash_sheet_generated_source.png",
+      "backup": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\backup\\mvp152b_velociraptor_zero_assets\\special_zero_raptor_dash_sheet.png",
+      "dest": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_raptor_dash_sheet.png",
+      "key": [
+        5,
+        248,
+        3
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            80,
+            96,
+            175,
+            159
+          ]
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            26,
+            86,
+            229,
+            169
+          ]
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            13,
+            81,
+            242,
+            174
+          ]
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            16,
+            85,
+            240,
+            171
+          ]
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            36,
+            48,
+            219,
+            207
+          ]
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            28,
+            38,
+            227,
+            218
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            22,
+            42,
+            233,
+            213
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            28,
+            237,
+            227
+          ]
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            33,
+            41,
+            222,
+            214
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            39,
+            223,
+            216
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            26,
+            39,
+            229,
+            217
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            20,
+            36,
+            235,
+            220
+          ]
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            31,
+            34,
+            224,
+            221
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            20,
+            32,
+            235,
+            224
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            37,
+            38,
+            219,
+            218
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            25,
+            32,
+            231,
+            224
+          ]
+        }
+      ],
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 2.6119384765625,
+      "alphaMeanMax": 43.89277648925781,
+      "opaquePixelMin": 1003,
+      "opaquePixelMax": 12134
+    }
+  },
+  "notes": [],
+  "contactSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\velociraptor_zero_mvp152b_contact.png",
+  "summary": "MVP-152b regenerated Abyss Raptor sprite sheet, special icon, and ultimate effect sheets from dedicated image-generation sources. Hero and portrait were preserved."
+}

@@ -1,0 +1,299 @@
+[
+  {
+    "name": "swamp_boss_portrait",
+    "target": "public/assets/enemies/bosses/swamp_boss_portrait.png",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dca7ffcc08191aaf9fa32378289e9.png",
+    "raw": "docs/assets/generated_raw/mvp142b_boss_portrait_regen/swamp_boss_portrait_generated_raw.png",
+    "backup": "docs/assets/backup/mvp142b_boss_portrait_regen/swamp_boss_portrait.png.bak",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      36,
+      470,
+      476
+    ]
+  },
+  {
+    "name": "ruins_boss_portrait",
+    "target": "public/assets/enemies/bosses/ruins_boss_portrait.png",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcadeaa0c8191aa320856bff7473c.png",
+    "raw": "docs/assets/generated_raw/mvp142b_boss_portrait_regen/ruins_boss_portrait_generated_raw.png",
+    "backup": "docs/assets/backup/mvp142b_boss_portrait_regen/ruins_boss_portrait.png.bak",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      26,
+      18,
+      230,
+      238
+    ]
+  },
+  {
+    "name": "swamp_boss_sheet_cell_safe_layout",
+    "target": "public/assets/enemies/bosses/swamp_boss_sheet.png",
+    "backup": "docs/assets/backup/mvp142b_boss_portrait_regen/swamp_boss_sheet_before_cell_safe_layout.png",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "before": [
+          16,
+          99,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          68,
+          232,
+          188
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "before": [
+          16,
+          98,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          67,
+          232,
+          188
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "before": [
+          16,
+          104,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          70,
+          232,
+          185
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "before": [
+          16,
+          106,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          71,
+          232,
+          184
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "before": [
+          16,
+          128,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          81,
+          232,
+          174
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "before": [
+          16,
+          120,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          78,
+          232,
+          178
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "before": [
+          16,
+          110,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          73,
+          232,
+          183
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "before": [
+          16,
+          121,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          78,
+          232,
+          177
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "before": [
+          16,
+          85,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          61,
+          232,
+          194
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "before": [
+          16,
+          117,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          76,
+          232,
+          179
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "before": [
+          16,
+          89,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          63,
+          232,
+          192
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "before": [
+          16,
+          83,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          60,
+          232,
+          195
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "before": [
+          16,
+          119,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          77,
+          232,
+          178
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "before": [
+          16,
+          112,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          74,
+          232,
+          182
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "before": [
+          16,
+          120,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          78,
+          232,
+          178
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "before": [
+          16,
+          135,
+          240,
+          228
+        ],
+        "after": [
+          23,
+          85,
+          232,
+          171
+        ]
+      }
+    ]
+  }
+]

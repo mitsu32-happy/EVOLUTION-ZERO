@@ -1,0 +1,370 @@
+{
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0d2588bdc562969c016a0b905dd0748191b6788662296c55c9.png",
+  "output": "public\\assets\\dinos\\evolutions\\sheets\\tyrannosaurus_attack_sheet.png",
+  "columns": 4,
+  "rows": 4,
+  "cellSize": 256,
+  "scale": 0.7892,
+  "sourceMaxBounds": {
+    "width": 262,
+    "height": 223
+  },
+  "frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "sourceBbox": [
+        14,
+        47,
+        276,
+        262
+      ],
+      "finalBbox": [
+        26,
+        36,
+        231,
+        202
+      ],
+      "margins": {
+        "left": 26,
+        "top": 36,
+        "right": 25,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "sourceBbox": [
+        81,
+        54,
+        327,
+        262
+      ],
+      "finalBbox": [
+        31,
+        42,
+        223,
+        202
+      ],
+      "margins": {
+        "left": 31,
+        "top": 42,
+        "right": 33,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "sourceBbox": [
+        69,
+        57,
+        305,
+        262
+      ],
+      "finalBbox": [
+        37,
+        44,
+        219,
+        202
+      ],
+      "margins": {
+        "left": 37,
+        "top": 44,
+        "right": 37,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "sourceBbox": [
+        62,
+        59,
+        305,
+        262
+      ],
+      "finalBbox": [
+        34,
+        46,
+        222,
+        202
+      ],
+      "margins": {
+        "left": 34,
+        "top": 46,
+        "right": 34,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "sourceBbox": [
+        12,
+        139,
+        258,
+        316
+      ],
+      "finalBbox": [
+        33,
+        66,
+        223,
+        202
+      ],
+      "margins": {
+        "left": 33,
+        "top": 66,
+        "right": 33,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "sourceBbox": [
+        86,
+        136,
+        315,
+        314
+      ],
+      "finalBbox": [
+        39,
+        66,
+        216,
+        202
+      ],
+      "margins": {
+        "left": 39,
+        "top": 66,
+        "right": 40,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "sourceBbox": [
+        71,
+        132,
+        289,
+        316
+      ],
+      "finalBbox": [
+        44,
+        61,
+        212,
+        202
+      ],
+      "margins": {
+        "left": 44,
+        "top": 61,
+        "right": 44,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "sourceBbox": [
+        53,
+        135,
+        289,
+        316
+      ],
+      "finalBbox": [
+        37,
+        63,
+        219,
+        202
+      ],
+      "margins": {
+        "left": 37,
+        "top": 63,
+        "right": 37,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "sourceBbox": [
+        15,
+        102,
+        252,
+        314
+      ],
+      "finalBbox": [
+        36,
+        39,
+        219,
+        202
+      ],
+      "margins": {
+        "left": 36,
+        "top": 39,
+        "right": 37,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "sourceBbox": [
+        85,
+        91,
+        301,
+        314
+      ],
+      "finalBbox": [
+        45,
+        28,
+        211,
+        202
+      ],
+      "margins": {
+        "left": 45,
+        "top": 28,
+        "right": 45,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "sourceBbox": [
+        73,
+        129,
+        303,
+        314
+      ],
+      "finalBbox": [
+        39,
+        60,
+        217,
+        202
+      ],
+      "margins": {
+        "left": 39,
+        "top": 60,
+        "right": 39,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "sourceBbox": [
+        69,
+        101,
+        285,
+        314
+      ],
+      "finalBbox": [
+        45,
+        38,
+        211,
+        202
+      ],
+      "margins": {
+        "left": 45,
+        "top": 38,
+        "right": 45,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "sourceBbox": [
+        15,
+        104,
+        246,
+        280
+      ],
+      "finalBbox": [
+        39,
+        60,
+        217,
+        195
+      ],
+      "margins": {
+        "left": 39,
+        "top": 60,
+        "right": 39,
+        "bottom": 61
+      }
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "sourceBbox": [
+        71,
+        155,
+        314,
+        284
+      ],
+      "finalBbox": [
+        34,
+        77,
+        222,
+        177
+      ],
+      "margins": {
+        "left": 34,
+        "top": 77,
+        "right": 34,
+        "bottom": 79
+      }
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "sourceBbox": [
+        72,
+        160,
+        289,
+        288
+      ],
+      "finalBbox": [
+        44,
+        79,
+        211,
+        176
+      ],
+      "margins": {
+        "left": 44,
+        "top": 79,
+        "right": 45,
+        "bottom": 80
+      }
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "sourceBbox": [
+        48,
+        155,
+        296,
+        293
+      ],
+      "finalBbox": [
+        32,
+        75,
+        224,
+        180
+      ],
+      "margins": {
+        "left": 32,
+        "top": 75,
+        "right": 32,
+        "bottom": 76
+      }
+    }
+  ],
+  "edgeCleanup": {
+    "edgeResidueReplaced": 9301,
+    "edgeAlphaSoftened": 5069
+  }
+}

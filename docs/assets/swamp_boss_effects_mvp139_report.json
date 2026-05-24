@@ -1,0 +1,77 @@
+{
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0e628dac2f51a825016a0d9ade672c8191a6b5f31d4c064217.png",
+  "effects": [
+    {
+      "name": "swamp_boss_poison_warning",
+      "source_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "source_bbox": [
+        34,
+        57,
+        498,
+        494
+      ],
+      "static": "public/assets/effects/boss/swamp_boss_poison_warning.png",
+      "sheet": "public/assets/effects/boss/swamp_boss_poison_warning_sheet.png",
+      "fps": 10
+    },
+    {
+      "name": "swamp_boss_poison_mist",
+      "source_box": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "source_bbox": [
+        7,
+        70,
+        467,
+        512
+      ],
+      "static": "public/assets/effects/boss/swamp_boss_poison_mist.png",
+      "sheet": "public/assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+      "fps": 10
+    },
+    {
+      "name": "swamp_boss_toxic_pool",
+      "source_box": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "source_bbox": [
+        28,
+        86,
+        512,
+        414
+      ],
+      "static": "public/assets/effects/boss/swamp_boss_toxic_pool.png",
+      "sheet": "public/assets/effects/boss/swamp_boss_toxic_pool_sheet.png",
+      "fps": 9
+    },
+    {
+      "name": "swamp_boss_summon_spore",
+      "source_box": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "source_bbox": [
+        0,
+        0,
+        473,
+        449
+      ],
+      "static": "public/assets/effects/boss/swamp_boss_summon_spore.png",
+      "sheet": "public/assets/effects/boss/swamp_boss_summon_spore_sheet.png",
+      "fps": 10
+    }
+  ]
+}

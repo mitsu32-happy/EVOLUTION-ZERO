@@ -1,0 +1,519 @@
+{
+  "strategy": "single_source_cutout_to_cell_safe_4x4_sheet",
+  "cell": 256,
+  "targets": {
+    "swamp_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcf74478c819196bf006e9859a2e1.png",
+      "rawCopy": "docs\\assets\\generated_raw\\mvp142c_boss_sheet_single_source\\swamp_boss_single_source_raw.png",
+      "output": "public\\assets\\enemies\\bosses\\swamp_boss_sheet.png",
+      "fallbackOutput": "public\\assets\\enemies\\bosses\\swamp_boss.png",
+      "backups": {
+        "sheet": "docs\\assets\\backup\\mvp142c_boss_sheet_single_source\\swamp_boss_sheet.png",
+        "fallback": "docs\\assets\\backup\\mvp142c_boss_sheet_single_source\\swamp_boss.png"
+      },
+      "sourceCropBbox": [
+        43,
+        265,
+        1174,
+        1034
+      ],
+      "fitInfo": {
+        "source_bbox": [
+          0,
+          0,
+          1131,
+          769
+        ],
+        "fit_size": [
+          202,
+          137
+        ],
+        "scale": 0.1786030061892131
+      },
+      "frameEdgeIssues": [],
+      "frameBboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "paste": [
+            27,
+            72
+          ],
+          "bbox": [
+            27,
+            72,
+            229,
+            209
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "paste": [
+            26,
+            69
+          ],
+          "bbox": [
+            26,
+            69,
+            230,
+            207
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "paste": [
+            28,
+            74
+          ],
+          "bbox": [
+            28,
+            74,
+            228,
+            210
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "paste": [
+            26,
+            71
+          ],
+          "bbox": [
+            26,
+            71,
+            229,
+            208
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "paste": [
+            20,
+            73
+          ],
+          "bbox": [
+            20,
+            73,
+            222,
+            210
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "paste": [
+            23,
+            68
+          ],
+          "bbox": [
+            23,
+            68,
+            228,
+            207
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "paste": [
+            32,
+            73
+          ],
+          "bbox": [
+            32,
+            73,
+            234,
+            210
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "paste": [
+            29,
+            74
+          ],
+          "bbox": [
+            29,
+            74,
+            228,
+            209
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "paste": [
+            30,
+            68
+          ],
+          "bbox": [
+            30,
+            68,
+            236,
+            207
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "paste": [
+            32,
+            67
+          ],
+          "bbox": [
+            32,
+            67,
+            238,
+            205
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "paste": [
+            31,
+            69
+          ],
+          "bbox": [
+            31,
+            69,
+            237,
+            208
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "paste": [
+            28,
+            72
+          ],
+          "bbox": [
+            28,
+            72,
+            232,
+            210
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "paste": [
+            29,
+            86
+          ],
+          "bbox": [
+            29,
+            86,
+            222,
+            217
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "paste": [
+            31,
+            95
+          ],
+          "bbox": [
+            31,
+            95,
+            216,
+            221
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "paste": [
+            33,
+            105
+          ],
+          "bbox": [
+            33,
+            105,
+            210,
+            225
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "paste": [
+            35,
+            114
+          ],
+          "bbox": [
+            35,
+            114,
+            204,
+            229
+          ]
+        }
+      ]
+    },
+    "ruins_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcfd17dc48191885a6f4e15141472.png",
+      "rawCopy": "docs\\assets\\generated_raw\\mvp142c_boss_sheet_single_source\\ruins_boss_single_source_raw.png",
+      "output": "public\\assets\\enemies\\bosses\\ruins_boss_sheet.png",
+      "fallbackOutput": "public\\assets\\enemies\\bosses\\ruins_boss.png",
+      "backups": {
+        "sheet": "docs\\assets\\backup\\mvp142c_boss_sheet_single_source\\ruins_boss_sheet.png",
+        "fallback": "docs\\assets\\backup\\mvp142c_boss_sheet_single_source\\ruins_boss.png"
+      },
+      "sourceCropBbox": [
+        39,
+        213,
+        1211,
+        1047
+      ],
+      "fitInfo": {
+        "source_bbox": [
+          0,
+          0,
+          1172,
+          834
+        ],
+        "fit_size": [
+          202,
+          143
+        ],
+        "scale": 0.17235494880546076
+      },
+      "frameEdgeIssues": [],
+      "frameBboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "paste": [
+            27,
+            66
+          ],
+          "bbox": [
+            27,
+            66,
+            229,
+            209
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "paste": [
+            26,
+            63
+          ],
+          "bbox": [
+            26,
+            63,
+            230,
+            207
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "paste": [
+            28,
+            68
+          ],
+          "bbox": [
+            28,
+            68,
+            228,
+            210
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "paste": [
+            26,
+            65
+          ],
+          "bbox": [
+            26,
+            65,
+            229,
+            208
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "paste": [
+            20,
+            67
+          ],
+          "bbox": [
+            20,
+            67,
+            222,
+            210
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "paste": [
+            23,
+            62
+          ],
+          "bbox": [
+            23,
+            62,
+            228,
+            207
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "paste": [
+            32,
+            67
+          ],
+          "bbox": [
+            32,
+            67,
+            234,
+            210
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "paste": [
+            29,
+            68
+          ],
+          "bbox": [
+            29,
+            68,
+            228,
+            209
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "paste": [
+            30,
+            62
+          ],
+          "bbox": [
+            30,
+            62,
+            236,
+            207
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "paste": [
+            32,
+            60
+          ],
+          "bbox": [
+            32,
+            60,
+            238,
+            205
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "paste": [
+            31,
+            63
+          ],
+          "bbox": [
+            31,
+            63,
+            237,
+            208
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "paste": [
+            28,
+            66
+          ],
+          "bbox": [
+            28,
+            66,
+            232,
+            210
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "paste": [
+            29,
+            80
+          ],
+          "bbox": [
+            29,
+            80,
+            222,
+            217
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "paste": [
+            31,
+            90
+          ],
+          "bbox": [
+            31,
+            90,
+            216,
+            221
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "paste": [
+            33,
+            100
+          ],
+          "bbox": [
+            33,
+            100,
+            210,
+            225
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "paste": [
+            35,
+            109
+          ],
+          "bbox": [
+            35,
+            109,
+            204,
+            229
+          ]
+        }
+      ]
+    }
+  },
+  "contactSheet": "docs\\assets\\boss_sheet_single_source_regen_mvp142c_contact.png"
+}

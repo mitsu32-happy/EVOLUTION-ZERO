@@ -1,0 +1,166 @@
+{
+  "volcano_boss_lava_warning": {
+    "source": "volcano_boss_lava_warning.png",
+    "static": "volcano_boss_lava_warning.png",
+    "sheet": "volcano_boss_lava_warning_sheet.png",
+    "oldSize": [
+      453,
+      401
+    ],
+    "oldBbox": [
+      14,
+      14,
+      453,
+      401
+    ],
+    "newSize": [
+      512,
+      512
+    ],
+    "newBbox": [
+      52,
+      76,
+      460,
+      436
+    ],
+    "newMargins": [
+      52,
+      76,
+      52,
+      76
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ],
+    "sheetBbox": [
+      47,
+      82,
+      2001,
+      1966
+    ]
+  },
+  "volcano_boss_lava_burst": {
+    "source": "volcano_boss_lava_burst.png",
+    "static": "volcano_boss_lava_burst.png",
+    "sheet": "volcano_boss_lava_burst_sheet.png",
+    "oldSize": [
+      512,
+      449
+    ],
+    "oldBbox": [
+      0,
+      14,
+      512,
+      449
+    ],
+    "newSize": [
+      512,
+      512
+    ],
+    "newBbox": [
+      41,
+      73,
+      471,
+      438
+    ],
+    "newMargins": [
+      41,
+      73,
+      41,
+      74
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ],
+    "sheetBbox": [
+      19,
+      102,
+      2029,
+      1994
+    ]
+  },
+  "volcano_boss_fire_floor": {
+    "source": "volcano_boss_fire_floor.png",
+    "static": "volcano_boss_fire_floor.png",
+    "sheet": "volcano_boss_fire_floor_sheet.png",
+    "oldSize": [
+      478,
+      512
+    ],
+    "oldBbox": [
+      14,
+      0,
+      478,
+      512
+    ],
+    "newSize": [
+      512,
+      512
+    ],
+    "newBbox": [
+      115,
+      101,
+      396,
+      411
+    ],
+    "newMargins": [
+      115,
+      101,
+      116,
+      101
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ],
+    "sheetBbox": [
+      115,
+      100,
+      1934,
+      1943
+    ]
+  },
+  "volcano_boss_slam_wave": {
+    "source": "volcano_boss_slam_wave.png",
+    "static": "volcano_boss_slam_wave.png",
+    "sheet": "volcano_boss_slam_wave_sheet.png",
+    "oldSize": [
+      512,
+      512
+    ],
+    "oldBbox": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "newSize": [
+      512,
+      512
+    ],
+    "newBbox": [
+      41,
+      41,
+      471,
+      471
+    ],
+    "newMargins": [
+      41,
+      41,
+      41,
+      41
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ],
+    "sheetBbox": [
+      40,
+      84,
+      2022,
+      2022
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "volcano_zero_final_attack.png": {
+    "recoloredHuePixels": 4017,
+    "transparentHuePixels": 27
+  },
+  "volcano_zero_final_attack_sheet.png": {
+    "recoloredHuePixels": 72332,
+    "transparentHuePixels": 773
+  },
+  "volcano_zero_final_warning.png": {
+    "recoloredHuePixels": 4017,
+    "transparentHuePixels": 27
+  },
+  "volcano_zero_final_warning_sheet.png": {
+    "recoloredHuePixels": 72332,
+    "transparentHuePixels": 773
+  },
+  "volcano_zero_second_attack.png": {
+    "recoloredHuePixels": 4017,
+    "transparentHuePixels": 27
+  },
+  "volcano_zero_second_attack_sheet.png": {
+    "recoloredHuePixels": 72332,
+    "transparentHuePixels": 773
+  },
+  "volcano_zero_second_warning.png": {
+    "recoloredHuePixels": 4017,
+    "transparentHuePixels": 27
+  },
+  "volcano_zero_second_warning_sheet.png": {
+    "recoloredHuePixels": 72332,
+    "transparentHuePixels": 773
+  }
+}

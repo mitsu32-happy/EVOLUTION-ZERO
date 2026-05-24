@@ -1,0 +1,20 @@
+{
+  "input": "public\\assets\\maps\\backgrounds\\mvp088_originals\\swamp_battlefield_tile.png",
+  "output": "public\\assets\\maps\\backgrounds\\swamp_battlefield_tile.png",
+  "preset": "swamp",
+  "originalSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "outputSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "edgeBand": 96,
+  "readabilityTuning": {
+    "brightness": 1.48,
+    "contrast": 1.02,
+    "color": 1.22
+  },
+  "note": "Correct the darkest tile and reveal toxic yellow-green / blue-green surface cues."
+}

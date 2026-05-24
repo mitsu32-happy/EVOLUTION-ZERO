@@ -1,0 +1,17 @@
+{
+  "name": "evolution-zero",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "pixi.js": "^8.8.1"
+  },
+  "devDependencies": {
+    "vite": "^6.0.5"
+  }
+}

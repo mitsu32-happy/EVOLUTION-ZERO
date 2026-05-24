@@ -1,0 +1,674 @@
+[
+  {
+    "path": "public/assets/effects/adaptation_skills/burst_fang_mine.png",
+    "size": [
+      434,
+      434
+    ],
+    "bbox": [
+      39,
+      63,
+      394,
+      371
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/adaptation_skills/burst_fang_explosion.png",
+    "size": [
+      412,
+      449
+    ],
+    "bbox": [
+      37,
+      56,
+      374,
+      393
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_charge_slash.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      52,
+      61,
+      460,
+      450
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_charge_slash_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      52,
+      164,
+      1996,
+      1986
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_charge_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      58,
+      68,
+      454,
+      444
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_charge_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      58,
+      161,
+      1990,
+      1980
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_roar_wave.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      58,
+      80,
+      454,
+      432
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_roar_wave_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      58,
+      167,
+      1990,
+      1968
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_summon_spore.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      74,
+      52,
+      437,
+      460
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/jungle_boss_summon_spore_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      74,
+      153,
+      1973,
+      1996
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_pulse.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      27,
+      63,
+      492,
+      503
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_pulse_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      27,
+      83,
+      2008,
+      1981
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      70,
+      132,
+      423,
+      448
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_electro_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      51,
+      85,
+      2012,
+      2012
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_beam.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      11,
+      177,
+      510,
+      309
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_beam_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      248,
+      2034,
+      2048
+    ],
+    "edgeTouch": true
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      39,
+      209,
+      471,
+      279
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_laser_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      251,
+      2048,
+      2048
+    ],
+    "edgeTouch": true
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_summon_field.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      30,
+      62,
+      477,
+      491
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/ruins_boss_summon_field_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      142,
+      2048,
+      2048
+    ],
+    "edgeTouch": true
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_mist.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      49,
+      471,
+      462
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      21,
+      82,
+      2028,
+      2021
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      54,
+      471,
+      458
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_poison_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      21,
+      85,
+      2028,
+      2016
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_summon_spore.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      52,
+      471,
+      460
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_summon_spore_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      21,
+      83,
+      2028,
+      2017
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_toxic_pool.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      41,
+      110,
+      471,
+      401
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/swamp_boss_toxic_pool_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      21,
+      133,
+      2028,
+      1954
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_fire_floor.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      60,
+      68,
+      452,
+      444
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_fire_floor_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      60,
+      161,
+      1988,
+      1980
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_lava_burst.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      79,
+      64,
+      433,
+      448
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_lava_burst_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      79,
+      168,
+      1969,
+      1984
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_lava_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      58,
+      98,
+      454,
+      414
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_lava_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      58,
+      171,
+      1990,
+      1950
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_slam_wave.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      58,
+      88,
+      454,
+      423
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/boss/volcano_boss_slam_wave_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      58,
+      171,
+      1990,
+      1959
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_electro_pulse.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      27,
+      63,
+      492,
+      503
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_electro_pulse_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      27,
+      83,
+      2008,
+      1981
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_beam.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      11,
+      177,
+      510,
+      309
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_beam_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      248,
+      2034,
+      2048
+    ],
+    "edgeTouch": true
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_warning.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      39,
+      209,
+      471,
+      279
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/ruins_laser_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "bbox": [
+      0,
+      251,
+      2048,
+      2048
+    ],
+    "edgeTouch": true
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/swamp_poison_mist.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      26,
+      56,
+      228,
+      200
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/swamp_toxic_pool.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      25,
+      76,
+      228,
+      180
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/volcano_fire_floor.png",
+    "size": [
+      256,
+      256
+    ],
+    "bbox": [
+      20,
+      20,
+      236,
+      235
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/volcano_fire_floor_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      20,
+      74,
+      1004,
+      1003
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/volcano_lava_burst.png",
+    "size": [
+      512,
+      512
+    ],
+    "bbox": [
+      23,
+      36,
+      468,
+      478
+    ],
+    "edgeTouch": false
+  },
+  {
+    "path": "public/assets/effects/stage_gimmicks/volcano_lava_burst_sheet.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "bbox": [
+      28,
+      35,
+      995,
+      962
+    ],
+    "edgeTouch": false
+  }
+]

@@ -1,0 +1,1148 @@
+{
+  "assets": {
+    "swamp_zero_second_attack_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_080d359045b7108a016a11b7d7ba2481919c9e22f2f892ba22.png",
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\swamp_zero_second_attack_sheet.png",
+      "staticFallback": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\swamp_zero_second_attack.png",
+      "portrait": "",
+      "warningSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\swamp_zero_second_warning_sheet.png",
+      "warningStatic": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\swamp_zero_second_warning.png",
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 255.0,
+      "alphaMeanMax": 255.0,
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            31,
+            54,
+            224,
+            202
+          ],
+          "fit": [
+            31,
+            54,
+            193,
+            148
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            20,
+            41,
+            236,
+            214
+          ],
+          "fit": [
+            20,
+            41,
+            216,
+            173
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            39,
+            40,
+            216,
+            216
+          ],
+          "fit": [
+            39,
+            40,
+            177,
+            176
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            32,
+            30,
+            224,
+            226
+          ],
+          "fit": [
+            32,
+            30,
+            192,
+            196
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            23,
+            80,
+            232,
+            176
+          ],
+          "fit": [
+            23,
+            80,
+            209,
+            96
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            40,
+            229,
+            215
+          ],
+          "fit": [
+            26,
+            40,
+            203,
+            175
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            25,
+            33,
+            230,
+            223
+          ],
+          "fit": [
+            25,
+            33,
+            205,
+            190
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            15,
+            34,
+            241,
+            221
+          ],
+          "fit": [
+            15,
+            34,
+            226,
+            187
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            27,
+            38,
+            229,
+            217
+          ],
+          "fit": [
+            27,
+            38,
+            202,
+            179
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            18,
+            27,
+            237,
+            228
+          ],
+          "fit": [
+            18,
+            27,
+            219,
+            201
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            23,
+            46,
+            233,
+            210
+          ],
+          "fit": [
+            23,
+            46,
+            210,
+            164
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            14,
+            28,
+            242,
+            228
+          ],
+          "fit": [
+            14,
+            28,
+            228,
+            200
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            31,
+            33,
+            225,
+            222
+          ],
+          "fit": [
+            31,
+            33,
+            194,
+            189
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            25,
+            27,
+            230,
+            228
+          ],
+          "fit": [
+            25,
+            27,
+            205,
+            201
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            41,
+            44,
+            215,
+            211
+          ],
+          "fit": [
+            41,
+            44,
+            174,
+            167
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            28,
+            39,
+            227,
+            216
+          ],
+          "fit": [
+            28,
+            39,
+            199,
+            177
+          ],
+          "alphaMean": 255.0
+        }
+      ]
+    },
+    "jungle_zero_second_attack_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_080d359045b7108a016a11b762e86c8191b187a790cd210043.png",
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\jungle_zero_second_attack_sheet.png",
+      "staticFallback": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\jungle_zero_second_attack.png",
+      "portrait": "",
+      "warningSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\jungle_zero_second_warning_sheet.png",
+      "warningStatic": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\jungle_zero_second_warning.png",
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 255.0,
+      "alphaMeanMax": 255.0,
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            24,
+            40,
+            232,
+            216
+          ],
+          "fit": [
+            24,
+            40,
+            208,
+            176
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            31,
+            26,
+            224,
+            229
+          ],
+          "fit": [
+            31,
+            26,
+            193,
+            203
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            30,
+            31,
+            225,
+            224
+          ],
+          "fit": [
+            30,
+            31,
+            195,
+            193
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            24,
+            22,
+            231,
+            234
+          ],
+          "fit": [
+            24,
+            22,
+            207,
+            212
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            22,
+            48,
+            233,
+            207
+          ],
+          "fit": [
+            22,
+            48,
+            211,
+            159
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            28,
+            28,
+            228,
+            228
+          ],
+          "fit": [
+            28,
+            28,
+            200,
+            200
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            20,
+            231,
+            235
+          ],
+          "fit": [
+            24,
+            20,
+            207,
+            215
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            16,
+            25,
+            240,
+            230
+          ],
+          "fit": [
+            16,
+            25,
+            224,
+            205
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            16,
+            39,
+            240,
+            217
+          ],
+          "fit": [
+            16,
+            39,
+            224,
+            178
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            23,
+            41,
+            233,
+            215
+          ],
+          "fit": [
+            23,
+            41,
+            210,
+            174
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            22,
+            244,
+            234
+          ],
+          "fit": [
+            12,
+            22,
+            232,
+            212
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            10,
+            44,
+            245,
+            211
+          ],
+          "fit": [
+            10,
+            44,
+            235,
+            167
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            31,
+            35,
+            224,
+            221
+          ],
+          "fit": [
+            31,
+            35,
+            193,
+            186
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            29,
+            40,
+            226,
+            215
+          ],
+          "fit": [
+            29,
+            40,
+            197,
+            175
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            48,
+            42,
+            208,
+            214
+          ],
+          "fit": [
+            48,
+            42,
+            160,
+            172
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            21,
+            34,
+            234,
+            222
+          ],
+          "fit": [
+            21,
+            34,
+            213,
+            188
+          ],
+          "alphaMean": 255.0
+        }
+      ]
+    },
+    "swamp_zero_second_boss_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_080d359045b7108a016a11b70feca08191b587a2d16fcc7db5.png",
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\swamp_zero_second_boss_sheet.png",
+      "staticFallback": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\swamp_zero_second_boss.png",
+      "portrait": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\swamp_zero_second_boss_portrait.png",
+      "warningSheet": "",
+      "warningStatic": "",
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 231.9,
+      "alphaMeanMax": 255.0,
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            15,
+            68,
+            240,
+            226
+          ],
+          "fit": [
+            15,
+            68,
+            225,
+            158
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            10,
+            79,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            79,
+            236,
+            147
+          ],
+          "alphaMean": 235.68
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            10,
+            71,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            71,
+            236,
+            155
+          ],
+          "alphaMean": 239.34
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            14,
+            55,
+            242,
+            226
+          ],
+          "fit": [
+            14,
+            55,
+            228,
+            171
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            10,
+            113,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            113,
+            236,
+            113
+          ],
+          "alphaMean": 233.99
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            10,
+            123,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            123,
+            236,
+            103
+          ],
+          "alphaMean": 233.03
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            10,
+            125,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            125,
+            236,
+            101
+          ],
+          "alphaMean": 231.9
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            17,
+            113,
+            238,
+            226
+          ],
+          "fit": [
+            17,
+            113,
+            221,
+            113
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            10,
+            85,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            85,
+            236,
+            141
+          ],
+          "alphaMean": 233.98
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            10,
+            100,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            100,
+            236,
+            126
+          ],
+          "alphaMean": 237.63
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            10,
+            92,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            92,
+            236,
+            134
+          ],
+          "alphaMean": 234.08
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            10,
+            75,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            75,
+            236,
+            151
+          ],
+          "alphaMean": 233.82
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            17,
+            113,
+            239,
+            226
+          ],
+          "fit": [
+            17,
+            113,
+            222,
+            113
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            10,
+            127,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            127,
+            236,
+            99
+          ],
+          "alphaMean": 242.93
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            10,
+            102,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            102,
+            236,
+            124
+          ],
+          "alphaMean": 234.31
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            10,
+            80,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            80,
+            236,
+            146
+          ],
+          "alphaMean": 232.81
+        }
+      ]
+    },
+    "jungle_zero_second_boss_sheet": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_080d359045b7108a016a11b6b8444481918173ea7bc23dcce3.png",
+      "target": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\jungle_zero_second_boss_sheet.png",
+      "staticFallback": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\jungle_zero_second_boss.png",
+      "portrait": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\jungle_zero_second_boss_portrait.png",
+      "warningSheet": "",
+      "warningStatic": "",
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "alphaMeanMin": 230.03,
+      "alphaMeanMax": 255.0,
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "bbox": [
+            13,
+            47,
+            242,
+            226
+          ],
+          "fit": [
+            13,
+            47,
+            229,
+            179
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "bbox": [
+            13,
+            47,
+            242,
+            226
+          ],
+          "fit": [
+            13,
+            47,
+            229,
+            179
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "bbox": [
+            17,
+            48,
+            238,
+            226
+          ],
+          "fit": [
+            17,
+            48,
+            221,
+            178
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "bbox": [
+            12,
+            46,
+            244,
+            226
+          ],
+          "fit": [
+            12,
+            46,
+            232,
+            180
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "bbox": [
+            11,
+            90,
+            244,
+            226
+          ],
+          "fit": [
+            11,
+            90,
+            233,
+            136
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            91,
+            244,
+            226
+          ],
+          "fit": [
+            12,
+            91,
+            232,
+            135
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            10,
+            95,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            95,
+            236,
+            131
+          ],
+          "alphaMean": 233.71
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            87,
+            237,
+            226
+          ],
+          "fit": [
+            18,
+            87,
+            219,
+            139
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "bbox": [
+            10,
+            75,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            75,
+            236,
+            151
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            76,
+            244,
+            226
+          ],
+          "fit": [
+            12,
+            76,
+            232,
+            150
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            10,
+            51,
+            246,
+            226
+          ],
+          "fit": [
+            10,
+            51,
+            236,
+            175
+          ],
+          "alphaMean": 230.03
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            14,
+            53,
+            241,
+            226
+          ],
+          "fit": [
+            14,
+            53,
+            227,
+            173
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "bbox": [
+            31,
+            84,
+            225,
+            226
+          ],
+          "fit": [
+            31,
+            84,
+            194,
+            142
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            21,
+            115,
+            235,
+            226
+          ],
+          "fit": [
+            21,
+            115,
+            214,
+            111
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            21,
+            131,
+            235,
+            226
+          ],
+          "fit": [
+            21,
+            131,
+            214,
+            95
+          ],
+          "alphaMean": 255.0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            34,
+            149,
+            222,
+            226
+          ],
+          "fit": [
+            34,
+            149,
+            188,
+            77
+          ],
+          "alphaMean": 255.0
+        }
+      ]
+    }
+  }
+}

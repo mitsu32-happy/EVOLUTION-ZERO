@@ -1,0 +1,365 @@
+{
+  "strategy": "mvp143b_finished_differential_animation_tight_safe_area",
+  "cell": 256,
+  "safe": 22,
+  "targets": {
+    "swamp_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcf74478c819196bf006e9859a2e1.png",
+      "output": "public\\assets\\enemies\\bosses\\swamp_boss_sheet.png",
+      "fallbackOutput": "public\\assets\\enemies\\bosses\\swamp_boss.png",
+      "fitSize": [
+        204,
+        138
+      ],
+      "sourceScale": 0.18053097345132743,
+      "frameEdgeIssues": [],
+      "frameBboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            49,
+            230,
+            214
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            49,
+            233,
+            213
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            25,
+            49,
+            231,
+            215
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            27,
+            49,
+            229,
+            214
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            24,
+            49,
+            230,
+            215
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            24,
+            49,
+            231,
+            211
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            24,
+            49,
+            233,
+            216
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            23,
+            49,
+            233,
+            213
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            24,
+            49,
+            231,
+            215
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            22,
+            49,
+            234,
+            214
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            24,
+            49,
+            232,
+            208
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            23,
+            49,
+            233,
+            212
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            49,
+            230,
+            214
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            27,
+            49,
+            228,
+            224
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            24,
+            49,
+            233,
+            230
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            28,
+            49,
+            228,
+            224
+          ]
+        }
+      ],
+      "animationRows": [
+        "idle_breath_pulse",
+        "move_bob_lateral",
+        "attack_lunge_emission",
+        "death_collapse_fade"
+      ]
+    },
+    "ruins_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcfd17dc48191885a6f4e15141472.png",
+      "output": "public\\assets\\enemies\\bosses\\ruins_boss_sheet.png",
+      "fallbackOutput": "public\\assets\\enemies\\bosses\\ruins_boss.png",
+      "fitSize": [
+        204,
+        145
+      ],
+      "sourceScale": 0.17421007685738685,
+      "frameEdgeIssues": [],
+      "frameBboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            53,
+            230,
+            214
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            56,
+            233,
+            213
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            25,
+            56,
+            231,
+            215
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            27,
+            51,
+            229,
+            214
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            24,
+            56,
+            232,
+            213
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            24,
+            51,
+            232,
+            213
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            28,
+            53,
+            228,
+            212
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            22,
+            52,
+            234,
+            213
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            22,
+            53,
+            230,
+            216
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            22,
+            52,
+            234,
+            211
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            23,
+            56,
+            233,
+            210
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            22,
+            56,
+            234,
+            215
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            56,
+            230,
+            214
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            29,
+            56,
+            227,
+            222
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            22,
+            55,
+            234,
+            231
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            29,
+            51,
+            227,
+            225
+          ]
+        }
+      ],
+      "animationRows": [
+        "idle_breath_pulse",
+        "move_bob_lateral",
+        "attack_lunge_emission",
+        "death_collapse_fade"
+      ]
+    }
+  }
+}

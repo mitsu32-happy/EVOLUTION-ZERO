@@ -1,0 +1,370 @@
+{
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0fa5d0f13a01bef1016a0c6bceee408191bd382821ac2b55dd.png",
+  "output": "public\\assets\\enemies\\bosses\\jungle_canopy_devourer_sheet.png",
+  "columns": 4,
+  "rows": 4,
+  "cellSize": 256,
+  "scale": 0.8863,
+  "sourceMaxBounds": {
+    "width": 255,
+    "height": 195
+  },
+  "frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "sourceBbox": [
+        4,
+        68,
+        248,
+        240
+      ],
+      "finalBbox": [
+        22,
+        61,
+        233,
+        208
+      ],
+      "margins": {
+        "left": 22,
+        "top": 61,
+        "right": 23,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "sourceBbox": [
+        93,
+        83,
+        331,
+        240
+      ],
+      "finalBbox": [
+        25,
+        74,
+        231,
+        208
+      ],
+      "margins": {
+        "left": 25,
+        "top": 74,
+        "right": 25,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "sourceBbox": [
+        83,
+        77,
+        329,
+        240
+      ],
+      "finalBbox": [
+        21,
+        68,
+        235,
+        208
+      ],
+      "margins": {
+        "left": 21,
+        "top": 68,
+        "right": 21,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "sourceBbox": [
+        82,
+        85,
+        322,
+        240
+      ],
+      "finalBbox": [
+        23,
+        75,
+        232,
+        208
+      ],
+      "margins": {
+        "left": 23,
+        "top": 75,
+        "right": 24,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "sourceBbox": [
+        10,
+        162,
+        252,
+        322
+      ],
+      "finalBbox": [
+        23,
+        71,
+        232,
+        208
+      ],
+      "margins": {
+        "left": 23,
+        "top": 71,
+        "right": 24,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "sourceBbox": [
+        99,
+        167,
+        345,
+        322
+      ],
+      "finalBbox": [
+        21,
+        75,
+        235,
+        208
+      ],
+      "margins": {
+        "left": 21,
+        "top": 75,
+        "right": 21,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "sourceBbox": [
+        100,
+        168,
+        337,
+        318
+      ],
+      "finalBbox": [
+        25,
+        79,
+        231,
+        208
+      ],
+      "margins": {
+        "left": 25,
+        "top": 79,
+        "right": 25,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "sourceBbox": [
+        81,
+        170,
+        319,
+        322
+      ],
+      "finalBbox": [
+        24,
+        77,
+        231,
+        208
+      ],
+      "margins": {
+        "left": 24,
+        "top": 77,
+        "right": 25,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "sourceBbox": [
+        3,
+        138,
+        225,
+        318
+      ],
+      "finalBbox": [
+        31,
+        52,
+        223,
+        208
+      ],
+      "margins": {
+        "left": 31,
+        "top": 52,
+        "right": 33,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "sourceBbox": [
+        99,
+        151,
+        332,
+        318
+      ],
+      "finalBbox": [
+        26,
+        64,
+        228,
+        208
+      ],
+      "margins": {
+        "left": 26,
+        "top": 64,
+        "right": 28,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "sourceBbox": [
+        92,
+        123,
+        335,
+        318
+      ],
+      "finalBbox": [
+        22,
+        39,
+        235,
+        208
+      ],
+      "margins": {
+        "left": 22,
+        "top": 39,
+        "right": 21,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "sourceBbox": [
+        69,
+        156,
+        284,
+        318
+      ],
+      "finalBbox": [
+        32,
+        69,
+        223,
+        208
+      ],
+      "margins": {
+        "left": 32,
+        "top": 69,
+        "right": 33,
+        "bottom": 48
+      }
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "sourceBbox": [
+        1,
+        166,
+        247,
+        314
+      ],
+      "finalBbox": [
+        22,
+        65,
+        234,
+        191
+      ],
+      "margins": {
+        "left": 22,
+        "top": 65,
+        "right": 22,
+        "bottom": 65
+      }
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "sourceBbox": [
+        89,
+        183,
+        327,
+        313
+      ],
+      "finalBbox": [
+        24,
+        70,
+        231,
+        183
+      ],
+      "margins": {
+        "left": 24,
+        "top": 70,
+        "right": 25,
+        "bottom": 73
+      }
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "sourceBbox": [
+        85,
+        216,
+        340,
+        314
+      ],
+      "finalBbox": [
+        17,
+        86,
+        239,
+        169
+      ],
+      "margins": {
+        "left": 17,
+        "top": 86,
+        "right": 17,
+        "bottom": 87
+      }
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "sourceBbox": [
+        86,
+        215,
+        341,
+        314
+      ],
+      "finalBbox": [
+        17,
+        84,
+        238,
+        169
+      ],
+      "margins": {
+        "left": 17,
+        "top": 84,
+        "right": 18,
+        "bottom": 87
+      }
+    }
+  ],
+  "edgeCleanup": {
+    "edgeResidueReplaced": 23445,
+    "edgeAlphaSoftened": 9265
+  }
+}

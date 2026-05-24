@@ -1,0 +1,252 @@
+{
+  "createdAt": "2026-05-20T23:14:53",
+  "backupDir": "docs/assets/backup/mvp142_chromakey_cleanup",
+  "selectionRule": "Only gameplay enemy/boss sprite assets with chromakey/low-alpha/cell-edge candidates were edited. UI frames and intentional purple/cyan effects were excluded.",
+  "report": [
+    {
+      "path": "public/assets/enemies/bosses/ruins_boss_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/ruins_boss_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 38455,
+      "before": {
+        "nearPureMagenta": 2876,
+        "lowAlphaLe12": 33957,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 326531
+      },
+      "after": {
+        "nearPureMagenta": 8,
+        "lowAlphaLe12": 419,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 320219
+      }
+    },
+    {
+      "path": "public/assets/enemies/bosses/ruins_boss.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/ruins_boss.png",
+      "method": "safe low-alpha/near-chromakey cleanup",
+      "changedPixels": 2366,
+      "before": {
+        "nearPureMagenta": 217,
+        "lowAlphaLe12": 2103,
+        "edgeVisible": 30,
+        "edgeLowOrMagenta": 10,
+        "visible": 22424
+      },
+      "after": {
+        "nearPureMagenta": 0,
+        "lowAlphaLe12": 27,
+        "edgeVisible": 26,
+        "edgeLowOrMagenta": 0,
+        "visible": 22032
+      }
+    },
+    {
+      "path": "public/assets/enemies/bosses/ruins_boss_portrait.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/ruins_boss_portrait.png",
+      "method": "safe low-alpha/near-chromakey cleanup",
+      "changedPixels": 2376,
+      "before": {
+        "nearPureMagenta": 217,
+        "lowAlphaLe12": 2051,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 22720
+      },
+      "after": {
+        "nearPureMagenta": 2,
+        "lowAlphaLe12": 19,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 22309
+      }
+    },
+    {
+      "path": "public/assets/enemies/ruins/ruins_electro_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/ruins_electro_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 32660,
+      "before": {
+        "nearPureMagenta": 1344,
+        "lowAlphaLe12": 29837,
+        "edgeVisible": 1,
+        "edgeLowOrMagenta": 1,
+        "visible": 309216
+      },
+      "after": {
+        "nearPureMagenta": 1,
+        "lowAlphaLe12": 489,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 304643
+      }
+    },
+    {
+      "path": "public/assets/enemies/ruins/ruins_shooter_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/ruins_shooter_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 22426,
+      "before": {
+        "nearPureMagenta": 1505,
+        "lowAlphaLe12": 20022,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 174732
+      },
+      "after": {
+        "nearPureMagenta": 7,
+        "lowAlphaLe12": 212,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 171386
+      }
+    },
+    {
+      "path": "public/assets/enemies/ruins/ruins_summoner_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/ruins_summoner_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 33638,
+      "before": {
+        "nearPureMagenta": 1946,
+        "lowAlphaLe12": 29697,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 195750
+      },
+      "after": {
+        "nearPureMagenta": 8,
+        "lowAlphaLe12": 391,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 190190
+      }
+    },
+    {
+      "path": "public/assets/enemies/bosses/swamp_boss_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/swamp_boss_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 16081,
+      "before": {
+        "nearPureMagenta": 856,
+        "lowAlphaLe12": 14610,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 196098
+      },
+      "after": {
+        "nearPureMagenta": 40,
+        "lowAlphaLe12": 373,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 193557
+      }
+    },
+    {
+      "path": "public/assets/enemies/bosses/swamp_boss.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/swamp_boss.png",
+      "method": "safe low-alpha/near-chromakey cleanup",
+      "changedPixels": 4738,
+      "before": {
+        "nearPureMagenta": 350,
+        "lowAlphaLe12": 4307,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 51774
+      },
+      "after": {
+        "nearPureMagenta": 16,
+        "lowAlphaLe12": 194,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 50842
+      }
+    },
+    {
+      "path": "public/assets/enemies/bosses/swamp_boss_portrait.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/swamp_boss_portrait.png",
+      "method": "safe low-alpha/near-chromakey cleanup",
+      "changedPixels": 4360,
+      "before": {
+        "nearPureMagenta": 337,
+        "lowAlphaLe12": 3913,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 48128
+      },
+      "after": {
+        "nearPureMagenta": 11,
+        "lowAlphaLe12": 133,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 47250
+      }
+    },
+    {
+      "path": "public/assets/enemies/swamp/swamp_poison_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/swamp_poison_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 6475,
+      "before": {
+        "nearPureMagenta": 1148,
+        "lowAlphaLe12": 4654,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 145144
+      },
+      "after": {
+        "nearPureMagenta": 28,
+        "lowAlphaLe12": 241,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 142400
+      }
+    },
+    {
+      "path": "public/assets/enemies/swamp/swamp_slow_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/swamp_slow_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 8310,
+      "before": {
+        "nearPureMagenta": 1979,
+        "lowAlphaLe12": 5350,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 192804
+      },
+      "after": {
+        "nearPureMagenta": 66,
+        "lowAlphaLe12": 255,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 188807
+      }
+    },
+    {
+      "path": "public/assets/enemies/swamp/swamp_toxic_bomber_sheet.png",
+      "backup": "docs/assets/backup/mvp142_chromakey_cleanup/swamp_toxic_bomber_sheet.png",
+      "method": "safe low-alpha/near-chromakey cleanup; weak cell-boundary cleanup for 4x4 sheets",
+      "changedPixels": 7580,
+      "before": {
+        "nearPureMagenta": 598,
+        "lowAlphaLe12": 6518,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 358932
+      },
+      "after": {
+        "nearPureMagenta": 34,
+        "lowAlphaLe12": 453,
+        "edgeVisible": 0,
+        "edgeLowOrMagenta": 0,
+        "visible": 356369
+      }
+    }
+  ],
+  "excludedExamples": [
+    "UI panels and frames with intentional neon borders",
+    "ruins/swamp purple boss/stage effects where magenta-like pixels are the intended glow",
+    "skill/special icons where cyan fringe is part of icon lighting"
+  ]
+}

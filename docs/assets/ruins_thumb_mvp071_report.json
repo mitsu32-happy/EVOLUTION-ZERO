@@ -1,0 +1,18 @@
+{
+  "input": "C:\\Users\\oushi\\.codex\\generated_images\\019e2157-4c29-7211-abfc-7419f522d0c8\\ig_0fe43809796da1e5016a07f97ef1a88191b19211b3bf7c626e.png",
+  "output": "public\\assets\\maps\\thumbnails\\ruins_thumb.png",
+  "originalSize": {
+    "width": 1672,
+    "height": 941
+  },
+  "outputSize": {
+    "width": 1024,
+    "height": 576
+  },
+  "readabilityTuning": {
+    "brightness": 1.06,
+    "contrast": 1.01,
+    "color": 1.07
+  },
+  "note": "Stage-select thumbnail. More atmospheric than combat backgrounds, with overlay readability handled in UI."
+}

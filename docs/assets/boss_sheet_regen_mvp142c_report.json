@@ -1,0 +1,530 @@
+[
+  {
+    "target": "public/assets/enemies/bosses/swamp_boss_sheet.png",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcca266a481918d636f7abf7077e4.png",
+    "backup": "docs/assets/backup/mvp142c_boss_sheet_regen/swamp_boss_sheet.png.bak",
+    "raw": "docs/assets/generated_raw/mvp142c_boss_sheet_regen/swamp_boss_sheet_generated_raw.png",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "sourceBbox": [
+          23,
+          88,
+          255,
+          256
+        ],
+        "finalBbox": [
+          23,
+          52,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "sourceBbox": [
+          18,
+          87,
+          234,
+          256
+        ],
+        "finalBbox": [
+          23,
+          46,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "sourceBbox": [
+          19,
+          85,
+          256,
+          256
+        ],
+        "finalBbox": [
+          23,
+          53,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          88,
+          211,
+          256
+        ],
+        "finalBbox": [
+          23,
+          43,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "sourceBbox": [
+          18,
+          0,
+          256,
+          242
+        ],
+        "finalBbox": [
+          43,
+          38,
+          212,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "sourceBbox": [
+          0,
+          0,
+          256,
+          242
+        ],
+        "finalBbox": [
+          37,
+          38,
+          218,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "sourceBbox": [
+          0,
+          0,
+          256,
+          242
+        ],
+        "finalBbox": [
+          37,
+          38,
+          218,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          0,
+          219,
+          240
+        ],
+        "finalBbox": [
+          50,
+          38,
+          206,
+          210
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "sourceBbox": [
+          20,
+          48,
+          256,
+          219
+        ],
+        "finalBbox": [
+          23,
+          52,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "sourceBbox": [
+          0,
+          1,
+          256,
+          220
+        ],
+        "finalBbox": [
+          27,
+          38,
+          228,
+          210
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "sourceBbox": [
+          0,
+          58,
+          256,
+          226
+        ],
+        "finalBbox": [
+          23,
+          60,
+          233,
+          197
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          60,
+          225,
+          226
+        ],
+        "finalBbox": [
+          23,
+          51,
+          233,
+          205
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "sourceBbox": [
+          16,
+          1,
+          256,
+          190
+        ],
+        "finalBbox": [
+          23,
+          45,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "sourceBbox": [
+          0,
+          18,
+          256,
+          191
+        ],
+        "finalBbox": [
+          23,
+          58,
+          233,
+          199
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "sourceBbox": [
+          0,
+          35,
+          256,
+          192
+        ],
+        "finalBbox": [
+          23,
+          64,
+          233,
+          192
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          28,
+          222,
+          192
+        ],
+        "finalBbox": [
+          23,
+          51,
+          233,
+          206
+        ]
+      }
+    ]
+  },
+  {
+    "target": "public/assets/enemies/bosses/ruins_boss_sheet.png",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dcd7bb624819188cb5c6f66308234.png",
+    "backup": "docs/assets/backup/mvp142c_boss_sheet_regen/ruins_boss_sheet.png.bak",
+    "raw": "docs/assets/generated_raw/mvp142c_boss_sheet_regen/ruins_boss_sheet_generated_raw.png",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "sourceBbox": [
+          26,
+          32,
+          249,
+          239
+        ],
+        "finalBbox": [
+          35,
+          38,
+          220,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "sourceBbox": [
+          19,
+          42,
+          246,
+          239
+        ],
+        "finalBbox": [
+          29,
+          38,
+          227,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "sourceBbox": [
+          11,
+          43,
+          228,
+          240
+        ],
+        "finalBbox": [
+          33,
+          38,
+          222,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          45,
+          211,
+          240
+        ],
+        "finalBbox": [
+          35,
+          38,
+          221,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "sourceBbox": [
+          18,
+          32,
+          256,
+          223
+        ],
+        "finalBbox": [
+          23,
+          42,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "sourceBbox": [
+          0,
+          38,
+          256,
+          223
+        ],
+        "finalBbox": [
+          23,
+          53,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "sourceBbox": [
+          0,
+          44,
+          256,
+          217
+        ],
+        "finalBbox": [
+          23,
+          58,
+          233,
+          199
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          38,
+          237,
+          220
+        ],
+        "finalBbox": [
+          23,
+          48,
+          233,
+          209
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "sourceBbox": [
+          7,
+          26,
+          256,
+          220
+        ],
+        "finalBbox": [
+          23,
+          47,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "sourceBbox": [
+          0,
+          28,
+          256,
+          220
+        ],
+        "finalBbox": [
+          23,
+          50,
+          233,
+          207
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "sourceBbox": [
+          0,
+          24,
+          256,
+          220
+        ],
+        "finalBbox": [
+          23,
+          48,
+          233,
+          208
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          27,
+          253,
+          220
+        ],
+        "finalBbox": [
+          23,
+          48,
+          233,
+          208
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "sourceBbox": [
+          8,
+          28,
+          256,
+          212
+        ],
+        "finalBbox": [
+          23,
+          51,
+          233,
+          206
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "sourceBbox": [
+          0,
+          21,
+          219,
+          211
+        ],
+        "finalBbox": [
+          29,
+          38,
+          227,
+          210
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "sourceBbox": [
+          0,
+          24,
+          256,
+          214
+        ],
+        "finalBbox": [
+          23,
+          51,
+          233,
+          206
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "sourceBbox": [
+          0,
+          56,
+          236,
+          222
+        ],
+        "finalBbox": [
+          23,
+          55,
+          233,
+          202
+        ]
+      }
+    ]
+  }
+]

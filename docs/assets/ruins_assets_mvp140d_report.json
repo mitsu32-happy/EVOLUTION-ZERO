@@ -1,0 +1,74 @@
+[
+  {
+    "name": "ruins_shooter_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db5bc1a048191aab53d0b52a2f450.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\ruins\\ruins_shooter_sheet.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "ruins_electro_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db64d401081918ae944f91ae8fa28.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\ruins\\ruins_electro_sheet.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "ruins_summoner_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db6dfc5e08191a61b5f799c8349c5.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\ruins\\ruins_summoner_sheet.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "ruins_boss_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db73f172c81918ed3325ad2dde035.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\enemies\\bosses\\ruins_boss_sheet.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "name": "ruins_electro_pulse_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db7af20ac8191bc72610cb2869a62.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\ruins_boss_electro_pulse_sheet.png",
+    "size": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "ruins_laser_beam_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db88a6e448191a808a29031a333be.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\ruins_boss_laser_beam_sheet.png",
+    "size": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "ruins_laser_warning_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0db909d790819191390860cd0d35ff.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\ruins_boss_laser_warning_sheet.png",
+    "size": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "ruins_summon_field_sheet",
+    "src": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01c73445226512ca016a0dba6f63f8819194fd047a00b5b682.png",
+    "dst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\boss\\ruins_boss_summon_field_sheet.png",
+    "size": [
+      2048,
+      2048
+    ]
+  }
+]

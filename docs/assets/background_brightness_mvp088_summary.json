@@ -1,0 +1,86 @@
+{
+  "jungle": {
+    "file": "jungle_battlefield_tile.png",
+    "preset": "jungle",
+    "before": {
+      "meanRgb": [
+        16.94,
+        18.45,
+        16.31
+      ],
+      "meanLuma": 17.97
+    },
+    "after": {
+      "meanRgb": [
+        19.75,
+        22.46,
+        18.68
+      ],
+      "meanLuma": 21.61
+    },
+    "lumaDelta": 3.64
+  },
+  "volcano": {
+    "file": "volcanic_battlefield_tile.png",
+    "preset": "volcano",
+    "before": {
+      "meanRgb": [
+        21.04,
+        20.88,
+        20.6
+      ],
+      "meanLuma": 20.9
+    },
+    "after": {
+      "meanRgb": [
+        23.86,
+        23.84,
+        23.29
+      ],
+      "meanLuma": 23.81
+    },
+    "lumaDelta": 2.91
+  },
+  "swamp": {
+    "file": "swamp_battlefield_tile.png",
+    "preset": "swamp",
+    "before": {
+      "meanRgb": [
+        18.47,
+        19.09,
+        17.75
+      ],
+      "meanLuma": 18.86
+    },
+    "after": {
+      "meanRgb": [
+        25.73,
+        27.17,
+        24.18
+      ],
+      "meanLuma": 26.65
+    },
+    "lumaDelta": 7.79
+  },
+  "ruins": {
+    "file": "ruins_battlefield_tile.png",
+    "preset": "ruins",
+    "before": {
+      "meanRgb": [
+        25.18,
+        25.53,
+        25.88
+      ],
+      "meanLuma": 25.48
+    },
+    "after": {
+      "meanRgb": [
+        29.14,
+        29.85,
+        30.3
+      ],
+      "meanLuma": 29.73
+    },
+    "lumaDelta": 4.25
+  }
+}

@@ -1,0 +1,60 @@
+[
+  {
+    "path": "public/assets/effects/adaptation_skills/burst_fang_mine.png",
+    "backup": "docs/assets/backup/mvp142b_effect_review/burst_fang_mine.png",
+    "before": {
+      "size": [
+        434,
+        434
+      ],
+      "bbox": [
+        18,
+        36,
+        434,
+        398
+      ]
+    },
+    "after": {
+      "size": [
+        434,
+        434
+      ],
+      "bbox": [
+        39,
+        63,
+        394,
+        371
+      ]
+    },
+    "method": "crop visible subject, scale to 82 percent safe area, center on original canvas"
+  },
+  {
+    "path": "public/assets/effects/adaptation_skills/burst_fang_explosion.png",
+    "backup": "docs/assets/backup/mvp142b_effect_review/burst_fang_explosion.png",
+    "before": {
+      "size": [
+        412,
+        449
+      ],
+      "bbox": [
+        0,
+        36,
+        376,
+        413
+      ]
+    },
+    "after": {
+      "size": [
+        412,
+        449
+      ],
+      "bbox": [
+        37,
+        56,
+        374,
+        393
+      ]
+    },
+    "method": "crop visible subject, scale to 82 percent safe area, center on original canvas"
+  }
+]

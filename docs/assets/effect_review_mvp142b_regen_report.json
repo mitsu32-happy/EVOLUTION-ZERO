@@ -1,0 +1,54 @@
+[
+  {
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc4b4a1348191b175c656f8ee97fb.png",
+    "rawCopy": "docs/assets/generated_raw/mvp142b_effect_regen/burst_fang_mine_generated_raw.png",
+    "target": "public/assets/effects/adaptation_skills/burst_fang_mine.png",
+    "backup": "docs/assets/backup/mvp142b_effect_review/burst_fang_mine_before_regen.png",
+    "generatedSize": [
+      1254,
+      1254
+    ],
+    "extractedBbox": [
+      117,
+      244,
+      1136,
+      1076
+    ],
+    "finalCanvas": [
+      434,
+      434
+    ],
+    "finalBbox": [
+      39,
+      72,
+      394,
+      361
+    ]
+  },
+  {
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc4dd61988191ab24c7428e9411a0.png",
+    "rawCopy": "docs/assets/generated_raw/mvp142b_effect_regen/burst_fang_explosion_generated_raw.png",
+    "target": "public/assets/effects/adaptation_skills/burst_fang_explosion.png",
+    "backup": "docs/assets/backup/mvp142b_effect_review/burst_fang_explosion_before_regen.png",
+    "generatedSize": [
+      1254,
+      1254
+    ],
+    "extractedBbox": [
+      141,
+      132,
+      1116,
+      1125
+    ],
+    "finalCanvas": [
+      412,
+      449
+    ],
+    "finalBbox": [
+      37,
+      53,
+      374,
+      396
+    ]
+  }
+]

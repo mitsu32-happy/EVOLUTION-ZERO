@@ -1,0 +1,90 @@
+[
+  {
+    "name": "ruins_laser_warning",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc7f02430819180993ec79606b275.png",
+    "raw": "docs/assets/generated_raw/mvp142b_high_ratio_regen/ruins_laser_warning_generated_raw.png",
+    "targets": [
+      "public/assets/effects/boss/ruins_boss_laser_warning.png",
+      "public/assets/effects/stage_gimmicks/ruins_laser_warning.png"
+    ],
+    "sheets": [
+      "public/assets/effects/boss/ruins_boss_laser_warning_sheet.png",
+      "public/assets/effects/stage_gimmicks/ruins_laser_warning_sheet.png"
+    ],
+    "staticBbox": [
+      41,
+      226,
+      471,
+      286
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "ruins_laser_beam",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc8224fc481918387493ba8a852d9.png",
+    "raw": "docs/assets/generated_raw/mvp142b_high_ratio_regen/ruins_laser_beam_generated_raw.png",
+    "targets": [
+      "public/assets/effects/boss/ruins_boss_laser_beam.png",
+      "public/assets/effects/stage_gimmicks/ruins_laser_beam.png"
+    ],
+    "sheets": [
+      "public/assets/effects/boss/ruins_boss_laser_beam_sheet.png",
+      "public/assets/effects/stage_gimmicks/ruins_laser_beam_sheet.png"
+    ],
+    "staticBbox": [
+      41,
+      209,
+      471,
+      302
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "swamp_poison_warning",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc86c8f4c8191940396cc68933b39.png",
+    "raw": "docs/assets/generated_raw/mvp142b_high_ratio_regen/swamp_poison_warning_generated_raw.png",
+    "targets": [
+      "public/assets/effects/boss/swamp_boss_poison_warning.png"
+    ],
+    "sheets": [
+      "public/assets/effects/boss/swamp_boss_poison_warning_sheet.png"
+    ],
+    "staticBbox": [
+      41,
+      110,
+      471,
+      401
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ]
+  },
+  {
+    "name": "swamp_summon_spore",
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc8adbcc08191a99c45b3146aef0b.png",
+    "raw": "docs/assets/generated_raw/mvp142b_high_ratio_regen/swamp_summon_spore_generated_raw.png",
+    "targets": [
+      "public/assets/effects/boss/swamp_boss_summon_spore.png"
+    ],
+    "sheets": [
+      "public/assets/effects/boss/swamp_boss_summon_spore_sheet.png"
+    ],
+    "staticBbox": [
+      78,
+      41,
+      434,
+      471
+    ],
+    "sheetSize": [
+      2048,
+      2048
+    ]
+  }
+]

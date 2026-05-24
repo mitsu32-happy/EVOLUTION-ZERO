@@ -1,0 +1,19 @@
+{
+  "input": "C:\\Users\\oushi\\.codex\\generated_images\\019e2157-4c29-7211-abfc-7419f522d0c8\\ig_04bf4e275eac365e016a07e2b4a07481919107b8f729fb6147.png",
+  "output": "public\\assets\\maps\\backgrounds\\jungle_battlefield_tile.png",
+  "originalSize": {
+    "width": 1254,
+    "height": 1254
+  },
+  "outputSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "edgeBand": 96,
+  "readabilityTuning": {
+    "brightness": 0.62,
+    "contrast": 0.76,
+    "color": 0.72
+  },
+  "note": "Low-contrast combat background tile. Edge blending is intentionally mild to preserve battlefield readability."
+}

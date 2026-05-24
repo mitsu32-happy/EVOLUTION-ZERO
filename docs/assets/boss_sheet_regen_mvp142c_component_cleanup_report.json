@@ -1,0 +1,398 @@
+[
+  {
+    "path": "public/assets/enemies/bosses/swamp_boss_sheet.png",
+    "removedPixels": 7957,
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "components": 9,
+        "removedPixels": 53,
+        "bbox": [
+          23,
+          52,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "components": 4,
+        "removedPixels": 19,
+        "bbox": [
+          23,
+          46,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "components": 12,
+        "removedPixels": 309,
+        "bbox": [
+          23,
+          53,
+          202,
+          204
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "components": 5,
+        "removedPixels": 13,
+        "bbox": [
+          23,
+          43,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "components": 15,
+        "removedPixels": 1110,
+        "bbox": [
+          43,
+          95,
+          212,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "components": 13,
+        "removedPixels": 1113,
+        "bbox": [
+          41,
+          97,
+          204,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "components": 13,
+        "removedPixels": 1221,
+        "bbox": [
+          37,
+          94,
+          198,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "components": 10,
+        "removedPixels": 937,
+        "bbox": [
+          50,
+          93,
+          206,
+          210
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "components": 10,
+        "removedPixels": 40,
+        "bbox": [
+          23,
+          52,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "components": 49,
+        "removedPixels": 500,
+        "bbox": [
+          30,
+          50,
+          228,
+          210
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "components": 15,
+        "removedPixels": 527,
+        "bbox": [
+          23,
+          69,
+          201,
+          197
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "components": 17,
+        "removedPixels": 110,
+        "bbox": [
+          23,
+          51,
+          233,
+          205
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "components": 41,
+        "removedPixels": 574,
+        "bbox": [
+          23,
+          56,
+          191,
+          210
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "components": 29,
+        "removedPixels": 374,
+        "bbox": [
+          23,
+          76,
+          212,
+          199
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "components": 30,
+        "removedPixels": 736,
+        "bbox": [
+          23,
+          69,
+          205,
+          192
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "components": 43,
+        "removedPixels": 321,
+        "bbox": [
+          23,
+          73,
+          233,
+          206
+        ]
+      }
+    ]
+  },
+  {
+    "path": "public/assets/enemies/bosses/ruins_boss_sheet.png",
+    "removedPixels": 16664,
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "components": 14,
+        "removedPixels": 1043,
+        "bbox": [
+          35,
+          38,
+          220,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "components": 7,
+        "removedPixels": 772,
+        "bbox": [
+          29,
+          38,
+          227,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "components": 7,
+        "removedPixels": 790,
+        "bbox": [
+          33,
+          38,
+          222,
+          210
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "components": 10,
+        "removedPixels": 996,
+        "bbox": [
+          35,
+          38,
+          221,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "components": 10,
+        "removedPixels": 884,
+        "bbox": [
+          23,
+          42,
+          233,
+          210
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "components": 11,
+        "removedPixels": 903,
+        "bbox": [
+          46,
+          53,
+          233,
+          204
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "components": 8,
+        "removedPixels": 660,
+        "bbox": [
+          44,
+          59,
+          233,
+          199
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "components": 9,
+        "removedPixels": 873,
+        "bbox": [
+          33,
+          52,
+          233,
+          209
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "components": 13,
+        "removedPixels": 1142,
+        "bbox": [
+          23,
+          47,
+          206,
+          210
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "components": 9,
+        "removedPixels": 1020,
+        "bbox": [
+          23,
+          50,
+          215,
+          207
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "components": 12,
+        "removedPixels": 1116,
+        "bbox": [
+          23,
+          48,
+          223,
+          208
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "components": 8,
+        "removedPixels": 792,
+        "bbox": [
+          23,
+          54,
+          233,
+          208
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "components": 19,
+        "removedPixels": 1178,
+        "bbox": [
+          23,
+          66,
+          192,
+          206
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "components": 35,
+        "removedPixels": 1656,
+        "bbox": [
+          29,
+          49,
+          217,
+          210
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "components": 26,
+        "removedPixels": 1264,
+        "bbox": [
+          23,
+          75,
+          202,
+          206
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "components": 20,
+        "removedPixels": 1575,
+        "bbox": [
+          23,
+          72,
+          231,
+          202
+        ]
+      }
+    ]
+  }
+]

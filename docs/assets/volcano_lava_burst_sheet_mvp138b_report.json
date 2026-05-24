@@ -1,0 +1,10 @@
+{
+  "sheet": "public/assets/effects/stage_gimmicks/volcano_lava_burst_sheet.png",
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "columns": 4,
+  "rows": 4,
+  "frames": 16,
+  "greenFringeCleanup": true,
+  "notes": "MVP-138b animated sheet rebuilt with edge-fringe cleanup."
+}

@@ -1,0 +1,23 @@
+{
+  "name": "swamp_poison_mist",
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0ac78d3617dc2925016a0dc98dfefc8191aaee18a964909cad.png",
+  "raw": "docs/assets/generated_raw/mvp142b_high_ratio_regen/swamp_poison_mist_generated_raw.png",
+  "targets": [
+    "public/assets/effects/boss/swamp_boss_poison_mist.png",
+    "public/assets/effects/stage_gimmicks/swamp_poison_mist.png"
+  ],
+  "sheets": [
+    "public/assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+    "public/assets/effects/stage_gimmicks/swamp_poison_mist_sheet.png"
+  ],
+  "staticBbox": [
+    41,
+    132,
+    471,
+    379
+  ],
+  "sheetSize": [
+    2048,
+    2048
+  ]
+}

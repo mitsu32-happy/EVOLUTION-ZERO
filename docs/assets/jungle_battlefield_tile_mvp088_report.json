@@ -1,0 +1,20 @@
+{
+  "input": "public\\assets\\maps\\backgrounds\\mvp088_originals\\jungle_battlefield_tile.png",
+  "output": "public\\assets\\maps\\backgrounds\\jungle_battlefield_tile.png",
+  "preset": "jungle",
+  "originalSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "outputSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "edgeBand": 96,
+  "readabilityTuning": {
+    "brightness": 1.28,
+    "contrast": 1.04,
+    "color": 1.13
+  },
+  "note": "Lift dark greens while keeping blue-green mist and ground detail subdued."
+}

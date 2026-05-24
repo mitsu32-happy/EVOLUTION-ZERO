@@ -1,0 +1,618 @@
+{
+  "assets": {
+    "hero": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\heroes\\tyrannosaurus_zero_hero.png",
+    "portrait": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\portraits\\tyrannosaurus_zero_portrait.png",
+    "sheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\sheets\\tyrannosaurus_zero_sheet.png",
+    "icon": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\ui\\hud\\special_icons\\special_zero_tyrannosaurus.png",
+    "effect": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_burst_sheet.png",
+    "effectStaticBurst": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_burst.png",
+    "effectStaticCore": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_core.png",
+    "effectStaticBeam": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_beam.png",
+    "effectCoreSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_core_sheet.png",
+    "effectBeamSheet": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_beam_sheet.png"
+  },
+  "rawSources": {
+    "hero": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042075501eaea2f6016a105af327a8819182a21d932bc0bd0e.png",
+    "sheet": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042075501eaea2f6016a105b4904d0819180c15d74c7419da2.png",
+    "icon": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042075501eaea2f6016a105c0a09b8819186cf604d8328d81f.png",
+    "effect": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042075501eaea2f6016a105c3e6668819184bdf14e6047c854.png"
+  },
+  "backupDir": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\backup\\mvp150_omega_rebuild",
+  "rawDir": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\generated_raw\\mvp150_omega_rebuild",
+  "sheetReport": {
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042075501eaea2f6016a105b4904d0819180c15d74c7419da2.png",
+    "output": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\sheets\\tyrannosaurus_zero_sheet.png",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "bboxBefore": [
+          12,
+          42,
+          237,
+          210
+        ],
+        "alphaMean": 240.52,
+        "opaquePixels": 12584,
+        "bboxAfter": [
+          30,
+          60,
+          226,
+          206
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bboxBefore": [
+          8,
+          44,
+          237,
+          210
+        ],
+        "alphaMean": 240.6,
+        "opaquePixels": 11703,
+        "bboxAfter": [
+          30,
+          62,
+          226,
+          204
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bboxBefore": [
+          11,
+          44,
+          246,
+          210
+        ],
+        "alphaMean": 239.84,
+        "opaquePixels": 10754,
+        "bboxAfter": [
+          30,
+          64,
+          226,
+          202
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bboxBefore": [
+          13,
+          49,
+          237,
+          210
+        ],
+        "alphaMean": 240.09,
+        "opaquePixels": 11784,
+        "bboxAfter": [
+          30,
+          63,
+          226,
+          203
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bboxBefore": [
+          12,
+          37,
+          239,
+          191
+        ],
+        "alphaMean": 239.43,
+        "opaquePixels": 10432,
+        "bboxAfter": [
+          30,
+          68,
+          226,
+          200
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bboxBefore": [
+          8,
+          38,
+          231,
+          189
+        ],
+        "alphaMean": 240.67,
+        "opaquePixels": 10559,
+        "bboxAfter": [
+          30,
+          68,
+          226,
+          200
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bboxBefore": [
+          6,
+          30,
+          234,
+          190
+        ],
+        "alphaMean": 239.16,
+        "opaquePixels": 10424,
+        "bboxAfter": [
+          30,
+          65,
+          226,
+          202
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "bboxBefore": [
+          6,
+          35,
+          241,
+          192
+        ],
+        "alphaMean": 240.42,
+        "opaquePixels": 9508,
+        "bboxAfter": [
+          30,
+          69,
+          226,
+          199
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bboxBefore": [
+          10,
+          42,
+          225,
+          197
+        ],
+        "alphaMean": 239.84,
+        "opaquePixels": 11565,
+        "bboxAfter": [
+          30,
+          63,
+          226,
+          204
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bboxBefore": [
+          10,
+          22,
+          233,
+          196
+        ],
+        "alphaMean": 241.52,
+        "opaquePixels": 13034,
+        "bboxAfter": [
+          30,
+          57,
+          226,
+          209
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bboxBefore": [
+          10,
+          74,
+          227,
+          195
+        ],
+        "alphaMean": 240.01,
+        "opaquePixels": 9732,
+        "bboxAfter": [
+          30,
+          80,
+          226,
+          189
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "bboxBefore": [
+          2,
+          66,
+          250,
+          195
+        ],
+        "alphaMean": 239.95,
+        "opaquePixels": 8463,
+        "bboxAfter": [
+          30,
+          85,
+          226,
+          186
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "bboxBefore": [
+          19,
+          29,
+          223,
+          188
+        ],
+        "alphaMean": 242.2,
+        "opaquePixels": 14435,
+        "bboxAfter": [
+          30,
+          62,
+          226,
+          214
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "bboxBefore": [
+          15,
+          60,
+          242,
+          195
+        ],
+        "alphaMean": 239.82,
+        "opaquePixels": 9584,
+        "bboxAfter": [
+          30,
+          84,
+          226,
+          200
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "bboxBefore": [
+          17,
+          79,
+          236,
+          198
+        ],
+        "alphaMean": 238.68,
+        "opaquePixels": 7841,
+        "bboxAfter": [
+          30,
+          90,
+          226,
+          196
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "bboxBefore": [
+          5,
+          88,
+          233,
+          197
+        ],
+        "alphaMean": 236.73,
+        "opaquePixels": 6067,
+        "bboxAfter": [
+          30,
+          97,
+          226,
+          190
+        ]
+      }
+    ],
+    "frameEdgeIssues": []
+  },
+  "effectReport": {
+    "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_042075501eaea2f6016a105c3e6668819184bdf14e6047c854.png",
+    "output": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_omega_burst_sheet.png",
+    "cells": [
+      {
+        "row": 1,
+        "col": 1,
+        "bboxBefore": [
+          45,
+          50,
+          223,
+          218
+        ],
+        "alphaMean": 242.6,
+        "opaquePixels": 27621,
+        "bboxAfter": [
+          18,
+          26,
+          237,
+          233
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bboxBefore": [
+          32,
+          46,
+          221,
+          224
+        ],
+        "alphaMean": 243.36,
+        "opaquePixels": 29010,
+        "bboxAfter": [
+          18,
+          26,
+          238,
+          233
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bboxBefore": [
+          19,
+          36,
+          219,
+          232
+        ],
+        "alphaMean": 244.15,
+        "opaquePixels": 29612,
+        "bboxAfter": [
+          18,
+          22,
+          238,
+          237
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bboxBefore": [
+          10,
+          35,
+          212,
+          233
+        ],
+        "alphaMean": 243.82,
+        "opaquePixels": 29817,
+        "bboxAfter": [
+          18,
+          22,
+          238,
+          237
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bboxBefore": [
+          29,
+          19,
+          241,
+          232
+        ],
+        "alphaMean": 245.0,
+        "opaquePixels": 30308,
+        "bboxAfter": [
+          19,
+          19,
+          237,
+          239
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bboxBefore": [
+          20,
+          18,
+          238,
+          233
+        ],
+        "alphaMean": 247.97,
+        "opaquePixels": 30350,
+        "bboxAfter": [
+          18,
+          22,
+          238,
+          238
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bboxBefore": [
+          12,
+          10,
+          256,
+          233
+        ],
+        "alphaMean": 246.46,
+        "opaquePixels": 25378,
+        "bboxAfter": [
+          18,
+          30,
+          238,
+          231
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "bboxBefore": [
+          0,
+          12,
+          228,
+          231
+        ],
+        "alphaMean": 248.87,
+        "opaquePixels": 31630,
+        "bboxAfter": [
+          18,
+          24,
+          238,
+          235
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bboxBefore": [
+          34,
+          17,
+          234,
+          256
+        ],
+        "alphaMean": 246.43,
+        "opaquePixels": 23340,
+        "bboxAfter": [
+          36,
+          19,
+          220,
+          239
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bboxBefore": [
+          21,
+          14,
+          225,
+          256
+        ],
+        "alphaMean": 245.81,
+        "opaquePixels": 21839,
+        "bboxAfter": [
+          35,
+          19,
+          220,
+          239
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bboxBefore": [
+          17,
+          18,
+          222,
+          256
+        ],
+        "alphaMean": 246.11,
+        "opaquePixels": 22420,
+        "bboxAfter": [
+          33,
+          19,
+          222,
+          239
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "bboxBefore": [
+          8,
+          19,
+          220,
+          256
+        ],
+        "alphaMean": 245.39,
+        "opaquePixels": 22678,
+        "bboxAfter": [
+          30,
+          19,
+          226,
+          239
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "bboxBefore": [
+          28,
+          0,
+          244,
+          200
+        ],
+        "alphaMean": 247.96,
+        "opaquePixels": 27819,
+        "bboxAfter": [
+          18,
+          31,
+          238,
+          234
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "bboxBefore": [
+          15,
+          0,
+          248,
+          201
+        ],
+        "alphaMean": 246.21,
+        "opaquePixels": 24677,
+        "bboxAfter": [
+          18,
+          40,
+          238,
+          229
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "bboxBefore": [
+          12,
+          0,
+          229,
+          205
+        ],
+        "alphaMean": 248.42,
+        "opaquePixels": 29558,
+        "bboxAfter": [
+          18,
+          29,
+          238,
+          236
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "bboxBefore": [
+          12,
+          0,
+          220,
+          220
+        ],
+        "alphaMean": 253.72,
+        "opaquePixels": 29794,
+        "bboxAfter": [
+          24,
+          21,
+          232,
+          241
+        ]
+      }
+    ],
+    "frameEdgeIssues": []
+  },
+  "adoption": "Generated as fully new ZERO Omega Rex assets; not sourced from tyrannosaurus attack branch.",
+  "motionQA": {
+    "move": "Row 2 has alternating heavy forward poses with visible head/tail/body changes; generated as new ZERO silhouette, then fit per cell.",
+    "attack": "Row 3 includes bite/core-blast poses distinct from idle.",
+    "death": "Row 4 shows collapse/glow-fade style poses without frame edge issues."
+  }
+}

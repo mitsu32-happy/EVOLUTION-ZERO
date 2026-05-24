@@ -1,0 +1,1548 @@
+{
+  "sources": {
+    "jungle_atlas": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0a593a3cc1aad864016a0d90af61748191b1d66af3c5aa23c6.png",
+    "volcano_atlas": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0a593a3cc1aad864016a0d91429f0881919759bfa546a5475b.png",
+    "stage_fire_source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0a593a3cc1aad864016a0d929fd3648191bd483e37171a3098.png"
+  },
+  "jungle_boss_charge_warning": {
+    "static": "public/assets/effects/boss/jungle_boss_charge_warning.png",
+    "sheet": "public/assets/effects/boss/jungle_boss_charge_warning_sheet.png",
+    "frame": 512,
+    "bbox": [
+      58,
+      68,
+      454,
+      444
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          207,
+          209,
+          305,
+          303
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          190,
+          193,
+          322,
+          318
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          173,
+          177,
+          339,
+          334
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          156,
+          161,
+          355,
+          350
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          139,
+          145,
+          372,
+          366
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          122,
+          129,
+          389,
+          382
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          106,
+          113,
+          406,
+          398
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          89,
+          97,
+          423,
+          414
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          72,
+          81,
+          440,
+          430
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          58,
+          68,
+          454,
+          444
+        ]
+      }
+    ]
+  },
+  "jungle_boss_charge_slash": {
+    "static": "public/assets/effects/boss/jungle_boss_charge_slash.png",
+    "sheet": "public/assets/effects/boss/jungle_boss_charge_slash_sheet.png",
+    "frame": 512,
+    "bbox": [
+      52,
+      61,
+      460,
+      450
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          215,
+          217,
+          296,
+          294
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          197,
+          199,
+          315,
+          312
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          178,
+          182,
+          333,
+          330
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          160,
+          164,
+          352,
+          347
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          141,
+          147,
+          370,
+          365
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          123,
+          129,
+          389,
+          383
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          104,
+          111,
+          407,
+          400
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          86,
+          94,
+          426,
+          418
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          67,
+          76,
+          444,
+          435
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          52,
+          61,
+          460,
+          450
+        ]
+      }
+    ]
+  },
+  "jungle_boss_roar_wave": {
+    "static": "public/assets/effects/boss/jungle_boss_roar_wave.png",
+    "sheet": "public/assets/effects/boss/jungle_boss_roar_wave_sheet.png",
+    "frame": 512,
+    "bbox": [
+      58,
+      80,
+      454,
+      432
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          206,
+          212,
+          305,
+          300
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          190,
+          197,
+          322,
+          314
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          173,
+          182,
+          339,
+          329
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          156,
+          167,
+          355,
+          344
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          139,
+          152,
+          372,
+          359
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          122,
+          137,
+          389,
+          374
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          106,
+          122,
+          406,
+          389
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          89,
+          107,
+          423,
+          404
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          72,
+          92,
+          440,
+          419
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          58,
+          80,
+          454,
+          432
+        ]
+      }
+    ]
+  },
+  "jungle_boss_summon_spore": {
+    "static": "public/assets/effects/boss/jungle_boss_summon_spore.png",
+    "sheet": "public/assets/effects/boss/jungle_boss_summon_spore_sheet.png",
+    "frame": 512,
+    "bbox": [
+      74,
+      52,
+      437,
+      460
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          211,
+          205,
+          301,
+          307
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          195,
+          188,
+          316,
+          324
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          180,
+          170,
+          332,
+          341
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          164,
+          153,
+          347,
+          359
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          149,
+          136,
+          363,
+          376
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          133,
+          118,
+          378,
+          393
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          118,
+          101,
+          393,
+          411
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          103,
+          84,
+          409,
+          428
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          87,
+          66,
+          424,
+          445
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          74,
+          52,
+          437,
+          460
+        ]
+      }
+    ]
+  },
+  "volcano_boss_lava_warning": {
+    "static": "public/assets/effects/boss/volcano_boss_lava_warning.png",
+    "sheet": "public/assets/effects/boss/volcano_boss_lava_warning_sheet.png",
+    "frame": 512,
+    "bbox": [
+      58,
+      98,
+      454,
+      414
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          197,
+          209,
+          315,
+          302
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          181,
+          196,
+          331,
+          315
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          165,
+          184,
+          346,
+          328
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          149,
+          171,
+          362,
+          341
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          134,
+          158,
+          378,
+          353
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          118,
+          146,
+          393,
+          366
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          102,
+          133,
+          409,
+          378
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          87,
+          121,
+          425,
+          391
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          71,
+          108,
+          441,
+          403
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          58,
+          98,
+          454,
+          414
+        ]
+      }
+    ]
+  },
+  "volcano_boss_lava_burst": {
+    "static": "public/assets/effects/boss/volcano_boss_lava_burst.png",
+    "sheet": "public/assets/effects/boss/volcano_boss_lava_burst_sheet.png",
+    "frame": 512,
+    "bbox": [
+      79,
+      64,
+      433,
+      448
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          224,
+          221,
+          287,
+          290
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          208,
+          204,
+          304,
+          308
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          191,
+          186,
+          320,
+          326
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          175,
+          168,
+          337,
+          344
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          158,
+          150,
+          353,
+          361
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          142,
+          132,
+          370,
+          379
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          125,
+          114,
+          386,
+          397
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          109,
+          97,
+          403,
+          415
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          93,
+          79,
+          419,
+          433
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          79,
+          64,
+          433,
+          448
+        ]
+      }
+    ]
+  },
+  "volcano_boss_fire_floor": {
+    "static": "public/assets/effects/boss/volcano_boss_fire_floor.png",
+    "sheet": "public/assets/effects/boss/volcano_boss_fire_floor_sheet.png",
+    "frame": 512,
+    "bbox": [
+      60,
+      68,
+      452,
+      444
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          207,
+          209,
+          305,
+          303
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          190,
+          193,
+          321,
+          318
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          174,
+          177,
+          338,
+          334
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          157,
+          161,
+          354,
+          350
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          140,
+          145,
+          371,
+          366
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          124,
+          129,
+          388,
+          382
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          107,
+          113,
+          404,
+          398
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          90,
+          97,
+          421,
+          414
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          74,
+          81,
+          438,
+          430
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          60,
+          68,
+          452,
+          444
+        ]
+      }
+    ]
+  },
+  "volcano_boss_slam_wave": {
+    "static": "public/assets/effects/boss/volcano_boss_slam_wave.png",
+    "sheet": "public/assets/effects/boss/volcano_boss_slam_wave_sheet.png",
+    "frame": 512,
+    "bbox": [
+      58,
+      88,
+      454,
+      423
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          206,
+          214,
+          305,
+          297
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          190,
+          200,
+          322,
+          312
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          173,
+          186,
+          339,
+          326
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          156,
+          171,
+          355,
+          340
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          139,
+          157,
+          372,
+          354
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          122,
+          143,
+          389,
+          369
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          106,
+          129,
+          406,
+          383
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          89,
+          114,
+          423,
+          397
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          72,
+          100,
+          440,
+          411
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          58,
+          88,
+          454,
+          423
+        ]
+      }
+    ]
+  },
+  "volcano_stage_fire_floor": {
+    "static": "public/assets/effects/stage_gimmicks/volcano_fire_floor.png",
+    "sheet": "public/assets/effects/stage_gimmicks/volcano_fire_floor_sheet.png",
+    "frame": 256,
+    "bbox": [
+      20,
+      20,
+      236,
+      235
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "bbox": [
+          101,
+          101,
+          155,
+          154
+        ]
+      },
+      {
+        "frame": 1,
+        "bbox": [
+          92,
+          92,
+          164,
+          164
+        ]
+      },
+      {
+        "frame": 2,
+        "bbox": [
+          83,
+          83,
+          173,
+          173
+        ]
+      },
+      {
+        "frame": 3,
+        "bbox": [
+          73,
+          74,
+          182,
+          182
+        ]
+      },
+      {
+        "frame": 4,
+        "bbox": [
+          64,
+          65,
+          191,
+          191
+        ]
+      },
+      {
+        "frame": 5,
+        "bbox": [
+          55,
+          55,
+          200,
+          200
+        ]
+      },
+      {
+        "frame": 6,
+        "bbox": [
+          46,
+          46,
+          210,
+          209
+        ]
+      },
+      {
+        "frame": 7,
+        "bbox": [
+          37,
+          37,
+          219,
+          218
+        ]
+      },
+      {
+        "frame": 8,
+        "bbox": [
+          28,
+          28,
+          228,
+          227
+        ]
+      },
+      {
+        "frame": 9,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      },
+      {
+        "frame": 10,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      },
+      {
+        "frame": 11,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      },
+      {
+        "frame": 12,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      },
+      {
+        "frame": 13,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      },
+      {
+        "frame": 14,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      },
+      {
+        "frame": 15,
+        "bbox": [
+          20,
+          20,
+          236,
+          235
+        ]
+      }
+    ]
+  },
+  "validation": [
+    {
+      "name": "jungle_boss_charge_slash.png",
+      "bbox": [
+        52,
+        61,
+        460,
+        450
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "jungle_boss_charge_slash_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "jungle_boss_charge_warning.png",
+      "bbox": [
+        58,
+        68,
+        454,
+        444
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "jungle_boss_charge_warning_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "jungle_boss_roar_wave.png",
+      "bbox": [
+        58,
+        80,
+        454,
+        432
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "jungle_boss_roar_wave_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "jungle_boss_summon_spore.png",
+      "bbox": [
+        74,
+        52,
+        437,
+        460
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "jungle_boss_summon_spore_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "volcano_boss_fire_floor.png",
+      "bbox": [
+        60,
+        68,
+        452,
+        444
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "volcano_boss_fire_floor_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "volcano_boss_lava_burst.png",
+      "bbox": [
+        79,
+        64,
+        433,
+        448
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "volcano_boss_lava_burst_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "volcano_boss_lava_warning.png",
+      "bbox": [
+        58,
+        98,
+        454,
+        414
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "volcano_boss_lava_warning_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "volcano_boss_slam_wave.png",
+      "bbox": [
+        58,
+        88,
+        454,
+        423
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "volcano_boss_slam_wave_sheet.png",
+      "bad_frames": []
+    },
+    {
+      "name": "volcano_fire_floor.png",
+      "bbox": [
+        20,
+        20,
+        236,
+        235
+      ],
+      "touches_edge": false
+    },
+    {
+      "name": "volcano_fire_floor_sheet.png",
+      "bad_frames": []
+    }
+  ]
+}

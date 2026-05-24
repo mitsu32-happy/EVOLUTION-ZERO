@@ -1,0 +1,177 @@
+{
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_09a250084f319caf016a106eb4e1588191bb34a97e1aecf388.png",
+  "outputs": [
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\heroes\\velociraptor_zero_hero.png",
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\portraits\\velociraptor_zero_portrait.png",
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\dinos\\evolutions\\sheets\\velociraptor_zero_sheet.png",
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\ui\\hud\\special_icons\\special_zero_velociraptor.png",
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_raptor_core_sheet.png",
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_raptor_slash_sheet.png",
+    "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\effects\\specials\\special_zero_raptor_dash_sheet.png"
+  ],
+  "frameEdgeIssues": [],
+  "frameEdgeIssueCount": 0,
+  "frames": [
+    {
+      "row": 0,
+      "col": 0,
+      "bbox": [
+        57,
+        26,
+        198,
+        229
+      ]
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "bbox": [
+        57,
+        26,
+        198,
+        230
+      ]
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "bbox": [
+        57,
+        27,
+        199,
+        228
+      ]
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "bbox": [
+        57,
+        28,
+        198,
+        228
+      ]
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "bbox": [
+        58,
+        23,
+        197,
+        233
+      ]
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        56,
+        29,
+        200,
+        226
+      ]
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        58,
+        24,
+        198,
+        232
+      ]
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        55,
+        30,
+        200,
+        225
+      ]
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "bbox": [
+        58,
+        24,
+        198,
+        231
+      ]
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        55,
+        21,
+        201,
+        235
+      ]
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        51,
+        19,
+        205,
+        237
+      ]
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        56,
+        24,
+        199,
+        231
+      ]
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "bbox": [
+        52,
+        48,
+        204,
+        232
+      ]
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        43,
+        61,
+        212,
+        219
+      ]
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        47,
+        78,
+        208,
+        202
+      ]
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        53,
+        88,
+        202,
+        191
+      ]
+    }
+  ],
+  "notes": "Hero generated with image_gen on chroma green; derived portrait/sheet/icon/effects locally with alpha cleanup. Sheet frames use per-row motion transforms and stay inside cells."
+}

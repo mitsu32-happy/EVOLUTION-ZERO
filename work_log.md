@@ -1,0 +1,272 @@
+# EVOLUTION ZERO Work Log
+
+## MVP-028
+- 実装内容
+  - AudioManager を追加
+  - UIクリックSE、攻撃SE、被弾SE、進化SE、必殺SE、ボス警告SEの仮フックを追加
+  - 音声ファイルが存在しない場合でも落ちないように防御
+  - 音量とミュートの簡易管理を追加
+- 変更ファイル一覧
+  - src/core/screen_manager.js
+  - src/scenes/play_scene.js
+  - src/ui/title_screen.js
+- 新規ファイル一覧
+  - src/audio/audio_manager.js
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+  - 音声ファイルなしでもアプリが停止しない構造
+  - 主要イベントからAudioManagerを呼び出す導線を追加
+- 未実装/仮実装のもの
+  - 音声/SEは仮
+  - 実ファイル追加、本格BGM、音量設定UIは未実装
+- 次に確認すべき点
+  - 実SEファイルを配置した時の音量バランス
+  - 攻撃SEの鳴りすぎ
+  - モバイルブラウザでの自動再生制限への挙動
+
+## MVP-027
+- 実装内容
+  - 恐竜ごとの初期ステータス差を少し明確化
+  - ヴェロキラプトルに移動速度/攻撃テンポ寄りの仮パッシブを追加
+  - トリケラトプスに高HP/被ダメージ軽減寄りの仮パッシブを追加
+  - ティラノサウルスに攻撃力/攻撃範囲寄りの仮パッシブを追加
+  - CombatSystem と GameState に恐竜差分を反映
+- 変更ファイル一覧
+  - src/core/game_state.js
+  - src/data/run_config.js
+  - src/scenes/play_scene.js
+  - src/systems/combat_system.js
+- 新規ファイル一覧
+  - なし
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+  - selectedDino に応じてHP/移動/攻撃テンポ/攻撃力/被ダメージが変わる
+- 未実装/仮実装のもの
+  - 恐竜固有性能は仮
+  - 固有スキル/キャラLv/専用演出は未実装
+- 次に確認すべき点
+  - ラプトルが速すぎないか
+  - トリケラが硬すぎないか
+  - ティラノが強すぎないか
+
+## MVP-019
+- 実装内容
+  - 仮ボスエンティティを追加
+  - 60秒経過でボスが出現する処理を追加
+  - ボス警告表示とボスHPバーを追加
+  - ボス撃破報酬として大量EXP、スコア、必殺ゲージ増加を追加
+  - リザルトにボス撃破数を追加
+- 変更ファイル一覧
+  - src/core/game_state.js
+  - src/scenes/play_scene.js
+  - src/ui/hud.js
+  - src/ui/result_ui.js
+- 新規ファイル一覧
+  - src/entities/boss.js
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+  - ブラウザリロード後にコンソールエラーなし
+- 未実装/仮実装のもの
+  - ボスのフェーズ変化は未実装
+  - ボス専用BGMは未実装
+  - ボス見た目は仮図形
+  - ステージ固有ボスは未実装
+- 次に確認すべき点
+  - 実プレイで60秒到達時のボス出現タイミング
+  - 必殺がボスに当たるか
+  - ボス撃破時の報酬量
+
+## MVP-020
+- 実装内容
+  - リザルト後の仮DNA獲得を追加
+  - LocalStorage保存に永続DNAと研究Lvを追加
+  - ホームに所持DNA/累計DNA/前回獲得DNAを表示
+  - DNA研究画面を追加
+  - 仮強化3種を追加
+    - DNA獲得量UP
+    - 初期HP UP
+    - 初期攻撃力 UP
+- 変更ファイル一覧
+  - src/core/screen_manager.js
+  - src/save/save_manager.js
+  - src/scenes/play_scene.js
+  - src/systems/combat_system.js
+  - src/ui/home_screen.js
+  - src/ui/result_ui.js
+- 新規ファイル一覧
+  - src/data/research.js
+  - src/ui/research_screen.js
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+  - 旧セーブデータはnormalizeで補完する形にした
+- 未実装/仮実装のもの
+  - 研究ツリーは仮
+  - 解放条件は未実装
+  - 図鑑連動は未実装
+- 次に確認すべき点
+  - ホームからDNA研究へ遷移できるか
+  - 研究購入後にDNAが減るか
+  - 初期HP/攻撃力がプレイに反映されるか
+
+## MVP-021
+- 実装内容
+  - 図鑑画面への仮導線を追加
+  - 発見済み進化をLocalStorageに保存
+  - 原種から適応別に分岐する進化図鑑トップを追加
+  - speed / hunting / attack の分岐進化を仮表示
+- 変更ファイル一覧
+  - src/core/screen_manager.js
+  - src/save/save_manager.js
+  - src/ui/home_screen.js
+- 新規ファイル一覧
+  - src/ui/codex_screen.js
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+  - 既存セーブにdiscoveredEvolutionsがない場合も補完される
+- 未実装/仮実装のもの
+  - 図鑑デザインは仮
+  - 進化条件詳細公開は未実装
+  - 敵図鑑/ボス図鑑は未実装
+- 次に確認すべき点
+  - ホームから図鑑へ遷移できるか
+  - 進化後リザルトで発見済み進化が保存されるか
+
+## MVP-022
+- 実装内容
+  - ボス出現警告のパルス表現を強化
+  - 必殺発動中の画面リング表現を追加
+  - リザルトのNEW RECORD表示を強調
+- 変更ファイル一覧
+  - src/scenes/play_scene.js
+  - src/systems/ultimate_system.js
+  - src/ui/result_ui.js
+- 新規ファイル一覧
+  - なし
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+- 未実装/仮実装のもの
+  - 音声なし演出強化は仮
+  - 本格カットシーンは未実装
+  - 重い演出は未実装
+- 次に確認すべき点
+  - ボス警告が見やすいか
+  - 必殺演出で画面が見えにくくなっていないか
+
+## MVP-023
+- 実装内容
+  - jungleの群れ敵出現傾向を少し増加
+  - volcanoに少数の仮ダメージ床を追加
+  - swampに少数の仮移動低下エリアを追加
+  - selectedStageに応じてギミックを生成
+- 変更ファイル一覧
+  - src/data/run_config.js
+  - src/scenes/play_scene.js
+- 新規ファイル一覧
+  - なし
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+- 未実装/仮実装のもの
+  - ステージギミックは仮
+  - 配置は固定
+  - 本格ステージギミックは未実装
+- 次に確認すべき点
+  - volcanoのダメージ床が理不尽でないか
+  - swampの移動低下が強すぎないか
+  - jungleの群れ密度が重くないか
+
+## MVP-024
+- 実装内容
+  - selectedModeを追加
+  - ステージ選択にNORMAL RUN / ENDLESS / ZERO LOCKを追加
+  - ENDLESS時に敵上限と出現間隔を少し上げる仮倍率を追加
+  - リザルトにモード名を表示
+- 変更ファイル一覧
+  - src/core/game_state.js
+  - src/save/save_manager.js
+  - src/scenes/play_scene.js
+  - src/systems/spawn_system.js
+  - src/ui/result_ui.js
+  - src/ui/stage_select_screen.js
+- 新規ファイル一覧
+  - なし
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+- 未実装/仮実装のもの
+  - ENDLESS/ZEROは仮
+  - ZEROはロック表示
+  - 報酬倍率は未実装
+- 次に確認すべき点
+  - ENDLESS選択が保存されるか
+  - ENDLESS時の敵密度が強すぎないか
+
+## MVP-025
+- 実装内容
+  - poison / slow / bleed の状態異常基盤を追加
+  - 敵とボスに状態異常保持と更新処理を追加
+  - プレイヤー側にも最低限の状態異常保持と更新処理を追加
+  - slow時の移動低下処理を追加
+- 変更ファイル一覧
+  - src/core/game_state.js
+  - src/entities/boss.js
+  - src/entities/enemy.js
+  - src/scenes/play_scene.js
+- 新規ファイル一覧
+  - なし
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+- 未実装/仮実装のもの
+  - 状態異常は仮
+  - 耐性システムは未実装
+  - 状態異常UIは未実装
+  - 強い発生源はMVP-026以降で追加
+- 次に確認すべき点
+  - 状態異常スキル追加後のバランス
+  - ボスにDoTが効きすぎないか
+
+## MVP-026
+- 実装内容
+  - 追加スキルを最大6個追加
+    - poison_bite
+    - bleed_claw
+    - hard_skin
+    - exp_sense
+    - predator_instinct
+    - shock_roar
+  - 状態異常スキルをCombatSystemに接続
+  - hard_skinをHP増加に接続
+  - exp_senseをPickup吸着に接続
+- 変更ファイル一覧
+  - src/data/skills.js
+  - src/scenes/play_scene.js
+  - src/systems/combat_system.js
+- 新規ファイル一覧
+  - なし
+- build結果
+  - npm.cmd run build 成功
+- 確認できたこと
+  - build成功
+- 未実装/仮実装のもの
+  - 追加スキルは仮
+  - スキル図鑑は未実装
+  - 詳細バランス調整は未実装
+- 次に確認すべき点
+  - 3枠制限内で候補が偏りすぎないか
+  - 状態異常が強すぎないか

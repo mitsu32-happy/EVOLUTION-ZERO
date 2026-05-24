@@ -1,0 +1,46 @@
+{
+  "public/assets/effects/specials/special_zero_triceratops_core_sheet.png": {
+    "recoloredGreenPixels": 32189,
+    "transparentGreenPixels": 9464
+  },
+  "public/assets/effects/specials/special_zero_triceratops_charge_sheet.png": {
+    "recoloredGreenPixels": 32189,
+    "transparentGreenPixels": 9464
+  },
+  "public/assets/effects/specials/special_zero_triceratops_impact_sheet.png": {
+    "recoloredGreenPixels": 32189,
+    "transparentGreenPixels": 9464
+  },
+  "public/assets/effects/boss/volcano_zero_second_warning_sheet.png": {
+    "recoloredGreenPixels": 55253,
+    "transparentGreenPixels": 8416
+  },
+  "public/assets/effects/boss/volcano_zero_second_warning.png": {
+    "recoloredGreenPixels": 5848,
+    "transparentGreenPixels": 1785
+  },
+  "public/assets/effects/boss/volcano_zero_second_attack_sheet.png": {
+    "recoloredGreenPixels": 55253,
+    "transparentGreenPixels": 8416
+  },
+  "public/assets/effects/boss/volcano_zero_second_attack.png": {
+    "recoloredGreenPixels": 5848,
+    "transparentGreenPixels": 1785
+  },
+  "public/assets/effects/boss/volcano_zero_final_warning_sheet.png": {
+    "recoloredGreenPixels": 55253,
+    "transparentGreenPixels": 8416
+  },
+  "public/assets/effects/boss/volcano_zero_final_warning.png": {
+    "recoloredGreenPixels": 5848,
+    "transparentGreenPixels": 1785
+  },
+  "public/assets/effects/boss/volcano_zero_final_attack_sheet.png": {
+    "recoloredGreenPixels": 55253,
+    "transparentGreenPixels": 8416
+  },
+  "public/assets/effects/boss/volcano_zero_final_attack.png": {
+    "recoloredGreenPixels": 5848,
+    "transparentGreenPixels": 1785
+  }
+}

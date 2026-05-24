@@ -1,0 +1,370 @@
+{
+  "source": "docs\\assets\\generated_raw\\velociraptor_speed_sheet_mvp124_raw.png",
+  "output": "public\\assets\\dinos\\evolutions\\sheets\\velociraptor_speed_sheet.png",
+  "columns": 4,
+  "rows": 4,
+  "cellSize": 256,
+  "scale": 0.8583,
+  "sourceMaxBounds": {
+    "width": 254,
+    "height": 157
+  },
+  "frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "sourceBbox": [
+        3,
+        68,
+        248,
+        220
+      ],
+      "finalBbox": [
+        26,
+        77,
+        231,
+        201
+      ],
+      "margins": {
+        "left": 26,
+        "top": 77,
+        "right": 25,
+        "bottom": 55
+      }
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "sourceBbox": [
+        71,
+        63,
+        319,
+        220
+      ],
+      "finalBbox": [
+        24,
+        72,
+        232,
+        201
+      ],
+      "margins": {
+        "left": 24,
+        "top": 72,
+        "right": 24,
+        "bottom": 55
+      }
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "sourceBbox": [
+        69,
+        65,
+        310,
+        220
+      ],
+      "finalBbox": [
+        27,
+        73,
+        228,
+        202
+      ],
+      "margins": {
+        "left": 27,
+        "top": 73,
+        "right": 28,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "sourceBbox": [
+        70,
+        72,
+        311,
+        220
+      ],
+      "finalBbox": [
+        26,
+        79,
+        229,
+        201
+      ],
+      "margins": {
+        "left": 26,
+        "top": 79,
+        "right": 27,
+        "bottom": 55
+      }
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "sourceBbox": [
+        3,
+        153,
+        255,
+        279
+      ],
+      "finalBbox": [
+        22,
+        98,
+        234,
+        202
+      ],
+      "margins": {
+        "left": 22,
+        "top": 98,
+        "right": 22,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "sourceBbox": [
+        76,
+        159,
+        322,
+        279
+      ],
+      "finalBbox": [
+        24,
+        103,
+        231,
+        202
+      ],
+      "margins": {
+        "left": 24,
+        "top": 103,
+        "right": 25,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "sourceBbox": [
+        73,
+        173,
+        325,
+        273
+      ],
+      "finalBbox": [
+        23,
+        120,
+        234,
+        202
+      ],
+      "margins": {
+        "left": 23,
+        "top": 120,
+        "right": 22,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "sourceBbox": [
+        71,
+        168,
+        319,
+        280
+      ],
+      "finalBbox": [
+        24,
+        110,
+        232,
+        202
+      ],
+      "margins": {
+        "left": 24,
+        "top": 110,
+        "right": 24,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "sourceBbox": [
+        7,
+        148,
+        239,
+        272
+      ],
+      "finalBbox": [
+        30,
+        100,
+        225,
+        202
+      ],
+      "margins": {
+        "left": 30,
+        "top": 100,
+        "right": 31,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "sourceBbox": [
+        72,
+        135,
+        326,
+        272
+      ],
+      "finalBbox": [
+        22,
+        89,
+        234,
+        202
+      ],
+      "margins": {
+        "left": 22,
+        "top": 89,
+        "right": 22,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "sourceBbox": [
+        86,
+        143,
+        327,
+        272
+      ],
+      "finalBbox": [
+        26,
+        95,
+        229,
+        202
+      ],
+      "margins": {
+        "left": 26,
+        "top": 95,
+        "right": 27,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "sourceBbox": [
+        72,
+        152,
+        308,
+        272
+      ],
+      "finalBbox": [
+        28,
+        104,
+        226,
+        202
+      ],
+      "margins": {
+        "left": 28,
+        "top": 104,
+        "right": 30,
+        "bottom": 54
+      }
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "sourceBbox": [
+        12,
+        120,
+        217,
+        274
+      ],
+      "finalBbox": [
+        42,
+        65,
+        214,
+        192
+      ],
+      "margins": {
+        "left": 42,
+        "top": 65,
+        "right": 42,
+        "bottom": 64
+      }
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "sourceBbox": [
+        84,
+        177,
+        287,
+        274
+      ],
+      "finalBbox": [
+        44,
+        89,
+        213,
+        167
+      ],
+      "margins": {
+        "left": 44,
+        "top": 89,
+        "right": 43,
+        "bottom": 89
+      }
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "sourceBbox": [
+        77,
+        202,
+        302,
+        273
+      ],
+      "finalBbox": [
+        33,
+        99,
+        222,
+        156
+      ],
+      "margins": {
+        "left": 33,
+        "top": 99,
+        "right": 34,
+        "bottom": 100
+      }
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "sourceBbox": [
+        57,
+        224,
+        311,
+        276
+      ],
+      "finalBbox": [
+        21,
+        107,
+        235,
+        148
+      ],
+      "margins": {
+        "left": 21,
+        "top": 107,
+        "right": 21,
+        "bottom": 108
+      }
+    }
+  ],
+  "edgeCleanup": {
+    "edgeResidueReplaced": 13233,
+    "edgeAlphaSoftened": 6660
+  }
+}

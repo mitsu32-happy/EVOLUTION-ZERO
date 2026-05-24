@@ -1,0 +1,1513 @@
+{
+  "strategy": "mvp143c_bulk_4x4_generation_postprocessed_per_cell",
+  "cell": 256,
+  "safe": 18,
+  "targets": {
+    "swamp_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0710f6da410c78b4016a0e36988a8c8191bd7fd54e90ed5b51.png",
+      "rawCopy": "docs\\assets\\generated_raw\\mvp143c_boss_sheet_bulk_regen\\swamp_boss_bulk_generated_raw.png",
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "output": "public\\assets\\enemies\\bosses\\swamp_boss_sheet.png",
+      "fallbackOutput": "public\\assets\\enemies\\bosses\\swamp_boss.png",
+      "backupSheet": "docs\\assets\\backup\\mvp143c_boss_sheet_bulk_regen\\swamp_boss_sheet.png",
+      "backupFallback": "docs\\assets\\backup\\mvp143c_boss_sheet_bulk_regen\\swamp_boss.png",
+      "beforeStats": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            65,
+            235,
+            226
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 16648,
+          "nonzeroPixelCount": 16648,
+          "edgeIssue": null
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            23,
+            62,
+            225,
+            226
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17079,
+          "nonzeroPixelCount": 17079,
+          "edgeIssue": null
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            14,
+            64,
+            216,
+            226
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17137,
+          "nonzeroPixelCount": 17137,
+          "edgeIssue": null
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            3,
+            69,
+            207,
+            228
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17481,
+          "nonzeroPixelCount": 17481,
+          "edgeIssue": {
+            "bbox": [
+              3,
+              69,
+              207,
+              228
+            ]
+          }
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            16,
+            46,
+            235,
+            212
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 19718,
+          "nonzeroPixelCount": 19718,
+          "edgeIssue": null
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            1,
+            48,
+            219,
+            212
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 19953,
+          "nonzeroPixelCount": 19953,
+          "edgeIssue": {
+            "bbox": [
+              1,
+              48,
+              219,
+              212
+            ]
+          }
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            10,
+            50,
+            256,
+            212
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18730,
+          "nonzeroPixelCount": 18730,
+          "edgeIssue": {
+            "bbox": [
+              10,
+              50,
+              256,
+              212
+            ]
+          }
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            0,
+            52,
+            200,
+            213
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17958,
+          "nonzeroPixelCount": 17958,
+          "edgeIssue": {
+            "bbox": [
+              0,
+              52,
+              200,
+              213
+            ]
+          }
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            25,
+            36,
+            239,
+            215
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18295,
+          "nonzeroPixelCount": 18295,
+          "edgeIssue": null
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            2,
+            36,
+            256,
+            215
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 21891,
+          "nonzeroPixelCount": 21891,
+          "edgeIssue": {
+            "bbox": [
+              2,
+              36,
+              256,
+              215
+            ]
+          }
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            0,
+            59,
+            237,
+            225
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 20565,
+          "nonzeroPixelCount": 20565,
+          "edgeIssue": {
+            "bbox": [
+              0,
+              59,
+              237,
+              225
+            ]
+          }
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            0,
+            93,
+            236,
+            217
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17667,
+          "nonzeroPixelCount": 17667,
+          "edgeIssue": {
+            "bbox": [
+              0,
+              93,
+              236,
+              217
+            ]
+          }
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            18,
+            39,
+            242,
+            202
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18217,
+          "nonzeroPixelCount": 18217,
+          "edgeIssue": null
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            5,
+            75,
+            256,
+            202
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 15972,
+          "nonzeroPixelCount": 15972,
+          "edgeIssue": {
+            "bbox": [
+              5,
+              75,
+              256,
+              202
+            ]
+          }
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            0,
+            87,
+            256,
+            203
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 14370,
+          "nonzeroPixelCount": 14370,
+          "edgeIssue": {
+            "bbox": [
+              0,
+              87,
+              256,
+              203
+            ]
+          }
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            0,
+            88,
+            243,
+            204
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 11974,
+          "nonzeroPixelCount": 11974,
+          "edgeIssue": {
+            "bbox": [
+              0,
+              88,
+              243,
+              204
+            ]
+          }
+        }
+      ],
+      "afterStats": [
+        {
+          "bbox": [
+            27,
+            61,
+            230,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 16648,
+          "nonzeroPixelCount": 16648,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 1,
+          "sourceBbox": [
+            32,
+            65,
+            235,
+            226
+          ],
+          "pasteBox": [
+            27,
+            61,
+            203,
+            161
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            27,
+            58,
+            229,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17079,
+          "nonzeroPixelCount": 17079,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 2,
+          "sourceBbox": [
+            23,
+            62,
+            225,
+            226
+          ],
+          "pasteBox": [
+            27,
+            58,
+            202,
+            164
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            27,
+            60,
+            229,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17137,
+          "nonzeroPixelCount": 17137,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 3,
+          "sourceBbox": [
+            14,
+            64,
+            216,
+            226
+          ],
+          "pasteBox": [
+            27,
+            60,
+            202,
+            162
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            26,
+            63,
+            230,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17481,
+          "nonzeroPixelCount": 17481,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 4,
+          "sourceBbox": [
+            3,
+            69,
+            207,
+            228
+          ],
+          "pasteBox": [
+            26,
+            63,
+            204,
+            159
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            19,
+            56,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 19718,
+          "nonzeroPixelCount": 19718,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 1,
+          "sourceBbox": [
+            16,
+            46,
+            235,
+            212
+          ],
+          "pasteBox": [
+            19,
+            56,
+            219,
+            166
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            19,
+            58,
+            237,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 19953,
+          "nonzeroPixelCount": 19953,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 2,
+          "sourceBbox": [
+            1,
+            48,
+            219,
+            212
+          ],
+          "pasteBox": [
+            19,
+            58,
+            218,
+            164
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            18,
+            78,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 245.34,
+          "opaquePixelCount": 14648,
+          "nonzeroPixelCount": 15453,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 3,
+          "sourceBbox": [
+            10,
+            50,
+            256,
+            212
+          ],
+          "pasteBox": [
+            18,
+            78,
+            220,
+            144
+          ],
+          "scaleApplied": 0.8943
+        },
+        {
+          "bbox": [
+            28,
+            61,
+            228,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17958,
+          "nonzeroPixelCount": 17958,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 4,
+          "sourceBbox": [
+            0,
+            52,
+            200,
+            213
+          ],
+          "pasteBox": [
+            28,
+            61,
+            200,
+            161
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            21,
+            43,
+            235,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18295,
+          "nonzeroPixelCount": 18295,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 1,
+          "sourceBbox": [
+            25,
+            36,
+            239,
+            215
+          ],
+          "pasteBox": [
+            21,
+            43,
+            214,
+            179
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            18,
+            67,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 244.55,
+          "opaquePixelCount": 16101,
+          "nonzeroPixelCount": 17092,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 2,
+          "sourceBbox": [
+            2,
+            36,
+            256,
+            215
+          ],
+          "pasteBox": [
+            18,
+            67,
+            220,
+            155
+          ],
+          "scaleApplied": 0.8661
+        },
+        {
+          "bbox": [
+            18,
+            68,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 243.2,
+          "opaquePixelCount": 17329,
+          "nonzeroPixelCount": 18552,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 3,
+          "sourceBbox": [
+            0,
+            59,
+            237,
+            225
+          ],
+          "pasteBox": [
+            18,
+            68,
+            220,
+            154
+          ],
+          "scaleApplied": 0.9283
+        },
+        {
+          "bbox": [
+            18,
+            107,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 243.6,
+          "opaquePixelCount": 15003,
+          "nonzeroPixelCount": 15967,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 4,
+          "sourceBbox": [
+            0,
+            93,
+            236,
+            217
+          ],
+          "pasteBox": [
+            18,
+            107,
+            220,
+            115
+          ],
+          "scaleApplied": 0.9322
+        },
+        {
+          "bbox": [
+            18,
+            62,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 245.49,
+          "opaquePixelCount": 17257,
+          "nonzeroPixelCount": 18217,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 1,
+          "sourceBbox": [
+            18,
+            39,
+            242,
+            202
+          ],
+          "pasteBox": [
+            18,
+            62,
+            220,
+            160
+          ],
+          "scaleApplied": 0.9821
+        },
+        {
+          "bbox": [
+            18,
+            111,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 244.96,
+          "opaquePixelCount": 12044,
+          "nonzeroPixelCount": 12724,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 2,
+          "sourceBbox": [
+            5,
+            75,
+            256,
+            202
+          ],
+          "pasteBox": [
+            18,
+            111,
+            220,
+            111
+          ],
+          "scaleApplied": 0.8765
+        },
+        {
+          "bbox": [
+            18,
+            123,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 245.51,
+          "opaquePixelCount": 10371,
+          "nonzeroPixelCount": 10933,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 3,
+          "sourceBbox": [
+            0,
+            87,
+            256,
+            203
+          ],
+          "pasteBox": [
+            18,
+            123,
+            220,
+            99
+          ],
+          "scaleApplied": 0.8594
+        },
+        {
+          "bbox": [
+            18,
+            117,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 245.03,
+          "opaquePixelCount": 9656,
+          "nonzeroPixelCount": 10200,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 4,
+          "sourceBbox": [
+            0,
+            88,
+            243,
+            204
+          ],
+          "pasteBox": [
+            18,
+            117,
+            220,
+            105
+          ],
+          "scaleApplied": 0.9053
+        }
+      ],
+      "frameEdgeIssues": [],
+      "rowAlphaSummary": [
+        {
+          "row": 1,
+          "alphaMeanAvg": 255.0,
+          "opaqueAvg": 17086.25
+        },
+        {
+          "row": 2,
+          "alphaMeanAvg": 252.59,
+          "opaqueAvg": 18069.25
+        },
+        {
+          "row": 3,
+          "alphaMeanAvg": 246.59,
+          "opaqueAvg": 16682.0
+        },
+        {
+          "row": 4,
+          "alphaMeanAvg": 245.25,
+          "opaqueAvg": 12332.0
+        }
+      ],
+      "adopted": true,
+      "notes": "Bulk generated 4x4 sheet normalized to 1024; chroma removed; each generated cell inspected and fitted into safe bounds while preserving the bulk-generated pose differences."
+    },
+    "ruins_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_0710f6da410c78b4016a0e36dc6b708191ba983eb571dc1ec8.png",
+      "rawCopy": "docs\\assets\\generated_raw\\mvp143c_boss_sheet_bulk_regen\\ruins_boss_bulk_generated_raw.png",
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "output": "public\\assets\\enemies\\bosses\\ruins_boss_sheet.png",
+      "fallbackOutput": "public\\assets\\enemies\\bosses\\ruins_boss.png",
+      "backupSheet": "docs\\assets\\backup\\mvp143c_boss_sheet_bulk_regen\\ruins_boss_sheet.png",
+      "backupFallback": "docs\\assets\\backup\\mvp143c_boss_sheet_bulk_regen\\ruins_boss.png",
+      "beforeStats": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            11,
+            41,
+            233,
+            218
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18429,
+          "nonzeroPixelCount": 18429,
+          "edgeIssue": null
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            11,
+            42,
+            231,
+            218
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18527,
+          "nonzeroPixelCount": 18527,
+          "edgeIssue": null
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            11,
+            41,
+            233,
+            218
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18699,
+          "nonzeroPixelCount": 18699,
+          "edgeIssue": null
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            9,
+            41,
+            234,
+            218
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 19224,
+          "nonzeroPixelCount": 19224,
+          "edgeIssue": null
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            11,
+            42,
+            232,
+            219
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18190,
+          "nonzeroPixelCount": 18190,
+          "edgeIssue": null
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            18,
+            42,
+            239,
+            220
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18120,
+          "nonzeroPixelCount": 18120,
+          "edgeIssue": null
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            15,
+            40,
+            232,
+            219
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17706,
+          "nonzeroPixelCount": 17706,
+          "edgeIssue": null
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            13,
+            35,
+            238,
+            219
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18153,
+          "nonzeroPixelCount": 18153,
+          "edgeIssue": null
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            7,
+            47,
+            256,
+            217
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18611,
+          "nonzeroPixelCount": 18611,
+          "edgeIssue": {
+            "bbox": [
+              7,
+              47,
+              256,
+              217
+            ]
+          }
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            4,
+            50,
+            256,
+            217
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18239,
+          "nonzeroPixelCount": 18239,
+          "edgeIssue": {
+            "bbox": [
+              4,
+              50,
+              256,
+              217
+            ]
+          }
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            5,
+            47,
+            256,
+            217
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18938,
+          "nonzeroPixelCount": 18938,
+          "edgeIssue": {
+            "bbox": [
+              5,
+              47,
+              256,
+              217
+            ]
+          }
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            5,
+            42,
+            256,
+            217
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18804,
+          "nonzeroPixelCount": 18804,
+          "edgeIssue": {
+            "bbox": [
+              5,
+              42,
+              256,
+              217
+            ]
+          }
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            7,
+            35,
+            232,
+            214
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 15998,
+          "nonzeroPixelCount": 15998,
+          "edgeIssue": {
+            "bbox": [
+              7,
+              35,
+              232,
+              214
+            ]
+          }
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            11,
+            46,
+            238,
+            214
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 14991,
+          "nonzeroPixelCount": 14991,
+          "edgeIssue": null
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            11,
+            62,
+            243,
+            217
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 12989,
+          "nonzeroPixelCount": 12989,
+          "edgeIssue": null
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            5,
+            79,
+            248,
+            219
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 10855,
+          "nonzeroPixelCount": 10855,
+          "edgeIssue": {
+            "bbox": [
+              5,
+              79,
+              248,
+              219
+            ]
+          }
+        }
+      ],
+      "afterStats": [
+        {
+          "bbox": [
+            18,
+            47,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 240.69,
+          "opaquePixelCount": 17573,
+          "nonzeroPixelCount": 19082,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 1,
+          "sourceBbox": [
+            11,
+            41,
+            233,
+            218
+          ],
+          "pasteBox": [
+            18,
+            47,
+            220,
+            175
+          ],
+          "scaleApplied": 0.991
+        },
+        {
+          "bbox": [
+            18,
+            46,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 18527,
+          "nonzeroPixelCount": 18527,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 2,
+          "sourceBbox": [
+            11,
+            42,
+            231,
+            218
+          ],
+          "pasteBox": [
+            18,
+            46,
+            220,
+            176
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            18,
+            47,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 240.42,
+          "opaquePixelCount": 17837,
+          "nonzeroPixelCount": 19376,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 3,
+          "sourceBbox": [
+            11,
+            41,
+            233,
+            218
+          ],
+          "pasteBox": [
+            18,
+            47,
+            220,
+            175
+          ],
+          "scaleApplied": 0.991
+        },
+        {
+          "bbox": [
+            18,
+            49,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 239.71,
+          "opaquePixelCount": 17874,
+          "nonzeroPixelCount": 19514,
+          "edgeIssue": null,
+          "row": 1,
+          "col": 4,
+          "sourceBbox": [
+            9,
+            41,
+            234,
+            218
+          ],
+          "pasteBox": [
+            18,
+            49,
+            220,
+            173
+          ],
+          "scaleApplied": 0.9778
+        },
+        {
+          "bbox": [
+            18,
+            46,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 241.5,
+          "opaquePixelCount": 17562,
+          "nonzeroPixelCount": 18959,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 1,
+          "sourceBbox": [
+            11,
+            42,
+            232,
+            219
+          ],
+          "pasteBox": [
+            18,
+            46,
+            220,
+            176
+          ],
+          "scaleApplied": 0.9955
+        },
+        {
+          "bbox": [
+            18,
+            45,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 240.52,
+          "opaquePixelCount": 17453,
+          "nonzeroPixelCount": 18958,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 2,
+          "sourceBbox": [
+            18,
+            42,
+            239,
+            220
+          ],
+          "pasteBox": [
+            18,
+            45,
+            220,
+            177
+          ],
+          "scaleApplied": 0.9955
+        },
+        {
+          "bbox": [
+            20,
+            43,
+            237,
+            222
+          ],
+          "alphaMeanNonzero": 255.0,
+          "opaquePixelCount": 17706,
+          "nonzeroPixelCount": 17706,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 3,
+          "sourceBbox": [
+            15,
+            40,
+            232,
+            219
+          ],
+          "pasteBox": [
+            20,
+            43,
+            217,
+            179
+          ],
+          "scaleApplied": 1.0
+        },
+        {
+          "bbox": [
+            18,
+            43,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 239.07,
+          "opaquePixelCount": 16781,
+          "nonzeroPixelCount": 18384,
+          "edgeIssue": null,
+          "row": 2,
+          "col": 4,
+          "sourceBbox": [
+            13,
+            35,
+            238,
+            219
+          ],
+          "pasteBox": [
+            18,
+            43,
+            220,
+            179
+          ],
+          "scaleApplied": 0.9778
+        },
+        {
+          "bbox": [
+            18,
+            72,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 238.0,
+          "opaquePixelCount": 14105,
+          "nonzeroPixelCount": 15524,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 1,
+          "sourceBbox": [
+            7,
+            47,
+            256,
+            217
+          ],
+          "pasteBox": [
+            18,
+            72,
+            220,
+            150
+          ],
+          "scaleApplied": 0.8835
+        },
+        {
+          "bbox": [
+            18,
+            77,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 236.65,
+          "opaquePixelCount": 13381,
+          "nonzeroPixelCount": 14877,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 2,
+          "sourceBbox": [
+            4,
+            50,
+            256,
+            217
+          ],
+          "pasteBox": [
+            18,
+            77,
+            220,
+            145
+          ],
+          "scaleApplied": 0.873
+        },
+        {
+          "bbox": [
+            18,
+            73,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 234.42,
+          "opaquePixelCount": 14019,
+          "nonzeroPixelCount": 15812,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 3,
+          "sourceBbox": [
+            5,
+            47,
+            256,
+            217
+          ],
+          "pasteBox": [
+            18,
+            73,
+            220,
+            149
+          ],
+          "scaleApplied": 0.8765
+        },
+        {
+          "bbox": [
+            18,
+            69,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 232.8,
+          "opaquePixelCount": 13821,
+          "nonzeroPixelCount": 15759,
+          "edgeIssue": null,
+          "row": 3,
+          "col": 4,
+          "sourceBbox": [
+            5,
+            42,
+            256,
+            217
+          ],
+          "pasteBox": [
+            18,
+            69,
+            220,
+            153
+          ],
+          "scaleApplied": 0.8765
+        },
+        {
+          "bbox": [
+            18,
+            47,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 241.96,
+          "opaquePixelCount": 14931,
+          "nonzeroPixelCount": 16086,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 1,
+          "sourceBbox": [
+            7,
+            35,
+            232,
+            214
+          ],
+          "pasteBox": [
+            18,
+            47,
+            220,
+            175
+          ],
+          "scaleApplied": 0.9778
+        },
+        {
+          "bbox": [
+            18,
+            60,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 239.91,
+          "opaquePixelCount": 13667,
+          "nonzeroPixelCount": 14857,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 2,
+          "sourceBbox": [
+            11,
+            46,
+            238,
+            214
+          ],
+          "pasteBox": [
+            18,
+            60,
+            220,
+            162
+          ],
+          "scaleApplied": 0.9692
+        },
+        {
+          "bbox": [
+            18,
+            76,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 237.56,
+          "opaquePixelCount": 11272,
+          "nonzeroPixelCount": 12421,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 3,
+          "sourceBbox": [
+            11,
+            62,
+            243,
+            217
+          ],
+          "pasteBox": [
+            18,
+            76,
+            220,
+            146
+          ],
+          "scaleApplied": 0.9483
+        },
+        {
+          "bbox": [
+            18,
+            96,
+            238,
+            222
+          ],
+          "alphaMeanNonzero": 232.79,
+          "opaquePixelCount": 8535,
+          "nonzeroPixelCount": 9677,
+          "edgeIssue": null,
+          "row": 4,
+          "col": 4,
+          "sourceBbox": [
+            5,
+            79,
+            248,
+            219
+          ],
+          "pasteBox": [
+            18,
+            96,
+            220,
+            126
+          ],
+          "scaleApplied": 0.9053
+        }
+      ],
+      "frameEdgeIssues": [],
+      "rowAlphaSummary": [
+        {
+          "row": 1,
+          "alphaMeanAvg": 243.95,
+          "opaqueAvg": 17952.75
+        },
+        {
+          "row": 2,
+          "alphaMeanAvg": 244.02,
+          "opaqueAvg": 17375.5
+        },
+        {
+          "row": 3,
+          "alphaMeanAvg": 235.47,
+          "opaqueAvg": 13831.5
+        },
+        {
+          "row": 4,
+          "alphaMeanAvg": 238.06,
+          "opaqueAvg": 12101.25
+        }
+      ],
+      "adopted": true,
+      "notes": "Bulk generated 4x4 sheet normalized to 1024; chroma removed; each generated cell inspected and fitted into safe bounds while preserving the bulk-generated pose differences."
+    }
+  }
+}

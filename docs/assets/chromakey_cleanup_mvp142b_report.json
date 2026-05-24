@@ -1,0 +1,41 @@
+{
+  "scope": "MVP-142b high-quality chromakey/effect reinspection",
+  "candidateSources": [
+    "docs/assets/chromakey_cleanup_candidates_mvp141.md",
+    "docs/assets/chromakey_cleanup_candidates_mvp141.json"
+  ],
+  "regeneratedAssets": [
+    {
+      "path": "public/assets/effects/adaptation_skills/burst_fang_mine.png",
+      "reason": "visible edge pressure and detached extra component; safer to regenerate than color-clean",
+      "backup": "docs/assets/backup/mvp142b_effect_review/burst_fang_mine_before_regen.png",
+      "raw": "docs/assets/generated_raw/mvp142b_effect_regen/burst_fang_mine_generated_raw.png"
+    },
+    {
+      "path": "public/assets/effects/adaptation_skills/burst_fang_explosion.png",
+      "reason": "edge pressure/clipping risk; safer to regenerate with centered full blast",
+      "backup": "docs/assets/backup/mvp142b_effect_review/burst_fang_explosion_before_regen.png",
+      "raw": "docs/assets/generated_raw/mvp142b_effect_regen/burst_fang_explosion_generated_raw.png"
+    }
+  ],
+  "reviewedNotRegenerated": [
+    {
+      "group": "ruins boss/stage purple electro and laser effects",
+      "reason": "purple/cyan pixels are the intended electromagnetic/laser glow; no unrelated body parts visible on contact sheet; sheet splitting/fallback already handled in runtime"
+    },
+    {
+      "group": "swamp boss/stage poison effects",
+      "reason": "magenta/green-purple pixels are the poison glow and mist body; broad chromakey removal would damage readability"
+    },
+    {
+      "group": "volcano/jungle boss effect sheets",
+      "reason": "warm glow and repeated sheet cells are intentional animated frames; no color-cleaning target identified"
+    }
+  ],
+  "contactSheets": {
+    "before": "docs/assets/chromakey_cleanup_before_mvp142b_contact.png",
+    "after": "docs/assets/chromakey_cleanup_after_mvp142b_contact.png",
+    "regenerated": "docs/assets/chromakey_regenerated_assets_mvp142b_contact.png"
+  },
+  "policy": "Regenerate individual effects when clipping/mixing is visible. Do not remove purple/cyan glow by color alone."
+}
