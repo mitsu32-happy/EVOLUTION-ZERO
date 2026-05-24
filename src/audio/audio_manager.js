@@ -33,6 +33,7 @@ export class AudioManager {
     this.suspendedBgmId = null;
     this.suspendedBgmTime = 0;
     this.lastBgmEnsureAt = 0;
+    this.pageBlurSuspendTimer = null;
   }
 
   setVolume(volume) {
@@ -81,10 +82,12 @@ export class AudioManager {
     this.lifecycleHandlersInstalled = true;
 
     this.handlePageHidden = () => {
+      this.clearPageBlurSuspendTimer();
       this.suspendForPageHide();
     };
     this.handleVisibilityChange = () => {
       if (document.hidden) {
+        this.clearPageBlurSuspendTimer();
         this.suspendForPageHide();
         return;
       }
@@ -92,17 +95,48 @@ export class AudioManager {
       this.resumeFromPageShow();
     };
     this.handlePageShown = () => {
+      this.clearPageBlurSuspendTimer();
       if (!document.hidden) {
         this.resumeFromPageShow();
       }
+    };
+    this.handleWindowBlur = () => {
+      this.clearPageBlurSuspendTimer();
+      this.pageBlurSuspendTimer = window.setTimeout(() => {
+        const hasFocus = typeof document.hasFocus === 'function' ? document.hasFocus() : true;
+        if (document.hidden || !hasFocus) {
+          this.suspendForPageHide();
+        }
+      }, 250);
     };
 
     document.addEventListener('visibilitychange', this.handleVisibilityChange, { passive: true });
     window.addEventListener('pagehide', this.handlePageHidden, { passive: true });
     window.addEventListener('freeze', this.handlePageHidden, { passive: true });
-    window.addEventListener('blur', this.handlePageHidden, { passive: true });
+    window.addEventListener('blur', this.handleWindowBlur, { passive: true });
     window.addEventListener('pageshow', this.handlePageShown, { passive: true });
     window.addEventListener('focus', this.handlePageShown, { passive: true });
+  }
+
+  clearPageBlurSuspendTimer() {
+    if (!this.pageBlurSuspendTimer || typeof window === 'undefined') {
+      return;
+    }
+
+    window.clearTimeout(this.pageBlurSuspendTimer);
+    this.pageBlurSuspendTimer = null;
+  }
+
+  ensurePageActiveForPlayback() {
+    if (!this.pageAudioSuspended) {
+      return;
+    }
+
+    if (typeof document !== 'undefined' && document.hidden) {
+      return;
+    }
+
+    this.resumeFromPageShow();
   }
 
   suspendForPageHide() {
@@ -137,9 +171,11 @@ export class AudioManager {
 
   resumeFromPageShow() {
     if (!this.pageAudioSuspended) {
+      this.clearPageBlurSuspendTimer();
       return;
     }
 
+    this.clearPageBlurSuspendTimer();
     this.pageAudioSuspended = false;
 
     if (this.audioContext?.state === 'suspended' && this.isUnlocked) {
@@ -166,6 +202,7 @@ export class AudioManager {
     }
 
     try {
+      this.ensurePageActiveForPlayback();
       const Context = window.AudioContext || window.webkitAudioContext;
 
       if (Context) {
@@ -180,6 +217,7 @@ export class AudioManager {
 
       if (this.isUnlocked) {
         this.refreshAudioRouting();
+        this.resumeCurrentBgmIfNeeded();
         return;
       }
 
@@ -192,6 +230,7 @@ export class AudioManager {
 
       this.isUnlocked = true;
       this.refreshAudioRouting();
+      this.resumeCurrentBgmIfNeeded();
     } catch (error) {
       this.warnOnce('unlock', 'Audio unlock skipped', error);
     }
@@ -199,6 +238,11 @@ export class AudioManager {
 
   play(id, options = {}) {
     if (this.muted || typeof Audio === 'undefined') {
+      return;
+    }
+
+    this.ensurePageActiveForPlayback();
+    if (this.pageAudioSuspended) {
       return;
     }
 
@@ -309,6 +353,11 @@ export class AudioManager {
       return;
     }
 
+    this.ensurePageActiveForPlayback();
+    if (this.pageAudioSuspended) {
+      return;
+    }
+
     if (options.unlock !== false) {
       this.unlockAudio();
     }
@@ -389,8 +438,7 @@ export class AudioManager {
       return;
     }
 
-    this.currentBgm.pause();
-    this.currentBgm.currentTime = 0;
+    this.releaseAudioElement(this.currentBgm);
     this.currentBgm = null;
     this.currentBgmId = null;
   }
@@ -482,6 +530,7 @@ export class AudioManager {
         source,
         gain,
         baseVolume: options.volume ?? 1,
+        interruptGroup: null,
         stopped: false,
       };
 
@@ -498,6 +547,9 @@ export class AudioManager {
 
         record.stopped = true;
         this.activeBufferRecords.delete(record);
+        if (record.interruptGroup && this.interruptGroups.get(record.interruptGroup) === record) {
+          this.interruptGroups.delete(record.interruptGroup);
+        }
         this.decrementActive(id);
         try {
           source.disconnect();
@@ -512,6 +564,7 @@ export class AudioManager {
       };
 
       source.onended = releaseRecord;
+      this.applyBufferInterruptControls(record, options);
       this.applyBufferPlaybackControls(record, options);
       source.start(0);
     }).catch((error) => {
@@ -522,6 +575,35 @@ export class AudioManager {
     });
 
     return true;
+  }
+
+  applyBufferInterruptControls(record, options = {}) {
+    const groupId = options.interruptGroup ?? record.entry.interruptGroup;
+
+    if (!groupId || !(options.stopPrevious ?? record.entry.stopPrevious)) {
+      return;
+    }
+
+    const previous = this.interruptGroups.get(groupId);
+    if (previous && previous !== record) {
+      this.stopInterruptTarget(previous);
+    }
+
+    record.interruptGroup = groupId;
+    this.interruptGroups.set(groupId, record);
+  }
+
+  stopInterruptTarget(target) {
+    if (!target) {
+      return;
+    }
+
+    if (target.source && target.gain) {
+      this.stopBufferRecord(target);
+      return;
+    }
+
+    this.stopAudioNow(target);
   }
 
   async getAudioBuffer(entry) {
@@ -601,6 +683,9 @@ export class AudioManager {
     }
 
     record.stopped = true;
+    if (record.interruptGroup && this.interruptGroups.get(record.interruptGroup) === record) {
+      this.interruptGroups.delete(record.interruptGroup);
+    }
     try {
       record.source.stop(0);
     } catch {
@@ -811,6 +896,8 @@ export class AudioManager {
   }
 
   ensureBgmPlaying(expectedId = this.currentBgmId) {
+    this.ensurePageActiveForPlayback();
+
     if (this.muted || this.pageAudioSuspended || typeof Audio === 'undefined') {
       return;
     }
@@ -862,7 +949,27 @@ export class AudioManager {
   }
 
   shouldUseBufferedPlayback(entry) {
-    return entry?.category === 'ui' && !String(entry.path ?? '').includes('/intro/');
+    return ['ui', 'se', 'evolution', 'ultimate', 'boss'].includes(entry?.category)
+      && !String(entry.path ?? '').includes('/intro/');
+  }
+
+  resumeCurrentBgmIfNeeded() {
+    if (!this.currentBgm || this.muted || this.pageAudioSuspended || typeof Audio === 'undefined') {
+      return;
+    }
+
+    this.ensureAudioRouting(this.currentBgm);
+    this.updateCurrentBgmVolume();
+
+    if (!this.currentBgm.paused) {
+      return;
+    }
+
+    this.currentBgm.play().then(() => {
+      this.setMediaSessionState('playing');
+    }).catch((error) => {
+      this.warnOnce(this.currentBgmId ?? 'bgm', 'BGM resume skipped after audio unlock', error);
+    });
   }
 
   setMediaSessionState(state) {
