@@ -75,6 +75,12 @@ export class Pickup {
     this.view.position.set(this.position.x, this.position.y + Math.sin(this.floatTime) * 4);
     this.view.alpha = 0.9 + Math.sin(this.floatTime * 1.8) * 0.1;
     this.valueLabel.visible = this.type === 'exp' && this.value >= 2;
+
+    if (this.type === 'heal') {
+      const pulse = 1 + Math.sin(this.floatTime * 2.4) * 0.08;
+      this.glow.scale.set(pulse);
+      this.glow.alpha = 0.88 + Math.sin(this.floatTime * 2.1) * 0.12;
+    }
   }
 
   collect() {
@@ -164,11 +170,13 @@ export class Pickup {
     if (this.type === 'heal') {
       this.glow
         .circle(0, 4, this.visualRule.glowRadius)
-        .fill({ color: 0xff3848, alpha: 0.16 })
+        .fill({ color: 0x65e878, alpha: 0.22 })
         .circle(0, 4, this.visualRule.glowRadius * 0.58)
-        .fill({ color: 0xffd36b, alpha: 0.18 })
-        .circle(0, 4, this.visualRule.glowRadius * 1.18)
-        .stroke({ color: 0xff3848, width: 1.6, alpha: 0.36 });
+        .fill({ color: 0xffffff, alpha: 0.22 })
+        .circle(0, 4, this.visualRule.glowRadius * 1.28)
+        .stroke({ color: 0x65e878, width: 2.2, alpha: 0.58 })
+        .circle(0, 4, this.visualRule.glowRadius * 1.62)
+        .stroke({ color: 0xd8ffe6, width: 1.2, alpha: 0.34 });
       this.crystal
         .roundRect(-15, -10, 30, 22, 8)
         .fill({ color: 0x7a1c18, alpha: 0.9 })

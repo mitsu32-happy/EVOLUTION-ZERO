@@ -307,6 +307,7 @@ export class GameState {
     }
 
     const isZeroEvolution = candidate.tag === 'zero';
+    const branch = getEvolutionBranch(this.selectedDino, candidate.tag);
 
     if ((isZeroEvolution && !this.isZeroEvolutionCandidateEligible(candidate))
       || (!isZeroEvolution && !this.canNormalEvolve)) {
@@ -314,12 +315,14 @@ export class GameState {
     }
 
     this.selectedEvolution = {
-      id: candidate.id ?? getEvolutionBranchId(this.selectedDino, candidate.tag),
+      id: candidate.id ?? branch?.id ?? getEvolutionBranchId(this.selectedDino, candidate.tag),
       dinoId: this.selectedDino,
       tag: candidate.tag,
       tier: isZeroEvolution ? 'zero' : 'normal',
-      mutationName: getEvolutionBranch(this.selectedDino, candidate.tag)?.mutationName ?? candidate.name,
-      evolutionName: getEvolutionBranch(this.selectedDino, candidate.tag)?.evolutionName ?? candidate.evolutionName,
+      mutationName: branch?.mutationName ?? candidate.name,
+      evolutionName: branch?.evolutionName ?? candidate.evolutionName,
+      normalAttackEffectKey: branch?.normalAttackEffectKey ?? candidate.normalAttackEffectKey ?? null,
+      ultimateId: branch?.ultimateId ?? candidate.ultimateId ?? null,
       selectedAtLevel: this.playerLevel,
       selectedAtTime: this.elapsedTime,
     };

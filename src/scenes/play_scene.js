@@ -902,6 +902,8 @@ export class PlayScene {
       tag: candidate.tag,
       mutationName: branch?.mutationName ?? candidate.name,
       evolutionName: branch?.evolutionName ?? candidate.evolutionName,
+      normalAttackEffectKey: branch?.normalAttackEffectKey ?? null,
+      ultimateId: branch?.ultimateId ?? null,
       selectedAtLevel: this.gameState.playerLevel,
       selectedAtTime: this.gameState.elapsedTime,
     };
@@ -1406,13 +1408,14 @@ export class PlayScene {
 
       if (!pickup.isCollected && CollisionSystem.circlesOverlap(playerCollider, pickup.getCollider())) {
         pickup.collect();
-      if (pickup.type === 'heal') {
-          const healed = this.gameState.healPlayer(pickup.healAmount || 18);
+        if (pickup.type === 'heal') {
+          const healed = this.gameState.healPlayer(pickup.healAmount || this.getHealPickupAmount());
           if (healed > 0) {
+            const displayedHeal = Math.max(1, Math.round(healed));
             this.audioManager?.play('pickup_heal');
             this.saveManager?.recordDailyProgress?.('pickupHeal', 1);
             this.spawnPickupBurst(pickup.position.x, pickup.position.y, 2, 'heal');
-            this.spawnPickupPopup(pickup.position.x, pickup.position.y - 24, `HP +${healed}`, 0x65e878);
+            this.spawnPickupPopup(pickup.position.x, pickup.position.y - 24, `HP +${displayedHeal}`, 0x65e878);
           }
         } else {
           this.audioManager?.play('pickup_exp');
@@ -3138,12 +3141,12 @@ export class PlayScene {
     this.depthLayer.addChild(pickup.view);
   }
 
-  dropHealPickup(x, y, healAmount = 18) {
+  dropHealPickup(x, y, healAmount = null) {
     const pickup = new Pickup({
       x,
       y,
       type: 'heal',
-      healAmount,
+      healAmount: Math.max(1, Math.round(healAmount ?? this.getHealPickupAmount())),
       assetLoader: this.assetLoader,
     });
 
@@ -3163,7 +3166,11 @@ export class PlayScene {
       return;
     }
 
-    this.dropHealPickup(enemy.position.x + 16, enemy.position.y - 10, 16 + Math.round(this.gameState.playerMaxHp * 0.08));
+    this.dropHealPickup(enemy.position.x + 16, enemy.position.y - 10, this.getHealPickupAmount());
+  }
+
+  getHealPickupAmount() {
+    return Math.max(14, Math.round(this.gameState.playerMaxHp * 0.18));
   }
 
   spawnPickupBurst(x, y, value = 1, type = 'exp') {

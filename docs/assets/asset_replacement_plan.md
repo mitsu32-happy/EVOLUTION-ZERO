@@ -3100,3 +3100,9 @@ Runtime rules:
 - Future polish:
   - Recheck exact on-screen scale per branch during manual combat QA.
   - If any effect feels too large on mobile, adjust only `getEvolutionNormalAttackEffectSize()` rather than regenerating assets.
+
+## Post-RC Heal Pickup Readability
+
+- HP recovery pickups now use a stronger green-white glow and a subtle pulse so they stand out from EXP crystals and combat effects.
+- Heal amount is based on max HP (`18%`, minimum `14`) and popup text is rounded to an integer.
+- Dedicated evolution normal attack effects are expected for all public evolution routes; the selected evolution object must carry `normalAttackEffectKey` into combat setup.

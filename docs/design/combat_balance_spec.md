@@ -75,3 +75,11 @@
   - attack power
   - pickup range
 - Adaptation skills remain the main source of range, target count, projectile count, and frequency growth.
+
+## Post-RC Fix: Evolution Normal Attack Effects / Heal Pickup
+
+- Evolution branch data keeps a dedicated `normalAttackEffectKey` for all 12 public evolution routes.
+- `GameState.selectEvolution()` now carries that key into `selectedEvolution`, so `CombatSystem.applyEvolution()` can load the dedicated evolution normal-attack texture instead of falling back to the base dino attack effect.
+- Debug evolution starts also include the same key to keep QA URLs representative.
+- HP recovery pickups heal a fixed percentage of max HP: `18%`, rounded to a whole number with a minimum of `14`.
+- Heal popup text is rounded to an integer (`HP +n`) so fractional HP values from damage modifiers do not create long labels.
