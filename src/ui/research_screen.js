@@ -660,17 +660,34 @@ export class ResearchScreen {
         : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
       const isBodyEnhancement = item.category === RESEARCH_CATEGORY_IDS.bodyEnhancement;
       const dnaIcon = this.textures.get('icon:dnaResource');
+      const ptIcon = this.textures.get('icon:researchPt');
+      const bodyCostY = 39;
+      const bodyCostX = layout.badgeX - 6;
       card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
+      card.costPtIcon.texture = ptIcon ?? Texture.EMPTY;
       card.costDnaIcon.visible = isBodyEnhancement && !!dnaIcon && !!cost && !isMax;
+      card.costPtIcon.visible = isBodyEnhancement && !!ptIcon && !!cost && !isMax && cost.researchPt > 0;
       card.costDnaText.visible = isBodyEnhancement && !!cost && !isMax;
+      card.costPtText.visible = isBodyEnhancement && !!cost && !isMax && cost.researchPt > 0;
       card.costDnaText.text = cost ? `${cost.dna}` : '';
-      card.costDnaIcon.position.set(layout.badgeX + 8, 55);
+      card.costPtText.text = cost?.researchPt ? `${cost.researchPt}` : '';
+      card.costDnaIcon.position.set(bodyCostX, bodyCostY);
       card.costDnaIcon.width = 14;
       card.costDnaIcon.height = 14;
-      card.costDnaText.position.set(layout.badgeX + 26, 54);
-      card.costDnaText.style.fontSize = 9;
+      card.costDnaText.position.set(bodyCostX + 17, bodyCostY - 1);
+      card.costPtIcon.position.set(bodyCostX + 45, bodyCostY);
+      card.costPtIcon.width = 14;
+      card.costPtIcon.height = 14;
+      card.costPtText.position.set(bodyCostX + 62, bodyCostY - 1);
+      card.costDnaText.style.fontSize = 8;
+      card.costPtText.style.fontSize = 8;
       card.status.text = isMax ? '完了' : isLocked ? 'LOCK' : canBuy ? (isBodyEnhancement ? '' : this.formatCostShort(cost)) : this.getInsufficientLabel(cost, data);
       card.status.style.fill = isLocked || (!canBuy && !isMax) ? '#ffaaa2' : isMax ? '#b6ffd0' : '#e7fff6';
+      if (isBodyEnhancement) {
+        card.status.position.set(layout.badgeX + layout.badgeWidth / 2, 63);
+        card.status.style.fontSize = 9;
+        card.status.style.wordWrapWidth = layout.badgeWidth - 6;
+      }
       card.costBadge.visible = !!this.textures.get('costBadge');
       card.button.visible = true;
       card.buttonBg.visible = !card.costBadge.visible;
