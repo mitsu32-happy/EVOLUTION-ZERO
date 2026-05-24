@@ -1,4 +1,4 @@
-# EVOLUTION ZERO Stage And Difficulty Spec
+﻿# EVOLUTION ZERO Stage And Difficulty Spec
 
 ## Purpose
 
@@ -329,7 +329,7 @@ Volcano boss scaling:
 | HARD | 900 | 32 | 39 | 1 zone, 6.8s cooldown, 1.15s warning | Enabled, short linger | Moderate fire pressure. |
 | EXPERT | 1180 | 36 | 42 | 2 zones, 5.8s cooldown, 1.0s warning | Enabled, longer linger | Strong but still telegraphed. |
 
-The boss name is `イグニス・ドレイク`. All boss attacks must remain readable and avoid unavoidable damage. The same `debugBossFast=1` and `debugWeakBoss=1` QA helpers apply.
+The boss name is `繧､繧ｰ繝九せ繝ｻ繝峨Ξ繧､繧ｯ`. All boss attacks must remain readable and avoid unavoidable damage. The same `debugBossFast=1` and `debugWeakBoss=1` QA helpers apply.
 
 ## MVP-137 Jungle Boss Pattern Scaling
 
@@ -386,7 +386,7 @@ When `debugDifficulty` is omitted, the current saved difficulty remains in norma
 - NORMAL emphasizes `swampPoison` and small readable poison zones.
 - HARD introduces `swampToxicBomber` pressure and boss summons.
 - EXPERT increases toxic bomber/tank mix, poison zone count, and boss attack frequency while keeping warning fade before damage.
-- `ミアズマ・タイラント` clears NORMAL/HARD/EXPERT through the same boss-defeat CLEAR path as jungle and volcano.
+- `繝溘い繧ｺ繝槭・繧ｿ繧､繝ｩ繝ｳ繝・ clears NORMAL/HARD/EXPERT through the same boss-defeat CLEAR path as jungle and volcano.
 - Debug:
   - `debugStage=swamp`
   - `debugEnemySet=swamp`
@@ -401,7 +401,7 @@ When `debugDifficulty` is omitted, the current saved difficulty remains in norma
 - NORMAL emphasizes `ruinsShooter` ranged pressure with readable boss electro pulse and laser line attacks.
 - HARD increases `ruinsElectro` pressure and enables small boss summons.
 - EXPERT mixes `ruinsShooter`, `ruinsElectro`, `ruinsSummoner`, and tank support with denser boss pulse/laser patterns.
-- `アーク・レヴナント` clears NORMAL/HARD/EXPERT through the same boss-defeat CLEAR path as the earlier stages.
+- `繧｢繝ｼ繧ｯ繝ｻ繝ｬ繝ｴ繝翫Φ繝・ clears NORMAL/HARD/EXPERT through the same boss-defeat CLEAR path as the earlier stages.
 - Debug:
   - `debugStage=ruins`
   - `debugEnemySet=ruins`
@@ -501,7 +501,7 @@ Result / unlock expectations:
   - phase 3 final boss
   - `ZERO CLEAR` result when the final boss is defeated
 - The phase 2 boss reuses the selected stage boss as a stronger `zero_secondary` variant.
-- The phase 3 final boss is `エクリプス・プロトコル`; MVP-145 replaces the earlier ruins-boss fallback with dedicated final-boss visuals and attacks.
+- The phase 3 final boss is `繧ｨ繧ｯ繝ｪ繝励せ繝ｻ繝励Ο繝医さ繝ｫ`; MVP-145 replaces the earlier ruins-boss fallback with dedicated final-boss visuals and attacks.
 - ZERO enemy pressure uses `ZERO_SCALING_CONFIG`:
   - higher enemy HP/damage
   - higher spawn rate
@@ -517,7 +517,7 @@ Result / unlock expectations:
 
 # MVP-145 ZERO final boss high-quality pass
 
-- ZERO phase 3 now uses the dedicated `エクリプス・プロトコル` boss asset instead of the ruins boss runtime fallback.
+- ZERO phase 3 now uses the dedicated `繧ｨ繧ｯ繝ｪ繝励せ繝ｻ繝励Ο繝医さ繝ｫ` boss asset instead of the ruins boss runtime fallback.
 - The final boss keeps the MVP-144 flow: phase 1 stage boss, phase 2 strengthened stage boss, phase 3 final boss, then `ZERO CLEAR`.
 - Dedicated final boss attacks:
   - `eclipseBeam`: warning line followed by an avoidable straight beam.
@@ -608,9 +608,9 @@ Result / unlock expectations:
 
 - ZERO mode remains available for all four stages.
 - Pre-release production ZERO evolution rewards are scoped as:
-  - jungle: implemented velociraptor ZERO route, `velociraptor_zero` / `アビスラプス`.
+  - jungle: implemented velociraptor ZERO route, `velociraptor_zero` / `繧｢繝薙せ繝ｩ繝励せ`.
   - volcano: planned triceratops ZERO route, not yet implemented.
-  - swamp: implemented tyrannosaurus ZERO route, `tyrannosaurus_zero` / `オメガレクス`.
+  - swamp: implemented tyrannosaurus ZERO route, `tyrannosaurus_zero` / `繧ｪ繝｡繧ｬ繝ｬ繧ｯ繧ｹ`.
   - ruins: no pre-release ZERO evolution route; post-release content after the fourth dinosaur exists.
 - ZERO clear still updates `stageProgress.<stage>.zero` for every stage.
 - Jungle and swamp ZERO clears currently write implemented `unlockedZeroRoutes` entries.
@@ -650,12 +650,12 @@ Result / unlock expectations:
   - Phase 3: dedicated ZERO final boss; route reward and ZERO clear are granted only after this boss is defeated.
 - Jungle phase 2:
   - ID: `jungle_zero_second_boss`
-  - Display name: Canopy Wraith / `カノピー・レイス`
+  - Display name: Canopy Wraith / `繧ｫ繝弱ヴ繝ｼ繝ｻ繝ｬ繧､繧ｹ`
   - Role: shadow predator bridge into `velociraptor_zero`.
   - Attacks: shadow line charge, claw burst, ZERO trap field, small predator summon.
 - Swamp phase 2:
   - ID: `swamp_zero_second_boss`
-  - Display name: Venom Wraith / `ヴェノム・レイス`
+  - Display name: Venom Wraith / `繝ｴ繧ｧ繝弱Β繝ｻ繝ｬ繧､繧ｹ`
   - Role: toxic predator bridge into `tyrannosaurus_zero`.
   - Attacks: toxic line charge, poison burst, slow field, swamp poison summon.
 - Volcano ZERO phase 2 remains the existing bridge implementation until the `triceratops_zero` production MVP.
@@ -672,12 +672,12 @@ Result / unlock expectations:
 - Jungle and swamp ZERO reward routes remain unchanged. Ruins ZERO remains post-release / locked in the normal selector.
 
 ### MVP-154 ZERO 3-route cross QA
-- Scope: pre-release ZERO routes are jungle -> `velociraptor_zero` / アビスラプス, volcano -> `triceratops_zero` / イグニケラ, and swamp -> `tyrannosaurus_zero` / オメガレクス.
+- Scope: pre-release ZERO routes are jungle -> `velociraptor_zero` / 繧｢繝薙せ繝ｩ繝励せ, volcano -> `triceratops_zero` / 繧､繧ｰ繝九こ繝ｩ, and swamp -> `tyrannosaurus_zero` / 繧ｪ繝｡繧ｬ繝ｬ繧ｯ繧ｹ.
 - QA confirmed route reward mapping through `SaveManager.grantZeroRewards`: jungle grants `jungle_zero_clear` + `jungle_zero_frame` + `velociraptor_zero`; volcano grants `volcano_zero_clear` + `volcano_zero_frame` + `triceratops_zero`; swamp grants `swamp_zero_clear` + `swamp_zero_frame` + `tyrannosaurus_zero`; ruins grants no ZERO route reward.
 - Duplicate reward QA confirmed the second volcano ZERO clear does not re-grant the route, title, or frame.
 - ZERO upper evolution QA confirmed all three routes require route unlock, matching lineage, Lv8+, speed/hunting/attack Lv3+, and do not become eligible again after `hasZeroEvolved` is set.
 - Existing `hasEvolved` normal evolution state does not block ZERO upper evolution eligibility.
-- ZERO candidate UI copy was normalized to readable Japanese for route解析済み / 全適応Lv3+ / Lv8+.
+- ZERO candidate UI copy was normalized to readable Japanese for route隗｣譫先ｸ医∩ / 蜈ｨ驕ｩ蠢廰v3+ / Lv8+.
 - Browser smoke QA covered jungle, volcano, swamp ZERO starts; direct ZERO evolutions and their specials; stage select locking; and ruins ZERO lock.
 - Final polish candidates: full manual ZERO CLEAR pacing per route, boss HP tuning without `debugWeakBoss`, and longer performance soak.
 
@@ -715,5 +715,24 @@ Result / unlock expectations:
   - Ruins intervals are now 31 / 26 / 21 seconds with shorter laser/electro active windows and narrower early laser lanes.
 - ZERO stage-gimmick scaling keeps pressure higher than EXPERT, but no longer forces a second simultaneous gimmick by default.
 - Boss hazard attacks now use a short recovery gate and an active hazard limit so warning -> attack -> recovery remains readable.
-- Warning guide visibility is controlled by the Options `警告ガイド` chip; high-visibility mode increases warning alpha.
+- Warning guide visibility is controlled by the Options `隴ｦ蜻翫ぎ繧､繝荏 chip; high-visibility mode increases warning alpha.
 - Final polish should still include full manual high-difficulty runs on mobile hardware to judge whether gimmick cadence feels too sparse or still too busy.
+
+## Post-RC Difficulty Pressure Adjustment
+
+- NORMAL remains unchanged so jungle can still work as a tutorial-style first stage.
+- HARD and EXPERT now add more pressure as time advances:
+  - HARD: maxEnemyBonus `2 -> 3`, spawnIntervalMultiplier `0.92 -> 0.88`, timeAdvance `12 -> 16`.
+  - EXPERT: maxEnemyBonus `4 -> 6`, spawnIntervalMultiplier `0.84 -> 0.78`, timeAdvance `24 -> 32`.
+  - Fast and tank enemy weights were slightly increased to make later waves less passive.
+- ZERO pressure now ramps harder after the early phase instead of making the opening immediately punishing:
+  - Mid pressure starts after 105 seconds and scales up more strongly.
+  - Late pressure starts after 205 seconds and adds more density/damage pressure.
+  - ZERO softEnemyCap `68 -> 74`.
+  - ZERO maxEnemyBonus `12 -> 13`, with additional pressure-based enemy cap growth.
+  - ZERO eliteBonus `0.10 -> 0.12`, plus pressure-based elite growth.
+  - ZERO boss HP/damage: first `1.12/1.04 -> 1.16/1.05`, secondary `1.34/1.10 -> 1.42/1.12`, final `1.82/1.20 -> 2.02/1.26`.
+- Intent:
+  - Jungle NORMAL should stay approachable for first-time players.
+  - Jungle HARD, EXPERT, and ZERO should increasingly punish runs that do not invest in adaptation skills and research upgrades.
+  - ZERO should feel more dangerous in the mid-to-late run without causing immediate early collapse.

@@ -73,16 +73,16 @@ export class SpawnSystem {
   getModeScaling(gameState) {
     if (gameState?.selectedMode === 'zero') {
       const elapsed = gameState.elapsedTime ?? 0;
-      const midPressure = Math.min(0.18, Math.max(0, elapsed - 120) / 540);
-      const latePressure = Math.min(0.22, Math.max(0, elapsed - 240) / 620);
+      const midPressure = Math.min(0.28, Math.max(0, elapsed - 105) / 430);
+      const latePressure = Math.min(0.34, Math.max(0, elapsed - 205) / 520);
       const pressure = midPressure + latePressure;
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.34,
-        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 0.5,
-        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus,
-        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus,
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.42,
+        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 0.68,
+        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 10),
+        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.1,
         exp: 1.24,
         score: 1.35,
       };

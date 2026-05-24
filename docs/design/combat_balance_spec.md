@@ -1,4 +1,4 @@
-# Combat Balance Spec
+﻿# Combat Balance Spec
 
 ## MVP-161 Playfeel Polish
 
@@ -13,7 +13,7 @@
 
 - EXP and HP pickups show short floating feedback text near the pickup location.
 - HP recovery uses green burst feedback.
-- Pickup text is considered part of the combat-number layer and follows the Options `ダメージ` setting.
+- Pickup text is considered part of the combat-number layer and follows the Options `繝繝｡繝ｼ繧ｸ` setting.
 - Mass pickup feedback should remain short-lived and should not block player or enemy readability.
 
 ### Warning Guides
@@ -21,8 +21,8 @@
 - Boss hazards and stage gimmicks use translucent warning guides before active damage begins.
 - Warning phase has no damage; active phase applies the real hitbox.
 - Guides must match the same line, circle, or multi-hitbox shape used by the active damage check.
-- Options `警告ガイド` can hide the guide layer.
-- Options `視認性` increases guide alpha for readability.
+- Options `隴ｦ蜻翫ぎ繧､繝荏 can hide the guide layer.
+- Options `隕冶ｪ肴ｧ` increases guide alpha for readability.
 
 ### Boss Pattern Readability
 
@@ -36,3 +36,25 @@
 - Gimmicks are accents. Enemy movement, enemy density, and boss patterns remain the main game pressure.
 - NORMAL/HARD gimmick cadence should leave clear movement routes.
 - EXPERT/ZERO may be stricter, but warnings must remain readable and simultaneous gimmicks should be capped.
+
+## Post-RC Balance Adjustment: Normal Attack Down / Adaptation Up
+
+- Normal attacks were too dominant, so base normal attacks were reduced:
+  - Raptor Claw: damage `12 -> 9`, cooldown `0.50 -> 0.58`.
+  - Horn Impact: damage `16 -> 13`, cooldown `0.75 -> 0.86`, range `82 -> 78`, maxTargets `3 -> 2`.
+  - Bite Shock: damage `26 -> 20`, cooldown `0.92 -> 1.05`, range `112 -> 104`, angle `102 -> 96`, maxTargets `3 -> 2`.
+- Dino-specific normal-attack bonuses were also reduced:
+  - Velociraptor: attackIntervalMultiplier `0.90 -> 0.96`.
+  - Triceratops: attackDamageBonus `3 -> 1`, attackRangeBonus `10 -> 6`, attackIntervalMultiplier `1.00 -> 1.04`.
+  - Tyrannosaurus: attackDamageBonus `14 -> 8`, attackRangeBonus `24 -> 16`, attackIntervalMultiplier `1.05 -> 1.12`.
+- Normal attacks after evolution were reduced while keeping their route identity:
+  - Speed multi-hit: `0.62 -> 0.54`.
+  - Hunting multi-target: `0.86 -> 0.72`.
+  - Attack heavy: `1.00 -> 0.78`.
+- Adaptation skills were broadly strengthened so leveling them feels more meaningful:
+  - Base cooldowns were shortened and base damage/search range were increased across the skill set.
+  - Level-based recast reduction in `updateAdaptationSkills` was strengthened from `3.5%` to `5.5%` per level after level 1.
+  - Afterimage Claw, Gale Blade, Homing Fang, Sense Spike, Burst Fang, Shock Roar Wave, Flame Breath, Predator Marking, and Accelerated Blades now gain range, target count, projectile count, trap count, or area coverage more clearly as level increases.
+- Intent:
+  - Early play should still be readable, but normal attacks alone should not erase the need for adaptation skill growth.
+  - In ZERO, the player should feel a stronger need for adaptation levels and research upgrades instead of clearing mainly through normal attack DPS.
