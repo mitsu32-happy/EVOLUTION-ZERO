@@ -1,0 +1,205 @@
+{
+  "source": "public/assets/dinos/evolutions/sheets/velociraptor_zero_sheet.png",
+  "backup": "docs/assets/backup/abyssraps_direction_fix/velociraptor_zero_sheet_before.png",
+  "operation": "per-cell horizontal flip to restore right-facing baseline while preserving 4x4 grid",
+  "sheetSize": [
+    1024,
+    1024
+  ],
+  "cellSize": 256,
+  "frames": [
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        32,
+        39,
+        225,
+        216
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 15988
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        35,
+        38,
+        221,
+        218
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 15752
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        24,
+        40,
+        232,
+        216
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 15213
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "bbox": [
+        28,
+        41,
+        228,
+        215
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 15341
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        10,
+        23,
+        246,
+        233
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 12986
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        10,
+        26,
+        246,
+        230
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 10659
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        10,
+        23,
+        246,
+        232
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 10648
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "bbox": [
+        10,
+        16,
+        246,
+        240
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 11218
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        20,
+        53,
+        237,
+        202
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 11186
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        10,
+        54,
+        246,
+        202
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 10574
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        10,
+        70,
+        246,
+        186
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 10542
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "bbox": [
+        22,
+        47,
+        235,
+        208
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 11108
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "bbox": [
+        27,
+        55,
+        229,
+        201
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 10986
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "bbox": [
+        13,
+        70,
+        244,
+        185
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 11228
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "bbox": [
+        17,
+        69,
+        240,
+        187
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 11351
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "bbox": [
+        12,
+        78,
+        244,
+        178
+      ],
+      "edgeIssue": false,
+      "opaquePixelsAlphaGt16": 8404
+    }
+  ],
+  "frameEdgeIssues": []
+}
