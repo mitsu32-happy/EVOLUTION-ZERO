@@ -639,8 +639,9 @@ export class PlayScene {
     }
   }
 
-  applyOptionsSettings(settings = this.saveManager?.getOptionsSettings?.()) {
-    this.optionsSettings = settings ?? this.optionsSettings ?? {};
+  applyOptionsSettings(settings) {
+    const nextSettings = settings ?? this.saveManager?.getOptionsSettings?.();
+    this.optionsSettings = nextSettings ?? this.optionsSettings ?? {};
     const effects = this.optionsSettings.effects ?? {};
     const controls = this.optionsSettings.controls ?? {};
     const display = this.optionsSettings.display ?? {};
