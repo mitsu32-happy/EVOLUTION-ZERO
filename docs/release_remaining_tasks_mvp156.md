@@ -157,3 +157,9 @@ Remaining audio polish:
 - After repository creation, push the prepared local repository and enable Pages from GitHub Actions.
 - Real-device RC remains required for iOS Safari / Android Chrome, especially audio unlock, intro playback, touch controls, ENDLESS soak, and ZERO 3-route play.
 - Post-release additions remain: ruins ZERO, fourth dinosaur, codex detail panel, PWA polish, and further audio polish.
+
+## MVP-163 Publish Follow-up
+
+- Public Pages is live at `https://mitsu32-happy.github.io/EVOLUTION-ZERO/`.
+- Watch the next push to confirm GitHub does not keep starting the extra Jekyll Pages build. If it does, switch repository Settings > Pages > Source to GitHub Actions explicitly.
+- Real-device iOS Safari / Android Chrome RC remains the main release-blocking manual task.

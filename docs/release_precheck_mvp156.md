@@ -252,3 +252,12 @@ MVP-163 local Git status:
 MVP-163 local browser smoke:
 - Local debug URL `?debugIntroSeen=1&v=mvp163-local-smoke` loaded with title `EVOLUTION ZERO`.
 - Runtime console warn/error: 0 app logs.
+
+MVP-163 GitHub publish result:
+- Repository URL: `https://github.com/mitsu32-happy/EVOLUTION-ZERO`
+- Public Pages URL: `https://mitsu32-happy.github.io/EVOLUTION-ZERO/`
+- Initial push to `origin/main` succeeded.
+- Custom workflow `Deploy GitHub Pages` completed successfully.
+- Public URL returned HTTP 200 and loaded `EVOLUTION ZERO`.
+- Browser smoke on public URL `?debugIntroSeen=1&v=mvp163-public-smoke` reported runtime console warn/error: 0.
+- GitHub also created a separate `pages build and deployment` Jekyll run that failed, but the custom dist deploy succeeded and the public URL is live. If this repeats on later pushes, set Pages source explicitly to GitHub Actions in repository settings.
