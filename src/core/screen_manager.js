@@ -331,7 +331,7 @@ export class ScreenManager {
     this.pendingTitleCue = false;
     this.titleCuePlayedForVisit = true;
     this.audioManager.playOptional('zero_warning', {
-      volume: 0.52,
+      volume: 0.36,
       cooldown: 0,
       durationHintMs: 1800,
       fadeOutMs: 260,

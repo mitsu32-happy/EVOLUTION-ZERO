@@ -531,8 +531,7 @@ export class PlayScene {
 
       if (combatResult?.targets?.length > 0) {
         this.player.playAction('attack');
-        this.audioManager?.play(this.getNormalAttackAudioId(combatResult));
-        this.audioManager?.play('enemy_hit');
+        this.playNormalAttackAudio(combatResult);
       }
 
       if (combatResult?.shake > 0) {
@@ -1331,6 +1330,32 @@ export class PlayScene {
     }
 
     return 'attack';
+  }
+
+  playNormalAttackAudio(combatResult = null) {
+    if (!this.audioManager) {
+      return;
+    }
+
+    const now = typeof performance !== 'undefined' ? performance.now() / 1000 : Date.now() / 1000;
+    const attackId = this.getNormalAttackAudioId(combatResult);
+
+    if (now - (this.lastNormalAttackSoundAt ?? -999) >= 0.1) {
+      this.lastNormalAttackSoundAt = now;
+      this.audioManager.play(attackId, {
+        cooldown: 0.02,
+        maxInstances: 2,
+      });
+    }
+
+    if (now - (this.lastEnemyHitSoundAt ?? -999) >= 0.16) {
+      this.lastEnemyHitSoundAt = now;
+      this.audioManager.play('enemy_hit', {
+        cooldown: 0.04,
+        maxInstances: 2,
+        volume: 0.65,
+      });
+    }
   }
 
   updateCamera(delta) {
