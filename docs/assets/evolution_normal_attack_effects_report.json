@@ -1,0 +1,209 @@
+{
+  "source": "docs/assets/generated_raw/evolution_normal_attack_effects/evolution_normal_attack_effects_atlas_raw.png",
+  "outputs": [
+    {
+      "name": "triceratops_attack_quake",
+      "file": "public/assets/effects/attacks/evolutions/triceratops_attack_quake.png",
+      "outputSize": [
+        349,
+        348
+      ],
+      "bbox": [
+        19,
+        12,
+        327,
+        326
+      ],
+      "opaquePixels": 35352,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "triceratops_hunting_pulse",
+      "file": "public/assets/effects/attacks/evolutions/triceratops_hunting_pulse.png",
+      "outputSize": [
+        338,
+        269
+      ],
+      "bbox": [
+        12,
+        23,
+        316,
+        247
+      ],
+      "opaquePixels": 34201,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "triceratops_speed_charge",
+      "file": "public/assets/effects/attacks/evolutions/triceratops_speed_charge.png",
+      "outputSize": [
+        362,
+        209
+      ],
+      "bbox": [
+        23,
+        23,
+        350,
+        187
+      ],
+      "opaquePixels": 20517,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "triceratops_zero_ignis_charge",
+      "file": "public/assets/effects/attacks/evolutions/triceratops_zero_ignis_charge.png",
+      "outputSize": [
+        359,
+        265
+      ],
+      "bbox": [
+        19,
+        22,
+        337,
+        243
+      ],
+      "opaquePixels": 35022,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "tyrannosaurus_attack_bite_burst",
+      "file": "public/assets/effects/attacks/evolutions/tyrannosaurus_attack_bite_burst.png",
+      "outputSize": [
+        373,
+        301
+      ],
+      "bbox": [
+        22,
+        22,
+        361,
+        279
+      ],
+      "opaquePixels": 40886,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "tyrannosaurus_hunting_fang_wave",
+      "file": "public/assets/effects/attacks/evolutions/tyrannosaurus_hunting_fang_wave.png",
+      "outputSize": [
+        318,
+        266
+      ],
+      "bbox": [
+        22,
+        22,
+        296,
+        244
+      ],
+      "opaquePixels": 32592,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "tyrannosaurus_speed_bite",
+      "file": "public/assets/effects/attacks/evolutions/tyrannosaurus_speed_bite.png",
+      "outputSize": [
+        386,
+        350
+      ],
+      "bbox": [
+        12,
+        23,
+        371,
+        338
+      ],
+      "opaquePixels": 29337,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "tyrannosaurus_zero_omega_bite",
+      "file": "public/assets/effects/attacks/evolutions/tyrannosaurus_zero_omega_bite.png",
+      "outputSize": [
+        386,
+        382
+      ],
+      "bbox": [
+        12,
+        23,
+        337,
+        282
+      ],
+      "opaquePixels": 44157,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "velociraptor_attack_impact",
+      "file": "public/assets/effects/attacks/evolutions/velociraptor_attack_impact.png",
+      "outputSize": [
+        355,
+        323
+      ],
+      "bbox": [
+        22,
+        22,
+        333,
+        311
+      ],
+      "opaquePixels": 36765,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "velociraptor_hunting_fang",
+      "file": "public/assets/effects/attacks/evolutions/velociraptor_hunting_fang.png",
+      "outputSize": [
+        340,
+        299
+      ],
+      "bbox": [
+        22,
+        22,
+        318,
+        276
+      ],
+      "opaquePixels": 33365,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "velociraptor_speed_slash",
+      "file": "public/assets/effects/attacks/evolutions/velociraptor_speed_slash.png",
+      "outputSize": [
+        380,
+        378
+      ],
+      "bbox": [
+        68,
+        93,
+        357,
+        355
+      ],
+      "opaquePixels": 29380,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    },
+    {
+      "name": "velociraptor_zero_abyss_slash",
+      "file": "public/assets/effects/attacks/evolutions/velociraptor_zero_abyss_slash.png",
+      "outputSize": [
+        382,
+        386
+      ],
+      "bbox": [
+        22,
+        96,
+        335,
+        366
+      ],
+      "opaquePixels": 33233,
+      "magentaResidualPixels": 0,
+      "frameEdgeIssues": []
+    }
+  ]
+}

@@ -19,6 +19,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/velociraptor_speed_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/velociraptor_speed_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_speed_raptor.png',
+      normalAttackEffectKey: 'normalAttackEffects.velociraptorSpeedSlash',
     },
     {
       id: 'velociraptor_hunting',
@@ -37,6 +38,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/velociraptor_hunting_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/velociraptor_hunting_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_hunting_raptor.png',
+      normalAttackEffectKey: 'normalAttackEffects.velociraptorHuntingFang',
     },
     {
       id: 'velociraptor_attack',
@@ -55,6 +57,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/velociraptor_attack_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/velociraptor_attack_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_attack_raptor.png',
+      normalAttackEffectKey: 'normalAttackEffects.velociraptorAttackImpact',
     },
     {
       id: 'velociraptor_zero',
@@ -73,6 +76,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/velociraptor_zero_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/velociraptor_zero_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_zero_velociraptor.png',
+      normalAttackEffectKey: 'normalAttackEffects.velociraptorZeroAbyssSlash',
       ultimateId: 'velociraptor_zero',
       tier: 'zero',
       unlockCondition: 'jungle ZERO clear',
@@ -116,6 +120,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/triceratops_speed_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/triceratops_speed_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_speed_triceratops.png',
+      normalAttackEffectKey: 'normalAttackEffects.triceratopsSpeedCharge',
     },
     {
       id: 'triceratops_hunting',
@@ -134,6 +139,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/triceratops_hunting_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/triceratops_hunting_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_hunting_triceratops.png',
+      normalAttackEffectKey: 'normalAttackEffects.triceratopsHuntingPulse',
     },
     {
       id: 'triceratops_attack',
@@ -152,6 +158,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/triceratops_attack_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/triceratops_attack_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_attack_triceratops.png',
+      normalAttackEffectKey: 'normalAttackEffects.triceratopsAttackQuake',
     },
     {
       id: 'triceratops_zero',
@@ -170,6 +177,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/triceratops_zero_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/triceratops_zero_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_zero_triceratops.png',
+      normalAttackEffectKey: 'normalAttackEffects.triceratopsZeroIgnisCharge',
       ultimateId: 'triceratops_zero',
       tier: 'zero',
       unlockCondition: 'volcano ZERO clear',
@@ -213,6 +221,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/tyrannosaurus_speed_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/tyrannosaurus_speed_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_speed_tyrannosaurus.png',
+      normalAttackEffectKey: 'normalAttackEffects.tyrannosaurusSpeedBite',
     },
     {
       id: 'tyrannosaurus_hunting',
@@ -231,6 +240,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/tyrannosaurus_hunting_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/tyrannosaurus_hunting_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_hunting_tyrannosaurus.png',
+      normalAttackEffectKey: 'normalAttackEffects.tyrannosaurusHuntingFangWave',
     },
     {
       id: 'tyrannosaurus_attack',
@@ -249,6 +259,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/tyrannosaurus_attack_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/tyrannosaurus_attack_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_attack_tyrannosaurus.png',
+      normalAttackEffectKey: 'normalAttackEffects.tyrannosaurusAttackBiteBurst',
     },
     {
       id: 'tyrannosaurus_zero',
@@ -267,6 +278,7 @@ export const EVOLUTION_BRANCHES = {
       portraitPath: 'assets/dinos/evolutions/portraits/tyrannosaurus_zero_portrait.png',
       sheetPath: 'assets/dinos/evolutions/sheets/tyrannosaurus_zero_sheet.png',
       specialIconPath: 'assets/ui/hud/special_icons/special_zero_tyrannosaurus.png',
+      normalAttackEffectKey: 'normalAttackEffects.tyrannosaurusZeroOmegaBite',
       ultimateId: 'tyrannosaurus_zero',
       tier: 'zero',
       unlockCondition: 'ZEROクリア',

@@ -572,6 +572,18 @@
     raptorClawSlash: 'normalAttackEffects.raptorClawSlash',
     triceratopsHornImpact: 'normalAttackEffects.triceratopsHornImpact',
     trexBiteShock: 'normalAttackEffects.trexBiteShock',
+    velociraptorSpeedSlash: 'normalAttackEffects.velociraptorSpeedSlash',
+    velociraptorHuntingFang: 'normalAttackEffects.velociraptorHuntingFang',
+    velociraptorAttackImpact: 'normalAttackEffects.velociraptorAttackImpact',
+    velociraptorZeroAbyssSlash: 'normalAttackEffects.velociraptorZeroAbyssSlash',
+    triceratopsSpeedCharge: 'normalAttackEffects.triceratopsSpeedCharge',
+    triceratopsHuntingPulse: 'normalAttackEffects.triceratopsHuntingPulse',
+    triceratopsAttackQuake: 'normalAttackEffects.triceratopsAttackQuake',
+    triceratopsZeroIgnisCharge: 'normalAttackEffects.triceratopsZeroIgnisCharge',
+    tyrannosaurusSpeedBite: 'normalAttackEffects.tyrannosaurusSpeedBite',
+    tyrannosaurusHuntingFangWave: 'normalAttackEffects.tyrannosaurusHuntingFangWave',
+    tyrannosaurusAttackBiteBurst: 'normalAttackEffects.tyrannosaurusAttackBiteBurst',
+    tyrannosaurusZeroOmegaBite: 'normalAttackEffects.tyrannosaurusZeroOmegaBite',
   },
   normalAttackIcons: {
     raptorClaw: 'normalAttackIcons.raptorClaw',
@@ -4198,6 +4210,54 @@ export const ASSET_MANIFEST = {
     trexBiteShock: {
       path: 'assets/effects/attacks/tyrannosaurus_bite_shock.png',
       note: 'MVP-108 generated transparent normal attack effect for tyrannosaurus heavy cone bite shock.',
+    },
+    velociraptorSpeedSlash: {
+      path: 'assets/effects/attacks/evolutions/velociraptor_speed_slash.png',
+      note: 'Post-RC generated dedicated normal attack effect for ファルクス speed evolution.',
+    },
+    velociraptorHuntingFang: {
+      path: 'assets/effects/attacks/evolutions/velociraptor_hunting_fang.png',
+      note: 'Post-RC generated dedicated normal attack effect for ノクスヴェナ hunting evolution.',
+    },
+    velociraptorAttackImpact: {
+      path: 'assets/effects/attacks/evolutions/velociraptor_attack_impact.png',
+      note: 'Post-RC generated dedicated normal attack effect for ヴォルグラム attack evolution.',
+    },
+    velociraptorZeroAbyssSlash: {
+      path: 'assets/effects/attacks/evolutions/velociraptor_zero_abyss_slash.png',
+      note: 'Post-RC generated dedicated normal attack effect for アビスラプス ZERO evolution.',
+    },
+    triceratopsSpeedCharge: {
+      path: 'assets/effects/attacks/evolutions/triceratops_speed_charge.png',
+      note: 'Post-RC generated dedicated normal attack effect for セラヴェル speed evolution.',
+    },
+    triceratopsHuntingPulse: {
+      path: 'assets/effects/attacks/evolutions/triceratops_hunting_pulse.png',
+      note: 'Post-RC generated dedicated normal attack effect for セラノクス hunting evolution.',
+    },
+    triceratopsAttackQuake: {
+      path: 'assets/effects/attacks/evolutions/triceratops_attack_quake.png',
+      note: 'Post-RC generated dedicated normal attack effect for グランボルグ attack evolution.',
+    },
+    triceratopsZeroIgnisCharge: {
+      path: 'assets/effects/attacks/evolutions/triceratops_zero_ignis_charge.png',
+      note: 'Post-RC generated dedicated normal attack effect for イグニケラ ZERO evolution.',
+    },
+    tyrannosaurusSpeedBite: {
+      path: 'assets/effects/attacks/evolutions/tyrannosaurus_speed_bite.png',
+      note: 'Post-RC generated dedicated normal attack effect for レグナクス speed evolution.',
+    },
+    tyrannosaurusHuntingFangWave: {
+      path: 'assets/effects/attacks/evolutions/tyrannosaurus_hunting_fang_wave.png',
+      note: 'Post-RC generated dedicated normal attack effect for ヴェナトロス hunting evolution.',
+    },
+    tyrannosaurusAttackBiteBurst: {
+      path: 'assets/effects/attacks/evolutions/tyrannosaurus_attack_bite_burst.png',
+      note: 'Post-RC generated dedicated normal attack effect for レクスヴォルグ attack evolution.',
+    },
+    tyrannosaurusZeroOmegaBite: {
+      path: 'assets/effects/attacks/evolutions/tyrannosaurus_zero_omega_bite.png',
+      note: 'Post-RC generated dedicated normal attack effect for オメガレクス ZERO evolution.',
     },
   },
   normalAttackIcons: {

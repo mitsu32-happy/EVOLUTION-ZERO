@@ -3072,3 +3072,31 @@ Runtime rules:
   - SEの尾を短く保つため、`durationHintMs` と `fadeOutMs` を維持している。
 - Page resume audio:
   - ページ復帰後の初回タップで UI/SE が沈黙しないよう、AudioContext 復帰時に一時SEの cooldown / active count をリセットする。
+## Post-RC Evolution Normal Attack Effects
+
+- Replaced the simple Graphics-driven normal attack visuals for evolved dinosaurs with dedicated generated effect sprites.
+- Scope: all public evolution branches for Velociraptor, Triceratops, and Tyrannosaurus, including ZERO reward evolutions.
+- New assets live under `public/assets/effects/attacks/evolutions/`.
+- Runtime rule:
+  - Evolution branches define `normalAttackEffectKey` in `evolution_data.js`.
+  - `CombatSystem.applyEvolution()` loads that texture and uses it for evolved normal attacks.
+  - If the texture is missing or still loading, the existing Graphics fallback remains active.
+- Generated asset list:
+  - `velociraptor_speed_slash.png`
+  - `velociraptor_hunting_fang.png`
+  - `velociraptor_attack_impact.png`
+  - `velociraptor_zero_abyss_slash.png`
+  - `triceratops_speed_charge.png`
+  - `triceratops_hunting_pulse.png`
+  - `triceratops_attack_quake.png`
+  - `triceratops_zero_ignis_charge.png`
+  - `tyrannosaurus_speed_bite.png`
+  - `tyrannosaurus_hunting_fang_wave.png`
+  - `tyrannosaurus_attack_bite_burst.png`
+  - `tyrannosaurus_zero_omega_bite.png`
+- QA artifacts:
+  - `docs/assets/evolution_normal_attack_effects_contact.png`
+  - `docs/assets/evolution_normal_attack_effects_report.json`
+- Future polish:
+  - Recheck exact on-screen scale per branch during manual combat QA.
+  - If any effect feels too large on mobile, adjust only `getEvolutionNormalAttackEffectSize()` rather than regenerating assets.

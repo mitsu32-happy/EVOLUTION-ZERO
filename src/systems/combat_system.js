@@ -24,6 +24,9 @@ export class CombatSystem {
     this.normalAttackDefinition = null;
     this.normalAttackEffectTexture = null;
     this.normalAttackEffectKey = null;
+    this.evolutionNormalAttackEffectTexture = null;
+    this.evolutionNormalAttackEffectKey = null;
+    this.evolutionNormalAttackEffectId = null;
     this.adaptationSkillStates = new Map();
     this.projectiles = [];
   }
@@ -62,6 +65,8 @@ export class CombatSystem {
     }
 
     this.attackPattern = evolution.tag;
+    this.evolutionNormalAttackEffectId = evolution.id ?? null;
+    this.loadEvolutionNormalAttackEffect(evolution.normalAttackEffectKey ?? null, this.evolutionNormalAttackEffectId);
 
     if (evolution.tag === 'speed') {
       this.attackInterval = Math.max(0.19, this.attackInterval * 0.66);
@@ -109,6 +114,9 @@ export class CombatSystem {
     this.normalAttackDefinition = null;
     this.normalAttackEffectTexture = null;
     this.normalAttackEffectKey = null;
+    this.evolutionNormalAttackEffectTexture = null;
+    this.evolutionNormalAttackEffectKey = null;
+    this.evolutionNormalAttackEffectId = null;
     this.adaptationSkillStates.clear();
     this.currentEnemies = null;
     this.effects.forEach((effect) => effect.view.destroy());
@@ -159,6 +167,26 @@ export class CombatSystem {
       }
 
       this.normalAttackEffectTexture = texture;
+    });
+  }
+
+  loadEvolutionNormalAttackEffect(effectKey, effectId = null) {
+    this.evolutionNormalAttackEffectTexture = null;
+    this.evolutionNormalAttackEffectKey = effectKey ?? null;
+    this.evolutionNormalAttackEffectId = effectId ?? null;
+
+    if (!this.assetLoader || !this.evolutionNormalAttackEffectKey) {
+      return;
+    }
+
+    const expectedKey = this.evolutionNormalAttackEffectKey;
+    const expectedId = this.evolutionNormalAttackEffectId;
+    this.assetLoader.load(expectedKey).then((texture) => {
+      if (this.evolutionNormalAttackEffectKey !== expectedKey || this.evolutionNormalAttackEffectId !== expectedId) {
+        return;
+      }
+
+      this.evolutionNormalAttackEffectTexture = texture;
     });
   }
 
@@ -695,6 +723,8 @@ export class CombatSystem {
         scale: 0.82,
         side: hit.side,
         age: -hit.delay,
+        texture: this.evolutionNormalAttackEffectTexture,
+        size: this.getEvolutionNormalAttackEffectSize('speed'),
       });
     });
 
@@ -721,6 +751,8 @@ export class CombatSystem {
         style: 'hunting',
         duration: 0.28,
         scale: 1.45,
+        texture: this.evolutionNormalAttackEffectTexture,
+        size: this.getEvolutionNormalAttackEffectSize('hunting'),
       });
     }
 
@@ -739,6 +771,8 @@ export class CombatSystem {
       style: 'attack',
       duration: 0.34,
       scale: 1.22,
+      texture: this.evolutionNormalAttackEffectTexture,
+      size: this.getEvolutionNormalAttackEffectSize('attack'),
     });
     this.lastImpactShake = 4.2;
 
@@ -944,17 +978,29 @@ export class CombatSystem {
   spawnSlashEffect(player, target, effectLayer, options = {}) {
     const duration = options.duration ?? 0.22;
     const scale = options.scale ?? 1;
+    const texture = options.texture ?? null;
+    const size = options.size ?? { width: 128, height: 94 };
     const effect = {
       age: options.age ?? 0,
       duration: this.simpleEffects ? Math.min(duration, 0.16) : duration,
       style: options.style ?? this.attackPattern,
       scale: this.simpleEffects ? scale * 0.78 : scale,
       side: options.side ?? 0,
-      view: new Graphics(),
+      sprite: Boolean(texture),
+      baseWidth: size.width,
+      baseHeight: size.height,
+      view: texture ? new Sprite(texture) : new Graphics(),
     };
     const x = player.position.x + (target.position.x - player.position.x) * 0.62;
     const y = player.position.y + (target.position.y - player.position.y) * 0.62;
     const angle = Math.atan2(target.position.y - player.position.y, target.position.x - player.position.x);
+
+    if (texture) {
+      effect.view.anchor.set(0.5);
+      effect.view.width = size.width;
+      effect.view.height = size.height;
+      effect.view.alpha = 0;
+    }
 
     effect.view.position.set(x, y + effect.side * 8);
     effect.view.rotation = angle;
@@ -963,14 +1009,17 @@ export class CombatSystem {
   }
 
   spawnNormalAttackEffect(player, target, effectLayer, attack, facing) {
-    const texture = this.normalAttackEffectKey === attack.effectKey ? this.normalAttackEffectTexture : null;
+    const texture = this.evolutionNormalAttackEffectTexture
+      ?? (this.normalAttackEffectKey === attack.effectKey ? this.normalAttackEffectTexture : null);
     const origin = this.getAttackOrigin(player, attack, facing);
     const distance = attack.range * (attack.effectOffset ?? 0.55);
     const x = origin.x + facing.x * distance;
     const y = origin.y + facing.y * distance;
     const angle = Math.atan2(facing.y, facing.x);
     const duration = attack.effectDuration ?? 0.22;
-    const size = attack.effectSize ?? { width: 112, height: 92 };
+    const size = this.evolutionNormalAttackEffectTexture
+      ? this.getEvolutionNormalAttackEffectSize(this.attackPattern)
+      : (attack.effectSize ?? { width: 112, height: 92 });
 
     if (texture) {
       const sprite = new Sprite(texture);
@@ -1636,5 +1685,51 @@ export class CombatSystem {
     }
 
     return this.effectGlowColor;
+  }
+
+  getEvolutionNormalAttackEffectSize(pattern = this.attackPattern) {
+    const id = this.evolutionNormalAttackEffectId ?? '';
+
+    if (id.includes('triceratops_zero')) {
+      return { width: 178, height: 126 };
+    }
+
+    if (id.includes('triceratops_speed')) {
+      return { width: 176, height: 112 };
+    }
+
+    if (id.includes('triceratops')) {
+      return { width: 158, height: 124 };
+    }
+
+    if (id.includes('tyrannosaurus_zero')) {
+      return { width: 172, height: 132 };
+    }
+
+    if (id.includes('tyrannosaurus')) {
+      return { width: pattern === 'speed' ? 150 : 164, height: 124 };
+    }
+
+    if (id.includes('velociraptor_zero')) {
+      return { width: 148, height: 112 };
+    }
+
+    if (id.includes('velociraptor')) {
+      return { width: pattern === 'attack' ? 138 : 126, height: 96 };
+    }
+
+    if (pattern === 'zero') {
+      return { width: 154, height: 118 };
+    }
+
+    if (pattern === 'attack') {
+      return { width: 150, height: 118 };
+    }
+
+    if (pattern === 'hunting') {
+      return { width: 146, height: 114 };
+    }
+
+    return { width: 128, height: 96 };
   }
 }
