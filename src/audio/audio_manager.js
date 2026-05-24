@@ -22,8 +22,11 @@ export class AudioManager {
     this.bgmReturnTimer = null;
     this.warnedMissing = new Set();
     this.preloaded = new Map();
+    this.bufferPromises = new Map();
+    this.decodedBuffers = new Map();
     this.interruptGroups = new Map();
     this.activeAudios = new Set();
+    this.activeBufferRecords = new Set();
     this.lifecycleHandlersInstalled = false;
     this.pageAudioSuspended = false;
     this.wasBgmPlayingBeforePageHide = false;
@@ -36,6 +39,7 @@ export class AudioManager {
     this.masterVolume = Math.max(0, Math.min(1, volume));
     this.updateCurrentBgmVolume();
     this.updateActiveAudioVolumes();
+    this.updateActiveBufferVolumes();
   }
 
   setMuted(muted) {
@@ -52,6 +56,7 @@ export class AudioManager {
     }
 
     this.updateActiveAudioVolumes();
+    this.updateActiveBufferVolumes();
   }
 
   applySettings(settings = {}) {
@@ -65,6 +70,7 @@ export class AudioManager {
     this.setMuted(Boolean(settings.muted ?? this.muted));
     this.updateCurrentBgmVolume();
     this.updateActiveAudioVolumes();
+    this.updateActiveBufferVolumes();
   }
 
   installPageLifecycleHandlers() {
@@ -222,6 +228,10 @@ export class AudioManager {
       return;
     }
 
+    if (this.playBufferedAudio(id, entry, options)) {
+      return;
+    }
+
     try {
       const audio = this.createAudio(entry, options);
 
@@ -273,6 +283,11 @@ export class AudioManager {
         this.ensureAudioRouting(audio);
         audio.preload = entry.category === 'bgm' ? 'metadata' : 'auto';
         this.preloaded.set(id, audio);
+        if (this.shouldUseBufferedPlayback(entry) && this.audioContext) {
+          this.getAudioBuffer(entry).catch((error) => {
+            this.warnOnce(id, `Audio buffer preload skipped: ${entry.path}`, error);
+          });
+        }
       } catch (error) {
         this.warnOnce(id, `Audio preload skipped: ${entry.path}`, error);
       }
@@ -390,6 +405,8 @@ export class AudioManager {
       this.stopAudioNow(audio);
     });
     this.activeAudios.clear();
+    this.activeBufferRecords.forEach((record) => this.stopBufferRecord(record));
+    this.activeBufferRecords.clear();
     this.activeCounts = {};
     this.interruptGroups.clear();
   }
@@ -442,6 +459,165 @@ export class AudioManager {
       this.ensureAudioRouting(audio);
     });
     this.updateActiveAudioVolumes();
+    this.updateActiveBufferVolumes();
+  }
+
+  playBufferedAudio(id, entry, options = {}) {
+    if (!this.shouldUseBufferedPlayback(entry) || !this.audioContext) {
+      return false;
+    }
+
+    this.incrementActive(id);
+    this.getAudioBuffer(entry).then((buffer) => {
+      if (!buffer || this.muted || this.pageAudioSuspended) {
+        this.decrementActive(id);
+        return;
+      }
+
+      const source = this.audioContext.createBufferSource();
+      const gain = this.audioContext.createGain();
+      const record = {
+        id,
+        entry,
+        source,
+        gain,
+        baseVolume: options.volume ?? 1,
+        stopped: false,
+      };
+
+      source.buffer = buffer;
+      source.connect(gain);
+      gain.connect(this.audioContext.destination);
+      this.applyVolumeToBufferRecord(record);
+      this.activeBufferRecords.add(record);
+
+      const releaseRecord = () => {
+        if (record.stopped) {
+          return;
+        }
+
+        record.stopped = true;
+        this.activeBufferRecords.delete(record);
+        this.decrementActive(id);
+        try {
+          source.disconnect();
+        } catch {
+          // Already disconnected.
+        }
+        try {
+          gain.disconnect();
+        } catch {
+          // Already disconnected.
+        }
+      };
+
+      source.onended = releaseRecord;
+      this.applyBufferPlaybackControls(record, options);
+      source.start(0);
+    }).catch((error) => {
+      this.decrementActive(id);
+      if (!options.optional) {
+        this.warnOnce(id, `Audio buffer playback skipped: ${entry.path}`, error);
+      }
+    });
+
+    return true;
+  }
+
+  async getAudioBuffer(entry) {
+    const url = getAudioUrl(entry);
+
+    if (this.decodedBuffers.has(url)) {
+      return this.decodedBuffers.get(url);
+    }
+
+    if (this.bufferPromises.has(url)) {
+      return this.bufferPromises.get(url);
+    }
+
+    const promise = fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        return response.arrayBuffer();
+      })
+      .then((arrayBuffer) => this.audioContext.decodeAudioData(arrayBuffer.slice(0)))
+      .then((buffer) => {
+        this.decodedBuffers.set(url, buffer);
+        return buffer;
+      });
+
+    this.bufferPromises.set(url, promise);
+    return promise;
+  }
+
+  applyBufferPlaybackControls(record, options = {}) {
+    const durationHintMs = options.durationHintMs ?? record.entry.durationHintMs;
+
+    if (!Number.isFinite(durationHintMs) || durationHintMs <= 0) {
+      return;
+    }
+
+    const fadeOutMs = Math.max(0, options.fadeOutMs ?? record.entry.fadeOutMs ?? 0);
+    window.setTimeout(() => {
+      if (record.stopped) {
+        return;
+      }
+
+      if (fadeOutMs <= 0) {
+        this.stopBufferRecord(record);
+        return;
+      }
+
+      this.fadeOutAndStopBuffer(record, fadeOutMs);
+    }, durationHintMs);
+  }
+
+  fadeOutAndStopBuffer(record, fadeOutMs = 120) {
+    const startVolume = record.gain.gain.value;
+    const startedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const interval = window.setInterval(() => {
+      if (record.stopped) {
+        window.clearInterval(interval);
+        return;
+      }
+
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      const progress = Math.min(1, (now - startedAt) / fadeOutMs);
+      record.gain.gain.value = startVolume * (1 - progress);
+
+      if (progress >= 1) {
+        window.clearInterval(interval);
+        this.stopBufferRecord(record);
+      }
+    }, 32);
+  }
+
+  stopBufferRecord(record) {
+    if (!record || record.stopped) {
+      return;
+    }
+
+    record.stopped = true;
+    try {
+      record.source.stop(0);
+    } catch {
+      // Already stopped.
+    }
+    try {
+      record.source.disconnect();
+    } catch {
+      // Already disconnected.
+    }
+    try {
+      record.gain.disconnect();
+    } catch {
+      // Already disconnected.
+    }
+    this.activeBufferRecords.delete(record);
+    this.decrementActive(record.id);
   }
 
   applyPlaybackControls(id, entry, audio, options = {}) {
@@ -594,6 +770,20 @@ export class AudioManager {
     });
   }
 
+  updateActiveBufferVolumes() {
+    this.activeBufferRecords.forEach((record) => this.applyVolumeToBufferRecord(record));
+  }
+
+  applyVolumeToBufferRecord(record) {
+    if (!record?.gain) {
+      return;
+    }
+
+    record.gain.gain.value = this.muted
+      ? 0
+      : this.computeAudioVolume(record.entry, record.baseVolume ?? 1);
+  }
+
   applyVolumeToAudio(audio, entry = audio?.__ezAudioEntry) {
     if (!audio) {
       return;
@@ -669,6 +859,10 @@ export class AudioManager {
     // iOS Safari needs WebAudio gain for BGM volume, but routing many short SE
     // media elements through MediaElementSource is fragile and can silence them.
     return entry?.category === 'bgm';
+  }
+
+  shouldUseBufferedPlayback(entry) {
+    return entry?.category === 'ui' && !String(entry.path ?? '').includes('/intro/');
   }
 
   setMediaSessionState(state) {

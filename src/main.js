@@ -18,6 +18,7 @@ function preventIfCancelable(event) {
 
 function installMobileInteractionGuards() {
   const guardedEvents = ['gesturestart', 'gesturechange', 'gestureend', 'dblclick', 'contextmenu'];
+  let lastTouchEndAt = 0;
 
   guardedEvents.forEach((eventName) => {
     window.addEventListener(eventName, preventIfCancelable, { passive: false });
@@ -28,6 +29,15 @@ function installMobileInteractionGuards() {
     if (event.touches?.length > 1) {
       preventIfCancelable(event);
     }
+  }, { passive: false });
+  document.addEventListener('touchend', (event) => {
+    const now = Date.now();
+
+    if (now - lastTouchEndAt < 420) {
+      preventIfCancelable(event);
+    }
+
+    lastTouchEndAt = now;
   }, { passive: false });
 }
 
