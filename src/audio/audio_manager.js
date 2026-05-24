@@ -27,6 +27,8 @@ export class AudioManager {
     this.lifecycleHandlersInstalled = false;
     this.pageAudioSuspended = false;
     this.wasBgmPlayingBeforePageHide = false;
+    this.suspendedBgmId = null;
+    this.suspendedBgmTime = 0;
     this.lastBgmEnsureAt = 0;
   }
 
@@ -109,7 +111,16 @@ export class AudioManager {
       this.currentBgm.pause();
     }
 
-    this.stopTransientAudio();
+    this.suspendedBgmId = this.currentBgmId;
+    this.suspendedBgmTime = this.currentBgm?.currentTime ?? 0;
+
+    if (this.currentBgm) {
+      this.releaseAudioElement(this.currentBgm);
+      this.currentBgm = null;
+      this.currentBgmId = null;
+    }
+
+    this.stopTransientAudio({ release: true });
 
     if (this.audioContext?.state === 'running') {
       this.audioContext.suspend().catch(() => {});
@@ -129,15 +140,18 @@ export class AudioManager {
       this.audioContext.resume().catch(() => {});
     }
 
-    if (this.wasBgmPlayingBeforePageHide && this.currentBgm && !this.muted) {
-      this.ensureAudioRouting(this.currentBgm);
-      this.currentBgm.play().catch((error) => {
-        this.warnOnce(this.currentBgmId ?? 'bgm', 'BGM resume skipped after page show', error);
+    if (this.wasBgmPlayingBeforePageHide && this.suspendedBgmId && !this.muted) {
+      this.playBgm(this.suspendedBgmId, {
+        unlock: false,
+        loop: true,
+        startTime: this.suspendedBgmTime,
       });
       this.setMediaSessionState('playing');
     }
 
     this.wasBgmPlayingBeforePageHide = false;
+    this.suspendedBgmId = null;
+    this.suspendedBgmTime = 0;
   }
 
   unlockAudio() {
@@ -314,6 +328,13 @@ export class AudioManager {
       const audio = this.createAudio(entry, options);
 
       audio.loop = options.loop ?? true;
+      if (Number.isFinite(options.startTime) && options.startTime > 0) {
+        try {
+          audio.currentTime = Math.max(0, options.startTime);
+        } catch {
+          // Metadata timing differs by browser; starting from 0 is acceptable after background resume.
+        }
+      }
       this.currentBgm = audio;
       this.currentBgmId = id;
       this.ensureAudioRouting(audio);
@@ -359,8 +380,15 @@ export class AudioManager {
     this.currentBgmId = null;
   }
 
-  stopTransientAudio() {
-    this.activeAudios.forEach((audio) => this.stopAudioNow(audio));
+  stopTransientAudio({ release = false } = {}) {
+    this.activeAudios.forEach((audio) => {
+      if (release) {
+        this.releaseAudioElement(audio);
+        return;
+      }
+
+      this.stopAudioNow(audio);
+    });
     this.activeAudios.clear();
     this.activeCounts = {};
     this.interruptGroups.clear();
@@ -380,7 +408,13 @@ export class AudioManager {
   }
 
   ensureAudioRouting(audio) {
-    if (!audio || !this.audioContext || audio.__ezGainNode || audio.__ezRoutingFailed) {
+    if (
+      !audio
+      || !this.shouldUseMediaElementRouting(audio.__ezAudioEntry)
+      || !this.audioContext
+      || audio.__ezGainNode
+      || audio.__ezRoutingFailed
+    ) {
       return;
     }
 
@@ -481,6 +515,40 @@ export class AudioManager {
     } catch {
       // Some mobile browsers reject currentTime changes for not-yet-loaded audio.
     }
+  }
+
+  releaseAudioElement(audio) {
+    if (!audio) {
+      return;
+    }
+
+    try {
+      audio.pause();
+    } catch {
+      // Ignore unavailable media state.
+    }
+
+    try {
+      audio.removeAttribute('src');
+      audio.load?.();
+    } catch {
+      // iOS can reject media mutations during teardown.
+    }
+
+    try {
+      audio.__ezSourceNode?.disconnect?.();
+    } catch {
+      // Already disconnected.
+    }
+
+    try {
+      audio.__ezGainNode?.disconnect?.();
+    } catch {
+      // Already disconnected.
+    }
+
+    audio.__ezSourceNode = null;
+    audio.__ezGainNode = null;
   }
 
   getRuntimeAudioLevel(audio) {
@@ -597,10 +665,19 @@ export class AudioManager {
     return Math.max(0, Math.min(1, baseVolume * entryVolume * this.masterVolume * categoryVolume));
   }
 
+  shouldUseMediaElementRouting(entry) {
+    // iOS Safari needs WebAudio gain for BGM volume, but routing many short SE
+    // media elements through MediaElementSource is fragile and can silence them.
+    return entry?.category === 'bgm';
+  }
+
   setMediaSessionState(state) {
     try {
       if ('mediaSession' in navigator) {
         navigator.mediaSession.playbackState = state;
+        if (state === 'paused') {
+          navigator.mediaSession.metadata = null;
+        }
       }
     } catch {
       // Media Session is optional and inconsistent across browsers.
