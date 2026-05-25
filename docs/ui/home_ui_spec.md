@@ -495,3 +495,17 @@ MVP-082 ではホーム画面の主要操作に短い押下フィードバック
 
 - ??????????????A01d?hero??????
 - ZERO????????????????????????????
+
+## MVP-A02b Home Common Info Panel
+
+- Home lower information tabs use one shared generated panel asset instead of separate Daily / Record / Unlock panel backgrounds.
+- Runtime assets:
+  - `public/assets/ui/home/home_info_panel_common.png`
+  - `public/assets/ui/home/home_info_panel_common_active_glow.png`
+  - `public/assets/ui/home/home_info_tab_selected.png`
+  - `public/assets/ui/home/home_info_tab_inactive.png`
+- The tab background stays visually consistent; only the tab content switches.
+- The common panel is placed at `x=18, y=536, w=354, h=196` on the 390px mobile layout.
+- Bottom navigation starts around `y=750`; the panel ends around `y=732`, leaving an 18px tap-safety gap.
+- Daily remains the default tab and keeps three mission rows with ResearchPt-only rewards.
+- Record and Unlock tabs use the same panel with larger values and wider row spacing for narrow iPhone Safari readability.

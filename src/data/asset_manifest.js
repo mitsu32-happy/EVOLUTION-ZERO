@@ -280,6 +280,10 @@ export const ASSET_KEYS = {
     unlockStatusPanel: 'homeUi.unlockStatusPanel',
     recordPanel: 'homeUi.recordPanel',
     dailyMissionPanel: 'homeUi.dailyMissionPanel',
+    homeInfoPanelCommon: 'homeUi.homeInfoPanelCommon',
+    homeInfoPanelGlow: 'homeUi.homeInfoPanelGlow',
+    homeInfoTabSelected: 'homeUi.homeInfoTabSelected',
+    homeInfoTabInactive: 'homeUi.homeInfoTabInactive',
     iconDnaRed: 'homeUi.iconDnaRed',
     iconResearchBeakerBlue: 'homeUi.iconResearchBeakerBlue',
     homeDinoSwitchLeft: 'homeUi.homeDinoSwitchLeft',
@@ -3053,6 +3057,26 @@ export const ASSET_MANIFEST = {
       path: 'assets/ui/home/daily_mission_panel.png',
       uiAsset: true,
       note: 'MVP-080 regenerated home-ratio daily mission panel with open interior for three rows.',
+    },
+    homeInfoPanelCommon: {
+      path: 'assets/ui/home/home_info_panel_common.png',
+      uiAsset: true,
+      note: 'MVP-A02b generated shared home lower information panel for Daily, Record, and Unlock tab contents.',
+    },
+    homeInfoPanelGlow: {
+      path: 'assets/ui/home/home_info_panel_common_active_glow.png',
+      uiAsset: true,
+      note: 'MVP-A02b generated subtle shared glow overlay for the common home information panel.',
+    },
+    homeInfoTabSelected: {
+      path: 'assets/ui/home/home_info_tab_selected.png',
+      uiAsset: true,
+      note: 'MVP-A02b generated selected tab frame for the common home information panel.',
+    },
+    homeInfoTabInactive: {
+      path: 'assets/ui/home/home_info_tab_inactive.png',
+      uiAsset: true,
+      note: 'MVP-A02b generated inactive tab frame for the common home information panel.',
     },
     iconDnaRed: {
       path: 'assets/ui/home/icon_dna_red.png',

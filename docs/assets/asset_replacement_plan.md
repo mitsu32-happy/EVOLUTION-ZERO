@@ -3143,3 +3143,18 @@ Runtime rules:
 - The tab strip is drawn in code to avoid adding more small UI assets before the PWA/loading pass.
 - Future fifth/sixth dinosaur additions should not require new always-visible Home panels. Add new summary fields to the Home tabs or a later detail surface.
 - Next asset-heavy phases remain loading optimization, PWA icons/manifest, and post-release content assets.
+
+## MVP-A02b Home Common Panel Assets
+
+- Generated one shared Home lower information panel and shared tab frames for Daily / Record / Unlock.
+- New runtime assets:
+  - `public/assets/ui/home/home_info_panel_common.png`
+  - `public/assets/ui/home/home_info_panel_common_active_glow.png`
+  - `public/assets/ui/home/home_info_tab_selected.png`
+  - `public/assets/ui/home/home_info_tab_inactive.png`
+- Generated source is preserved at `docs/assets/generated_raw/mvp_a02b_home_panel/home_panel_common_sheet_chromakey.png`.
+- The previous tab-specific panel assets remain in the repo for compatibility, but normal Home A02b layout prefers the new common panel manifest keys.
+- QA artifacts:
+  - `docs/assets/home_panel_common_mvp_a02b_contact.png`
+  - `docs/assets/home_panel_common_mvp_a02b_report.json`
+- Future Home content should switch text and rows inside the common panel instead of adding one panel background per tab.

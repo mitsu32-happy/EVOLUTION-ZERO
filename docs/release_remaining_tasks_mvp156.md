@@ -178,3 +178,10 @@ Remaining audio polish:
 - Daily remains the default tab because it is the daily-return action.
 - iPhone Safari real-device QA is still recommended for browser chrome collapse, safe-area edges, and accidental tap overlap.
 - PWA/fullscreen behavior and loading optimization remain future MVPs.
+
+## MVP-A02b Home Common Panel Follow-up
+
+- Replaced the A02 tab-specific lower panels with a generated common Home information panel and generated selected/inactive tab frames.
+- The panel height now uses more of the space above the bottom navigation while keeping an 18px safety gap on the 390x844 reference layout.
+- Daily, Record, and Unlock content should remain row/text-only swaps inside the same panel surface.
+- Real-device QA should recheck iPhone Safari bottom browser chrome, tab tap targets, Daily claim flow, and bottom navigation mis-tap risk.

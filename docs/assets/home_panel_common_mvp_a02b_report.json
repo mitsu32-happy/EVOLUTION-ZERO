@@ -1,0 +1,79 @@
+{
+  "mvp": "MVP-A02b",
+  "createdAt": "2026-05-25T23:22:25",
+  "purpose": "Common generated home lower info panel for Daily / Record / Unlock tabs.",
+  "sourcePromptMode": "Built-in image generation, then local chroma-key removal and crop.",
+  "generatedAssets": [
+    {
+      "path": "docs/assets/generated_raw/mvp_a02b_home_panel/home_panel_common_sheet_chromakey.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1351445,
+      "opaquePixels": 1572864,
+      "magentaOpaquePixels": 743279,
+      "violetEdgeCandidatePixels": 768975
+    },
+    {
+      "path": "public/assets/ui/home/home_info_panel_common.png",
+      "width": 1322,
+      "height": 542,
+      "bytes": 606626,
+      "opaquePixels": 686981,
+      "magentaOpaquePixels": 0,
+      "violetEdgeCandidatePixels": 0
+    },
+    {
+      "path": "public/assets/ui/home/home_info_tab_selected.png",
+      "width": 534,
+      "height": 108,
+      "bytes": 66903,
+      "opaquePixels": 51625,
+      "magentaOpaquePixels": 0,
+      "violetEdgeCandidatePixels": 0
+    },
+    {
+      "path": "public/assets/ui/home/home_info_tab_inactive.png",
+      "width": 534,
+      "height": 112,
+      "bytes": 63691,
+      "opaquePixels": 52140,
+      "magentaOpaquePixels": 0,
+      "violetEdgeCandidatePixels": 0
+    }
+  ],
+  "layout": {
+    "referenceCanvas": "390x844",
+    "infoPanel": {
+      "x": 18,
+      "y": 536,
+      "width": 354,
+      "height": 196
+    },
+    "bottomNavY": 750,
+    "panelBottomToNavGapPx": 18,
+    "dailyColumns": {
+      "statusX": 242,
+      "rewardX": 304,
+      "buttonX": 314,
+      "buttonWidth": 52
+    }
+  },
+  "qaScreenshots": [
+    "docs/assets/home_panel_common_mvp_a02b_daily.png",
+    "docs/assets/home_panel_common_mvp_a02b_record.png",
+    "docs/assets/home_panel_common_mvp_a02b_unlock.png"
+  ],
+  "contactSheet": "docs/assets/home_panel_common_mvp_a02b_contact.png",
+  "qaFindings": {
+    "commonPanelUsedForAllTabs": true,
+    "tabSpecificPanelBackgroundsRemoved": true,
+    "dailyRewardButtonOverlap": false,
+    "tabSwitchWorks": true,
+    "bottomNavOverlap": false,
+    "horizontalOverflow": false,
+    "generatedPurpleEdgeDespillApplied": true,
+    "optionalGlowAssetRegisteredButNotDisplayed": true,
+    "runtimeWarnErrorCount": 1,
+    "runtimeWarnErrorNote": "Retained browser log was an intro audio AbortError from entering Home during QA; no Home panel rendering error was observed."
+  }
+}
