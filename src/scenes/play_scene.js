@@ -41,6 +41,35 @@ const STAGE_BOUNDS = {
   top: -1800,
   bottom: 1800,
 };
+const VISIBILITY_ASSIST_CONFIG = {
+  standard: {
+    backgroundAlpha: 0.94,
+    backgroundLiftAlpha: 0,
+    vignetteMultiplier: 1,
+    hazardAlphaBoost: 1,
+    playerOutlineAlpha: 0,
+    enemyOutlineAlpha: 0,
+    bossOutlineAlpha: 0,
+  },
+  bright: {
+    backgroundAlpha: 0.98,
+    backgroundLiftAlpha: 0.045,
+    vignetteMultiplier: 0.82,
+    hazardAlphaBoost: 1.12,
+    playerOutlineAlpha: 0.24,
+    enemyOutlineAlpha: 0.1,
+    bossOutlineAlpha: 0.13,
+  },
+  high: {
+    backgroundAlpha: 1,
+    backgroundLiftAlpha: 0.08,
+    vignetteMultiplier: 0.68,
+    hazardAlphaBoost: 1.24,
+    playerOutlineAlpha: 0.38,
+    enemyOutlineAlpha: 0.16,
+    bossOutlineAlpha: 0.2,
+  },
+};
 
 function uiAssetUrl(path) {
   return `${import.meta.env.BASE_URL}${path}`;
@@ -209,9 +238,11 @@ export class PlayScene {
     this.view = new Container();
     this.world = new Container();
     this.backgroundLayer = new Container();
+    this.visibilityBackgroundLift = new Graphics();
     this.mapLayer = new Graphics();
     this.gimmickLayer = new Container();
     this.gimmickWarningGraphics = new Graphics();
+    this.visibilityGuideLayer = new Graphics();
     this.depthLayer = new Container();
     this.effectLayer = new Container();
     this.uiLayer = new Container();
@@ -448,7 +479,15 @@ export class PlayScene {
       this.evolutionSequence.view,
       this.levelUpUi.view,
     );
-    this.world.addChild(this.backgroundLayer, this.mapLayer, this.gimmickLayer, this.depthLayer, this.effectLayer);
+    this.world.addChild(
+      this.backgroundLayer,
+      this.visibilityBackgroundLift,
+      this.mapLayer,
+      this.gimmickLayer,
+      this.visibilityGuideLayer,
+      this.depthLayer,
+      this.effectLayer,
+    );
     this.gimmickLayer.addChild(this.gimmickWarningGraphics);
     this.world.scale.set(WORLD_ZOOM);
     this.loadStageBackground();
@@ -560,6 +599,7 @@ export class PlayScene {
     }
 
     this.updatePlayerDamageState();
+    this.updateVisibilityGuideLayer();
     this.updatePickupBursts(delta);
     this.updateDamageFlash(delta);
     this.updateBossWarning(delta);
@@ -675,12 +715,12 @@ export class PlayScene {
     }
 
     if (this.vignette) {
-      this.vignette.alpha = display.backgroundDim === false
-        ? 0.48
-        : display.highVisibility === true
-          ? 0.68
-          : 1;
+      const visibilityConfig = this.getVisibilityAssistConfig();
+      const baseVignetteAlpha = display.backgroundDim === false ? 0.48 : 1;
+      this.vignette.alpha = baseVignetteAlpha * visibilityConfig.vignetteMultiplier;
     }
+
+    this.applyVisibilityAssistVisuals();
 
     if (this.hud?.view) {
       const hudScale = display.hudSize === 'small' ? 0.96 : display.hudSize === 'large' ? 1.02 : 1;
@@ -2661,13 +2701,15 @@ export class PlayScene {
       }
 
       if (gimmick.warningSprite) {
+        const hazardBoost = this.getVisibilityAssistConfig().hazardAlphaBoost;
         gimmick.warningSprite.visible = isWarning && gimmick.warningAssetLoaded;
-        gimmick.warningSprite.alpha = 0.22 + warningProgress * 0.36;
+        gimmick.warningSprite.alpha = Math.min(0.78, (0.22 + warningProgress * 0.36) * hazardBoost);
       }
       gimmick.sprite.visible = (isActive || (isWarning && !gimmick.warningAssetLoaded)) && gimmick.assetLoaded;
+      const hazardBoost = this.getVisibilityAssistConfig().hazardAlphaBoost;
       gimmick.sprite.alpha = isActive
-        ? (gimmick.alpha ?? 0.82)
-        : (0.14 + warningProgress * 0.3);
+        ? Math.min(0.95, (gimmick.alpha ?? 0.82) * (1 + (hazardBoost - 1) * 0.32))
+        : Math.min(0.62, (0.14 + warningProgress * 0.3) * hazardBoost);
       gimmick.view.visible = gimmick.age < activeEnd;
 
       if (isActive) {
@@ -2987,9 +3029,9 @@ export class PlayScene {
       return;
     }
 
-    const highVisibility = this.optionsSettings?.display?.highVisibility === true;
     const simpleEffects = this.optionsSettings?.effects?.simpleEffects === true;
-    const baseAlpha = highVisibility ? 0.78 : simpleEffects ? 0.42 : 0.58;
+    const visibilityConfig = this.getVisibilityAssistConfig();
+    const baseAlpha = (simpleEffects ? 0.42 : 0.58) * visibilityConfig.hazardAlphaBoost;
 
     this.stageGimmicks.forEach((gimmick) => {
       const activeStart = gimmick.warningDuration;
@@ -3571,7 +3613,7 @@ export class PlayScene {
     const startY = STAGE_BOUNDS.top - padding;
     const endY = STAGE_BOUNDS.bottom + padding;
 
-    this.backgroundLayer.alpha = 0.94;
+    this.backgroundLayer.alpha = this.getVisibilityAssistConfig().backgroundAlpha;
 
     for (let y = startY; y <= endY; y += tileSize) {
       for (let x = startX; x <= endX; x += tileSize) {
@@ -4532,6 +4574,93 @@ export class PlayScene {
       .fill({ color: 0x000000, alpha: 0.08 });
 
     this.view.hitArea = new Rectangle(0, 0, this.width, this.height);
+  }
+
+  getVisibilityAssistConfig() {
+    const level = this.optionsSettings?.display?.visibilityAssist ?? 'standard';
+
+    return VISIBILITY_ASSIST_CONFIG[level] ?? VISIBILITY_ASSIST_CONFIG.standard;
+  }
+
+  applyVisibilityAssistVisuals() {
+    const config = this.getVisibilityAssistConfig();
+
+    if (this.backgroundLayer) {
+      this.backgroundLayer.alpha = config.backgroundAlpha;
+    }
+
+    this.drawVisibilityBackgroundLift(config);
+    this.updateVisibilityGuideLayer();
+  }
+
+  drawVisibilityBackgroundLift(config = this.getVisibilityAssistConfig()) {
+    if (!this.visibilityBackgroundLift) {
+      return;
+    }
+
+    this.visibilityBackgroundLift.clear();
+
+    if (config.backgroundLiftAlpha <= 0) {
+      this.visibilityBackgroundLift.visible = false;
+      return;
+    }
+
+    const padding = 1200;
+    const x = STAGE_BOUNDS.left - padding;
+    const y = STAGE_BOUNDS.top - padding;
+    const width = STAGE_BOUNDS.right - STAGE_BOUNDS.left + padding * 2;
+    const height = STAGE_BOUNDS.bottom - STAGE_BOUNDS.top + padding * 2;
+    this.visibilityBackgroundLift.visible = true;
+    this.visibilityBackgroundLift
+      .rect(x, y, width, height)
+      .fill({ color: 0x78d7ff, alpha: config.backgroundLiftAlpha })
+      .rect(x, y, width, height)
+      .fill({ color: 0xffffff, alpha: config.backgroundLiftAlpha * 0.18 });
+  }
+
+  updateVisibilityGuideLayer() {
+    if (!this.visibilityGuideLayer) {
+      return;
+    }
+
+    const config = this.getVisibilityAssistConfig();
+    this.visibilityGuideLayer.clear();
+
+    if (config.playerOutlineAlpha <= 0 || !this.player?.position) {
+      this.visibilityGuideLayer.visible = false;
+      return;
+    }
+
+    this.visibilityGuideLayer.visible = true;
+    const pulse = 0.92 + Math.sin(this.gameState.elapsedTime * 5.2) * 0.08;
+    const playerRadius = (this.player.radius ?? 24) + 8;
+    this.visibilityGuideLayer
+      .circle(this.player.position.x, this.player.position.y + 2, playerRadius)
+      .stroke({ color: 0x9df6ff, width: 3.2, alpha: config.playerOutlineAlpha * pulse })
+      .circle(this.player.position.x, this.player.position.y + 2, playerRadius + 8)
+      .stroke({ color: 0xffffff, width: 1.2, alpha: config.playerOutlineAlpha * 0.42 });
+
+    (this.enemies ?? []).forEach((enemy) => {
+      if (enemy.isDead) {
+        return;
+      }
+
+      const radius = Math.max(16, enemy.radius ?? 18) + 5;
+      this.visibilityGuideLayer
+        .circle(enemy.position.x, enemy.position.y + 2, radius)
+        .stroke({ color: 0xffd36b, width: 1.6, alpha: config.enemyOutlineAlpha });
+    });
+
+    (this.bosses ?? []).forEach((boss) => {
+      if (boss.isDead) {
+        return;
+      }
+
+      const radius = Math.max(52, boss.radius ?? 54) + 10;
+      this.visibilityGuideLayer
+        .circle(boss.position.x, boss.position.y + 5, radius)
+        .stroke({ color: 0xff6b62, width: 2, alpha: config.bossOutlineAlpha });
+    });
   }
 
   noise(x, y) {

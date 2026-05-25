@@ -90,6 +90,7 @@ const DEFAULT_SAVE = {
     },
     display: {
       highVisibility: false,
+      visibilityAssist: 'standard',
       backgroundDim: true,
       hudSize: 'standard',
     },
@@ -880,6 +881,11 @@ export class SaveManager {
     const hudSize = ['small', 'standard', 'large'].includes(settings?.display?.hudSize)
       ? settings.display.hudSize
       : defaults.display.hudSize;
+    const visibilityAssist = ['standard', 'bright', 'high'].includes(settings?.display?.visibilityAssist)
+      ? settings.display.visibilityAssist
+      : settings?.display?.highVisibility === true
+        ? 'bright'
+        : defaults.display.visibilityAssist;
 
     return {
       effects: {
@@ -895,6 +901,7 @@ export class SaveManager {
       },
       display: {
         highVisibility: Boolean(settings?.display?.highVisibility ?? defaults.display.highVisibility),
+        visibilityAssist,
         backgroundDim: Boolean(settings?.display?.backgroundDim ?? defaults.display.backgroundDim),
         hudSize,
       },

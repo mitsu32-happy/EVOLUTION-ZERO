@@ -33,7 +33,7 @@ const SETTING_GROUPS = [
     id: 'display',
     label: '表示',
     options: [
-      { key: 'highVisibility', label: '視認性' },
+      { key: 'visibilityAssist', label: '視認性補正', mode: 'visibilityCycle' },
       { key: 'backgroundDim', label: '背景暗転' },
       { key: 'hudSize', label: 'HUD', mode: 'cycle' },
     ],
@@ -47,6 +47,7 @@ const HUD_SIZE_LABELS = {
 };
 
 const HUD_SIZE_ORDER = ['small', 'standard', 'large'];
+const VISIBILITY_ASSIST_ORDER = ['standard', 'bright', 'high'];
 
 const OPTIONS_ASSETS = {
   backgroundV2: 'assets/ui/options/options_background_v2.png',
@@ -563,6 +564,11 @@ export class OptionsScreen {
       const current = group[option.key] ?? 'standard';
       const nextIndex = (HUD_SIZE_ORDER.indexOf(current) + 1) % HUD_SIZE_ORDER.length;
       nextGroup[option.key] = HUD_SIZE_ORDER[nextIndex];
+    } else if (option.mode === 'visibilityCycle') {
+      const current = group[option.key] ?? 'standard';
+      const currentIndex = VISIBILITY_ASSIST_ORDER.indexOf(current);
+      const nextIndex = (currentIndex + 1) % VISIBILITY_ASSIST_ORDER.length;
+      nextGroup[option.key] = VISIBILITY_ASSIST_ORDER[nextIndex];
     } else {
       nextGroup[option.key] = !group[option.key];
     }
@@ -611,8 +617,14 @@ export class OptionsScreen {
     }
 
     if (groupId === 'display') {
-      if (option.key === 'highVisibility') {
-        return enabled ? '高視認性' : '標準視認性';
+      if (option.key === 'visibilityAssist') {
+        if (rawValue === 'high') {
+          return '補正:明';
+        }
+        if (rawValue === 'bright') {
+          return '補正:やや明';
+        }
+        return '補正:標準';
       }
       if (option.key === 'backgroundDim') {
         return enabled ? '背景暗転ON' : '背景暗転OFF';
@@ -711,26 +723,72 @@ export class OptionsScreen {
     const group = this.gameplaySettings[groupId] ?? {};
     const option = chip.option;
     const isCycle = option.mode === 'cycle';
+    const isVisibilityCycle = option.mode === 'visibilityCycle';
     const rawValue = group[option.key];
-    const active = isCycle ? rawValue !== 'small' : rawValue !== false;
+    const active = isVisibilityCycle ? rawValue !== 'standard' : isCycle ? rawValue !== 'small' : rawValue !== false;
     const layout = chip.layout ?? this.getChipLayout(groupId, 0);
     const chipWidth = layout.width;
+    const visibilityPalette = this.getVisibilityChipPalette(rawValue);
+    const fillColor = visibilityPalette?.fill ?? (active ? 0x073439 : 0x2a100e);
+    const strokeColor = visibilityPalette?.stroke ?? (active ? UI_COLORS.dna : UI_COLORS.gold);
+    const innerColor = visibilityPalette?.inner ?? 0x020607;
+    const textColor = visibilityPalette?.text ?? (active ? '#ffffff' : '#f9d5a0');
 
     chip.bg.clear();
     chip.frame.visible = false;
     chip.bg
       .roundRect(0, 0, chipWidth, CHIP_HEIGHT, 8)
-      .fill({ color: active ? 0x073439 : 0x2a100e, alpha: active ? 0.92 : 0.86 })
-      .stroke({ color: active ? UI_COLORS.dna : UI_COLORS.gold, width: 1.4, alpha: active ? 0.86 : 0.72 })
+      .fill({ color: fillColor, alpha: visibilityPalette?.fillAlpha ?? (active ? 0.92 : 0.86) })
+      .stroke({ color: strokeColor, width: 1.4, alpha: visibilityPalette?.strokeAlpha ?? (active ? 0.86 : 0.72) })
       .roundRect(4, 5, chipWidth - 8, CHIP_HEIGHT - 10, 7)
-      .fill({ color: 0x020607, alpha: 0.58 });
+      .fill({ color: innerColor, alpha: visibilityPalette?.innerAlpha ?? 0.58 });
 
     chip.text.text = this.getChipText(groupId, option, rawValue);
     chip.text.position.set(chipWidth / 2, CHIP_HEIGHT / 2);
-    chip.text.style.fill = active ? '#ffffff' : '#f9d5a0';
+    chip.text.style.fill = textColor;
     chip.text.style.fontSize = chip.text.text.length >= 7 ? 6.5 : 7.5;
     chip.text.style.stroke = { color: '#020607', width: 2 };
     chip.text.style.wordWrapWidth = chipWidth - 6;
+  }
+
+  getVisibilityChipPalette(rawValue) {
+    if (rawValue === 'high') {
+      return {
+        fill: 0x3b2107,
+        stroke: 0xffb84d,
+        inner: 0x120804,
+        text: '#ffe0a0',
+        fillAlpha: 0.94,
+        strokeAlpha: 0.94,
+        innerAlpha: 0.64,
+      };
+    }
+
+    if (rawValue === 'bright') {
+      return {
+        fill: 0x073439,
+        stroke: UI_COLORS.dna,
+        inner: 0x02191d,
+        text: '#dfffff',
+        fillAlpha: 0.92,
+        strokeAlpha: 0.9,
+        innerAlpha: 0.62,
+      };
+    }
+
+    if (rawValue === 'standard') {
+      return {
+        fill: 0x171b22,
+        stroke: 0x65717a,
+        inner: 0x050809,
+        text: '#d1d9de',
+        fillAlpha: 0.88,
+        strokeAlpha: 0.76,
+        innerAlpha: 0.62,
+      };
+    }
+
+    return null;
   }
 
   renderDevButton() {

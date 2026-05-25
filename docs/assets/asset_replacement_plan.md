@@ -3171,3 +3171,16 @@ Runtime rules:
   - `docs/assets/loading_a03_current_report.json`
   - `docs/assets/loading_a03_after_report.md`
   - `docs/assets/loading_a03_after_report.json`
+
+## MVP-A04 Visibility Assist
+
+- Add `視認性補正` as a runtime display option instead of regenerating stage backgrounds.
+- The option uses three levels: `standard`, `bright`, and `high`.
+- Runtime treatment:
+  - background layer alpha: `0.94` / `0.98` / `1.0`
+  - background lift: none / subtle cyan-white lift / slightly stronger cyan-white lift
+  - vignette multiplier: `1.0` / `0.82` / `0.68`
+  - hazard guide alpha boost: `1.0` / `1.12` / `1.24`
+  - player/enemy/boss outline assist: disabled at standard, subtle at bright/high
+- This is a visibility correction layer only. Do not replace background art, recolor dinosaur assets, or turn the playfield into a bright daytime look.
+- QA should prioritize swamp, volcano, ruins, ZERO, and dark Spinosaurus body readability on mobile Safari/Chrome.
