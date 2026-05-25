@@ -169,3 +169,12 @@ Remaining audio polish:
 - 実装済み: 4体目 `spinosaurus` の研究解放、通常進化3分岐、将来ZEROルート定義。
 - 未実装維持: ruins ZERO本格実装、5体目/6体目恐竜、ruins ZERO報酬付与導線。
 - 後続TODO: スピノサウルス専用水流SEの追加選定、実機での4体目UI確認。
+
+## MVP-A02 Home Density Follow-up
+
+- Implemented Home information tabs for Daily, Record, and Unlock.
+- The Home screen keeps logo, resources, equipped title/frame, selected dinosaur hero/name, sortie button, and bottom navigation always visible.
+- Daily, record, and unlock summaries are no longer displayed simultaneously.
+- Daily remains the default tab because it is the daily-return action.
+- iPhone Safari real-device QA is still recommended for browser chrome collapse, safe-area edges, and accidental tap overlap.
+- PWA/fullscreen behavior and loading optimization remain future MVPs.

@@ -1,5 +1,15 @@
 # Daily Mission Spec
 
+## MVP-A02 Home Tab Rules
+
+- Daily missions live in the Home `デイリー` tab instead of sharing the screen with records and unlock status.
+- Home shows exactly three daily rows.
+- Each row shows label, progress/completed/claimed state, and ResearchPt-only reward.
+- Home uses short reward text such as `Pt +4`; detailed reward wording can remain in dialogs or docs.
+- Claiming a daily mission must add ResearchPt only. DNA must not increase from daily claims.
+- Claimed state must persist through reload via `dailyMissionClaims` and mission `claimed: true`.
+- The tab panel must fit narrow iPhone Safari viewports without horizontal scrolling.
+
 ## MVP-160c Baseline
 
 - Daily missions are a lightweight daily return loop for pre-release RC.

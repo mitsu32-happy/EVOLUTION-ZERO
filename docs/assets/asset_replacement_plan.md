@@ -3132,3 +3132,14 @@ Runtime rules:
 - 4x4 sprite sheet?1024x1024?1??256px??????frameEdgeIssues?0??
 - ????????ZERO????????A01c??????/?/??/?????????16????sheet???????
 - ???: docs/assets/spinosaurus_a01d_contact.png / docs/assets/spinosaurus_a01d_ingame_compare.png / docs/assets/spinosaurus_a01d_report.json?
+## MVP-A02 Asset Impact
+
+- No new Home UI bitmap generation is required for MVP-A02.
+- Existing Home panel assets are reused:
+  - `public/assets/ui/home/daily_mission_panel.png`
+  - `public/assets/ui/home/record_panel.png`
+  - `public/assets/ui/home/unlock_status_panel.png`
+  - `public/assets/ui/home/sortie_button_frame.png`
+- The tab strip is drawn in code to avoid adding more small UI assets before the PWA/loading pass.
+- Future fifth/sixth dinosaur additions should not require new always-visible Home panels. Add new summary fields to the Home tabs or a later detail surface.
+- Next asset-heavy phases remain loading optimization, PWA icons/manifest, and post-release content assets.

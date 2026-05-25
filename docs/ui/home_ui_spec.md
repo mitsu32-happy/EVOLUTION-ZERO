@@ -1,5 +1,59 @@
 # EVOLUTION ZERO Home UI Spec
 
+## MVP-A02 Home Information Tabs
+
+Purpose: reduce Home density for iPhone Safari and other narrow mobile browsers while keeping sortie as the primary action.
+
+Always visible:
+
+- EVOLUTION ZERO logo
+- DNA / ResearchPt resource panel
+- equipped title / frame
+- selected dinosaur hero
+- dinosaur name and short role line
+- sortie button
+- bottom navigation
+
+Tabbed Home info panel:
+
+- Default tab: `デイリー`
+- Other tabs: `記録`, `解放`
+- Only one tab body is visible at a time.
+- Tabs are tap targets, not horizontal scrolling.
+- The tab strip is designed to fit three buttons on 390px-class screens.
+
+`デイリー` tab:
+
+- Shows three missions.
+- Shows progress or completed/claimed state.
+- Shows ResearchPt-only rewards as short `Pt +N` labels.
+- Claim buttons stay inside the panel and remain large enough for touch.
+
+`記録` tab:
+
+- Moves score, survival time, sortie count, and kill count out of the always-visible area.
+- Uses a two-column layout for scanability.
+
+`解放` tab:
+
+- Moves dinosaur, evolution, skill, and ZERO route counts out of the always-visible area.
+- Dinosaur count uses the current playable roster, including research-unlocked spinosaurus.
+- ZERO route count allows undiscovered future routes without crowding Home.
+
+Spacing rules:
+
+- Sortie button keeps a clear gap above the tab strip.
+- The info panel is below the sortie button and above bottom navigation.
+- Text should remain readable with Safari top/bottom browser UI visible.
+- Future fifth/sixth dinosaurs should not add new always-visible Home panels; use the tab body or a later details screen.
+
+Out of scope for MVP-A02:
+
+- PWA/fullscreen install behavior.
+- Loading optimization.
+- New dinosaurs or new stages.
+- Large new asset generation.
+
 ## 目的
 
 ホーム画面は、EVOLUTION ZERO の永続進行ハブとして扱う。プレイ中情報は表示せず、出撃、所持リソース、解放状況、記録、デイリーミッション、ホーム表示恐竜、下部ナビをスマホ縦1画面に収める。

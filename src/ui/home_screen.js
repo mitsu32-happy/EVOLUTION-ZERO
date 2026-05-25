@@ -3,6 +3,7 @@ import { ASSET_KEYS } from '../data/asset_manifest.js';
 import {
   getDiscoveredEvolutionCount as getSavedEvolutionCount,
   getDiscoveredEvolutionEntries,
+  getAllEvolutionBranches,
   getEvolutionBranchById,
 } from '../data/evolution_data.js';
 import { getDinoConfig } from '../data/run_config.js';
@@ -98,6 +99,7 @@ const UNLOCK_STATUS_ITEMS = [
   { id: 'dinos', label: '恐竜', color: UI_COLORS.dna },
   { id: 'evolutions', label: '進化', color: UI_COLORS.gold },
   { id: 'skills', label: 'スキル', color: UI_COLORS.green },
+  { id: 'zeroRoutes', label: 'ZERO', color: 0x7aa8ff },
 ];
 
 const RECORD_ITEMS = [
@@ -109,42 +111,49 @@ const RECORD_ITEMS = [
 
 const HERO = { x: 0, y: 92, width: 390, height: 342 };
 const RESOURCE_PANEL = { x: 150, y: 16, width: 220, height: 68 };
-const DEPLOY = { x: 38, y: 430, width: 314, height: 66 };
-const UNLOCK_PANEL = { x: 18, y: 502, width: 150, height: 108 };
-const RECORD_PANEL = { x: 176, y: 502, width: 196, height: 108 };
-const DAILY_PANEL = { x: 18, y: 614, width: 354, height: 130 };
+const DEPLOY = { x: 38, y: 424, width: 314, height: 66 };
+const HOME_INFO_TABS = [
+  { id: 'daily', label: 'デイリー', color: UI_COLORS.gold },
+  { id: 'record', label: '記録', color: UI_COLORS.green },
+  { id: 'unlock', label: '解放', color: UI_COLORS.dna },
+];
+const INFO_TAB = { x: 18, y: 506, width: 110, height: 32, gap: 12 };
+const INFO_PANEL = { x: 18, y: 542, width: 354, height: 160 };
+const UNLOCK_PANEL = INFO_PANEL;
+const RECORD_PANEL = INFO_PANEL;
+const DAILY_PANEL = INFO_PANEL;
 const SELECTOR = { leftX: 86, pillX: 126, rightX: 270, y: 385 };
 
 const UNLOCK_CONTENT = {
-  titleX: UNLOCK_PANEL.x + 26,
-  titleY: UNLOCK_PANEL.y + 18,
-  iconX: UNLOCK_PANEL.x + 26,
-  labelX: UNLOCK_PANEL.x + 50,
-  valueX: UNLOCK_PANEL.x + UNLOCK_PANEL.width - 22,
-  rowStartY: UNLOCK_PANEL.y + 38,
-  rowGap: 18,
+  titleX: INFO_PANEL.x + 26,
+  titleY: INFO_PANEL.y + 16,
+  iconX: INFO_PANEL.x + 28,
+  labelX: INFO_PANEL.x + 54,
+  valueX: INFO_PANEL.x + INFO_PANEL.width - 30,
+  rowStartY: INFO_PANEL.y + 42,
+  rowGap: 25,
 };
 
 const RECORD_CONTENT = {
-  titleX: RECORD_PANEL.x + 24,
-  titleY: RECORD_PANEL.y + 18,
-  iconX: RECORD_PANEL.x + 22,
-  labelX: RECORD_PANEL.x + 34,
-  colGap: 82,
-  rowStartY: RECORD_PANEL.y + 37,
-  rowGap: 24,
+  titleX: INFO_PANEL.x + 26,
+  titleY: INFO_PANEL.y + 16,
+  iconX: INFO_PANEL.x + 30,
+  labelX: INFO_PANEL.x + 46,
+  colGap: 150,
+  rowStartY: INFO_PANEL.y + 42,
+  rowGap: 42,
 };
 
 const DAILY_CONTENT = {
-  titleX: DAILY_PANEL.x + 28,
-  titleY: DAILY_PANEL.y + 18,
-  iconX: DAILY_PANEL.x + 26,
-  labelX: DAILY_PANEL.x + 48,
-  statusX: DAILY_PANEL.x + 220,
-  rewardX: DAILY_PANEL.x + 266,
-  buttonX: DAILY_PANEL.x + DAILY_PANEL.width - 70,
-  rowStartY: DAILY_PANEL.y + 33,
-  rowGap: 29,
+  titleX: INFO_PANEL.x + 26,
+  titleY: INFO_PANEL.y + 16,
+  iconX: INFO_PANEL.x + 28,
+  labelX: INFO_PANEL.x + 50,
+  statusX: INFO_PANEL.x + 224,
+  rewardX: INFO_PANEL.x + 288,
+  buttonX: INFO_PANEL.x + INFO_PANEL.width - 60,
+  rowStartY: INFO_PANEL.y + 42,
+  rowGap: 34,
 };
 
 export class HomeScreen {
@@ -173,6 +182,7 @@ export class HomeScreen {
     this.onOptions = onOptions;
     this.onUiFeedback = onUiFeedback;
     this.textures = new Map();
+    this.activeHomeInfoTab = 'daily';
 
     this.view = new Container();
     this.background = new Graphics();
@@ -215,6 +225,7 @@ export class HomeScreen {
     this.unlockTitle = this.createText('解放', 11, '#7cf7d4', 90);
     this.recordTitle = this.createText('記録', 11, '#7cf7d4', 90);
     this.dailyTitle = this.createText('デイリー', 11, '#7cf7d4', 120);
+    this.infoTabButtons = HOME_INFO_TABS.map((item) => this.createHomeInfoTabButton(item));
     this.unlockRows = UNLOCK_STATUS_ITEMS.map((item) => ({
       item,
       label: this.createText(item.label, 10, '#d7fff2', 54),
@@ -234,6 +245,7 @@ export class HomeScreen {
         status: this.createText('', 8, '#fff0b4', 68),
         reward: this.createText('', 8, '#7cf7d4', 56),
         button,
+        canShowButton: false,
       };
     });
     this.noticeText = this.createText('', 10, '#ffd36b', 300);
@@ -266,6 +278,7 @@ export class HomeScreen {
       this.unlockPanel,
       this.recordPanel,
       this.dailyPanel,
+      ...this.infoTabButtons.map((entry) => entry.view),
       this.resourcePanel,
       this.deployFrame,
       this.selectorPlate,
@@ -351,9 +364,10 @@ export class HomeScreen {
       researchPt,
     };
     const unlockValues = {
-      dinos: '3 / ?',
-      evolutions: `${this.getDiscoveredEvolutionCount(data)} / ?`,
+      dinos: `${this.getUnlockedDinoCount(data)} / ${HOME_DINO_IDS.length}`,
+      evolutions: `${this.getDiscoveredEvolutionCount(data)} / ${this.getTotalEvolutionCount(data)}`,
       skills: '? / ?',
+      zeroRoutes: `${this.getUnlockedZeroRouteCount(data)} / ${this.getTotalZeroRouteCount(data)}`,
     };
     const recordValues = {
       bestScore: this.formatNumber(data.bestScore ?? 0),
@@ -386,6 +400,7 @@ export class HomeScreen {
         row.label.text = 'デイリー準備中';
         status.text = '-';
         reward.text = '-';
+        row.canShowButton = false;
         button.view.visible = false;
         return;
       }
@@ -398,7 +413,8 @@ export class HomeScreen {
       status.text = complete ? (claimed ? '受取済み' : '達成') : `${this.formatNumber(progress)}/${this.formatNumber(template.target)}`;
       status.style.fill = complete ? '#65e878' : '#fff0b4';
       reward.text = formatDailyReward(template.reward).replace('研究Pt ', 'Pt ');
-      button.view.visible = complete;
+      row.canShowButton = complete;
+      button.view.visible = this.activeHomeInfoTab === 'daily' && complete;
       button.view.eventMode = complete && !claimed ? 'static' : 'none';
       button.view.cursor = complete && !claimed ? 'pointer' : 'default';
       button.view.alpha = claimed ? 0.62 : 1;
@@ -408,6 +424,7 @@ export class HomeScreen {
     });
 
     this.applyTextures(homeDinoId, homeTarget.evolutionId);
+    this.updateHomeInfoTabVisibility();
     this.updateEquippedTitle(data);
     this.drawDynamic(dino);
   }
@@ -619,6 +636,31 @@ export class HomeScreen {
 
   getDiscoveredEvolutionCount(data) {
     return getSavedEvolutionCount(data.discoveredEvolutions);
+  }
+
+  getTotalEvolutionCount(data) {
+    const unlockedDinos = new Set(this.getAvailableHomeDinoIds(data));
+
+    return getAllEvolutionBranches().filter((branch) => unlockedDinos.has(branch.dinoId)).length;
+  }
+
+  getUnlockedDinoCount(data) {
+    return this.getAvailableHomeDinoIds(data).length;
+  }
+
+  getTotalZeroRouteCount(data) {
+    const unlockedDinos = new Set(this.getAvailableHomeDinoIds(data));
+
+    return getAllEvolutionBranches().filter((branch) => branch.tag === 'zero' && unlockedDinos.has(branch.dinoId)).length;
+  }
+
+  getUnlockedZeroRouteCount(data) {
+    const routes = data.unlockedZeroRoutes ?? {};
+    const unlockedDinos = new Set(this.getAvailableHomeDinoIds(data));
+
+    return getAllEvolutionBranches()
+      .filter((branch) => branch.tag === 'zero' && unlockedDinos.has(branch.dinoId))
+      .filter((branch) => routes[branch.id]?.unlocked).length;
   }
 
   cycleHomeDino(direction) {
@@ -854,13 +896,21 @@ export class HomeScreen {
     this.deploySub.anchor.set(0.5);
     this.deploySub.position.set(this.width / 2 + 16, DEPLOY.y + 48);
 
+    this.infoTabButtons.forEach(({ view, text }, index) => {
+      view.position.set(INFO_TAB.x + index * (INFO_TAB.width + INFO_TAB.gap), INFO_TAB.y);
+      text.anchor.set(0.5);
+      text.position.set(INFO_TAB.width / 2, INFO_TAB.height / 2 + 1);
+    });
+
     this.unlockTitle.position.set(UNLOCK_CONTENT.titleX, UNLOCK_CONTENT.titleY);
     this.unlockRows.forEach(({ label, value }, index) => {
       const y = UNLOCK_CONTENT.rowStartY + index * UNLOCK_CONTENT.rowGap;
 
       label.position.set(UNLOCK_CONTENT.labelX, y);
+      label.style.fontSize = 10;
       value.anchor.set(1, 0);
       value.position.set(UNLOCK_CONTENT.valueX, y);
+      value.style.fontSize = 10;
     });
 
     this.recordTitle.position.set(RECORD_CONTENT.titleX, RECORD_CONTENT.titleY);
@@ -871,7 +921,9 @@ export class HomeScreen {
       const y = RECORD_CONTENT.rowStartY + row * RECORD_CONTENT.rowGap;
 
       label.position.set(x, y);
-      value.position.set(x, y + 12);
+      label.style.fontSize = 9;
+      value.position.set(x, y + 14);
+      value.style.fontSize = 12;
     });
 
     this.dailyTitle.position.set(DAILY_CONTENT.titleX, DAILY_CONTENT.titleY);
@@ -879,15 +931,20 @@ export class HomeScreen {
       const y = DAILY_CONTENT.rowStartY + index * DAILY_CONTENT.rowGap;
 
       label.position.set(DAILY_CONTENT.labelX, y);
+      label.style.fontSize = 9.5;
+      label.style.lineHeight = 11;
+      label.style.wordWrapWidth = 150;
       status.anchor.set(1, 0);
       status.position.set(DAILY_CONTENT.statusX, y);
+      status.style.fontSize = 8.5;
       reward.anchor.set(1, 0);
       reward.position.set(DAILY_CONTENT.rewardX, y);
-      button.view.position.set(DAILY_CONTENT.buttonX, y - 4);
+      reward.style.fontSize = 8.5;
+      button.view.position.set(DAILY_CONTENT.buttonX, y - 5);
     });
 
     this.noticeText.anchor.set(0.5, 0);
-    this.noticeText.position.set(this.width / 2, 746);
+    this.noticeText.position.set(this.width / 2, 708);
   }
 
   drawDynamic(dino) {
@@ -895,6 +952,7 @@ export class HomeScreen {
     this.iconGraphics.clear();
     this.heroFallback.clear();
     this.switchFallback.clear();
+    this.drawHomeInfoTabs();
 
     this.panelGraphics
       .rect(HERO.x, HERO.y, HERO.width, HERO.height)
@@ -907,13 +965,13 @@ export class HomeScreen {
     if (!this.resourcePanel.visible) {
       this.drawPanel(this.panelGraphics, RESOURCE_PANEL.x, RESOURCE_PANEL.y, RESOURCE_PANEL.width, RESOURCE_PANEL.height, UI_COLORS.dna, 0.82);
     }
-    if (!this.unlockPanel.visible) {
+    if (this.activeHomeInfoTab === 'unlock' && !this.unlockPanel.visible) {
       this.drawPanel(this.panelGraphics, UNLOCK_PANEL.x, UNLOCK_PANEL.y, UNLOCK_PANEL.width, UNLOCK_PANEL.height, UI_COLORS.dna, 0.78);
     }
-    if (!this.recordPanel.visible) {
+    if (this.activeHomeInfoTab === 'record' && !this.recordPanel.visible) {
       this.drawPanel(this.panelGraphics, RECORD_PANEL.x, RECORD_PANEL.y, RECORD_PANEL.width, RECORD_PANEL.height, UI_COLORS.green, 0.78);
     }
-    if (!this.dailyPanel.visible) {
+    if (this.activeHomeInfoTab === 'daily' && !this.dailyPanel.visible) {
       this.drawPanel(this.panelGraphics, DAILY_PANEL.x, DAILY_PANEL.y, DAILY_PANEL.width, DAILY_PANEL.height, UI_COLORS.gold, 0.78);
     }
     if (!this.deployFrame.visible) {
@@ -947,16 +1005,19 @@ export class HomeScreen {
         .stroke({ color: item.color, width: 1.2, alpha: 0.75 });
     });
 
-    UNLOCK_STATUS_ITEMS.forEach((item, index) => {
+    if (this.activeHomeInfoTab === 'unlock') {
+      UNLOCK_STATUS_ITEMS.forEach((item, index) => {
       const y = UNLOCK_CONTENT.rowStartY + index * UNLOCK_CONTENT.rowGap + 5;
 
       this.iconGraphics
         .circle(UNLOCK_CONTENT.iconX, y, 5)
         .fill({ color: item.color, alpha: 0.2 })
         .stroke({ color: item.color, width: 1.2, alpha: 0.72 });
-    });
+      });
+    }
 
-    RECORD_ITEMS.forEach((item, index) => {
+    if (this.activeHomeInfoTab === 'record') {
+      RECORD_ITEMS.forEach((item, index) => {
       const col = index % 2;
       const row = Math.floor(index / 2);
       const x = RECORD_CONTENT.iconX + col * RECORD_CONTENT.colGap;
@@ -966,10 +1027,12 @@ export class HomeScreen {
         .circle(x, y, 4)
         .fill({ color: item.color, alpha: 0.18 })
         .stroke({ color: item.color, width: 1, alpha: 0.62 });
-    });
+      });
+    }
 
-    this.dailyRows.forEach((row, index) => {
-      const complete = row.status.text === '達成' || row.status.text === '達成済み';
+    if (this.activeHomeInfoTab === 'daily') {
+      this.dailyRows.forEach((row, index) => {
+      const complete = row.status.text === '達成' || row.status.text === '受取済み';
       const y = DAILY_CONTENT.rowStartY + 5 + index * DAILY_CONTENT.rowGap;
 
       this.iconGraphics
@@ -983,7 +1046,8 @@ export class HomeScreen {
           .lineTo(DAILY_CONTENT.iconX + 5, y - 4)
           .stroke({ color: 0x071015, width: 1.8, alpha: 0.95 });
       }
-    });
+      });
+    }
 
     this.iconGraphics
       .circle(82, DEPLOY.y + 33, 21)
@@ -991,6 +1055,71 @@ export class HomeScreen {
       .stroke({ color: UI_COLORS.gold, width: 1.8, alpha: 0.86 })
       .poly([75, DEPLOY.y + 43, 88, DEPLOY.y + 25, 98, DEPLOY.y + 43])
       .fill({ color: UI_COLORS.gold, alpha: 0.84 });
+  }
+
+  createHomeInfoTabButton(item) {
+    const view = new Container();
+    const bg = new Graphics();
+    const text = this.createText(item.label, 10, '#d7fff2', INFO_TAB.width - 12);
+
+    view.eventMode = 'static';
+    view.cursor = 'pointer';
+    view.on('pointertap', () => this.handleHomeInfoTabTap(item.id, view));
+    view.addChild(bg, text);
+
+    return { item, view, bg, text };
+  }
+
+  handleHomeInfoTabTap(tabId, view) {
+    if (this.activeHomeInfoTab === tabId) {
+      return;
+    }
+
+    playPressFeedback(view, { width: INFO_TAB.width, height: INFO_TAB.height, scale: 0.96, alpha: 0.78, duration: 100 });
+    this.playUiFeedback('ui_click');
+    this.activeHomeInfoTab = tabId;
+    this.updateHomeInfoTabVisibility();
+    this.drawDynamic(getDinoConfig(this.getHomeDisplayTarget(this.saveData ?? {}).dinoId));
+  }
+
+  updateHomeInfoTabVisibility() {
+    const active = this.activeHomeInfoTab;
+    const showDaily = active === 'daily';
+    const showRecord = active === 'record';
+    const showUnlock = active === 'unlock';
+
+    this.dailyPanel.visible = showDaily && this.hasTexture(this.dailyPanel);
+    this.recordPanel.visible = showRecord && this.hasTexture(this.recordPanel);
+    this.unlockPanel.visible = showUnlock && this.hasTexture(this.unlockPanel);
+    this.dailyTitle.visible = showDaily;
+    this.recordTitle.visible = showRecord;
+    this.unlockTitle.visible = showUnlock;
+    this.dailyRows.forEach((row) => {
+      row.label.visible = showDaily;
+      row.status.visible = showDaily;
+      row.reward.visible = showDaily;
+      row.button.view.visible = showDaily && row.canShowButton;
+    });
+    this.recordRows.forEach(({ label, value }) => {
+      label.visible = showRecord;
+      value.visible = showRecord;
+    });
+    this.unlockRows.forEach(({ label, value }) => {
+      label.visible = showUnlock;
+      value.visible = showUnlock;
+    });
+  }
+
+  drawHomeInfoTabs() {
+    this.infoTabButtons.forEach(({ item, bg, text }) => {
+      const selected = item.id === this.activeHomeInfoTab;
+
+      bg.clear()
+        .roundRect(0, 0, INFO_TAB.width, INFO_TAB.height, 8)
+        .fill({ color: selected ? 0x0a2428 : 0x071214, alpha: selected ? 0.96 : 0.78 })
+        .stroke({ color: selected ? item.color : UI_COLORS.line, width: selected ? 1.7 : 1.1, alpha: selected ? 0.86 : 0.48 });
+      text.style.fill = selected ? '#ffffff' : '#9fb9b3';
+    });
   }
 
   createDailyButton() {
@@ -1020,6 +1149,10 @@ export class HomeScreen {
       .roundRect(0, 0, 44, 22, 6)
       .fill({ color: claimed ? 0x182225 : UI_COLORS.gold, alpha: claimed ? 0.82 : 0.92 })
       .stroke({ color: claimed ? UI_COLORS.line : UI_COLORS.gold, width: 1, alpha: 0.78 });
+  }
+
+  hasTexture(sprite) {
+    return Boolean(sprite.texture && sprite.texture !== Texture.EMPTY);
   }
 
   drawSwitchFallback(graphics, x, y, direction) {
