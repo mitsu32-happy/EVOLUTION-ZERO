@@ -18,6 +18,7 @@ const HUD_ASSETS = {
   portraitVelociraptor: 'assets/dinos/portraits/velociraptor.png',
   portraitTriceratops: 'assets/dinos/portraits/triceratops.png',
   portraitTyrannosaurus: 'assets/dinos/portraits/tyrannosaurus.png',
+  portraitSpinosaurus: 'assets/dinos/portraits/spinosaurus.png',
   portraitSpeed: 'assets/dinos/evolutions/portraits/velociraptor_speed_portrait.png',
   portraitHunting: 'assets/dinos/evolutions/portraits/velociraptor_hunting_portrait.png',
   portraitAttack: 'assets/dinos/evolutions/portraits/velociraptor_attack_portrait.png',
@@ -30,6 +31,10 @@ const HUD_ASSETS = {
   portraitTyrannosaurusHunting: 'assets/dinos/evolutions/portraits/tyrannosaurus_hunting_portrait.png',
   portraitTyrannosaurusAttack: 'assets/dinos/evolutions/portraits/tyrannosaurus_attack_portrait.png',
   portraitTyrannosaurusZero: 'assets/dinos/evolutions/portraits/tyrannosaurus_zero_portrait.png',
+  portraitSpinosaurusSpeed: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png',
+  portraitSpinosaurusHunting: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png',
+  portraitSpinosaurusAttack: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png',
+  portraitSpinosaurusZero: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png',
   adaptSpeed: 'assets/ui/hud/adapt_icons/adapt_slot_speed.png',
   adaptHunting: 'assets/ui/hud/adapt_icons/adapt_slot_hunting.png',
   adaptAttack: 'assets/ui/hud/adapt_icons/adapt_slot_attack.png',
@@ -57,6 +62,10 @@ const HUD_ASSETS = {
   specialTyrannosaurusHunting: 'assets/ui/hud/special_icons/special_hunting_tyrannosaurus.png',
   specialTyrannosaurusAttack: 'assets/ui/hud/special_icons/special_attack_tyrannosaurus.png',
   specialTyrannosaurusZero: 'assets/ui/hud/special_icons/special_zero_tyrannosaurus.png',
+  specialSpinosaurusSpeed: 'assets/ui/hud/special_icons/special_speed_spinosaurus.png',
+  specialSpinosaurusHunting: 'assets/ui/hud/special_icons/special_hunting_spinosaurus.png',
+  specialSpinosaurusAttack: 'assets/ui/hud/special_icons/special_attack_spinosaurus.png',
+  specialSpinosaurusZero: 'assets/ui/hud/special_icons/special_zero_spinosaurus.png',
 };
 
 const SKILL_DISPLAY = {
@@ -94,6 +103,10 @@ const SPECIAL_LABELS = {
   tyrannosaurus_zero: 'Omega',
   velociraptor_zero: 'Abyss',
   triceratops_zero: 'Ignis',
+  spinosaurus_speed: 'Tidal',
+  spinosaurus_hunting: 'Maelstrom',
+  spinosaurus_attack: 'Hydro',
+  spinosaurus_zero: 'Abyssal',
 };
 
 const TOP_HUD = {
@@ -612,6 +625,22 @@ export class Hud {
       return this.assetTextures.specialTyrannosaurusSpeed ?? this.assetTextures.specialSpeed;
     }
 
+    if (dinoId === 'spinosaurus') {
+      if (tag === 'zero') {
+        return this.assetTextures.specialSpinosaurusZero ?? this.assetTextures.specialSpinosaurusAttack ?? this.assetTextures.specialAttack;
+      }
+
+      if (tag === 'hunting') {
+        return this.assetTextures.specialSpinosaurusHunting ?? this.assetTextures.specialHunting;
+      }
+
+      if (tag === 'attack') {
+        return this.assetTextures.specialSpinosaurusAttack ?? this.assetTextures.specialAttack;
+      }
+
+      return this.assetTextures.specialSpinosaurusSpeed ?? this.assetTextures.specialSpeed;
+    }
+
     if (dinoId === 'velociraptor' && tag === 'zero') {
       return this.assetTextures.specialVelociraptorZero ?? this.assetTextures.specialAttack;
     }
@@ -675,6 +704,24 @@ export class Hud {
       }
     }
 
+    if (tag && evolvedDinoId === 'spinosaurus') {
+      if (tag === 'zero') {
+        return this.assetTextures.portraitSpinosaurusZero ?? this.assetTextures.portraitSpinosaurusAttack ?? this.assetTextures.portraitSpinosaurus;
+      }
+
+      if (tag === 'speed') {
+        return this.assetTextures.portraitSpinosaurusSpeed ?? this.assetTextures.portraitSpinosaurus;
+      }
+
+      if (tag === 'hunting') {
+        return this.assetTextures.portraitSpinosaurusHunting ?? this.assetTextures.portraitSpinosaurus;
+      }
+
+      if (tag === 'attack') {
+        return this.assetTextures.portraitSpinosaurusAttack ?? this.assetTextures.portraitSpinosaurus;
+      }
+    }
+
     if (tag) {
       if (tag === 'zero' && evolvedDinoId === 'velociraptor') {
         return this.assetTextures.portraitVelociraptorZero ?? this.assetTextures.portraitAttack ?? this.assetTextures.portraitVelociraptor;
@@ -701,6 +748,10 @@ export class Hud {
 
     if (dinoId === 'tyrannosaurus') {
       return this.assetTextures.portraitTyrannosaurus;
+    }
+
+    if (dinoId === 'spinosaurus') {
+      return this.assetTextures.portraitSpinosaurus;
     }
 
     return this.assetTextures.portraitVelociraptor;

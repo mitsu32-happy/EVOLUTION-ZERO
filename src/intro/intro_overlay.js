@@ -22,6 +22,10 @@ function getParams() {
   }
 }
 
+function isPlaybackAbort(error) {
+  return error?.name === 'AbortError' || String(error).includes('AbortError');
+}
+
 export class IntroOverlay {
   constructor({ audioManager = null, saveManager = null, onComplete = null } = {}) {
     this.audioManager = audioManager;
@@ -245,6 +249,9 @@ export class IntroOverlay {
 
     const elementPlay = this.audio.play()
       .catch((error) => {
+        if (isPlaybackAbort(error)) {
+          return;
+        }
         console.warn('[EVOLUTION ZERO] opening intro audio playback skipped', error);
       });
 

@@ -59,6 +59,7 @@ const DEFAULT_SAVE = {
   researchLevels: { ...RESEARCH_LEVEL_DEFAULTS },
   discoveredEvolutions: {},
   unlockedZeroRoutes: {},
+  unlockedDinos: {},
   stageProgress: {},
   ownedTitles: {},
   ownedTitleFrames: {},
@@ -157,6 +158,7 @@ export class SaveManager {
       gameplaySettings: this.cloneGameplaySettings(this.data.gameplaySettings),
       discoveredEvolutions: normalizeDiscoveredEvolutions(this.data.discoveredEvolutions),
       unlockedZeroRoutes: { ...(this.data.unlockedZeroRoutes ?? {}) },
+      unlockedDinos: { ...(this.data.unlockedDinos ?? {}) },
       stageProgress: this.cloneStageProgress(this.data.stageProgress),
       ownedTitles: this.cloneOwnedEntries(this.data.ownedTitles),
       ownedTitleFrames: this.cloneOwnedEntries(this.data.ownedTitleFrames),
@@ -411,7 +413,8 @@ export class SaveManager {
     const level = this.getResearchLevel(researchId);
     const costDetail = getResearchCostDetail(item, level);
     const purchasableCategory = item?.category === RESEARCH_CATEGORY_IDS.bodyEnhancement
-      || item?.category === RESEARCH_CATEGORY_IDS.adaptationAbility;
+      || item?.category === RESEARCH_CATEGORY_IDS.adaptationAbility
+      || (item?.category === RESEARCH_CATEGORY_IDS.unknownDomain && item?.unlockDinoId);
 
     if (!item || !purchasableCategory || !costDetail) {
       return false;
@@ -424,8 +427,38 @@ export class SaveManager {
     this.data.ownedDna -= costDetail.dna;
     this.data.researchPt = Math.max(0, (this.data.researchPt ?? 0) - costDetail.researchPt);
     this.data.researchLevels[researchId] = level + 1;
+    if (item.unlockDinoId) {
+      this.unlockDinoInMemory(item.unlockDinoId, 'research');
+    }
     this.save();
     return true;
+  }
+
+  unlockDinoInMemory(dinoId, source = 'unknown') {
+    if (!dinoId) {
+      return;
+    }
+
+    this.data.unlockedDinos = this.normalizeUnlockedDinos(this.data.unlockedDinos);
+    this.data.unlockedDinos[dinoId] = {
+      unlocked: true,
+      source,
+      unlockedAt: this.data.unlockedDinos[dinoId]?.unlockedAt ?? new Date().toISOString(),
+    };
+  }
+
+  unlockDino(dinoId, source = 'manual') {
+    this.unlockDinoInMemory(dinoId, source);
+    return this.save();
+  }
+
+  isDinoUnlocked(dinoId) {
+    if (!dinoId || ['velociraptor', 'triceratops', 'tyrannosaurus'].includes(dinoId)) {
+      return true;
+    }
+
+    const normalized = this.normalizeUnlockedDinos(this.data.unlockedDinos);
+    return Boolean(normalized[dinoId]?.unlocked);
   }
 
   recordDiscoveredEvolution(evolution, fallbackDinoId = this.data.lastSelectedDino) {
@@ -771,7 +804,7 @@ export class SaveManager {
   }
 
   normalize(value) {
-    return {
+    const normalized = {
       ...DEFAULT_SAVE,
       ...value,
       save_version: SAVE_VERSION,
@@ -793,6 +826,7 @@ export class SaveManager {
       },
       discoveredEvolutions: normalizeDiscoveredEvolutions(value?.discoveredEvolutions),
       unlockedZeroRoutes: this.normalizeZeroRoutes(value?.unlockedZeroRoutes),
+      unlockedDinos: this.normalizeUnlockedDinos(value?.unlockedDinos),
       stageProgress: this.normalizeStageProgress(value?.stageProgress),
       ownedTitles: this.normalizeOwnedEntries(value?.ownedTitles),
       ownedTitleFrames: this.normalizeOwnedEntries(value?.ownedTitleFrames),
@@ -819,6 +853,16 @@ export class SaveManager {
       },
       gameplaySettings: this.normalizeGameplaySettings(value?.gameplaySettings),
     };
+
+    if ((normalized.researchLevels?.spinosaurus_unlock ?? 0) > 0) {
+      normalized.unlockedDinos.spinosaurus = {
+        unlocked: true,
+        source: normalized.unlockedDinos.spinosaurus?.source ?? 'research',
+        unlockedAt: normalized.unlockedDinos.spinosaurus?.unlockedAt ?? null,
+      };
+    }
+
+    return normalized;
   }
 
   cloneGameplaySettings(settings) {
@@ -855,6 +899,34 @@ export class SaveManager {
         hudSize,
       },
     };
+  }
+
+  normalizeUnlockedDinos(value) {
+    if (Array.isArray(value)) {
+      return value.reduce((result, id) => {
+        if (typeof id === 'string') {
+          result[id] = { unlocked: true, source: 'legacy', unlockedAt: null };
+        }
+        return result;
+      }, {});
+    }
+
+    if (!value || typeof value !== 'object') {
+      return {};
+    }
+
+    return Object.entries(value).reduce((result, [id, entry]) => {
+      if (entry === true) {
+        result[id] = { unlocked: true, source: 'legacy', unlockedAt: null };
+      } else if (entry && typeof entry === 'object' && entry.unlocked) {
+        result[id] = {
+          unlocked: true,
+          source: typeof entry.source === 'string' ? entry.source : 'unknown',
+          unlockedAt: typeof entry.unlockedAt === 'string' ? entry.unlockedAt : null,
+        };
+      }
+      return result;
+    }, {});
   }
 
   normalizeStageProgress(value = {}) {

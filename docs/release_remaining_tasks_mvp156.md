@@ -163,3 +163,9 @@ Remaining audio polish:
 - Public Pages is live at `https://mitsu32-happy.github.io/EVOLUTION-ZERO/`.
 - Watch the next push to confirm GitHub does not keep starting the extra Jekyll Pages build. If it does, switch repository Settings > Pages > Source to GitHub Actions explicitly.
 - Real-device iOS Safari / Android Chrome RC remains the main release-blocking manual task.
+
+## MVP-A01: 公開後追加コンテンツ候補
+
+- 実装済み: 4体目 `spinosaurus` の研究解放、通常進化3分岐、将来ZEROルート定義。
+- 未実装維持: ruins ZERO本格実装、5体目/6体目恐竜、ruins ZERO報酬付与導線。
+- 後続TODO: スピノサウルス専用水流SEの追加選定、実機での4体目UI確認。

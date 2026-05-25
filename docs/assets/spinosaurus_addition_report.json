@@ -1,0 +1,2198 @@
+{
+  "assets": [
+    "public/assets/dinos/spinosaurus.png",
+    "public/assets/dinos/spinosaurus_sheet.png",
+    "public/assets/dinos/dino_select/spinosaurus_hero.png",
+    "public/assets/dinos/portraits/spinosaurus.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+    "public/assets/ui/hud/special_icons/special_speed_spinosaurus.png",
+    "public/assets/ui/hud/special_icons/special_hunting_spinosaurus.png",
+    "public/assets/ui/hud/special_icons/special_attack_spinosaurus.png",
+    "public/assets/ui/hud/special_icons/special_zero_spinosaurus.png",
+    "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png",
+    "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png",
+    "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png",
+    "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+    "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png",
+    "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+    "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png",
+    "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png"
+  ],
+  "sheetQa": {
+    "public/assets/dinos/spinosaurus_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            59,
+            238,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            18,
+            61,
+            238,
+            194
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            59,
+            238,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            18,
+            61,
+            238,
+            194
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            59,
+            238,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            18,
+            61,
+            238,
+            194
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            18,
+            65,
+            238,
+            190
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            96,
+            224,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            93,
+            224,
+            198
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            59,
+            238,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            18,
+            61,
+            238,
+            194
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            33,
+            101,
+            223,
+            190
+          ]
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            18,
+            67,
+            238,
+            188
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            18,
+            67,
+            238,
+            188
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            67,
+            238,
+            188
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            18,
+            67,
+            238,
+            188
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            36,
+            98,
+            220,
+            193
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            36,
+            96,
+            220,
+            195
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            36,
+            98,
+            220,
+            193
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            36,
+            96,
+            220,
+            195
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            60,
+            238,
+            195
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            18,
+            63,
+            238,
+            193
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            18,
+            65,
+            238,
+            191
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            18,
+            66,
+            238,
+            189
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            37,
+            103,
+            219,
+            188
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            37,
+            103,
+            219,
+            188
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            37,
+            103,
+            219,
+            188
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            37,
+            103,
+            219,
+            188
+          ]
+        }
+      ]
+    }
+  },
+  "effectQa": {
+    "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            30,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            31,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            34,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            35,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            36,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            37,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            39,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            40,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            41,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            42,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            43,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            44,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            45,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            46,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            48,
+            69,
+            228,
+            145
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            30,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            31,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            34,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            35,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            36,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            37,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            39,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            40,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            41,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            42,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            43,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            44,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            45,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            46,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            48,
+            69,
+            228,
+            145
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            30,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            31,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            34,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            35,
+            69,
+            227,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            36,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            37,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            39,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            40,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            41,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            42,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            43,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            44,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            45,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            46,
+            69,
+            228,
+            145
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            48,
+            69,
+            228,
+            145
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            25,
+            25,
+            201,
+            193
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            24,
+            210,
+            193
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            23,
+            22,
+            216,
+            191
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            23,
+            21,
+            223,
+            189
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            24,
+            19,
+            229,
+            185
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            27,
+            18,
+            234,
+            184
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            30,
+            16,
+            238,
+            184
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            33,
+            15,
+            242,
+            184
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            31,
+            13,
+            243,
+            183
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            12,
+            245,
+            182
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            10,
+            246,
+            180
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            35,
+            9,
+            248,
+            177
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            37,
+            7,
+            249,
+            176
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            41,
+            6,
+            251,
+            187
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            40,
+            4,
+            252,
+            198
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            40,
+            3,
+            254,
+            209
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            23,
+            69,
+            237,
+            150
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            102,
+            102,
+            154,
+            154
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            98,
+            98,
+            159,
+            159
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            93,
+            93,
+            163,
+            163
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            89,
+            89,
+            168,
+            168
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            84,
+            84,
+            172,
+            172
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            80,
+            80,
+            177,
+            177
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            75,
+            75,
+            181,
+            181
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            71,
+            71,
+            186,
+            186
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            66,
+            66,
+            190,
+            190
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            62,
+            62,
+            195,
+            195
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            57,
+            57,
+            199,
+            199
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            53,
+            53,
+            204,
+            204
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            48,
+            48,
+            208,
+            208
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            44,
+            44,
+            213,
+            213
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            39,
+            39,
+            217,
+            217
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            35,
+            35,
+            222,
+            222
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            25,
+            25,
+            201,
+            193
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            24,
+            210,
+            193
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            23,
+            22,
+            216,
+            191
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            23,
+            21,
+            223,
+            189
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            24,
+            19,
+            229,
+            185
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            27,
+            18,
+            234,
+            184
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            30,
+            16,
+            238,
+            184
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            33,
+            15,
+            242,
+            184
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            31,
+            13,
+            243,
+            183
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            12,
+            245,
+            182
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            10,
+            246,
+            180
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            35,
+            9,
+            248,
+            177
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            37,
+            7,
+            249,
+            176
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            41,
+            6,
+            251,
+            187
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            40,
+            4,
+            252,
+            198
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            40,
+            3,
+            254,
+            209
+          ]
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            85,
+            85,
+            171,
+            171
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            79,
+            79,
+            177,
+            177
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            73,
+            73,
+            183,
+            183
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            66,
+            66,
+            189,
+            189
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            60,
+            60,
+            196,
+            196
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            54,
+            54,
+            202,
+            202
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            48,
+            48,
+            208,
+            208
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            41,
+            41,
+            214,
+            214
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            35,
+            35,
+            221,
+            221
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            29,
+            29,
+            227,
+            227
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            23,
+            23,
+            233,
+            233
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            16,
+            16,
+            239,
+            239
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        }
+      ]
+    }
+  },
+  "notes": [
+    "Procedurally generated dedicated raster assets with transparent backgrounds for MVP-A01 integration.",
+    "Second pass scaled sprite/effect cells inward to clear frame edge contact."
+  ]
+}

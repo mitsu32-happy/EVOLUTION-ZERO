@@ -83,3 +83,10 @@
 - Debug evolution starts also include the same key to keep QA URLs representative.
 - HP recovery pickups heal a fixed percentage of max HP: `18%`, rounded to a whole number with a minimum of `14`.
 - Heal popup text is rounded to an integer (`HP +n`) so fractional HP values from damage modifiers do not create long labels.
+
+## MVP-A01: スピノサウルス戦闘バランス
+
+- スピノサウルスは中距離制圧型として、HPやや高め、移動やや遅め、攻撃範囲長め、攻撃速度やや遅めに設定。
+- 通常技 `spinosaurusWaterSlash` は前方扇形の水刃。小ノックバックと複数対象ヒットで雑魚整理に寄せる。
+- 必殺は speed: タイダルラッシュ、hunting: メイルストローム、attack: ハイドロブレイク、zero: アビサルタイド。
+- ZERO必殺は将来ルート用の受け口。現行ruins ZERO報酬としては付与しない。

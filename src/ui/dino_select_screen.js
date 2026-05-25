@@ -63,6 +63,22 @@ const BASE_DINOS = [
     unlockCondition: null,
     unlockHint: null,
   },
+  {
+    id: 'spinosaurus',
+    name: 'スピノサウルス',
+    shortName: 'スピノ',
+    type: '中距離制圧型',
+    style: '水刃と渦で敵をまとめて押し返す。雑魚整理と範囲維持に優れる。',
+    branchBase: 0,
+    sortieNote: '水流で群れを整理する',
+    traits: ['中距離が得意', '範囲維持', '動きは少し重い'],
+    color: 0x2fdfff,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.spinosaurus,
+    heroKey: ASSET_KEYS.dinoSelectHero.spinosaurus,
+    locked: 'research',
+    unlockCondition: '研究: スピノサウルス解析',
+    unlockHint: '研究Pt 420で解放',
+  },
 ];
 
 const DEV_LOCKED_DINOS = [
@@ -704,7 +720,16 @@ export class DinoSelectScreen {
   }
 
   isDinoLocked(dino) {
-    return dino?.locked === true;
+    if (!dino || dino.locked !== 'research') {
+      return dino?.locked === true;
+    }
+
+    if (isDebugDinoUnlocked(dino.id)) {
+      return false;
+    }
+
+    const entry = this.saveData.unlockedDinos?.[dino.id];
+    return !entry?.unlocked;
   }
 
   formatTime(elapsedTime) {
@@ -738,4 +763,13 @@ function isDevLockedDinoEnabled() {
   } catch {
     return false;
   }
+}
+
+function isDebugDinoUnlocked(dinoId) {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get('debugUnlockDino') === dinoId || params.get('debugUnlockAllDinos') === '1';
 }

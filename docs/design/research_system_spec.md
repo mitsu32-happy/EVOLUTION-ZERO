@@ -237,3 +237,23 @@ MVP-086の反映対象:
 - Daily mission rewards may grant small ResearchPt amounts because they are explicit daily rewards.
 - Runtime UI must use the canonical label `研究Pt`; mojibake labels are release-blocking text defects.
 - The top Research resource row now displays `研究Pt` correctly.
+
+## MVP-A01: スピノサウルス研究解放
+
+- 未知領域カテゴリに `spinosaurus_unlock` を追加。
+- コストは研究Pt 420。DNAは消費しない。
+- 購入成功時に `unlockedDinos.spinosaurus` を保存し、恐竜選択/ホームへ反映する。
+- 研究Ptはデイリーと変換で入手する方針を維持する。
+
+## MVP-A01b: Spinosaurus Research Unlock Fix
+
+- `spinosaurus_unlock` is a Research Pt-only unlock: DNA 0 / Research Pt 420.
+- Research cards and confirmation dialogs must show `必要: 研究Pt 420` and `解放: スピノサウルス解放`.
+- Research Pt shortage must display `Pt不足`, not `DNA不足`.
+- If an older save has `researchLevels.spinosaurus_unlock >= 1` but lacks `unlockedDinos.spinosaurus`, loading normalizes it as unlocked.
+
+
+## MVP-A01d ????????
+
+- ????????????Pt 420?????A01b????????
+- A01d????????????????unlockedDinos.spinosaurus???????????????????

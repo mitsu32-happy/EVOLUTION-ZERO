@@ -1,0 +1,727 @@
+{
+  "currentContact": "docs/assets/spinosaurus_a01c_current_contact.png",
+  "qualityCompare": "docs/assets/spinosaurus_quality_compare_mvp_a01c.png",
+  "currentAssessment": {
+    "public/assets/dinos/dino_select/spinosaurus_hero.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        1024,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        875,
+        761
+      ],
+      "approxUniqueColors": 1747
+    },
+    "public/assets/dinos/portraits/spinosaurus.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "alphaBBox": [
+        30,
+        29,
+        512,
+        472
+      ],
+      "approxUniqueColors": 1663
+    },
+    "public/assets/dinos/spinosaurus_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        26,
+        59,
+        997,
+        965
+      ],
+      "approxUniqueColors": 884
+    },
+    "public/assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        1024,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        875,
+        761
+      ],
+      "approxUniqueColors": 1684
+    },
+    "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "alphaBBox": [
+        30,
+        29,
+        512,
+        472
+      ],
+      "approxUniqueColors": 1753
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        26,
+        59,
+        997,
+        965
+      ],
+      "approxUniqueColors": 1028
+    },
+    "public/assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        1024,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        875,
+        761
+      ],
+      "approxUniqueColors": 1669
+    },
+    "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "alphaBBox": [
+        30,
+        29,
+        512,
+        472
+      ],
+      "approxUniqueColors": 1523
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        26,
+        59,
+        997,
+        965
+      ],
+      "approxUniqueColors": 965
+    },
+    "public/assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+      ],
+      "size": [
+        1024,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        930,
+        761
+      ],
+      "approxUniqueColors": 1782
+    },
+    "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "alphaBBox": [
+        30,
+        29,
+        512,
+        472
+      ],
+      "approxUniqueColors": 1509
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        26,
+        59,
+        997,
+        965
+      ],
+      "approxUniqueColors": 863
+    },
+    "public/assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        1024,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        930,
+        761
+      ],
+      "approxUniqueColors": 2034
+    },
+    "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "silhouette and rendering density below existing playable dinosaur art"
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "alphaBBox": [
+        30,
+        29,
+        512,
+        472
+      ],
+      "approxUniqueColors": 1938
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        26,
+        59,
+        997,
+        965
+      ],
+      "approxUniqueColors": 999
+    },
+    "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        23,
+        97,
+        996,
+        926
+      ],
+      "approxUniqueColors": 1221
+    },
+    "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        26,
+        88,
+        1010,
+        961
+      ],
+      "approxUniqueColors": 713
+    },
+    "public/assets/ui/hud/special_icons/special_speed_spinosaurus.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        1,
+        2,
+        256,
+        255
+      ],
+      "approxUniqueColors": 700
+    },
+    "public/assets/ui/hud/special_icons/special_hunting_spinosaurus.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        1,
+        2,
+        256,
+        255
+      ],
+      "approxUniqueColors": 919
+    },
+    "public/assets/ui/hud/special_icons/special_attack_spinosaurus.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        1,
+        2,
+        256,
+        255
+      ],
+      "approxUniqueColors": 751
+    },
+    "public/assets/ui/hud/special_icons/special_zero_spinosaurus.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        1,
+        2,
+        256,
+        255
+      ],
+      "approxUniqueColors": 790
+    },
+    "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        24,
+        67,
+        1000,
+        947
+      ],
+      "approxUniqueColors": 799
+    },
+    "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        25,
+        21,
+        989,
+        978
+      ],
+      "approxUniqueColors": 571
+    },
+    "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        18,
+        87,
+        1005,
+        948
+      ],
+      "approxUniqueColors": 1388
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        27,
+        49,
+        1009,
+        1009
+      ],
+      "approxUniqueColors": 638
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        25,
+        21,
+        989,
+        978
+      ],
+      "approxUniqueColors": 814
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png": {
+      "exists": true,
+      "simpleGraphicJudgement": "reject_current",
+      "reasons": [
+        "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "alphaBBox": [
+        12,
+        71,
+        1012,
+        1012
+      ],
+      "approxUniqueColors": 1316
+    }
+  },
+  "adoptionCandidates": [
+    {
+      "kind": "base",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_base_candidate.png",
+      "status": "adopt_candidate_for_production_extraction",
+      "reasons": [
+        "dedicated illustrated design direction, not procedural vector/fallback",
+        "shape language and color identity are distinct from existing three dinosaurs",
+        "contains hero/portrait/sprite/effect/icon concept material suitable for next extraction pass"
+      ],
+      "nextStepRequired": "crop/slice into transparent runtime assets, then run bbox/alpha/frameEdgeIssues per final asset"
+    },
+    {
+      "kind": "speed",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_speed_candidate.png",
+      "status": "adopt_candidate_for_production_extraction",
+      "reasons": [
+        "dedicated illustrated design direction, not procedural vector/fallback",
+        "shape language and color identity are distinct from existing three dinosaurs",
+        "contains hero/portrait/sprite/effect/icon concept material suitable for next extraction pass"
+      ],
+      "nextStepRequired": "crop/slice into transparent runtime assets, then run bbox/alpha/frameEdgeIssues per final asset"
+    },
+    {
+      "kind": "hunting",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_hunting_candidate.png",
+      "status": "adopt_candidate_for_production_extraction",
+      "reasons": [
+        "dedicated illustrated design direction, not procedural vector/fallback",
+        "shape language and color identity are distinct from existing three dinosaurs",
+        "contains hero/portrait/sprite/effect/icon concept material suitable for next extraction pass"
+      ],
+      "nextStepRequired": "crop/slice into transparent runtime assets, then run bbox/alpha/frameEdgeIssues per final asset"
+    },
+    {
+      "kind": "attack",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_attack_candidate.png",
+      "status": "adopt_candidate_for_production_extraction",
+      "reasons": [
+        "dedicated illustrated design direction, not procedural vector/fallback",
+        "shape language and color identity are distinct from existing three dinosaurs",
+        "contains hero/portrait/sprite/effect/icon concept material suitable for next extraction pass"
+      ],
+      "nextStepRequired": "crop/slice into transparent runtime assets, then run bbox/alpha/frameEdgeIssues per final asset"
+    },
+    {
+      "kind": "zero",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_zero_candidate.png",
+      "status": "adopt_candidate_for_production_extraction",
+      "reasons": [
+        "dedicated illustrated design direction, not procedural vector/fallback",
+        "shape language and color identity are distinct from existing three dinosaurs",
+        "contains hero/portrait/sprite/effect/icon concept material suitable for next extraction pass"
+      ],
+      "nextStepRequired": "crop/slice into transparent runtime assets, then run bbox/alpha/frameEdgeIssues per final asset"
+    }
+  ],
+  "rejectedCandidates": [
+    {
+      "file": "public/assets/dinos/dino_select/spinosaurus_hero.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/portraits/spinosaurus.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/spinosaurus_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png",
+      "reason": "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png",
+      "reason": "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+      "reason": "silhouette and rendering density below existing playable dinosaur art"
+    },
+    {
+      "file": "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/ui/hud/special_icons/special_speed_spinosaurus.png",
+      "reason": "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+    },
+    {
+      "file": "public/assets/ui/hud/special_icons/special_hunting_spinosaurus.png",
+      "reason": "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+    },
+    {
+      "file": "public/assets/ui/hud/special_icons/special_attack_spinosaurus.png",
+      "reason": "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+    },
+    {
+      "file": "public/assets/ui/hud/special_icons/special_zero_spinosaurus.png",
+      "reason": "effect/icon still reads as vector/procedural graphic rather than painted illustration"
+    },
+    {
+      "file": "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    },
+    {
+      "file": "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png",
+      "reason": "procedural/safe-layout sheet; animation readable but not high-quality illustration"
+    }
+  ],
+  "missingAssets": [],
+  "canProceedToImplementation": true,
+  "candidateContact": "docs/assets/spinosaurus_a01c_contact.png",
+  "generatedCandidates": [
+    {
+      "kind": "base",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_base_candidate.png",
+      "sourceGeneratedFile": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01d2a5c927a57465016a1379a17d248191b9f4e883a3fcf6a7.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2415968,
+      "generatedAt": "2026-05-25T07:21:15.661906"
+    },
+    {
+      "kind": "speed",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_speed_candidate.png",
+      "sourceGeneratedFile": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01d2a5c927a57465016a1379da2668819198316757a7888cb6.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2575700,
+      "generatedAt": "2026-05-25T07:23:12.885018"
+    },
+    {
+      "kind": "hunting",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_hunting_candidate.png",
+      "sourceGeneratedFile": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01d2a5c927a57465016a137a4f5a9481919576fbd3fd4c8037.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2818314,
+      "generatedAt": "2026-05-25T07:24:11.969725"
+    },
+    {
+      "kind": "attack",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_attack_candidate.png",
+      "sourceGeneratedFile": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01d2a5c927a57465016a137a8a6a5c819183bb5f39fa6eb576.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 3025981,
+      "generatedAt": "2026-05-25T07:26:19.331216"
+    },
+    {
+      "kind": "zero",
+      "file": "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_zero_candidate.png",
+      "sourceGeneratedFile": "C:\\Users\\oushi\\.codex\\generated_images\\019e2f7d-a1e1-7731-8beb-a0158ce5112c\\ig_01d2a5c927a57465016a137b09bc5481919a0a2587ac441e0f.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 2877461,
+      "generatedAt": "2026-05-25T07:28:23.531544"
+    }
+  ],
+  "stillMissingAssets": [
+    "Runtime-ready individual transparent PNGs are not extracted in MVP-A01c by design.",
+    "4x4 sprite sheets still require dedicated slicing/recomposition QA before manifest registration.",
+    "Effect sheets/icons require production extraction and alpha cleanup before game connection."
+  ],
+  "implementationReadinessNote": "Proceed only to an extraction/QA MVP. Do not register the old current assets; use the A01c adoption candidates as visual source material.",
+  "updatedAt": "2026-05-25T07:30:15.681627",
+  "qualityCompareNote": "Updated to compare existing three playable dinosaurs against A01c Spinosaurus illustration candidates."
+}

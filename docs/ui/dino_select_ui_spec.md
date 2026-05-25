@@ -233,3 +233,15 @@ MVP-075時点では新恐竜を本番データに追加しない。
 - Triceratops and tyrannosaurus front hero / portrait art was regenerated to better match the velociraptor hero tone: frontal threat pose, strong eyes, readable facial features, and dark sci-fi mutation markings.
 - The refreshed card portraits preserve the full silhouette with transparent margins rather than tight face-only crops, so card and HUD placement can use contain scaling without cutting the face.
 - Future evolved dinosaur front images should follow the same rule: generate one high-quality hero master, then derive card/HUD portraits by transparent-margin resizing.
+
+## MVP-A01: 4体目表示
+
+- 恐竜選択にスピノサウルスのLOCKカードを追加。
+- `debugUnlockDino=spinosaurus` または研究解放済みの場合のみ選択可能。
+- 4体目追加によりページング表示を維持し、既存3体の選択導線を変更しない。
+
+
+## MVP-A01d ?????????
+
+- ???????????????hero??A01c???????????A01d???????
+- ????LOCK?debugUnlockDino=spinosaurus??????????????A01b????????

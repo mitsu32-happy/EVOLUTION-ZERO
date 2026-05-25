@@ -1,0 +1,3079 @@
+{
+  "mvp": "MVP-A01e-rebuild",
+  "policy": {
+    "source": "Dedicated illustration generation with near-magenta matte normalized to exact #ff00ff before chroma removal.",
+    "keyColor": "#ff00ff",
+    "keyRule": "Remove only high-red, low-green, high-blue magenta matte pixels; preserve cyan, white glow, black-blue, and dark-purple art.",
+    "a01dFallbackUsed": false
+  },
+  "sources": {
+    "06_hero_portrait_icon_atlas_chromakey.png": {
+      "width": 1536,
+      "height": 1024,
+      "exactMagentaBeforeRatio": 4e-06,
+      "normalizedMagentaRatio": 0.609679
+    },
+    "15_hero_front_threat_atlas_chromakey.png": {
+      "width": 1774,
+      "height": 887,
+      "exactMagentaBeforeRatio": 5e-06,
+      "normalizedMagentaRatio": 0.662968,
+      "heroSplitX": [
+        358,
+        700,
+        1075,
+        1405
+      ],
+      "heroComposition": "front three-quarter intimidation roar, generated after user feedback about side-view mouth-edge readability"
+    },
+    "01_base_sprite_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 3.5e-05,
+      "normalizedMagentaRatio": 0.7459
+    },
+    "02_speed_sprite_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 1.3e-05,
+      "normalizedMagentaRatio": 0.764773
+    },
+    "03_hunting_sprite_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 4e-06,
+      "normalizedMagentaRatio": 0.71243
+    },
+    "04_attack_sprite_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 7e-06,
+      "normalizedMagentaRatio": 0.71607
+    },
+    "05_zero_sprite_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 1e-06,
+      "normalizedMagentaRatio": 0.683692
+    },
+    "07_water_slash_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 0.0,
+      "normalizedMagentaRatio": 0.840545
+    },
+    "08_splash_hit_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 1e-06,
+      "normalizedMagentaRatio": 0.825369
+    },
+    "09_tidal_rush_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 0.0,
+      "normalizedMagentaRatio": 0.790297
+    },
+    "10_maelstrom_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 1e-06,
+      "normalizedMagentaRatio": 0.659714
+    },
+    "11_hydro_break_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 0.0,
+      "normalizedMagentaRatio": 0.795154
+    },
+    "12_zero_core_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 0.0,
+      "normalizedMagentaRatio": 0.630158
+    },
+    "13_zero_tide_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 2e-06,
+      "normalizedMagentaRatio": 0.649128
+    },
+    "14_zero_burst_effect_sheet_chromakey.png": {
+      "width": 1254,
+      "height": 1254,
+      "exactMagentaBeforeRatio": 3e-06,
+      "normalizedMagentaRatio": 0.799234
+    }
+  },
+  "assets": {
+    "base": {
+      "type": "dinosaur",
+      "label": "base spinosaurus",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/01_base_sprite_sheet_chromakey.png",
+      "outputs": {
+        "hero": "public/assets/dinos/dino_select/spinosaurus_hero.png",
+        "portrait": "public/assets/dinos/portraits/spinosaurus.png",
+        "sheet": "public/assets/dinos/spinosaurus_sheet.png",
+        "staticFallback": "public/assets/dinos/spinosaurus.png",
+        "specialIcon": null
+      },
+      "adopted": true,
+      "bodyMissing": false,
+      "finMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 32,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": {
+        "hero": [
+          288,
+          86,
+          735,
+          682
+        ],
+        "portrait": [
+          44,
+          34,
+          467,
+          478
+        ],
+        "static": [
+          34,
+          87,
+          478,
+          425
+        ]
+      },
+      "magentaResiduePixels": {
+        "hero": 0,
+        "portrait": 0,
+        "sheet": 0
+      },
+      "edgeIntrusionRemovedPixels": 5531,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            55,
+            224,
+            201
+          ],
+          "visiblePixels": 12101,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            32,
+            60,
+            224,
+            196
+          ],
+          "visiblePixels": 10704,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            50,
+            224,
+            205
+          ],
+          "visiblePixels": 13535,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            32,
+            61,
+            224,
+            195
+          ],
+          "visiblePixels": 11566,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            69,
+            224,
+            187
+          ],
+          "visiblePixels": 9010,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            73,
+            224,
+            182
+          ],
+          "visiblePixels": 8184,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            74,
+            224,
+            182
+          ],
+          "visiblePixels": 8559,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            71,
+            224,
+            185
+          ],
+          "visiblePixels": 9332,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            32,
+            42,
+            224,
+            213
+          ],
+          "visiblePixels": 16111,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            65,
+            224,
+            190
+          ],
+          "visiblePixels": 14028,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            62,
+            224,
+            193
+          ],
+          "visiblePixels": 17104,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            32,
+            70,
+            224,
+            186
+          ],
+          "visiblePixels": 12269,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            32,
+            49,
+            224,
+            206
+          ],
+          "visiblePixels": 15514,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            32,
+            69,
+            224,
+            187
+          ],
+          "visiblePixels": 12788,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            32,
+            74,
+            224,
+            181
+          ],
+          "visiblePixels": 11166,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            32,
+            98,
+            224,
+            158
+          ],
+          "visiblePixels": 7491,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "speed": {
+      "type": "dinosaur",
+      "label": "spinosaurus_speed",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/02_speed_sprite_sheet_chromakey.png",
+      "outputs": {
+        "hero": "public/assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png",
+        "staticFallback": "public/assets/dinos/evolutions/spinosaurus_speed.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_spinosaurus.png"
+      },
+      "adopted": true,
+      "bodyMissing": false,
+      "finMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 32,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": {
+        "hero": [
+          300,
+          86,
+          723,
+          682
+        ],
+        "portrait": [
+          34,
+          40,
+          478,
+          472
+        ],
+        "static": [
+          34,
+          74,
+          478,
+          437
+        ]
+      },
+      "magentaResiduePixels": {
+        "hero": 0,
+        "portrait": 0,
+        "sheet": 0
+      },
+      "edgeIntrusionRemovedPixels": 6141,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            49,
+            224,
+            206
+          ],
+          "visiblePixels": 12105,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            32,
+            45,
+            224,
+            211
+          ],
+          "visiblePixels": 12063,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            44,
+            224,
+            212
+          ],
+          "visiblePixels": 13919,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            32,
+            59,
+            224,
+            197
+          ],
+          "visiblePixels": 11502,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            69,
+            224,
+            187
+          ],
+          "visiblePixels": 8736,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            106,
+            224,
+            214
+          ],
+          "visiblePixels": 7548,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            33,
+            108,
+            223,
+            224
+          ],
+          "visiblePixels": 8885,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            86,
+            224,
+            170
+          ],
+          "visiblePixels": 7725,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            32,
+            57,
+            224,
+            198
+          ],
+          "visiblePixels": 13618,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            64,
+            224,
+            191
+          ],
+          "visiblePixels": 13283,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            60,
+            224,
+            196
+          ],
+          "visiblePixels": 16575,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            32,
+            67,
+            224,
+            189
+          ],
+          "visiblePixels": 12643,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            32,
+            51,
+            224,
+            204
+          ],
+          "visiblePixels": 13134,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            32,
+            71,
+            224,
+            185
+          ],
+          "visiblePixels": 11692,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            32,
+            78,
+            224,
+            177
+          ],
+          "visiblePixels": 9931,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            32,
+            99,
+            224,
+            156
+          ],
+          "visiblePixels": 6938,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "hunting": {
+      "type": "dinosaur",
+      "label": "spinosaurus_hunting",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/03_hunting_sprite_sheet_chromakey.png",
+      "outputs": {
+        "hero": "public/assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+        "staticFallback": "public/assets/dinos/evolutions/spinosaurus_hunting.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_spinosaurus.png"
+      },
+      "adopted": true,
+      "bodyMissing": false,
+      "finMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 32,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": {
+        "hero": [
+          285,
+          86,
+          738,
+          682
+        ],
+        "portrait": [
+          34,
+          40,
+          478,
+          472
+        ],
+        "static": [
+          34,
+          81,
+          478,
+          430
+        ]
+      },
+      "magentaResiduePixels": {
+        "hero": 0,
+        "portrait": 0,
+        "sheet": 0
+      },
+      "edgeIntrusionRemovedPixels": 3685,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            52,
+            224,
+            203
+          ],
+          "visiblePixels": 12997,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            32,
+            52,
+            224,
+            203
+          ],
+          "visiblePixels": 12818,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            52,
+            224,
+            204
+          ],
+          "visiblePixels": 13846,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            32,
+            56,
+            224,
+            199
+          ],
+          "visiblePixels": 12647,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            65,
+            224,
+            190
+          ],
+          "visiblePixels": 10208,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            67,
+            224,
+            189
+          ],
+          "visiblePixels": 9667,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            71,
+            224,
+            184
+          ],
+          "visiblePixels": 9357,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            67,
+            224,
+            188
+          ],
+          "visiblePixels": 9811,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            32,
+            53,
+            224,
+            203
+          ],
+          "visiblePixels": 14694,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            56,
+            224,
+            199
+          ],
+          "visiblePixels": 17178,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            58,
+            224,
+            197
+          ],
+          "visiblePixels": 17635,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            32,
+            67,
+            224,
+            188
+          ],
+          "visiblePixels": 14880,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            32,
+            47,
+            224,
+            208
+          ],
+          "visiblePixels": 14969,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            32,
+            60,
+            224,
+            196
+          ],
+          "visiblePixels": 14255,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            32,
+            71,
+            224,
+            184
+          ],
+          "visiblePixels": 11930,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            32,
+            97,
+            224,
+            158
+          ],
+          "visiblePixels": 7893,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "attack": {
+      "type": "dinosaur",
+      "label": "spinosaurus_attack",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/04_attack_sprite_sheet_chromakey.png",
+      "outputs": {
+        "hero": "public/assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+        "staticFallback": "public/assets/dinos/evolutions/spinosaurus_attack.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_spinosaurus.png"
+      },
+      "adopted": true,
+      "bodyMissing": false,
+      "finMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 32,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": {
+        "hero": [
+          307,
+          86,
+          716,
+          682
+        ],
+        "portrait": [
+          34,
+          38,
+          478,
+          473
+        ],
+        "static": [
+          34,
+          88,
+          478,
+          423
+        ]
+      },
+      "magentaResiduePixels": {
+        "hero": 0,
+        "portrait": 0,
+        "sheet": 0
+      },
+      "edgeIntrusionRemovedPixels": 4420,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            55,
+            224,
+            200
+          ],
+          "visiblePixels": 13146,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            32,
+            60,
+            224,
+            196
+          ],
+          "visiblePixels": 11241,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            52,
+            224,
+            203
+          ],
+          "visiblePixels": 14267,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            32,
+            63,
+            224,
+            193
+          ],
+          "visiblePixels": 11867,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            67,
+            224,
+            189
+          ],
+          "visiblePixels": 10164,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            72,
+            224,
+            183
+          ],
+          "visiblePixels": 9672,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            71,
+            224,
+            185
+          ],
+          "visiblePixels": 9827,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            68,
+            224,
+            187
+          ],
+          "visiblePixels": 10457,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            32,
+            52,
+            224,
+            204
+          ],
+          "visiblePixels": 16510,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            65,
+            224,
+            190
+          ],
+          "visiblePixels": 14848,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            62,
+            224,
+            193
+          ],
+          "visiblePixels": 17336,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            32,
+            62,
+            224,
+            194
+          ],
+          "visiblePixels": 16636,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            32,
+            57,
+            224,
+            198
+          ],
+          "visiblePixels": 14446,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            32,
+            63,
+            224,
+            192
+          ],
+          "visiblePixels": 14460,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            32,
+            74,
+            224,
+            182
+          ],
+          "visiblePixels": 11814,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            32,
+            95,
+            224,
+            161
+          ],
+          "visiblePixels": 7505,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "zero": {
+      "type": "dinosaur",
+      "label": "spinosaurus_zero",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/05_zero_sprite_sheet_chromakey.png",
+      "outputs": {
+        "hero": "public/assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+        "staticFallback": "public/assets/dinos/evolutions/spinosaurus_zero.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_spinosaurus.png"
+      },
+      "adopted": true,
+      "bodyMissing": false,
+      "finMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 32,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": {
+        "hero": [
+          303,
+          86,
+          721,
+          682
+        ],
+        "portrait": [
+          66,
+          34,
+          446,
+          478
+        ],
+        "static": [
+          34,
+          75,
+          478,
+          436
+        ]
+      },
+      "magentaResiduePixels": {
+        "hero": 0,
+        "portrait": 0,
+        "sheet": 0
+      },
+      "edgeIntrusionRemovedPixels": 5794,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            50,
+            224,
+            206
+          ],
+          "visiblePixels": 14479,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            32,
+            55,
+            224,
+            200
+          ],
+          "visiblePixels": 12960,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            32,
+            42,
+            224,
+            213
+          ],
+          "visiblePixels": 16569,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            32,
+            58,
+            224,
+            198
+          ],
+          "visiblePixels": 13282,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            63,
+            224,
+            193
+          ],
+          "visiblePixels": 11400,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            32,
+            66,
+            224,
+            190
+          ],
+          "visiblePixels": 11295,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            64,
+            224,
+            191
+          ],
+          "visiblePixels": 11877,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            62,
+            224,
+            194
+          ],
+          "visiblePixels": 11738,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            32,
+            49,
+            224,
+            206
+          ],
+          "visiblePixels": 18681,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            32,
+            64,
+            224,
+            192
+          ],
+          "visiblePixels": 16959,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            32,
+            63,
+            224,
+            193
+          ],
+          "visiblePixels": 18543,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            32,
+            68,
+            224,
+            187
+          ],
+          "visiblePixels": 14579,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            32,
+            51,
+            224,
+            205
+          ],
+          "visiblePixels": 15912,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            32,
+            62,
+            224,
+            193
+          ],
+          "visiblePixels": 14580,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            32,
+            69,
+            224,
+            187
+          ],
+          "visiblePixels": 12759,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            32,
+            90,
+            224,
+            165
+          ],
+          "visiblePixels": 8275,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "water_slash": {
+      "type": "effect",
+      "label": "spinosaurus_attack_water_slash",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/07_water_slash_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        35,
+        1012,
+        1001
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            73,
+            244,
+            183
+          ],
+          "visiblePixels": 7628,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            43,
+            244,
+            213
+          ],
+          "visiblePixels": 14277,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            35,
+            244,
+            220
+          ],
+          "visiblePixels": 18792,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            38,
+            244,
+            218
+          ],
+          "visiblePixels": 21028,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            43,
+            244,
+            212
+          ],
+          "visiblePixels": 20519,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            54,
+            244,
+            202
+          ],
+          "visiblePixels": 17999,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            12,
+            62,
+            244,
+            193
+          ],
+          "visiblePixels": 15117,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            53,
+            244,
+            202
+          ],
+          "visiblePixels": 17284,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            61,
+            244,
+            194
+          ],
+          "visiblePixels": 16531,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            52,
+            244,
+            204
+          ],
+          "visiblePixels": 19709,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            65,
+            244,
+            191
+          ],
+          "visiblePixels": 13580,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            12,
+            56,
+            244,
+            199
+          ],
+          "visiblePixels": 11038,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            23,
+            244,
+            233
+          ],
+          "visiblePixels": 9157,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            56,
+            244,
+            199
+          ],
+          "visiblePixels": 8790,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            54,
+            244,
+            202
+          ],
+          "visiblePixels": 6503,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            59,
+            244,
+            196
+          ],
+          "visiblePixels": 4190,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "splash_hit": {
+      "type": "effect",
+      "label": "spinosaurus_attack_splash_hit",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/08_splash_hit_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        26,
+        1012,
+        949
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            29,
+            244,
+            227
+          ],
+          "visiblePixels": 16158,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            40,
+            244,
+            215
+          ],
+          "visiblePixels": 19621,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            26,
+            244,
+            230
+          ],
+          "visiblePixels": 20110,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            32,
+            244,
+            224
+          ],
+          "visiblePixels": 16872,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            36,
+            244,
+            219
+          ],
+          "visiblePixels": 16487,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            26,
+            244,
+            229
+          ],
+          "visiblePixels": 20411,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ],
+          "visiblePixels": 23678,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            16,
+            244,
+            240
+          ],
+          "visiblePixels": 25181,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            41,
+            244,
+            214
+          ],
+          "visiblePixels": 23026,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            45,
+            244,
+            210
+          ],
+          "visiblePixels": 16819,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            52,
+            244,
+            203
+          ],
+          "visiblePixels": 13920,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            12,
+            74,
+            244,
+            181
+          ],
+          "visiblePixels": 10125,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            75,
+            244,
+            181
+          ],
+          "visiblePixels": 9515,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            82,
+            244,
+            173
+          ],
+          "visiblePixels": 8287,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            101,
+            244,
+            154
+          ],
+          "visiblePixels": 7248,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            106,
+            244,
+            150
+          ],
+          "visiblePixels": 6924,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "tidal_rush": {
+      "type": "effect",
+      "label": "special_spinosaurus_speed_tidal_rush",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/09_tidal_rush_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png",
+        "public/assets/effects/specials/special_spinosaurus_tidal_rush_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        19,
+        1012,
+        979
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            13,
+            39,
+            244,
+            216
+          ],
+          "visiblePixels": 19184,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            19,
+            244,
+            237
+          ],
+          "visiblePixels": 22733,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            45,
+            244,
+            210
+          ],
+          "visiblePixels": 23154,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            63,
+            244,
+            193
+          ],
+          "visiblePixels": 19440,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            70,
+            244,
+            186
+          ],
+          "visiblePixels": 18195,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            70,
+            244,
+            185
+          ],
+          "visiblePixels": 17954,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            12,
+            75,
+            244,
+            180
+          ],
+          "visiblePixels": 15872,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            75,
+            244,
+            180
+          ],
+          "visiblePixels": 15848,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            47,
+            244,
+            208
+          ],
+          "visiblePixels": 17530,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            47,
+            244,
+            208
+          ],
+          "visiblePixels": 20874,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            46,
+            244,
+            209
+          ],
+          "visiblePixels": 25976,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            12,
+            46,
+            244,
+            209
+          ],
+          "visiblePixels": 19377,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            45,
+            244,
+            211
+          ],
+          "visiblePixels": 18110,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            60,
+            244,
+            196
+          ],
+          "visiblePixels": 11001,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            73,
+            244,
+            183
+          ],
+          "visiblePixels": 4674,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            85,
+            244,
+            171
+          ],
+          "visiblePixels": 1399,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "maelstrom": {
+      "type": "effect",
+      "label": "special_spinosaurus_hunting_maelstrom",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/10_maelstrom_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+        "public/assets/effects/specials/special_spinosaurus_maelstrom_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        29,
+        1012,
+        976
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            70,
+            244,
+            185
+          ],
+          "visiblePixels": 17633,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            61,
+            244,
+            195
+          ],
+          "visiblePixels": 20871,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            43,
+            244,
+            213
+          ],
+          "visiblePixels": 18237,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            29,
+            244,
+            227
+          ],
+          "visiblePixels": 26502,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            12,
+            243,
+            244
+          ],
+          "visiblePixels": 30982,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            20,
+            244,
+            236
+          ],
+          "visiblePixels": 31363,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            17,
+            12,
+            238,
+            244
+          ],
+          "visiblePixels": 33945,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            15,
+            244,
+            241
+          ],
+          "visiblePixels": 37942,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            30,
+            244,
+            226
+          ],
+          "visiblePixels": 31753,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            20,
+            244,
+            236
+          ],
+          "visiblePixels": 32166,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            29,
+            244,
+            226
+          ],
+          "visiblePixels": 23562,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            12,
+            47,
+            244,
+            208
+          ],
+          "visiblePixels": 23878,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            48,
+            244,
+            208
+          ],
+          "visiblePixels": 18583,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            70,
+            244,
+            186
+          ],
+          "visiblePixels": 15436,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            85,
+            244,
+            170
+          ],
+          "visiblePixels": 11582,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            82,
+            244,
+            174
+          ],
+          "visiblePixels": 10697,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "hydro_break": {
+      "type": "effect",
+      "label": "special_spinosaurus_attack_hydro_break",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/11_hydro_break_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png",
+        "public/assets/effects/specials/special_spinosaurus_hydro_break_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        54,
+        1012,
+        982
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            54,
+            244,
+            201
+          ],
+          "visiblePixels": 21596,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            72,
+            244,
+            184
+          ],
+          "visiblePixels": 17923,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            71,
+            244,
+            184
+          ],
+          "visiblePixels": 15279,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            72,
+            244,
+            184
+          ],
+          "visiblePixels": 14970,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            16,
+            244,
+            240
+          ],
+          "visiblePixels": 16726,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            15,
+            244,
+            240
+          ],
+          "visiblePixels": 17285,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            12,
+            18,
+            244,
+            237
+          ],
+          "visiblePixels": 18451,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            14,
+            244,
+            241
+          ],
+          "visiblePixels": 17146,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            40,
+            244,
+            216
+          ],
+          "visiblePixels": 17685,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            35,
+            244,
+            220
+          ],
+          "visiblePixels": 18771,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            31,
+            244,
+            224
+          ],
+          "visiblePixels": 19267,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            12,
+            40,
+            244,
+            215
+          ],
+          "visiblePixels": 16247,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            41,
+            244,
+            214
+          ],
+          "visiblePixels": 12848,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            47,
+            244,
+            208
+          ],
+          "visiblePixels": 11214,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            13,
+            46,
+            244,
+            211
+          ],
+          "visiblePixels": 6926,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            111,
+            244,
+            145
+          ],
+          "visiblePixels": 1994,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "zero_core": {
+      "type": "effect",
+      "label": "special_zero_spinosaurus_core",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/12_zero_core_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        16,
+        1012,
+        995
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            67,
+            244,
+            188
+          ],
+          "visiblePixels": 19404,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            48,
+            244,
+            208
+          ],
+          "visiblePixels": 26193,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            23,
+            244,
+            232
+          ],
+          "visiblePixels": 28850,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            16,
+            244,
+            240
+          ],
+          "visiblePixels": 29576,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            22,
+            244,
+            233
+          ],
+          "visiblePixels": 31656,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            26,
+            244,
+            229
+          ],
+          "visiblePixels": 34589,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            12,
+            24,
+            244,
+            232
+          ],
+          "visiblePixels": 34839,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            26,
+            244,
+            229
+          ],
+          "visiblePixels": 35570,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            28,
+            12,
+            228,
+            244
+          ],
+          "visiblePixels": 25399,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            25,
+            12,
+            230,
+            244
+          ],
+          "visiblePixels": 26040,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            22,
+            12,
+            233,
+            244
+          ],
+          "visiblePixels": 27530,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            24,
+            12,
+            232,
+            244
+          ],
+          "visiblePixels": 29226,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            29,
+            244,
+            227
+          ],
+          "visiblePixels": 36566,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            32,
+            244,
+            224
+          ],
+          "visiblePixels": 33704,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            41,
+            244,
+            215
+          ],
+          "visiblePixels": 28287,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            36,
+            244,
+            220
+          ],
+          "visiblePixels": 33985,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "zero_tide": {
+      "type": "effect",
+      "label": "special_zero_spinosaurus_tide",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/13_zero_tide_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        23,
+        1012,
+        973
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            38,
+            244,
+            217
+          ],
+          "visiblePixels": 19878,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            12,
+            40,
+            244,
+            215
+          ],
+          "visiblePixels": 21319,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            12,
+            42,
+            244,
+            214
+          ],
+          "visiblePixels": 20436,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            12,
+            23,
+            244,
+            232
+          ],
+          "visiblePixels": 26174,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            12,
+            21,
+            244,
+            235
+          ],
+          "visiblePixels": 25553,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            12,
+            24,
+            244,
+            232
+          ],
+          "visiblePixels": 25884,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            12,
+            23,
+            244,
+            233
+          ],
+          "visiblePixels": 28060,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            12,
+            14,
+            244,
+            241
+          ],
+          "visiblePixels": 36607,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            12,
+            22,
+            244,
+            233
+          ],
+          "visiblePixels": 34826,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            30,
+            244,
+            226
+          ],
+          "visiblePixels": 31594,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            51,
+            244,
+            205
+          ],
+          "visiblePixels": 21240,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            12,
+            42,
+            244,
+            213
+          ],
+          "visiblePixels": 22383,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            53,
+            244,
+            202
+          ],
+          "visiblePixels": 17183,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            52,
+            244,
+            203
+          ],
+          "visiblePixels": 14077,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            51,
+            244,
+            205
+          ],
+          "visiblePixels": 15461,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            54,
+            244,
+            201
+          ],
+          "visiblePixels": 9297,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    },
+    "zero_burst": {
+      "type": "effect",
+      "label": "special_zero_spinosaurus_burst",
+      "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/generated_raw/mvp_a01e_rebuild_spinosaurus/14_zero_burst_effect_sheet_chromakey.png",
+      "outputs": [
+        "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png"
+      ],
+      "adopted": true,
+      "bodyMissing": false,
+      "waterEffectMissing": false,
+      "frameEdgeIssues": 0,
+      "minFrameMarginPx": 12,
+      "borderAlpha2px": 0,
+      "neighborPartMixing": false,
+      "bbox": [
+        12,
+        12,
+        1012,
+        962
+      ],
+      "magentaResiduePixels": 0,
+      "edgeIntrusionRemovedPixels": 0,
+      "frames": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            12,
+            36,
+            244,
+            219
+          ],
+          "visiblePixels": 19821,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            21,
+            12,
+            234,
+            244
+          ],
+          "visiblePixels": 20896,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            24,
+            12,
+            231,
+            244
+          ],
+          "visiblePixels": 21800,
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            24,
+            12,
+            232,
+            244
+          ],
+          "visiblePixels": 22318,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            33,
+            12,
+            223,
+            244
+          ],
+          "visiblePixels": 18397,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            31,
+            12,
+            225,
+            244
+          ],
+          "visiblePixels": 19265,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            13,
+            12,
+            243,
+            244
+          ],
+          "visiblePixels": 19139,
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            19,
+            12,
+            236,
+            244
+          ],
+          "visiblePixels": 19210,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            12,
+            238,
+            244
+          ],
+          "visiblePixels": 17759,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            12,
+            20,
+            244,
+            235
+          ],
+          "visiblePixels": 16002,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            12,
+            20,
+            244,
+            236
+          ],
+          "visiblePixels": 15586,
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            13,
+            12,
+            243,
+            244
+          ],
+          "visiblePixels": 15752,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            61,
+            244,
+            194
+          ],
+          "visiblePixels": 11023,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            64,
+            244,
+            191
+          ],
+          "visiblePixels": 8943,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            67,
+            244,
+            188
+          ],
+          "visiblePixels": 7501,
+          "edgeIssue": false
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            73,
+            244,
+            183
+          ],
+          "visiblePixels": 4057,
+          "edgeIssue": false
+        }
+      ],
+      "nextAction": "implemented"
+    }
+  },
+  "manifest": {
+    "checkedPublicOutputs": 35,
+    "missing": [],
+    "missingCount": 0
+  },
+  "summary": {
+    "assetCount": 13,
+    "adoptedCount": 13,
+    "bodyMissingCount": 0,
+    "waterEffectMissingCount": 0,
+    "frameEdgeIssuesTotal": 0,
+    "neighborPartMixingCount": 0,
+    "borderAlpha2pxTotal": 0,
+    "minFrameMarginPx": 12,
+    "magentaResidueTotal": 0,
+    "edgeIntrusionRemovedPixelsTotal": 25571
+  }
+}

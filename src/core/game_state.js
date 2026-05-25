@@ -35,6 +35,15 @@ const ZERO_EVOLUTION_REQUIREMENTS = {
       attack: 3,
     },
   },
+  spinosaurus_zero: {
+    dinoId: 'spinosaurus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
 };
 
 export class GameState {

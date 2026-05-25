@@ -3106,3 +3106,29 @@ Runtime rules:
 - HP recovery pickups now use a stronger green-white glow and a subtle pulse so they stand out from EXP crystals and combat effects.
 - Heal amount is based on max HP (`18%`, minimum `14`) and popup text is rounded to an integer.
 - Dedicated evolution normal attack effects are expected for all public evolution routes; the selected evolution object must carry `normalAttackEffectKey` into combat setup.
+
+## MVP-A01: Spinosaurus Asset Addition
+
+- Added dedicated Spinosaurus base, 3 normal evolutions, and future ZERO evolution assets.
+- Added generated report: `docs/assets/spinosaurus_addition_report.json`.
+- Added contact sheet: `docs/assets/spinosaurus_addition_contact.png`.
+- Sprite/effect QA target: 4x4 sheets, transparent background, frameEdgeIssues 0.
+- Do not treat simple recolors or hero cutouts as complete for fifth/sixth dinosaurs.
+
+## MVP-A01b Spinosaurus Asset And UI Cleanup
+
+- Replaced the Spinosaurus family assets at their existing runtime paths with dedicated water/abyss themed raster assets.
+- Re-registered Spinosaurus assets inside the correct manifest groups (`dinos`, `dinoSelectHero`, `evolutionSheets`, `evolutionHeroes`, `evolutionPortraits`, `evolutionSpecialIcons`, `normalAttackEffects`, `specialEffects`) so runtime lookup no longer falls through to generic fallback keys.
+- Added QA output: `docs/assets/spinosaurus_a01b_report.json` and `docs/assets/spinosaurus_a01b_contact.png`.
+- All generated Spinosaurus sprite/effect sheets are checked with `frameEdgeIssues: 0`.
+- Codex top dinosaur selector now uses a masked horizontal swipe area so 4+ dinosaurs do not overflow the screen.
+- Research unlock UI now shows Research Pt-only cost clearly and saves `unlockedDinos.spinosaurus` after purchase.
+
+
+## MVP-A01d Spinosaurus Runtime Asset Extraction
+
+- MVP-A01c?????????????????5??base / speed / hunting / attack / zero?????????PNG???????
+- A01b?????/procedural/fallback?????????????????????????A01d???????????
+- 4x4 sprite sheet?1024x1024?1??256px??????frameEdgeIssues?0??
+- ????????ZERO????????A01c??????/?/??/?????????16????sheet???????
+- ???: docs/assets/spinosaurus_a01d_contact.png / docs/assets/spinosaurus_a01d_ingame_compare.png / docs/assets/spinosaurus_a01d_report.json?

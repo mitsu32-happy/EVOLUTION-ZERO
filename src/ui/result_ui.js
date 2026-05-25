@@ -8,12 +8,14 @@ const DINO_LABELS = {
   velociraptor: 'ヴェロキラプトル',
   triceratops: 'トリケラトプス',
   tyrannosaurus: 'ティラノサウルス',
+  spinosaurus: 'スピノサウルス',
 };
 
 const DINO_RESULT_LABELS = {
   velociraptor: 'ラプトル',
   triceratops: 'トリケラ',
   tyrannosaurus: 'ティラノ',
+  spinosaurus: 'スピノ',
 };
 
 const MODE_LABELS = {
@@ -59,6 +61,11 @@ const RESULT_EVOLUTION_PORTRAIT_PATHS = {
   tyrannosaurus_speed: 'assets/dinos/evolutions/portraits/tyrannosaurus_speed_portrait.png',
   tyrannosaurus_hunting: 'assets/dinos/evolutions/portraits/tyrannosaurus_hunting_portrait.png',
   tyrannosaurus_attack: 'assets/dinos/evolutions/portraits/tyrannosaurus_attack_portrait.png',
+  tyrannosaurus_zero: 'assets/dinos/evolutions/portraits/tyrannosaurus_zero_portrait.png',
+  spinosaurus_speed: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png',
+  spinosaurus_hunting: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png',
+  spinosaurus_attack: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png',
+  spinosaurus_zero: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png',
 };
 
 const RESULT_PANEL = {

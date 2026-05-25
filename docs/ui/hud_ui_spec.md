@@ -262,3 +262,8 @@
 - Reason: ZERO phase notices already communicate the phase/boss escalation, and the duplicate banner competes with that UI.
 - Boss warning SE, boss BGM switching, screen shake, and the boss HP/name HUD remain active.
 - Normal / HARD / EXPERT boss-arrival text banners remain unchanged.
+
+## MVP-A01: HUD表示
+
+- スピノサウルス base/speed/hunting/attack/zero のポートレートと必殺アイコンをHUDへ追加。
+- ZEROルートは将来解放用。通常導線では未解放。

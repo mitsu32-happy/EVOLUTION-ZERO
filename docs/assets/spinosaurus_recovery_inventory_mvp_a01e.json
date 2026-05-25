@@ -1,0 +1,132 @@
+{
+  "id": "MVP-A01e-recovery",
+  "createdAt": "2026-05-25",
+  "scope": "spinosaurus recovery inventory only",
+  "guardrails": {
+    "deletedFiles": false,
+    "overwroteFiles": false,
+    "gitAdd": false,
+    "commit": false,
+    "manifestChanged": false,
+    "buildRun": false
+  },
+  "summary": {
+    "spinosaurusGitStatusEntries": 46,
+    "spinosaurusGitStatus": "all untracked",
+    "a01cRawCandidates": 5,
+    "a01dProducedRuntimeAssets": 35,
+    "jsonReportsParsedOk": 4,
+    "pngJpegMismatchRecorded": [
+      "docs/assets/spinosaurus_a01d_ingame_compare.png"
+    ],
+    "sampledChromaKeyMagentaFound": false
+  },
+  "classifications": {
+    "keep_candidate": [
+      "docs/assets/spinosaurus_a01b_contact.png",
+      "docs/assets/spinosaurus_a01b_report.json",
+      "docs/assets/spinosaurus_addition_contact.png",
+      "docs/assets/spinosaurus_addition_report.json",
+      "docs/assets/spinosaurus_a01c_contact.png",
+      "docs/assets/spinosaurus_a01c_current_contact.png",
+      "docs/assets/spinosaurus_a01c_report.json",
+      "docs/assets/spinosaurus_quality_compare_mvp_a01c.png",
+      "docs/assets/spinosaurus_a01d_contact.png",
+      "docs/assets/spinosaurus_a01d_report.json",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_base_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_speed_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_hunting_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_attack_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_zero_candidate.png"
+    ],
+    "discard_candidate": [
+      "docs/assets/spinosaurus_a01d_ingame_compare.png"
+    ],
+    "regenerate_candidate": [
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_base_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_speed_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_hunting_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_attack_candidate.png",
+      "docs/assets/generated_raw/mvp_a01c_spinosaurus_quality/spinosaurus_zero_candidate.png"
+    ],
+    "implemented_candidate": [
+      "public/assets/dinos/dino_select/spinosaurus_hero.png",
+      "public/assets/dinos/portraits/spinosaurus.png",
+      "public/assets/dinos/spinosaurus_sheet.png",
+      "public/assets/dinos/spinosaurus.png",
+      "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png",
+      "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png",
+      "public/assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png",
+      "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png",
+      "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png",
+      "public/assets/dinos/evolutions/spinosaurus_speed.png",
+      "public/assets/ui/hud/special_icons/special_speed_spinosaurus.png",
+      "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png",
+      "public/assets/effects/specials/special_spinosaurus_tidal_rush_sheet.png",
+      "public/assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png",
+      "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png",
+      "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+      "public/assets/dinos/evolutions/spinosaurus_hunting.png",
+      "public/assets/ui/hud/special_icons/special_hunting_spinosaurus.png",
+      "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+      "public/assets/effects/specials/special_spinosaurus_maelstrom_sheet.png",
+      "public/assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png",
+      "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png",
+      "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+      "public/assets/dinos/evolutions/spinosaurus_attack.png",
+      "public/assets/ui/hud/special_icons/special_attack_spinosaurus.png",
+      "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png",
+      "public/assets/effects/specials/special_spinosaurus_hydro_break_sheet.png",
+      "public/assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png",
+      "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+      "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+      "public/assets/dinos/evolutions/spinosaurus_zero.png",
+      "public/assets/ui/hud/special_icons/special_zero_spinosaurus.png",
+      "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+      "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png",
+      "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png"
+    ],
+    "pending_review": []
+  },
+  "notableFindings": [
+    {
+      "finding": "A01c supplied the adopted visual direction.",
+      "evidence": "spinosaurus_a01c_report.json lists 5 adoption candidates and states to proceed only to extraction/QA."
+    },
+    {
+      "finding": "A01d sliced runtime transparent assets from A01c candidates.",
+      "evidence": "spinosaurus_a01d_report.json lists 35 produced assets and says no new visual candidates were generated."
+    },
+    {
+      "finding": "Current source candidates are not chroma-key ready.",
+      "evidence": "sampled files were opaque and had no sampled #ff00ff background."
+    },
+    {
+      "finding": "One spinosaurus QA image has an extension/content mismatch.",
+      "evidence": "docs/assets/spinosaurus_a01d_ingame_compare.png has JPEG signature."
+    }
+  ],
+  "requiredRegeneration": {
+    "background": "#ff00ff",
+    "avoidColors": [
+      "near-#ff00ff on body",
+      "near-#ff00ff on sail",
+      "near-#ff00ff on water",
+      "near-#ff00ff on glow"
+    ],
+    "concepts": [
+      "base",
+      "speed",
+      "hunting",
+      "attack",
+      "zero"
+    ],
+    "acceptanceCriteria": [
+      "body remains after chroma removal",
+      "sail remains after chroma removal",
+      "water flow remains after chroma removal",
+      "glow remains after chroma removal",
+      "runtime assets are sliced only after user approval"
+    ]
+  }
+}

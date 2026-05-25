@@ -27,7 +27,7 @@ const TILE_WIDTH = 96;
 const TILE_HEIGHT = 56;
 const HUD_INPUT_HEIGHT = 150;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
-const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus']);
+const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
 const DEBUG_EVOLUTION_SKILLS = {
   speed: ['afterimage_claw'],
@@ -1286,6 +1286,7 @@ export class PlayScene {
       velociraptor_zero: 'special_abyss_slash',
       triceratops_zero: 'special_ignis_charge',
       tyrannosaurus_zero: 'special_omega_burst',
+      spinosaurus_zero: 'ultimate_zero',
     };
 
     if (zeroUltimateByEvolution[evolution?.id]) {
@@ -1317,6 +1318,10 @@ export class PlayScene {
       return 'raptor_attack_se';
     }
 
+    if (pattern === 'spinosaurusWaterSlash') {
+      return 'normal_special_hunting';
+    }
+
     const dinoId = this.gameState.selectedDinoId ?? this.gameState.selectedDino?.id ?? this.gameState.selectedDino;
 
     if (dinoId === 'tyrannosaurus') {
@@ -1329,6 +1334,10 @@ export class PlayScene {
 
     if (dinoId === 'velociraptor') {
       return 'raptor_attack_se';
+    }
+
+    if (dinoId === 'spinosaurus') {
+      return 'normal_special_hunting';
     }
 
     return 'attack';
@@ -4398,6 +4407,26 @@ export class PlayScene {
 
       if (tag === 'attack') {
         return ASSET_KEYS.evolutionSheets?.tyrannosaurusAttack ?? null;
+      }
+
+      return null;
+    }
+
+    if (dinoId === 'spinosaurus') {
+      if (tag === 'zero') {
+        return ASSET_KEYS.evolutionSheets?.spinosaurusZero ?? ASSET_KEYS.evolutionSheets?.spinosaurusAttack ?? null;
+      }
+
+      if (tag === 'speed') {
+        return ASSET_KEYS.evolutionSheets?.spinosaurusSpeed ?? null;
+      }
+
+      if (tag === 'hunting') {
+        return ASSET_KEYS.evolutionSheets?.spinosaurusHunting ?? null;
+      }
+
+      if (tag === 'attack') {
+        return ASSET_KEYS.evolutionSheets?.spinosaurusAttack ?? null;
       }
 
       return null;

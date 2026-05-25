@@ -176,6 +176,68 @@ const ULTIMATES = {
     shake: 6.2,
     effectTexture: 'triceratopsZero',
   },
+  spinosaurus_speed: {
+    name: 'タイダルラッシュ',
+    behavior: 'charge',
+    duration: 1.3,
+    color: 0x2fdfff,
+    glow: 0xd8fbff,
+    range: 340,
+    width: 108,
+    damage: 42,
+    knockback: 96,
+    maxTargets: 12,
+    bossDamageMultiplier: 0.4,
+    shake: 3.8,
+    effectTexture: 'spinosaurusSpeed',
+  },
+  spinosaurus_hunting: {
+    name: 'メイルストローム',
+    behavior: 'bastion',
+    duration: 1.85,
+    color: 0x3bd8ff,
+    glow: 0xe0fbff,
+    radius: 270,
+    tickInterval: 0.28,
+    damage: 28,
+    knockback: 58,
+    maxTargets: 16,
+    bossDamageMultiplier: 0.48,
+    shake: 3.8,
+    effectTexture: 'spinosaurusHunting',
+  },
+  spinosaurus_attack: {
+    name: 'ハイドロブレイク',
+    duration: 1.55,
+    color: 0x38bfff,
+    glow: 0xf0fdff,
+    range: 390,
+    width: 0.12,
+    damage: 84,
+    knockback: 140,
+    bossDamageMultiplier: 0.42,
+    shake: 5.2,
+    effectTexture: 'spinosaurusAttack',
+  },
+  spinosaurus_zero: {
+    name: 'アビサルタイド',
+    behavior: 'omegaBurst',
+    duration: 1.8,
+    color: 0x276dff,
+    glow: 0xe7fbff,
+    radius: 380,
+    beamRange: 420,
+    damage: 104,
+    beamDamage: 48,
+    knockback: 168,
+    maxTargets: 22,
+    bossDamageMultiplier: 0.42,
+    shake: 6.2,
+    effectTexture: 'spinosaurusZero',
+    coreStyle: 'spinoCore',
+    burstStyle: 'spinoTide',
+    beamStyle: 'spinoBurst',
+  },
 };
 
 export class UltimateSystem {
@@ -198,6 +260,10 @@ export class UltimateSystem {
       tyrannosaurusZero: null,
       velociraptorZero: null,
       triceratopsZero: null,
+      spinosaurusSpeed: null,
+      spinosaurusHunting: null,
+      spinosaurusAttack: null,
+      spinosaurusZero: null,
     };
     this.effectAnimations = {
       omegaCore: null,
@@ -209,6 +275,9 @@ export class UltimateSystem {
       ignisCore: null,
       ignisCharge: null,
       ignisImpact: null,
+      spinoCore: null,
+      spinoTide: null,
+      spinoBurst: null,
     };
     this.isActive = false;
     this.elapsed = 0;
@@ -239,6 +308,10 @@ export class UltimateSystem {
       tyrannosaurusZero: ASSET_KEYS.specialEffects.tyrannosaurusZeroOmega,
       velociraptorZero: null,
       triceratopsZero: null,
+      spinosaurusSpeed: ASSET_KEYS.specialEffects.spinosaurusSpeedTidalRushSheet,
+      spinosaurusHunting: ASSET_KEYS.specialEffects.spinosaurusHuntingMaelstromSheet,
+      spinosaurusAttack: ASSET_KEYS.specialEffects.spinosaurusAttackHydroBreakSheet,
+      spinosaurusZero: ASSET_KEYS.specialEffects.spinosaurusZeroTideSheet,
     };
     const sheetKeys = {
       omegaCore: ASSET_KEYS.specialEffects.tyrannosaurusZeroOmegaCoreSheet,
@@ -250,6 +323,9 @@ export class UltimateSystem {
       ignisCore: ASSET_KEYS.specialEffects.triceratopsZeroCoreSheet,
       ignisCharge: ASSET_KEYS.specialEffects.triceratopsZeroChargeSheet,
       ignisImpact: ASSET_KEYS.specialEffects.triceratopsZeroImpactSheet,
+      spinoCore: ASSET_KEYS.specialEffects.spinosaurusZeroCoreSheet,
+      spinoTide: ASSET_KEYS.specialEffects.spinosaurusZeroTideSheet,
+      spinoBurst: ASSET_KEYS.specialEffects.spinosaurusZeroBurstSheet,
     };
 
     Object.entries(keys).forEach(([type, key]) => {
@@ -259,7 +335,10 @@ export class UltimateSystem {
 
       this.assetLoader.load(key).then((texture) => {
         if (texture) {
-          this.effectTextures[type] = texture;
+          const item = this.assetLoader.getItem?.(key);
+          this.effectTextures[type] = item?.meta?.spriteSheet
+            ? this.createSheetFirstFrameTexture(texture, item.meta)
+            : texture;
         }
       });
     });
@@ -306,6 +385,22 @@ export class UltimateSystem {
       textures,
       fps: style === 'omegaBeam' ? 20 : 18,
     };
+  }
+
+  createSheetFirstFrameTexture(texture, meta) {
+    const sheet = meta?.sheet;
+    const columns = sheet?.columns ?? 4;
+    const frameWidth = sheet?.frameWidth ?? Math.floor((texture?.width ?? 0) / columns);
+    const frameHeight = sheet?.frameHeight ?? Math.floor((texture?.height ?? 0) / (sheet?.rows ?? 4));
+
+    if (!texture?.source || frameWidth <= 0 || frameHeight <= 0) {
+      return texture;
+    }
+
+    return new Texture({
+      source: texture.source,
+      frame: new Rectangle(0, 0, frameWidth, frameHeight),
+    });
   }
 
   activate(evolution) {
@@ -660,7 +755,7 @@ export class UltimateSystem {
           strength: this.getKnockbackForTarget(enemy, Math.round(this.config.knockback * 0.45)),
         });
       });
-      this.spawnOmegaEffect(effectLayer, player.position, radius, 'omegaCore');
+      this.spawnOmegaEffect(effectLayer, player.position, radius, this.config.coreStyle ?? 'omegaCore');
       return { shake: this.config.shake * 0.42 };
     }
 
@@ -674,7 +769,7 @@ export class UltimateSystem {
           strength: this.getKnockbackForTarget(enemy, this.config.knockback),
         });
       });
-      this.spawnOmegaEffect(effectLayer, player.position, radius, 'omegaBurst');
+      this.spawnOmegaEffect(effectLayer, player.position, radius, this.config.burstStyle ?? 'omegaBurst');
       return { shake: this.config.shake };
     }
 
@@ -702,7 +797,7 @@ export class UltimateSystem {
           strength: this.getKnockbackForTarget(enemy, Math.round(this.config.knockback * 0.72)),
         });
       });
-      this.spawnOmegaBeamEffect(effectLayer, player.position, facing, this.config.beamRange);
+      this.spawnOmegaBeamEffect(effectLayer, player.position, facing, this.config.beamRange, this.config.beamStyle ?? 'omegaBeam');
     });
 
     return { shake: this.config.shake * 0.58 };
@@ -965,8 +1060,8 @@ export class UltimateSystem {
     this.effects.push(effect);
   }
 
-  spawnOmegaBeamEffect(effectLayer, position, facing, range) {
-    const effect = this.createEffect('omegaBeam', 0.46, position, { facing: { ...facing }, range });
+  spawnOmegaBeamEffect(effectLayer, position, facing, range, style = 'omegaBeam') {
+    const effect = this.createEffect(style, 0.46, position, { facing: { ...facing }, range });
 
     effectLayer.addChild(effect.view);
     this.effects.push(effect);
@@ -1047,7 +1142,8 @@ export class UltimateSystem {
   getEffectAnimation(style) {
     if (style === 'omegaCore' || style === 'omegaBurst' || style === 'omegaBeam'
       || style === 'abyssCore' || style === 'abyssSlash' || style === 'abyssDash'
-      || style === 'ignisCore' || style === 'ignisCharge' || style === 'ignisImpact') {
+      || style === 'ignisCore' || style === 'ignisCharge' || style === 'ignisImpact'
+      || style === 'spinoCore' || style === 'spinoTide' || style === 'spinoBurst') {
       return this.effectAnimations[style] ?? null;
     }
 
@@ -1143,7 +1239,8 @@ export class UltimateSystem {
     if (effect.style === 'bastion' || effect.style === 'bastionField' || effect.style === 'quake'
       || effect.style === 'omegaCore' || effect.style === 'omegaBurst'
       || effect.style === 'abyssCore' || effect.style === 'abyssSlash'
-      || effect.style === 'ignisCore' || effect.style === 'ignisImpact') {
+      || effect.style === 'ignisCore' || effect.style === 'ignisImpact'
+      || effect.style === 'spinoCore' || effect.style === 'spinoTide' || effect.style === 'spinoBurst') {
       const radius = (effect.options.radius ?? this.config.radius ?? 260) * (0.48 + progress * 0.58);
 
       effect.view
@@ -1152,7 +1249,7 @@ export class UltimateSystem {
         .circle(0, 0, radius * 0.66)
         .stroke({ color: this.config.color, width: 2.4, alpha: 0.42 * fade });
 
-      if (effect.style === 'omegaBurst' || effect.style === 'abyssSlash') {
+      if (effect.style === 'omegaBurst' || effect.style === 'abyssSlash' || effect.style === 'spinoTide') {
         effect.view
           .circle(0, 0, radius * 0.36)
           .fill({ color: 0xffffff, alpha: 0.08 * fade })
@@ -1178,7 +1275,7 @@ export class UltimateSystem {
       return;
     }
 
-    if (effect.style === 'omegaBeam') {
+    if (effect.style === 'omegaBeam' || effect.style === 'spinoBurst') {
       const facing = effect.options.facing;
       const range = effect.options.range ?? this.config.beamRange ?? 420;
       const angle = Math.atan2(facing.y, facing.x);
@@ -1283,13 +1380,14 @@ export class UltimateSystem {
 
     if (effect.style === 'quake' || effect.style === 'omegaCore' || effect.style === 'omegaBurst'
       || effect.style === 'abyssCore' || effect.style === 'abyssSlash'
-      || effect.style === 'ignisCore' || effect.style === 'ignisImpact') {
+      || effect.style === 'ignisCore' || effect.style === 'ignisImpact'
+      || effect.style === 'spinoCore' || effect.style === 'spinoTide') {
       const radius = effect.options.radius ?? 330;
-      const isCore = effect.style === 'omegaCore' || effect.style === 'abyssCore';
+      const isCore = effect.style === 'omegaCore' || effect.style === 'abyssCore' || effect.style === 'spinoCore';
       const scale = (radius / 768) * (isCore ? 0.62 + progress * 0.2 : 0.74 + progress * 0.36);
 
-      effect.view.rotation += effect.style === 'omegaBurst' || effect.style === 'abyssSlash' ? 0.028 : 0.012;
-      effect.view.alpha = Math.max(0, Math.min(1, fade * (effect.style === 'omegaBurst' || effect.style === 'abyssSlash' ? 0.9 : 0.84)));
+      effect.view.rotation += effect.style === 'omegaBurst' || effect.style === 'abyssSlash' || effect.style === 'spinoTide' ? 0.028 : 0.012;
+      effect.view.alpha = Math.max(0, Math.min(1, fade * (effect.style === 'omegaBurst' || effect.style === 'abyssSlash' || effect.style === 'spinoTide' ? 0.9 : 0.84)));
       effect.view.scale.set(scale);
       return;
     }
@@ -1311,7 +1409,7 @@ export class UltimateSystem {
       return;
     }
 
-    if (effect.style === 'omegaBeam') {
+    if (effect.style === 'omegaBeam' || effect.style === 'spinoBurst') {
       const facing = effect.options.facing;
       const range = effect.options.range ?? this.config.beamRange ?? 420;
       const angle = Math.atan2(facing.y, facing.x);

@@ -1,0 +1,3269 @@
+{
+  "assets": [
+    "public/assets/dinos/dino_select/spinosaurus_hero.png",
+    "public/assets/dinos/portraits/spinosaurus.png",
+    "public/assets/dinos/spinosaurus.png",
+    "public/assets/dinos/spinosaurus_sheet.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png",
+    "public/assets/dinos/evolutions/spinosaurus_speed.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+    "public/assets/dinos/evolutions/spinosaurus_hunting.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+    "public/assets/dinos/evolutions/spinosaurus_attack.png",
+    "public/assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png",
+    "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+    "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+    "public/assets/dinos/evolutions/spinosaurus_zero.png",
+    "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png",
+    "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png",
+    "public/assets/ui/hud/special_icons/special_speed_spinosaurus.png",
+    "public/assets/ui/hud/special_icons/special_hunting_spinosaurus.png",
+    "public/assets/ui/hud/special_icons/special_attack_spinosaurus.png",
+    "public/assets/ui/hud/special_icons/special_zero_spinosaurus.png",
+    "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png",
+    "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+    "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png",
+    "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+    "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png",
+    "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png"
+  ],
+  "sheetQa": {
+    "public/assets/dinos/spinosaurus_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 27.420257568359375
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.551239013671875
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.300537109375
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 27.1373291015625
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 27.420257568359375
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 27.542251586914062
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 27.420257568359375
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 27.272415161132812
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 27.754318237304688
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 27.788238525390625
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 27.668014526367188
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 27.57318115234375
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 27.10321044921875
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 27.29559326171875
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 26.866592407226562
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 26.828109741210938
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.688522338867188
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.429443359375
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 27.273117065429688
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 27.64813232421875
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 27.449539184570312
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 27.899749755859375
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 27.946273803710938
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 27.8260498046875
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 27.731216430664062
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 27.191635131835938
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 27.335433959960938
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 26.9188232421875
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 26.961471557617188
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.688522338867188
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.429443359375
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 27.273117065429688
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 27.64813232421875
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 27.449539184570312
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 27.899749755859375
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 27.946273803710938
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 27.8260498046875
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 27.731216430664062
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 27.191635131835938
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 27.335433959960938
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 26.9188232421875
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 26.961471557617188
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 27.420257568359375
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.551239013671875
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.300537109375
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 27.1373291015625
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 27.420257568359375
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 27.542251586914062
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 27.420257568359375
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 27.272415161132812
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 27.754318237304688
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 27.788238525390625
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 27.668014526367188
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 27.57318115234375
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 27.10321044921875
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 27.29559326171875
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 26.866592407226562
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 26.828109741210938
+        }
+      ]
+    },
+    "public/assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            26,
+            59,
+            229,
+            197
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.688522338867188
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.429443359375
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 27.273117065429688
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 27.64813232421875
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 27.565628051757812
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 27.449539184570312
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 27.899749755859375
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 27.946273803710938
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 27.8260498046875
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 27.731216430664062
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 27.191635131835938
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 27.335433959960938
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 26.9188232421875
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 26.961471557617188
+        }
+      ]
+    },
+    "public/assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            23,
+            97,
+            232,
+            158
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            97,
+            231,
+            158
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            26,
+            97,
+            230,
+            158
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            27,
+            97,
+            228,
+            158
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            29,
+            97,
+            227,
+            158
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            30,
+            97,
+            225,
+            158
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            31,
+            97,
+            224,
+            158
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            33,
+            97,
+            223,
+            158
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            34,
+            97,
+            221,
+            158
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            36,
+            97,
+            220,
+            158
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            37,
+            97,
+            219,
+            158
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            38,
+            97,
+            217,
+            158
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            40,
+            97,
+            216,
+            158
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            41,
+            97,
+            214,
+            158
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            42,
+            97,
+            213,
+            158
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            44,
+            97,
+            212,
+            158
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 12.461532592773438
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 12.480987548828125
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 12.439956665039062
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 12.373291015625
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 12.297943115234375
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 12.232498168945312
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 12.231002807617188
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 12.168975830078125
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 12.072601318359375
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 11.943710327148438
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 11.891082763671875
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 11.791641235351562
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 11.680313110351562
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 11.526275634765625
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 11.426498413085938
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 11.286468505859375
+        }
+      ]
+    },
+    "public/assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            39,
+            94,
+            216,
+            161
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            38,
+            91,
+            217,
+            164
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            38,
+            89,
+            217,
+            166
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            38,
+            88,
+            217,
+            168
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            38,
+            86,
+            217,
+            170
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            38,
+            84,
+            217,
+            172
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            38,
+            82,
+            217,
+            173
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            38,
+            80,
+            217,
+            176
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            37,
+            77,
+            219,
+            179
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            35,
+            74,
+            221,
+            182
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            33,
+            72,
+            223,
+            183
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            31,
+            70,
+            225,
+            185
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            26,
+            66,
+            230,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            17,
+            62,
+            239,
+            193
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            20,
+            65,
+            235,
+            190
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            13,
+            64,
+            242,
+            191
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 3.70635986328125
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 3.76373291015625
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 3.80279541015625
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 3.86260986328125
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 3.89251708984375
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 3.91815185546875
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 3.924560546875
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 3.96728515625
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 3.98529052734375
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 4.02496337890625
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 4.04266357421875
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 3.990478515625
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 4.06890869140625
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 4.15985107421875
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 3.6915130615234375
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 3.621429443359375
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            32,
+            72,
+            223,
+            184
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            24,
+            67,
+            232,
+            189
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            24,
+            67,
+            232,
+            189
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            24,
+            67,
+            232,
+            189
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            24,
+            67,
+            232,
+            189
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            24,
+            67,
+            232,
+            189
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            32,
+            72,
+            223,
+            184
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            32,
+            72,
+            223,
+            184
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            32,
+            72,
+            223,
+            184
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            35,
+            72,
+            221,
+            183
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            37,
+            74,
+            219,
+            182
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            39,
+            75,
+            216,
+            180
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            42,
+            76,
+            214,
+            179
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            44,
+            76,
+            212,
+            179
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            46,
+            76,
+            209,
+            179
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            48,
+            77,
+            207,
+            179
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 9.3577880859375
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 10.8514404296875
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 10.8514404296875
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 10.8514404296875
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 10.8514404296875
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 10.8514404296875
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 9.3577880859375
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 9.3577880859375
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 9.3577880859375
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 9.295639038085938
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 9.247161865234375
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 9.143402099609375
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 9.045547485351562
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 9.011123657226562
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 8.88238525390625
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 8.828826904296875
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            25,
+            21,
+            231,
+            234
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            34,
+            23,
+            221,
+            232
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            36,
+            25,
+            220,
+            230
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            34,
+            27,
+            221,
+            228
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            29,
+            224,
+            226
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            31,
+            34,
+            224,
+            221
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            33,
+            43,
+            222,
+            212
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            35,
+            45,
+            220,
+            210
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            37,
+            44,
+            218,
+            212
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            39,
+            42,
+            216,
+            214
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            44,
+            41,
+            212,
+            214
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            52,
+            43,
+            203,
+            212
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            55,
+            45,
+            201,
+            210
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            54,
+            47,
+            202,
+            208
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            51,
+            49,
+            204,
+            206
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            51,
+            54,
+            204,
+            202
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 28.255950927734375
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.72607421875
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.009902954101562
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 26.299163818359375
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 25.470840454101562
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 24.903167724609375
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 24.271026611328125
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 23.58233642578125
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 22.942581176757812
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 22.191162109375
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 21.494522094726562
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 20.789825439453125
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 20.24090576171875
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 19.49957275390625
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 18.897445678710938
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 18.063247680664062
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            18,
+            89,
+            237,
+            166
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            18,
+            88,
+            237,
+            167
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            18,
+            88,
+            237,
+            168
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            18,
+            87,
+            237,
+            169
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            18,
+            86,
+            237,
+            170
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            18,
+            85,
+            237,
+            171
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            18,
+            84,
+            237,
+            172
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            18,
+            83,
+            237,
+            173
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            18,
+            82,
+            237,
+            174
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            18,
+            81,
+            237,
+            174
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            18,
+            80,
+            237,
+            175
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            18,
+            79,
+            237,
+            176
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            18,
+            78,
+            237,
+            177
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            18,
+            77,
+            237,
+            178
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            18,
+            76,
+            237,
+            179
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            18,
+            76,
+            237,
+            180
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 33.17576599121094
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 34.299041748046875
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 35.08103942871094
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 36.3385009765625
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 37.731597900390625
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 39.170989990234375
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 40.675811767578125
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 42.21955871582031
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 43.84803771972656
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 44.97532653808594
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 46.66862487792969
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 48.371795654296875
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 50.14039611816406
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 51.918792724609375
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 53.716461181640625
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 54.985198974609375
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_core_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            57,
+            57,
+            198,
+            198
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            58,
+            58,
+            198,
+            198
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            53,
+            53,
+            203,
+            203
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            49,
+            49,
+            207,
+            207
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            51,
+            51,
+            205,
+            205
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            43,
+            43,
+            213,
+            213
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            42,
+            42,
+            214,
+            214
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            39,
+            39,
+            217,
+            217
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            34,
+            34,
+            222,
+            222
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            36,
+            36,
+            220,
+            220
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            29,
+            29,
+            227,
+            227
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            26,
+            26,
+            230,
+            230
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            27,
+            27,
+            229,
+            229
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            19,
+            19,
+            237,
+            237
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            20,
+            20,
+            236,
+            236
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            15,
+            15,
+            241,
+            241
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 6.2872314453125
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 7.265777587890625
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 9.116973876953125
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 11.0150146484375
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 12.972412109375
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 15.56549072265625
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 18.21533203125
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 21.06048583984375
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 24.348297119140625
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 27.682647705078125
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 31.539154052734375
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 35.5517578125
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 39.679718017578125
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 44.2901611328125
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 49.0057373046875
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 54.158477783203125
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_tide_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            25,
+            21,
+            231,
+            234
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            34,
+            23,
+            221,
+            232
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            36,
+            25,
+            220,
+            230
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            34,
+            27,
+            221,
+            228
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            32,
+            29,
+            224,
+            226
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            31,
+            34,
+            224,
+            221
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            33,
+            43,
+            222,
+            212
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            35,
+            45,
+            220,
+            210
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            37,
+            44,
+            218,
+            212
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            39,
+            42,
+            216,
+            214
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            44,
+            41,
+            212,
+            214
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            52,
+            43,
+            203,
+            212
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            55,
+            45,
+            201,
+            210
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            54,
+            47,
+            202,
+            208
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            51,
+            49,
+            204,
+            206
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            51,
+            54,
+            204,
+            202
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 28.255950927734375
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 27.72607421875
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 27.009902954101562
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 26.299163818359375
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 25.470840454101562
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 24.903167724609375
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 24.271026611328125
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 23.58233642578125
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 22.942581176757812
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 22.191162109375
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 21.494522094726562
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 20.789825439453125
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 20.24090576171875
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 19.49957275390625
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 18.897445678710938
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 18.063247680664062
+        }
+      ]
+    },
+    "public/assets/effects/specials/special_zero_spinosaurus_burst_sheet.png": {
+      "frameEdgeIssues": [],
+      "frameEdgeIssueCount": 0,
+      "bboxes": [
+        {
+          "row": 1,
+          "col": 1,
+          "bbox": [
+            95,
+            95,
+            160,
+            160
+          ]
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "bbox": [
+            87,
+            87,
+            168,
+            168
+          ]
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "bbox": [
+            79,
+            79,
+            176,
+            176
+          ]
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "bbox": [
+            71,
+            71,
+            184,
+            184
+          ]
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "bbox": [
+            63,
+            63,
+            192,
+            192
+          ]
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "bbox": [
+            55,
+            55,
+            200,
+            200
+          ]
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "bbox": [
+            47,
+            47,
+            208,
+            208
+          ]
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "bbox": [
+            39,
+            39,
+            216,
+            216
+          ]
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "bbox": [
+            31,
+            31,
+            224,
+            224
+          ]
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "bbox": [
+            23,
+            23,
+            232,
+            232
+          ]
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "bbox": [
+            15,
+            15,
+            240,
+            240
+          ]
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "bbox": [
+            17,
+            17,
+            238,
+            238
+          ]
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "bbox": [
+            12,
+            12,
+            244,
+            244
+          ]
+        }
+      ],
+      "alphaMean": [
+        {
+          "row": 1,
+          "col": 1,
+          "mean": 5.92498779296875
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "mean": 7.9189300537109375
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "mean": 10.01678466796875
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "mean": 12.1478271484375
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "mean": 14.69451904296875
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "mean": 17.1270751953125
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "mean": 19.799423217773438
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "mean": 22.63336181640625
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "mean": 25.50811767578125
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "mean": 28.90533447265625
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "mean": 31.942138671875
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "mean": 30.005844116210938
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "mean": 32.19148254394531
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "mean": 29.1187744140625
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "mean": 27.814804077148438
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "mean": 27.466812133789062
+        }
+      ]
+    }
+  },
+  "fallbackStatic": [
+    "public/assets/dinos/spinosaurus.png",
+    "public/assets/dinos/evolutions/spinosaurus_speed.png",
+    "public/assets/dinos/evolutions/spinosaurus_hunting.png",
+    "public/assets/dinos/evolutions/spinosaurus_attack.png",
+    "public/assets/dinos/evolutions/spinosaurus_zero.png"
+  ]
+}

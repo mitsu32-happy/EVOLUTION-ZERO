@@ -1,18 +1,21 @@
-﻿export const ASSET_KEYS = {
+export const ASSET_KEYS = {
   player: {
     velociraptor: 'dinos.velociraptor',
     triceratops: 'dinos.triceratops',
     tyrannosaurus: 'dinos.tyrannosaurus',
+    spinosaurus: 'dinos.spinosaurus',
   },
   dinoSelectPortraits: {
     velociraptor: 'dinoSelectPortraits.velociraptor',
     triceratops: 'dinoSelectPortraits.triceratops',
     tyrannosaurus: 'dinoSelectPortraits.tyrannosaurus',
+    spinosaurus: 'dinoSelectPortraits.spinosaurus',
   },
   dinoSelectHero: {
     velociraptor: 'dinoSelectHero.velociraptor',
     triceratops: 'dinoSelectHero.triceratops',
     tyrannosaurus: 'dinoSelectHero.tyrannosaurus',
+    spinosaurus: 'dinoSelectHero.spinosaurus',
   },
   evolutionHeroes: {
     velociraptorSpeed: 'evolutionHeroes.velociraptorSpeed',
@@ -27,6 +30,10 @@
     tyrannosaurusHunting: 'evolutionHeroes.tyrannosaurusHunting',
     tyrannosaurusAttack: 'evolutionHeroes.tyrannosaurusAttack',
     tyrannosaurusZero: 'evolutionHeroes.tyrannosaurusZero',
+    spinosaurusSpeed: 'evolutionHeroes.spinosaurusSpeed',
+    spinosaurusHunting: 'evolutionHeroes.spinosaurusHunting',
+    spinosaurusAttack: 'evolutionHeroes.spinosaurusAttack',
+    spinosaurusZero: 'evolutionHeroes.spinosaurusZero',
     zeroUnknownSilhouette: 'evolutionHeroes.zeroUnknownSilhouette',
   },
   evolutionPortraits: {
@@ -42,6 +49,10 @@
     tyrannosaurusHunting: 'evolutionPortraits.tyrannosaurusHunting',
     tyrannosaurusAttack: 'evolutionPortraits.tyrannosaurusAttack',
     tyrannosaurusZero: 'evolutionPortraits.tyrannosaurusZero',
+    spinosaurusSpeed: 'evolutionPortraits.spinosaurusSpeed',
+    spinosaurusHunting: 'evolutionPortraits.spinosaurusHunting',
+    spinosaurusAttack: 'evolutionPortraits.spinosaurusAttack',
+    spinosaurusZero: 'evolutionPortraits.spinosaurusZero',
   },
   evolutionSheets: {
     velociraptorSpeed: 'evolutionSheets.velociraptorSpeed',
@@ -56,6 +67,10 @@
     tyrannosaurusHunting: 'evolutionSheets.tyrannosaurusHunting',
     tyrannosaurusAttack: 'evolutionSheets.tyrannosaurusAttack',
     tyrannosaurusZero: 'evolutionSheets.tyrannosaurusZero',
+    spinosaurusSpeed: 'evolutionSheets.spinosaurusSpeed',
+    spinosaurusHunting: 'evolutionSheets.spinosaurusHunting',
+    spinosaurusAttack: 'evolutionSheets.spinosaurusAttack',
+    spinosaurusZero: 'evolutionSheets.spinosaurusZero',
   },
   evolutionSpecialIcons: {
     velociraptorSpeed: 'evolutionSpecialIcons.velociraptorSpeed',
@@ -70,11 +85,16 @@
     tyrannosaurusHunting: 'evolutionSpecialIcons.tyrannosaurusHunting',
     tyrannosaurusAttack: 'evolutionSpecialIcons.tyrannosaurusAttack',
     tyrannosaurusZero: 'evolutionSpecialIcons.tyrannosaurusZero',
+    spinosaurusSpeed: 'evolutionSpecialIcons.spinosaurusSpeed',
+    spinosaurusHunting: 'evolutionSpecialIcons.spinosaurusHunting',
+    spinosaurusAttack: 'evolutionSpecialIcons.spinosaurusAttack',
+    spinosaurusZero: 'evolutionSpecialIcons.spinosaurusZero',
   },
   playerSheets: {
     velociraptor: 'dinos.velociraptorSheet',
     triceratops: 'dinos.triceratopsSheet',
     tyrannosaurus: 'dinos.tyrannosaurusSheet',
+    spinosaurus: 'dinos.spinosaurusSheet',
   },
   enemies: {
     swarm: 'enemies.swarm',
@@ -584,11 +604,14 @@
     tyrannosaurusHuntingFangWave: 'normalAttackEffects.tyrannosaurusHuntingFangWave',
     tyrannosaurusAttackBiteBurst: 'normalAttackEffects.tyrannosaurusAttackBiteBurst',
     tyrannosaurusZeroOmegaBite: 'normalAttackEffects.tyrannosaurusZeroOmegaBite',
+    spinosaurusWaterSlash: 'normalAttackEffects.spinosaurusWaterSlash',
+    spinosaurusSplashHit: 'normalAttackEffects.spinosaurusSplashHit',
   },
   normalAttackIcons: {
     raptorClaw: 'normalAttackIcons.raptorClaw',
     triceratopsHorn: 'normalAttackIcons.triceratopsHorn',
     trexBite: 'normalAttackIcons.trexBite',
+    spinosaurusWaterSlash: 'normalAttackIcons.spinosaurusWaterSlash',
   },
   adaptationIcons: {
     speed: 'adaptationIcons.speed',
@@ -657,6 +680,12 @@
     triceratopsZeroCoreSheet: 'specialEffects.triceratopsZeroCoreSheet',
     triceratopsZeroChargeSheet: 'specialEffects.triceratopsZeroChargeSheet',
     triceratopsZeroImpactSheet: 'specialEffects.triceratopsZeroImpactSheet',
+    spinosaurusSpeedTidalRushSheet: 'specialEffects.spinosaurusSpeedTidalRushSheet',
+    spinosaurusHuntingMaelstromSheet: 'specialEffects.spinosaurusHuntingMaelstromSheet',
+    spinosaurusAttackHydroBreakSheet: 'specialEffects.spinosaurusAttackHydroBreakSheet',
+    spinosaurusZeroCoreSheet: 'specialEffects.spinosaurusZeroCoreSheet',
+    spinosaurusZeroTideSheet: 'specialEffects.spinosaurusZeroTideSheet',
+    spinosaurusZeroBurstSheet: 'specialEffects.spinosaurusZeroBurstSheet',
   },
   hitEffects: {
     slash: 'hitEffects.slash',
@@ -771,6 +800,24 @@ export const ASSET_MANIFEST = {
       },
     },
   },
+    spinosaurus: {
+      path: 'assets/dinos/spinosaurus.png',
+      fallbackStill: true,
+      note: 'MVP-A01 dedicated playable spinosaurus fallback sprite for post-release content.',
+    },
+    spinosaurusSheet: {
+      path: 'assets/dinos/spinosaurus_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'dinos.spinosaurus',
+      note: 'MVP-A01 dedicated 4x4 player sprite sheet for spinosaurus. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256, displayWidth: 162, displayHeight: 118 },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+      },
+    },
   dinoSelectPortraits: {
     velociraptor: {
       path: 'assets/dinos/dino_select/velociraptor_portrait.png',
@@ -788,6 +835,11 @@ export const ASSET_MANIFEST = {
       note: 'MVP-124b refreshed shared portrait, derived from the front-facing hero art with safe transparent margins.',
     },
   },
+    spinosaurus: {
+      path: 'assets/dinos/portraits/spinosaurus.png',
+      uiPortrait: true,
+      note: 'MVP-A01 spinosaurus portrait for selection, codex, HUD, and result fallback.',
+    },
   evolutionSheets: {
     velociraptorSpeed: {
       path: 'assets/dinos/evolutions/sheets/velociraptor_speed_sheet.png',
@@ -1102,6 +1154,58 @@ export const ASSET_MANIFEST = {
       },
     },
   },
+    spinosaurusSpeed: {
+      path: 'assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'dinos.spinosaurusSheet',
+      note: 'MVP-A01 dedicated spinosaurus speed evolution 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256, displayWidth: 166, displayHeight: 120 },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+      },
+    },
+    spinosaurusHunting: {
+      path: 'assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'dinos.spinosaurusSheet',
+      note: 'MVP-A01 dedicated spinosaurus hunting evolution 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256, displayWidth: 166, displayHeight: 120 },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+      },
+    },
+    spinosaurusAttack: {
+      path: 'assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'dinos.spinosaurusSheet',
+      note: 'MVP-A01 dedicated spinosaurus attack evolution 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256, displayWidth: 166, displayHeight: 120 },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+      },
+    },
+    spinosaurusZero: {
+      path: 'assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'dinos.spinosaurusSheet',
+      note: 'MVP-A01 dedicated spinosaurus ZERO evolution 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256, displayWidth: 166, displayHeight: 120 },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+      },
+    },
   dinoSelectHero: {
     velociraptor: {
       path: 'assets/dinos/dino_select/velociraptor_hero.png',
@@ -1119,6 +1223,11 @@ export const ASSET_MANIFEST = {
       note: 'MVP-124b refreshed shared front-facing hero art for dino select detail, home favorite display, codex cards, and future result use.',
     },
   },
+    spinosaurus: {
+      path: 'assets/dinos/dino_select/spinosaurus_hero.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus hero art for dino select and home display.',
+    },
   evolutionHeroes: {
     velociraptorSpeed: {
       path: 'assets/dinos/evolutions/heroes/velociraptor_speed_hero.png',
@@ -1179,6 +1288,26 @@ export const ASSET_MANIFEST = {
       path: 'assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png',
       uiPortrait: true,
       note: 'MVP-149 generated first ZERO reward evolution hero for tyrannosaurus ZERO branch.',
+    },
+    spinosaurusSpeed: {
+      path: 'assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus speed evolution hero art.',
+    },
+    spinosaurusHunting: {
+      path: 'assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus hunting evolution hero art.',
+    },
+    spinosaurusAttack: {
+      path: 'assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus attack evolution hero art.',
+    },
+    spinosaurusZero: {
+      path: 'assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus ZERO evolution hero art.',
     },
     zeroUnknownSilhouette: {
       path: 'assets/dinos/evolutions/zero_unknown_silhouette.png',
@@ -1248,6 +1377,26 @@ export const ASSET_MANIFEST = {
       note: 'MVP-149 generated HUD/result portrait for tyrannosaurus ZERO reward branch.',
     },
   },
+    spinosaurusSpeed: {
+      path: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus speed evolution portrait.',
+    },
+    spinosaurusHunting: {
+      path: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus hunting evolution portrait.',
+    },
+    spinosaurusAttack: {
+      path: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus attack evolution portrait.',
+    },
+    spinosaurusZero: {
+      path: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png',
+      uiPortrait: true,
+      note: 'MVP-A01 dedicated spinosaurus ZERO evolution portrait.',
+    },
   evolutionSpecialIcons: {
     velociraptorSpeed: {
       path: 'assets/ui/hud/special_icons/special_speed_raptor.png',
@@ -1310,6 +1459,26 @@ export const ASSET_MANIFEST = {
       note: 'MVP-149 generated placeholder ZERO tyrannosaurus special icon. Dedicated ZERO ultimate remains a future task.',
     },
   },
+    spinosaurusSpeed: {
+      path: 'assets/ui/hud/special_icons/special_speed_spinosaurus.png',
+      uiAsset: true,
+      note: 'MVP-A01 dedicated spinosaurus speed special icon.',
+    },
+    spinosaurusHunting: {
+      path: 'assets/ui/hud/special_icons/special_hunting_spinosaurus.png',
+      uiAsset: true,
+      note: 'MVP-A01 dedicated spinosaurus hunting special icon.',
+    },
+    spinosaurusAttack: {
+      path: 'assets/ui/hud/special_icons/special_attack_spinosaurus.png',
+      uiAsset: true,
+      note: 'MVP-A01 dedicated spinosaurus attack special icon.',
+    },
+    spinosaurusZero: {
+      path: 'assets/ui/hud/special_icons/special_zero_spinosaurus.png',
+      uiAsset: true,
+      note: 'MVP-A01 dedicated spinosaurus ZERO special icon.',
+    },
   enemies: {
     swarm: {
       path: 'assets/enemies/swarm_sheet.png',
@@ -4260,6 +4429,20 @@ export const ASSET_MANIFEST = {
       note: 'Post-RC generated dedicated normal attack effect for オメガレクス ZERO evolution.',
     },
   },
+    spinosaurusWaterSlash: {
+      path: 'assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 dedicated animated water slash normal attack effect for spinosaurus. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 20, loop: false } },
+    },
+    spinosaurusSplashHit: {
+      path: 'assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 dedicated animated splash hit accent for spinosaurus attacks. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 20, loop: false } },
+    },
   normalAttackIcons: {
     raptorClaw: {
       path: 'assets/ui/skills/icon_raptor_claw.png',
@@ -4277,6 +4460,11 @@ export const ASSET_MANIFEST = {
       note: 'MVP-108 generated normal attack icon for future skill/codex/debug display.',
     },
   },
+    spinosaurusWaterSlash: {
+      path: 'assets/ui/hud/special_icons/special_hunting_spinosaurus.png',
+      uiAsset: true,
+      note: 'Temporary icon hook for spinosaurus water slash using the dedicated hunting special icon family.',
+    },
   adaptationIcons: {
     speed: {
       path: 'assets/ui/adaptations/icon_adapt_speed.png',
@@ -4551,6 +4739,48 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
     },
   },
+    spinosaurusSpeedTidalRushSheet: {
+      path: 'assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 animated 4x4 sheet for spinosaurus Tidal Rush. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 20, loop: false } },
+    },
+    spinosaurusHuntingMaelstromSheet: {
+      path: 'assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 animated 4x4 sheet for spinosaurus Maelstrom. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
+    },
+    spinosaurusAttackHydroBreakSheet: {
+      path: 'assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 animated 4x4 sheet for spinosaurus Hydro Break. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
+    },
+    spinosaurusZeroCoreSheet: {
+      path: 'assets/effects/specials/special_zero_spinosaurus_core_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 animated 4x4 sheet for spinosaurus Neptorex core startup. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
+    },
+    spinosaurusZeroTideSheet: {
+      path: 'assets/effects/specials/special_zero_spinosaurus_tide_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 animated 4x4 sheet for spinosaurus Abyssal Tide vortex. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
+    },
+    spinosaurusZeroBurstSheet: {
+      path: 'assets/effects/specials/special_zero_spinosaurus_burst_sheet.png',
+      spriteSheet: true,
+      note: 'MVP-A01 animated 4x4 sheet for spinosaurus Abyssal Tide burst. QA frameEdgeIssues: 0.',
+      sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256 },
+      animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
+    },
   hitEffects: {
     slash: 'assets/effects/hit/slash.png',
     impact: 'assets/effects/hit/impact.png',
@@ -4762,9 +4992,146 @@ export const ENTITY_VISUAL_RULES = {
   },
 };
 
+const SPINOSAURUS_SHEET_META = {
+  spriteSheet: true,
+  sheet: { columns: 4, rows: 4, frameWidth: 256, frameHeight: 256, displayWidth: 166, displayHeight: 120 },
+  animations: {
+    idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+    run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+    attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+    death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+  },
+};
+
+Object.assign(ASSET_MANIFEST.dinos, {
+  spinosaurus: {
+    path: 'assets/dinos/spinosaurus.png',
+    fallbackStill: true,
+    note: 'MVP-A01b dedicated spinosaurus static fallback. Replaced non-final fallback-looking art.',
+  },
+  spinosaurusSheet: {
+    path: 'assets/dinos/spinosaurus_sheet.png',
+    fallbackKey: 'dinos.spinosaurus',
+    note: 'MVP-A01b dedicated spinosaurus 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+    ...SPINOSAURUS_SHEET_META,
+  },
+});
+
+Object.assign(ASSET_MANIFEST.dinoSelectPortraits, {
+  spinosaurus: {
+    path: 'assets/dinos/portraits/spinosaurus.png',
+    uiPortrait: true,
+    note: 'MVP-A01b dedicated spinosaurus portrait.',
+  },
+});
+
+Object.assign(ASSET_MANIFEST.dinoSelectHero, {
+  spinosaurus: {
+    path: 'assets/dinos/dino_select/spinosaurus_hero.png',
+    uiHero: true,
+    note: 'MVP-A01b dedicated spinosaurus hero art.',
+  },
+});
+
+Object.assign(ASSET_MANIFEST.evolutionSheets, {
+  spinosaurusSpeed: {
+    path: 'assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png',
+    fallbackKey: 'dinos.spinosaurusSheet',
+    note: 'MVP-A01b dedicated Stream Spino 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+    ...SPINOSAURUS_SHEET_META,
+  },
+  spinosaurusHunting: {
+    path: 'assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png',
+    fallbackKey: 'dinos.spinosaurusSheet',
+    note: 'MVP-A01b dedicated Abyss Spino 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+    ...SPINOSAURUS_SHEET_META,
+  },
+  spinosaurusAttack: {
+    path: 'assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png',
+    fallbackKey: 'dinos.spinosaurusSheet',
+    note: 'MVP-A01b dedicated Death Spino 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+    ...SPINOSAURUS_SHEET_META,
+  },
+  spinosaurusZero: {
+    path: 'assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png',
+    fallbackKey: 'dinos.spinosaurusSheet',
+    note: 'MVP-A01b dedicated Neptorex 4x4 sprite sheet. QA frameEdgeIssues: 0.',
+    ...SPINOSAURUS_SHEET_META,
+  },
+});
+
+Object.assign(ASSET_MANIFEST.evolutionHeroes, {
+  spinosaurusSpeed: { path: 'assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png', note: 'MVP-A01b dedicated Stream Spino hero.' },
+  spinosaurusHunting: { path: 'assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png', note: 'MVP-A01b dedicated Abyss Spino hero.' },
+  spinosaurusAttack: { path: 'assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png', note: 'MVP-A01b dedicated Death Spino hero.' },
+  spinosaurusZero: { path: 'assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png', note: 'MVP-A01b dedicated Neptorex hero.' },
+});
+
+Object.assign(ASSET_MANIFEST.evolutionPortraits, {
+  spinosaurusSpeed: { path: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png', note: 'MVP-A01b dedicated Stream Spino portrait.' },
+  spinosaurusHunting: { path: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png', note: 'MVP-A01b dedicated Abyss Spino portrait.' },
+  spinosaurusAttack: { path: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png', note: 'MVP-A01b dedicated Death Spino portrait.' },
+  spinosaurusZero: { path: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png', note: 'MVP-A01b dedicated Neptorex portrait.' },
+});
+
+Object.assign(ASSET_MANIFEST.evolutionSpecialIcons, {
+  spinosaurusSpeed: { path: 'assets/ui/hud/special_icons/special_speed_spinosaurus.png', note: 'MVP-A01b dedicated Tidal Rush icon.' },
+  spinosaurusHunting: { path: 'assets/ui/hud/special_icons/special_hunting_spinosaurus.png', note: 'MVP-A01b dedicated Maelstrom icon.' },
+  spinosaurusAttack: { path: 'assets/ui/hud/special_icons/special_attack_spinosaurus.png', note: 'MVP-A01b dedicated Hydro Break icon.' },
+  spinosaurusZero: { path: 'assets/ui/hud/special_icons/special_zero_spinosaurus.png', note: 'MVP-A01b dedicated Abyssal Tide icon.' },
+});
+
+Object.assign(ASSET_MANIFEST.normalAttackEffects, {
+  spinosaurusWaterSlash: {
+    path: 'assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated water slash normal attack effect. QA frameEdgeIssues: 0.',
+  },
+  spinosaurusSplashHit: {
+    path: 'assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated splash hit accent. QA frameEdgeIssues: 0.',
+  },
+});
+
+Object.assign(ASSET_MANIFEST.specialEffects, {
+  spinosaurusSpeedTidalRushSheet: {
+    path: 'assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated Tidal Rush effect. QA frameEdgeIssues: 0.',
+  },
+  spinosaurusHuntingMaelstromSheet: {
+    path: 'assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated Maelstrom effect. QA frameEdgeIssues: 0.',
+  },
+  spinosaurusAttackHydroBreakSheet: {
+    path: 'assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated Hydro Break effect. QA frameEdgeIssues: 0.',
+  },
+  spinosaurusZeroCoreSheet: {
+    path: 'assets/effects/specials/special_zero_spinosaurus_core_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated Abyssal Tide core effect. QA frameEdgeIssues: 0.',
+  },
+  spinosaurusZeroTideSheet: {
+    path: 'assets/effects/specials/special_zero_spinosaurus_tide_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated Abyssal Tide vortex effect. QA frameEdgeIssues: 0.',
+  },
+  spinosaurusZeroBurstSheet: {
+    path: 'assets/effects/specials/special_zero_spinosaurus_burst_sheet.png',
+    spriteSheet: true,
+    note: 'MVP-A01b dedicated animated Abyssal Tide burst effect. QA frameEdgeIssues: 0.',
+  },
+});
+
 export function flattenAssetManifest(manifest = ASSET_MANIFEST) {
   return Object.entries(manifest).flatMap(([category, entries]) => (
-    Object.entries(entries).map(([id, value]) => {
+    (entries && typeof entries === 'object' && 'path' in entries
+      ? []
+      : Object.entries(entries).map(([id, value]) => {
       const meta = typeof value === 'string'
         ? {}
         : {
@@ -4779,6 +5146,6 @@ export function flattenAssetManifest(manifest = ASSET_MANIFEST) {
         meta,
         key: `${category}.${id}`,
       };
-    })
+    }))
   ));
 }

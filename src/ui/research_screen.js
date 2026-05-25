@@ -379,7 +379,9 @@ export class ResearchScreen {
         alpha: 0.72,
         duration: 120,
       });
-      this.noticeText.text = 'DNAが不足しています';
+      const level = this.saveManager.getResearchLevel?.(item.id) ?? 0;
+      const cost = getResearchCostDetail(item, level);
+      this.noticeText.text = `${this.getInsufficientLabel(cost, this.saveManager.getData())}です`;
       return;
     }
 
@@ -402,10 +404,13 @@ export class ResearchScreen {
       return;
     }
 
+    const isDinoUnlock = !!item.unlockDinoId;
     this.confirmDialog.show({
       title: '研究確認',
       message: `${item.name}\nこの研究を実行しますか？`,
-      detail: `${this.formatCost(cost)} を消費\n強化段階 ${level} -> ${level + 1}`,
+      detail: isDinoUnlock
+        ? `必要: ${this.formatCost(cost)}\n解放: ${item.effectLabel ?? item.name}`
+        : `${this.formatCost(cost)} を消費\n強化段階 ${level} -> ${level + 1}`,
       confirmLabel: 'はい',
       cancelLabel: 'いいえ',
       onConfirm: () => this.purchaseResearch(item),
@@ -417,7 +422,11 @@ export class ResearchScreen {
 
   purchaseResearch(item) {
     const success = this.saveManager.buyResearch(item.id);
-    this.noticeText.text = success ? `${item.name} の研究を進めました` : 'DNA不足、または研究上限です';
+    const level = this.saveManager.getResearchLevel?.(item.id) ?? 0;
+    const cost = getResearchCostDetail(item, level);
+    this.noticeText.text = success
+      ? (item.unlockDinoId ? `${item.effectLabel ?? item.name}しました` : `${item.name} の研究を進めました`)
+      : `${this.getInsufficientLabel(cost, this.saveManager.getData())}、または研究上限です`;
     this.render();
   }
 
@@ -474,7 +483,8 @@ export class ResearchScreen {
 
   isPurchasableResearch(item) {
     return item?.category === RESEARCH_CATEGORY_IDS.bodyEnhancement
-      || item?.category === RESEARCH_CATEGORY_IDS.adaptationAbility;
+      || item?.category === RESEARCH_CATEGORY_IDS.adaptationAbility
+      || (item?.category === RESEARCH_CATEGORY_IDS.unknownDomain && item?.unlockDinoId);
   }
 
   handleNav(id) {
@@ -655,9 +665,12 @@ export class ResearchScreen {
       card.name.text = this.truncate(item.name, layout.nameLimit);
       card.desc.text = this.truncate(item.description, layout.descLimit);
       card.effect.text = this.truncate(getResearchNextEffectLabel(item, level), layout.effectLimit);
+      const isDinoUnlock = !!item.unlockDinoId;
       card.step.text = isLocked
         ? this.truncate(item.unlockHint ?? '解析待ち', layout.stepLimit)
-        : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
+        : isDinoUnlock
+          ? this.truncate(`必要: ${this.formatCost(cost)}`, layout.stepLimit)
+          : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
       const isBodyEnhancement = item.category === RESEARCH_CATEGORY_IDS.bodyEnhancement;
       const dnaIcon = this.textures.get('icon:dnaResource');
       const ptIcon = this.textures.get('icon:researchPt');
@@ -681,7 +694,13 @@ export class ResearchScreen {
       card.costPtText.position.set(bodyCostX + 62, bodyCostY - 1);
       card.costDnaText.style.fontSize = 8;
       card.costPtText.style.fontSize = 8;
-      card.status.text = isMax ? '完了' : isLocked ? 'LOCK' : canBuy ? (isBodyEnhancement ? '' : this.formatCostShort(cost)) : this.getInsufficientLabel(cost, data);
+      card.status.text = isMax
+        ? (isDinoUnlock ? '研究済み' : '完了')
+        : isLocked
+          ? 'LOCK'
+          : canBuy
+            ? (isBodyEnhancement ? '' : this.formatCostShort(cost))
+            : this.getInsufficientLabel(cost, data);
       card.status.style.fill = isLocked || (!canBuy && !isMax) ? '#ffaaa2' : isMax ? '#b6ffd0' : '#e7fff6';
       if (isBodyEnhancement) {
         card.status.position.set(layout.badgeX + layout.badgeWidth / 2, 63);
@@ -1136,7 +1155,15 @@ export class ResearchScreen {
       return '';
     }
 
-    return cost.researchPt > 0 ? `DNA ${cost.dna} / 研究Pt ${cost.researchPt}` : `DNA ${cost.dna}`;
+    if (cost.dna > 0 && cost.researchPt > 0) {
+      return `DNA ${cost.dna} / 研究Pt ${cost.researchPt}`;
+    }
+
+    if (cost.researchPt > 0) {
+      return `研究Pt ${cost.researchPt}`;
+    }
+
+    return `DNA ${cost.dna}`;
   }
 
   formatCostShort(cost) {
@@ -1144,7 +1171,15 @@ export class ResearchScreen {
       return '';
     }
 
-    return cost.researchPt > 0 ? `D${cost.dna}/P${cost.researchPt}` : `DNA ${cost.dna}`;
+    if (cost.dna > 0 && cost.researchPt > 0) {
+      return `D${cost.dna}/P${cost.researchPt}`;
+    }
+
+    if (cost.researchPt > 0) {
+      return `研究Pt ${cost.researchPt}`;
+    }
+
+    return `DNA ${cost.dna}`;
   }
 
   getInsufficientLabel(cost, data) {

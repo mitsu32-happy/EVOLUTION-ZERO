@@ -72,6 +72,28 @@ export const NORMAL_ATTACKS = {
     effectOffset: 0.56,
     description: 'Heavy forward bite and shock attack with a wider trigger-matched cone.',
   },
+  spinosaurusWaterSlash: {
+    id: 'spinosaurusWaterSlash',
+    name: 'Water Slash',
+    ownerDinoId: 'spinosaurus',
+    attackType: NORMAL_ATTACK_HIT_SHAPES.CONE,
+    damage: 14,
+    cooldown: 0.94,
+    range: 132,
+    angle: 82,
+    width: null,
+    originOffset: { x: 46, y: 0 },
+    maxTargets: 4,
+    knockback: 20,
+    hitTiming: 0.2,
+    facing: 'target',
+    effectKey: 'normalAttackEffects.spinosaurusWaterSlash',
+    iconKey: 'normalAttackIcons.spinosaurusWaterSlash',
+    effectDuration: 0.34,
+    effectSize: { width: 190, height: 134 },
+    effectOffset: 0.62,
+    description: 'Mid-range water blade sweep that pierces through small groups with light knockback.',
+  },
 };
 
 export function getNormalAttackById(id) {

@@ -638,3 +638,23 @@ The velociraptor branch ids and display names remain unchanged. `discoveredEvolu
 - `hasZeroEvolved` remains the repeat-prevention flag after a ZERO upper evolution is selected.
 - Direct debug starts for the three ZERO evolutions loaded with no runtime app console errors.
 - Codex detail panel remains deferred; current card text must continue prioritizing concise unlock and evolution conditions.
+
+## MVP-A01: スピノサウルス追加
+
+- 4体目プレイアブル恐竜として `spinosaurus` を追加。
+- 研究解放後に恐竜選択/ホーム/図鑑/リザルトへ表示される。
+- 通常進化は `spinosaurus_speed` / `spinosaurus_hunting` / `spinosaurus_attack`。
+- ZERO上位進化 `spinosaurus_zero` は将来の ruins ZERO CLEAR 報酬として定義のみ追加。現在の通常導線では解放しない。
+- ZERO進化条件表示は既存ZERO進化と同じく `Lv8+ / 高速Lv3 / 狩猟Lv3`、`攻撃Lv3 / ルート解析済`。
+
+## MVP-A01b: Spinosaurus Dedicated Asset Replacement
+
+- The Spinosaurus base, normal evolutions, and future ZERO evolution use dedicated assets instead of fallback-looking placeholders.
+- Runtime asset manifest registration must be validated by flattened keys, especially `dinos.spinosaurusSheet`, `evolutionSheets.spinosaurusZero`, and `specialEffects.spinosaurusZeroTideSheet`.
+- ZERO route remains future ruins reward only; `debugUnlockZeroRoute=spinosaurus_zero` is QA-only.
+
+
+## MVP-A01d ???????????????
+
+- spinosaurus_speed / spinosaurus_hunting / spinosaurus_attack / spinosaurus_zero ?hero?portrait?4x4 sheet?special icon?special effect?A01c??????????PNG??????
+- ????3???ZERO???????????A01b????????????????????????

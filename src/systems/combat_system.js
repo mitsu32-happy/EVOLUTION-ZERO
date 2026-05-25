@@ -1,4 +1,4 @@
-﻿import { Graphics, Sprite, Text } from 'pixi.js';
+import { Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { CollisionSystem } from './collision_system.js';
 import { getNormalAttackById, getNormalAttackForDino, NORMAL_ATTACK_HIT_SHAPES } from '../data/normal_attacks.js';
 
@@ -165,7 +165,8 @@ export class CombatSystem {
         return;
       }
 
-      this.normalAttackEffectTexture = texture;
+      const item = this.assetLoader.getItem?.(expectedKey);
+      this.normalAttackEffectTexture = this.getRenderableEffectTexture(texture, item?.meta);
     });
   }
 
@@ -185,7 +186,8 @@ export class CombatSystem {
         return;
       }
 
-      this.evolutionNormalAttackEffectTexture = texture;
+      const item = this.assetLoader.getItem?.(expectedKey);
+      this.evolutionNormalAttackEffectTexture = this.getRenderableEffectTexture(texture, item?.meta);
     });
   }
 
@@ -242,16 +244,39 @@ export class CombatSystem {
     this.assetLoader.load(expectedKey).then((texture) => {
       if (target === 'texture') {
         if (state.effectKey === expectedKey) {
-          state.texture = texture;
+          const item = this.assetLoader.getItem?.(expectedKey);
+          state.texture = this.getRenderableEffectTexture(texture, item?.meta);
         }
         return;
       }
 
       if (state[`${target}EffectKey`] === expectedKey || state.fallbackEffectKey === expectedKey) {
-        state.extraTextures[target] = texture;
+        const item = this.assetLoader.getItem?.(expectedKey);
+        state.extraTextures[target] = this.getRenderableEffectTexture(texture, item?.meta);
       }
     }).catch(() => {
       // Missing optional art should never break play; Graphics fallback remains available.
+    });
+  }
+
+  getRenderableEffectTexture(texture, meta = null) {
+    if (!meta?.spriteSheet || !texture?.source) {
+      return texture;
+    }
+
+    const sheet = meta.sheet ?? {};
+    const columns = sheet.columns ?? 4;
+    const rows = sheet.rows ?? 4;
+    const frameWidth = sheet.frameWidth ?? Math.floor((texture.width ?? 0) / columns);
+    const frameHeight = sheet.frameHeight ?? Math.floor((texture.height ?? 0) / rows);
+
+    if (frameWidth <= 0 || frameHeight <= 0) {
+      return texture;
+    }
+
+    return new Texture({
+      source: texture.source,
+      frame: new Rectangle(0, 0, frameWidth, frameHeight),
     });
   }
 

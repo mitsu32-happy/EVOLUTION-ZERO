@@ -702,6 +702,23 @@ export const DINO_CONFIGS = {
     damageTakenMultiplier: 1,
     accentColor: 0xff4d38,
   },
+  spinosaurus: {
+    id: 'spinosaurus',
+    normalAttackId: 'spinosaurusWaterSlash',
+    label: 'スピノサウルス',
+    passiveName: '水流制圧',
+    passiveText: '中距離の水刃で群れを押し流す',
+    maxHp: 128,
+    moveSpeedBonus: -10,
+    turnResponsivenessBonus: -0.01,
+    accelerationBase: 0.0024,
+    attackDamageBonus: 3,
+    attackRangeBonus: 18,
+    attackIntervalMultiplier: 1.08,
+    targetAcquireRangeBonus: 26,
+    damageTakenMultiplier: 0.96,
+    accentColor: 0x2fdfff,
+  },
 };
 
 export function getStageConfig(stageId) {

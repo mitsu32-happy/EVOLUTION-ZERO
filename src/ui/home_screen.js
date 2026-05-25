@@ -39,6 +39,7 @@ const HOME_ASSET_PATHS = {
     velociraptor: 'assets/dinos/dino_select/velociraptor_hero.png',
     triceratops: 'assets/dinos/dino_select/triceratops_hero.png',
     tyrannosaurus: 'assets/dinos/dino_select/tyrannosaurus_hero.png',
+    spinosaurus: 'assets/dinos/dino_select/spinosaurus_hero.png',
   },
   evolutionHero: {
     speed: 'assets/dinos/evolutions/heroes/velociraptor_speed_hero.png',
@@ -47,7 +48,8 @@ const HOME_ASSET_PATHS = {
   },
 };
 
-const HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus'];
+const HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus'];
+const DEFAULT_HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus'];
 const HOME_BRANCH_ORDER = ['speed', 'hunting', 'attack', 'zero'];
 
 const HOME_DINO_PROFILES = {
@@ -75,9 +77,17 @@ const HOME_DINO_PROFILES = {
     height: 212,
     y: 278,
   },
+  spinosaurus: {
+    label: 'スピノサウルス',
+    shortLabel: 'スピノ',
+    line: '制圧型 / 水流と渦で群れを整理',
+    width: 300,
+    height: 214,
+    y: 280,
+  },
 };
 
-const DEFAULT_UNLOCKED_HOME_DINOS = HOME_DINO_IDS;
+const DEFAULT_UNLOCKED_HOME_DINOS = DEFAULT_HOME_DINO_IDS;
 
 const RESOURCE_ITEMS = [
   { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 181, textX: 220 },
@@ -524,11 +534,28 @@ export class HomeScreen {
   }
 
   getAvailableHomeDinoIds(data) {
-    const unlocked = Array.isArray(data.unlockedDinos)
-      ? data.unlockedDinos.filter((id) => HOME_DINO_IDS.includes(id))
-      : DEFAULT_UNLOCKED_HOME_DINOS;
+    const unlocked = [...DEFAULT_UNLOCKED_HOME_DINOS];
+    const unlockedDinos = data.unlockedDinos ?? {};
+    HOME_DINO_IDS.forEach((id) => {
+      if (unlocked.includes(id)) {
+        return;
+      }
+
+      if (unlockedDinos[id]?.unlocked || this.isDebugDinoUnlocked(id)) {
+        unlocked.push(id);
+      }
+    });
 
     return unlocked.length > 0 ? unlocked : ['velociraptor'];
+  }
+
+  isDebugDinoUnlocked(dinoId) {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    return params.get('debugUnlockDino') === dinoId || params.get('debugUnlockAllDinos') === '1';
   }
 
   getAvailableHomeTargets(data) {

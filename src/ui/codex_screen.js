@@ -105,6 +105,55 @@ const CODEX_DINOS = [
       { id: 'tyranno-crystal', name: '???', tag: 'crystal', desc: '未知結晶の変異反応候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
     ],
   },
+  {
+    id: 'spinosaurus',
+    name: 'スピノサウルス',
+    shortName: 'スピノ',
+    lineage: 'スピノサウルス系統',
+    type: '中距離制圧型',
+    trait: '水流制圧個体',
+    image: 'assets/dinos/dino_select/spinosaurus_hero.png',
+    origin: {
+      name: '原種スピノ',
+      desc: '背ビレの水流反応で中距離を制圧する追加個体。',
+      stats: '体力 中 / 攻撃 中 / 制圧 高',
+    },
+    branches: [
+      {
+        id: 'speed',
+        name: 'ストリームスピノ',
+        tag: 'speed',
+        image: 'assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png',
+        codexImage: 'assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png',
+        fallbackImage: 'assets/dinos/dino_select/spinosaurus_hero.png',
+        desc: '水刃を細かく刻む高速水流分岐。',
+        condition: 'Lv5+ / 高速Lv3',
+        stats: '連射 高 / 制圧 中',
+      },
+      {
+        id: 'hunting',
+        name: 'アビススピノ',
+        tag: 'hunting',
+        image: 'assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png',
+        codexImage: 'assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png',
+        fallbackImage: 'assets/dinos/dino_select/spinosaurus_hero.png',
+        desc: '渦潮で敵をまとめる深流狩猟分岐。',
+        condition: 'Lv5+ / 狩猟Lv3',
+        stats: '吸引 高 / 継続 中',
+      },
+      {
+        id: 'attack',
+        name: 'デススピノ',
+        tag: 'attack',
+        image: 'assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png',
+        codexImage: 'assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png',
+        fallbackImage: 'assets/dinos/dino_select/spinosaurus_hero.png',
+        desc: '高圧水流で前方を貫く破壊分岐。',
+        condition: 'Lv5+ / 攻撃Lv3',
+        stats: '貫通 高 / 速度 低',
+      },
+    ],
+  },
 ];
 
 const CODEX_BRANCH_OVERRIDES = {
@@ -287,6 +336,7 @@ const CODEX_ASSETS = {
   velociraptorHero: 'assets/dinos/dino_select/velociraptor_hero.png',
   triceratopsHero: 'assets/dinos/dino_select/triceratops_hero.png',
   tyrannosaurusHero: 'assets/dinos/dino_select/tyrannosaurus_hero.png',
+  spinosaurusHero: 'assets/dinos/dino_select/spinosaurus_hero.png',
   evolutionSpeed: 'assets/dinos/portraits/portrait_speed.png',
   evolutionHunting: 'assets/dinos/portraits/portrait_hunting.png',
   evolutionAttack: 'assets/dinos/portraits/portrait_attack.png',
@@ -302,6 +352,10 @@ const CODEX_ASSETS = {
   tyrannosaurusHuntingHero: 'assets/dinos/evolutions/heroes/tyrannosaurus_hunting_hero.png',
   tyrannosaurusAttackHero: 'assets/dinos/evolutions/heroes/tyrannosaurus_attack_hero.png',
   tyrannosaurusZeroHero: 'assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png',
+  spinosaurusSpeedHero: 'assets/dinos/evolutions/heroes/spinosaurus_speed_hero.png',
+  spinosaurusHuntingHero: 'assets/dinos/evolutions/heroes/spinosaurus_hunting_hero.png',
+  spinosaurusAttackHero: 'assets/dinos/evolutions/heroes/spinosaurus_attack_hero.png',
+  spinosaurusZeroHero: 'assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png',
   zeroUnknownSilhouette: 'assets/dinos/evolutions/zero_unknown_silhouette.png',
   evolutionSpeedCodex: 'assets/dinos/evolutions/velociraptor_speed_codex.png',
   evolutionHuntingCodex: 'assets/dinos/evolutions/velociraptor_hunting_codex.png',
@@ -320,6 +374,7 @@ const SELECTED_PANEL = {
 const SELECTOR = {
   x: 18,
   y: 82,
+  viewportWidth: 354,
   gap: 118,
   width: 110,
   height: 56,
@@ -376,6 +431,13 @@ export class CodexScreen {
     this.noteText = this.createText('進化カードは条件を優先表示。ZERO上位進化はルート解析後に表示されます。', 10, '#cbe0da', 330);
 
     this.dinoSelectors = [];
+    this.dinoSelectorViewport = new Container();
+    this.dinoSelectorContent = new Container();
+    this.dinoSelectorMask = new Graphics();
+    this.dinoSelectorHit = new Graphics();
+    this.dinoSelectorScrollX = 0;
+    this.dinoSelectorDrag = null;
+    this.lastSelectorDragTime = 0;
     this.originCard = this.createBranchCard(true);
     this.branchCards = [0, 1, 2, 3].map(() => this.createBranchCard(false));
     this.bottomNav = createBottomNav({
@@ -391,7 +453,23 @@ export class CodexScreen {
     this.selectedImage.anchor.set(0.5);
     this.selectedImageFrame.anchor.set(0.5);
 
-    this.view.addChild(this.background, this.backgroundSprite, this.fallbackPanel, this.title, this.subtitle);
+    this.dinoSelectorViewport.position.set(SELECTOR.x, SELECTOR.y);
+    this.dinoSelectorHit
+      .rect(0, 0, SELECTOR.viewportWidth, SELECTOR.height)
+      .fill({ color: 0x000000, alpha: 0.001 });
+    this.dinoSelectorViewport.addChild(this.dinoSelectorHit, this.dinoSelectorContent);
+    this.dinoSelectorViewport.mask = this.dinoSelectorMask;
+    this.wireDinoSelectorScroll();
+
+    this.view.addChild(
+      this.background,
+      this.backgroundSprite,
+      this.fallbackPanel,
+      this.title,
+      this.subtitle,
+      this.dinoSelectorViewport,
+      this.dinoSelectorMask,
+    );
     this.createDinoSelectors();
     this.view.addChild(
       this.selectedPanelSprite,
@@ -473,10 +551,13 @@ export class CodexScreen {
         selectedStroke: new Graphics(),
         name: this.createText('', 9, '#e7fff6', 82),
       };
-      selector.view.position.set(SELECTOR.x + index * SELECTOR.gap, SELECTOR.y);
+      selector.view.position.set(index * SELECTOR.gap, 0);
       selector.view.eventMode = 'static';
       selector.view.cursor = 'pointer';
       selector.view.on('pointertap', () => {
+        if (Date.now() - this.lastSelectorDragTime < 160) {
+          return;
+        }
         this.selectedDinoId = dino.id;
         this.render();
       });
@@ -487,8 +568,49 @@ export class CodexScreen {
       selector.name.position.set(SELECTOR.width / 2, 38);
       selector.view.addChild(selector.frame, selector.fallback, selector.image, selector.selectedStroke, selector.name);
       this.dinoSelectors.push(selector);
-      this.view.addChild(selector.view);
+      this.dinoSelectorContent.addChild(selector.view);
     });
+  }
+
+  wireDinoSelectorScroll() {
+    this.dinoSelectorViewport.eventMode = 'static';
+    this.dinoSelectorViewport.cursor = 'grab';
+    this.dinoSelectorViewport.on('pointerdown', (event) => {
+      this.dinoSelectorDrag = {
+        pointerId: event.pointerId,
+        startX: event.global.x,
+        startScrollX: this.dinoSelectorScrollX,
+        moved: false,
+      };
+      this.dinoSelectorViewport.cursor = 'grabbing';
+    });
+    this.dinoSelectorViewport.on('pointermove', (event) => {
+      if (!this.dinoSelectorDrag) {
+        return;
+      }
+      const deltaX = event.global.x - this.dinoSelectorDrag.startX;
+      if (Math.abs(deltaX) > 4) {
+        this.dinoSelectorDrag.moved = true;
+      }
+      this.setDinoSelectorScroll(this.dinoSelectorDrag.startScrollX + deltaX);
+    });
+    const endDrag = () => {
+      if (this.dinoSelectorDrag?.moved) {
+        this.lastSelectorDragTime = Date.now();
+      }
+      this.dinoSelectorDrag = null;
+      this.dinoSelectorViewport.cursor = 'grab';
+    };
+    this.dinoSelectorViewport.on('pointerup', endDrag);
+    this.dinoSelectorViewport.on('pointerupoutside', endDrag);
+    this.dinoSelectorViewport.on('pointercancel', endDrag);
+  }
+
+  setDinoSelectorScroll(value) {
+    const contentWidth = (CODEX_DINOS.length - 1) * SELECTOR.gap + SELECTOR.width;
+    const minX = Math.min(0, SELECTOR.viewportWidth - contentWidth);
+    this.dinoSelectorScrollX = Math.max(minX, Math.min(0, value));
+    this.dinoSelectorContent.position.x = this.dinoSelectorScrollX;
   }
 
   createBranchCard(isOrigin) {
@@ -778,6 +900,10 @@ export class CodexScreen {
 
   drawStatic() {
     drawScreenBackground(this.background, this.width, this.height, UI_COLORS.dna);
+    this.dinoSelectorMask
+      .clear()
+      .rect(SELECTOR.x, SELECTOR.y, SELECTOR.viewportWidth, SELECTOR.height)
+      .fill({ color: 0xffffff, alpha: 1 });
     this.title.anchor.set(0.5);
     this.title.position.set(this.width / 2, 34);
     this.subtitle.anchor.set(0.5);
