@@ -9,6 +9,7 @@ import { AssetPreviewScreen } from '../ui/asset_preview_screen.js';
 import { CodexScreen } from '../ui/codex_screen.js';
 import { DinoSelectScreen } from '../ui/dino_select_screen.js';
 import { HomeScreen } from '../ui/home_screen.js';
+import { LoadingUi } from '../ui/loading_ui.js';
 import { OptionsScreen } from '../ui/options_screen.js';
 import { ResearchScreen } from '../ui/research_screen.js';
 import { StageSelectScreen } from '../ui/stage_select_screen.js';
@@ -69,20 +70,14 @@ export class ScreenManager {
       'ui_select',
       'ui_decide',
       'ui_cancel',
+      'ui_click',
+      'ui_confirm',
       'title_bgm',
-      'home_bgm',
-      'jungle_bgm',
-      'zero_bgm',
-      'normal_boss_bgm',
-      'boss_warning',
-      'zero_boss_warning',
-      'zero_warning',
-      'result_clear_jingle',
-      'result_zero_clear_jingle',
     ]);
     this.gameState = new GameState();
     this.saveManager.applyToGameState(this.gameState);
     this.applyDebugRunSelection();
+    this.loadingUi = new LoadingUi({ width, height });
 
     this.titleScreen = new TitleScreen({
       width,
@@ -92,108 +87,22 @@ export class ScreenManager {
       onIntro: () => this.playIntroFromTitle(),
       onUiFeedback: (id = 'ui_confirm') => this.playOptionalUi(id),
     });
-    this.homeScreen = new HomeScreen({
-      width,
-      height,
-      gameState: this.gameState,
-      saveData: this.saveManager.getData(),
-      saveManager: this.saveManager,
-      assetLoader: this.assetLoader,
-      onDeploy: () => this.withUiClick(() => this.showStageSelect()),
-      onResearch: () => this.withUiClick(() => this.showResearch()),
-      onCodex: () => this.withUiClick(() => this.showCodex()),
-      onOptions: () => this.withUiClick(() => this.showOptions('home')),
-      onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
-    });
-    this.researchScreen = new ResearchScreen({
-      width,
-      height,
-      saveManager: this.saveManager,
-      assetLoader: this.assetLoader,
-      onHome: () => this.withUiClick(() => this.showHome()),
-      onResearch: () => this.withUiClick(() => this.showResearch()),
-      onCodex: () => this.withUiClick(() => this.showCodex()),
-      onOptions: () => this.withUiClick(() => this.showOptions('home')),
-    });
-    this.codexScreen = new CodexScreen({
-      width,
-      height,
-      saveManager: this.saveManager,
-      onHome: () => this.withUiClick(() => this.showHome()),
-      onResearch: () => this.withUiClick(() => this.showResearch()),
-      onCodex: () => this.withUiClick(() => this.showCodex()),
-      onOptions: () => this.withUiClick(() => this.showOptions('home')),
-    });
-    this.optionsScreen = new OptionsScreen({
-      width,
-      height,
-      saveManager: this.saveManager,
-      audioManager: this.audioManager,
-      onBack: () => this.withUiClick(() => this.returnFromOptions()),
-      onHome: () => this.withUiClick(() => this.showHome()),
-      onResearch: () => this.withUiClick(() => this.showResearch()),
-      onCodex: () => this.withUiClick(() => this.showCodex()),
-      onAssetPreview: () => this.withUiClick(() => this.showAssetPreview()),
-    });
-    this.assetPreviewScreen = new AssetPreviewScreen({
-      width,
-      height,
-      assetLoader: this.assetLoader,
-      onBack: () => this.withUiClick(() => this.show('options')),
-    });
-    this.stageSelectScreen = new StageSelectScreen({
-      width,
-      height,
-      gameState: this.gameState,
-      saveData: this.saveManager.getData(),
-      assetLoader: this.assetLoader,
-      onBack: () => this.withUiClick(() => this.showHome()),
-      onContinue: () => this.withUiClick(() => this.showDinoSelect()),
-    });
-    this.dinoSelectScreen = new DinoSelectScreen({
-      width,
-      height,
-      gameState: this.gameState,
-      saveData: this.saveManager.getData(),
-      assetLoader: this.assetLoader,
-      onBack: () => this.withUiClick(() => this.showStageSelect()),
-      onStart: () => this.withUiClick(() => this.showPlay()),
-    });
-    this.playScene = new PlayScene({
-      canvas,
-      width,
-      height,
-      gameState: this.gameState,
-      saveManager: this.saveManager,
-      audioManager: this.audioManager,
-      assetLoader: this.assetLoader,
-      onHome: () => this.showHome(),
-      onTitle: () => this.showTitle(),
-      onOptions: () => this.showOptions('play'),
-    });
+    this.homeScreen = null;
+    this.researchScreen = null;
+    this.codexScreen = null;
+    this.optionsScreen = null;
+    this.assetPreviewScreen = null;
+    this.stageSelectScreen = null;
+    this.dinoSelectScreen = null;
+    this.playScene = null;
 
     this.screens = {
       title: this.titleScreen,
-      home: this.homeScreen,
-      research: this.researchScreen,
-      codex: this.codexScreen,
-      options: this.optionsScreen,
-      assetPreview: this.assetPreviewScreen,
-      stageSelect: this.stageSelectScreen,
-      dinoSelect: this.dinoSelectScreen,
-      play: this.playScene,
     };
 
     this.view.addChild(
       this.titleScreen.view,
-      this.homeScreen.view,
-      this.researchScreen.view,
-      this.codexScreen.view,
-      this.optionsScreen.view,
-      this.assetPreviewScreen.view,
-      this.stageSelectScreen.view,
-      this.dinoSelectScreen.view,
-      this.playScene.view,
+      this.loadingUi.view,
     );
     this.installTitleShortcuts();
     this.installTitleCueUnlock();
@@ -204,8 +113,195 @@ export class ScreenManager {
     }
   }
 
+  registerScreen(name, screen) {
+    if (!screen || this.screens[name]) {
+      return screen;
+    }
+
+    this.screens[name] = screen;
+    screen.view.visible = false;
+    const loadingIndex = this.view.getChildIndex(this.loadingUi.view);
+    this.view.addChildAt(screen.view, Math.max(0, loadingIndex));
+    this.installScreenTitleShortcuts(name, screen);
+    return screen;
+  }
+
+  ensureHomeScreen() {
+    if (this.homeScreen) {
+      return this.homeScreen;
+    }
+
+    this.homeScreen = this.registerScreen('home', new HomeScreen({
+      width: this.width,
+      height: this.height,
+      gameState: this.gameState,
+      saveData: this.saveManager.getData(),
+      saveManager: this.saveManager,
+      assetLoader: this.assetLoader,
+      onDeploy: () => this.withUiClick(() => this.showStageSelect()),
+      onResearch: () => this.withUiClick(() => this.showResearch()),
+      onCodex: () => this.withUiClick(() => this.showCodex()),
+      onOptions: () => this.withUiClick(() => this.showOptions('home')),
+      onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
+    }));
+
+    return this.homeScreen;
+  }
+
+  ensureResearchScreen() {
+    if (this.researchScreen) {
+      return this.researchScreen;
+    }
+
+    this.researchScreen = this.registerScreen('research', new ResearchScreen({
+      width: this.width,
+      height: this.height,
+      saveManager: this.saveManager,
+      assetLoader: this.assetLoader,
+      onHome: () => this.withUiClick(() => this.showHome()),
+      onResearch: () => this.withUiClick(() => this.showResearch()),
+      onCodex: () => this.withUiClick(() => this.showCodex()),
+      onOptions: () => this.withUiClick(() => this.showOptions('home')),
+    }));
+
+    return this.researchScreen;
+  }
+
+  ensureCodexScreen() {
+    if (this.codexScreen) {
+      return this.codexScreen;
+    }
+
+    this.codexScreen = this.registerScreen('codex', new CodexScreen({
+      width: this.width,
+      height: this.height,
+      saveManager: this.saveManager,
+      onHome: () => this.withUiClick(() => this.showHome()),
+      onResearch: () => this.withUiClick(() => this.showResearch()),
+      onCodex: () => this.withUiClick(() => this.showCodex()),
+      onOptions: () => this.withUiClick(() => this.showOptions('home')),
+    }));
+
+    return this.codexScreen;
+  }
+
+  ensureOptionsScreen() {
+    if (this.optionsScreen) {
+      return this.optionsScreen;
+    }
+
+    this.optionsScreen = this.registerScreen('options', new OptionsScreen({
+      width: this.width,
+      height: this.height,
+      saveManager: this.saveManager,
+      audioManager: this.audioManager,
+      onBack: () => this.withUiClick(() => this.returnFromOptions()),
+      onHome: () => this.withUiClick(() => this.showHome()),
+      onResearch: () => this.withUiClick(() => this.showResearch()),
+      onCodex: () => this.withUiClick(() => this.showCodex()),
+      onAssetPreview: () => this.withUiClick(() => this.showAssetPreview()),
+    }));
+
+    return this.optionsScreen;
+  }
+
+  ensureAssetPreviewScreen() {
+    if (this.assetPreviewScreen) {
+      return this.assetPreviewScreen;
+    }
+
+    this.assetPreviewScreen = this.registerScreen('assetPreview', new AssetPreviewScreen({
+      width: this.width,
+      height: this.height,
+      assetLoader: this.assetLoader,
+      onBack: () => this.withUiClick(() => this.show('options')),
+    }));
+
+    return this.assetPreviewScreen;
+  }
+
+  ensureStageSelectScreen() {
+    if (this.stageSelectScreen) {
+      return this.stageSelectScreen;
+    }
+
+    this.stageSelectScreen = this.registerScreen('stageSelect', new StageSelectScreen({
+      width: this.width,
+      height: this.height,
+      gameState: this.gameState,
+      saveData: this.saveManager.getData(),
+      assetLoader: this.assetLoader,
+      onBack: () => this.withUiClick(() => this.showHome()),
+      onContinue: () => this.withUiClick(() => this.showDinoSelect()),
+    }));
+
+    return this.stageSelectScreen;
+  }
+
+  ensureDinoSelectScreen() {
+    if (this.dinoSelectScreen) {
+      return this.dinoSelectScreen;
+    }
+
+    this.dinoSelectScreen = this.registerScreen('dinoSelect', new DinoSelectScreen({
+      width: this.width,
+      height: this.height,
+      gameState: this.gameState,
+      saveData: this.saveManager.getData(),
+      assetLoader: this.assetLoader,
+      onBack: () => this.withUiClick(() => this.showStageSelect()),
+      onStart: () => this.withUiClick(() => this.showPlay()),
+    }));
+
+    return this.dinoSelectScreen;
+  }
+
+  ensurePlayScene() {
+    if (this.playScene) {
+      return this.playScene;
+    }
+
+    this.playScene = this.registerScreen('play', new PlayScene({
+      canvas: this.canvas,
+      width: this.width,
+      height: this.height,
+      gameState: this.gameState,
+      saveManager: this.saveManager,
+      audioManager: this.audioManager,
+      assetLoader: this.assetLoader,
+      onHome: () => this.showHome(),
+      onTitle: () => this.showTitle(),
+      onOptions: () => this.showOptions('play'),
+    }));
+
+    return this.playScene;
+  }
+
+  async loadAssetGroups(groupIds, label, title = 'DNA解析中...') {
+    const groups = (Array.isArray(groupIds) ? groupIds : [groupIds]).filter(Boolean);
+    const alreadyLoaded = groups.every((groupId) => this.assetLoader.loadedGroups.has(groupId));
+
+    if (alreadyLoaded) {
+      return [];
+    }
+
+    this.loadingUi.show({ title, detail: label, progress: 0.04 });
+    try {
+      return await this.assetLoader.loadGroups(groups, {
+        onProgress: ({ groupId, loaded, total }) => {
+          this.loadingUi.update({
+            detail: `${label} / ${groupId}`,
+            progress: total > 0 ? loaded / total : 1,
+          });
+        },
+      });
+    } finally {
+      this.loadingUi.hide();
+    }
+  }
+
   update(delta) {
-    if (this.currentScreen === 'play') {
+    if (this.currentScreen === 'play' && this.playScene) {
       this.playScene.update(delta);
     }
   }
@@ -235,8 +331,10 @@ export class ScreenManager {
     }
   }
 
-  showHome() {
-    this.gameState = this.playScene.gameState;
+  async showHome() {
+    if (this.playScene) {
+      this.gameState = this.playScene.gameState;
+    }
     this.saveManager.load();
     this.applyDebugResearchPt();
     this.applyDebugTitleRewards();
@@ -244,6 +342,8 @@ export class ScreenManager {
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
     this.saveManager.applyToGameState(this.gameState);
     this.applyDebugRunSelection();
+    await this.loadAssetGroups(['home'], 'ホーム資源読み込み中');
+    this.ensureHomeScreen();
     this.homeScreen.setSaveData(this.saveManager.getData(), this.gameState);
     this.show('home');
   }
@@ -280,15 +380,21 @@ export class ScreenManager {
   }
 
   installTitleShortcuts() {
-    [
-      [this.homeScreen, ['logoSprite', 'logoFallback']],
-      [this.stageSelectScreen, ['title']],
-      [this.dinoSelectScreen, ['title']],
-      [this.codexScreen, ['title']],
-      [this.researchScreen, ['title']],
-      [this.optionsScreen, ['title', 'titleEn']],
-      [this.assetPreviewScreen, ['title', 'titleEn']],
-    ].forEach(([screen, targetNames]) => this.bindTitleShortcut(screen, targetNames));
+    Object.entries(this.screens).forEach(([name, screen]) => this.installScreenTitleShortcuts(name, screen));
+  }
+
+  installScreenTitleShortcuts(name, screen) {
+    const targetMap = {
+      home: ['logoSprite', 'logoFallback'],
+      stageSelect: ['title'],
+      dinoSelect: ['title'],
+      codex: ['title'],
+      research: ['title'],
+      options: ['title', 'titleEn'],
+      assetPreview: ['title', 'titleEn'],
+    };
+
+    this.bindTitleShortcut(screen, targetMap[name] ?? []);
   }
 
   installTitleCueUnlock() {
@@ -360,59 +466,72 @@ export class ScreenManager {
     });
   }
 
-  showStageSelect() {
+  async showStageSelect() {
     this.saveManager.load();
     this.applyDebugResearchPt();
     this.applyDebugStageProgress();
     this.applyDebugRunSelection();
+    await this.loadAssetGroups(['stageSelect'], 'ステージ一覧読み込み中', 'ステージ構築中...');
+    this.ensureStageSelectScreen();
     this.syncSelectionScreens();
     this.stageSelectScreen.setSaveData?.(this.saveManager.getData());
     this.show('stageSelect');
   }
 
-  showResearch() {
+  async showResearch() {
     this.saveManager.load();
     this.applyDebugResearchPt();
     this.saveManager.recordDailyProgress('openResearch', 1);
+    await this.loadAssetGroups(['research'], '研究UI読み込み中');
+    this.ensureResearchScreen();
     this.researchScreen.saveManager = this.saveManager;
     this.show('research');
   }
 
-  showCodex() {
+  async showCodex() {
     this.saveManager.load();
     this.saveManager.recordDailyProgress('openCodex', 1);
+    await this.loadAssetGroups(['codex'], '図鑑データ照合中', '進化データ照合中...');
+    this.ensureCodexScreen();
     this.codexScreen.saveManager = this.saveManager;
     this.show('codex');
   }
 
-  showOptions(returnScreen = this.currentScreen) {
+  async showOptions(returnScreen = this.currentScreen) {
     this.optionsReturnScreen = returnScreen;
     this.saveManager.load();
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
+    await this.loadAssetGroups(['options'], '設定UI読み込み中');
+    this.ensureOptionsScreen();
     this.optionsScreen.saveManager = this.saveManager;
     this.optionsScreen.audioManager = this.audioManager;
     this.optionsScreen.setReturnScreen?.(returnScreen);
     this.show('options');
   }
 
-  showAssetPreview() {
+  async showAssetPreview() {
+    await this.loadAssetGroups(['options'], 'アセット確認UI読み込み中');
+    this.ensureAssetPreviewScreen();
     this.show('assetPreview');
   }
 
-  returnFromOptions() {
+  async returnFromOptions() {
     if (this.optionsReturnScreen === 'play') {
       this.playScene.applyOptionsSettings?.(this.saveManager.getOptionsSettings());
       this.show('play');
       return;
     }
 
-    this.showHome();
+    await this.showHome();
   }
 
-  showDinoSelect() {
+  async showDinoSelect() {
     this.saveManager.load();
     this.applyDebugResearchPt();
     this.applyDebugRunSelection();
+    await this.loadAssetGroups(['dinoSelect'], '恐竜データ読み込み中', '進化データ照合中...');
+    this.ensureStageSelectScreen();
+    this.ensureDinoSelectScreen();
     this.syncSelectionScreens();
     this.dinoSelectScreen.setSaveData?.(this.saveManager.getData());
     this.show('dinoSelect');
@@ -581,12 +700,33 @@ export class ScreenManager {
     }
   }
 
-  showPlay() {
+  async showPlay() {
     this.applyDebugRunSelection();
     this.saveManager.recordDailyProgress('runStarted', 1);
     if (this.gameState.selectedMode === 'standard') {
       this.saveManager.recordDailyProgress('normalStagePlayed', 1);
     }
+    const playGroups = [
+      'battle',
+      `stage:${this.gameState.selectedStage ?? 'jungle'}`,
+      `dino:${this.gameState.selectedDino ?? 'velociraptor'}`,
+      this.gameState.selectedMode === 'zero' ? 'zero' : null,
+    ].filter(Boolean);
+    await this.loadAssetGroups(playGroups, 'プレイ資源読み込み中', 'ステージ構築中...');
+    this.audioManager.preload([
+      'home_bgm',
+      'jungle_bgm',
+      'volcano_bgm',
+      'swamp_bgm',
+      'ruins_bgm',
+      'endless_bgm',
+      'zero_bgm',
+      'normal_boss_bgm',
+      'boss_warning',
+      'zero_boss_warning',
+      'zero_warning',
+    ]);
+    this.ensurePlayScene();
     this.playScene.restart();
     this.playScene.applyOptionsSettings?.(this.saveManager.getOptionsSettings());
     this.gameState = this.playScene.gameState;
@@ -595,16 +735,22 @@ export class ScreenManager {
   }
 
   syncSelectionScreens() {
-    this.stageSelectScreen.gameState = this.gameState;
-    this.stageSelectScreen.setSaveData?.(this.saveManager.getData());
-    this.dinoSelectScreen.gameState = this.gameState;
-    this.homeScreen.gameState = this.gameState;
+    if (this.stageSelectScreen) {
+      this.stageSelectScreen.gameState = this.gameState;
+      this.stageSelectScreen.setSaveData?.(this.saveManager.getData());
+    }
+    if (this.dinoSelectScreen) {
+      this.dinoSelectScreen.gameState = this.gameState;
+    }
+    if (this.homeScreen) {
+      this.homeScreen.gameState = this.gameState;
+    }
   }
 
   withUiClick(callback) {
     this.audioManager.unlockAudio();
     this.audioManager.playOptional('ui_click');
-    callback();
+    return callback?.();
   }
 
   playOptionalUi(id = 'ui_click') {

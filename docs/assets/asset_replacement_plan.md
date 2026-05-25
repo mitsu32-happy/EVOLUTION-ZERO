@@ -3158,3 +3158,16 @@ Runtime rules:
   - `docs/assets/home_panel_common_mvp_a02b_contact.png`
   - `docs/assets/home_panel_common_mvp_a02b_report.json`
 - Future Home content should switch text and rows inside the common panel instead of adding one panel background per tab.
+
+## MVP-A03 Loading Group Asset Policy
+
+- Asset loading is now grouped by route timing rather than allowing every screen constructor to start loading at boot.
+- `AssetLoader` owns group membership and request dedupe for `boot`, `home`, `stageSelect`, `dinoSelect`, `research`, `options`, `codex`, `battle`, `zero`, `stage:<id>`, and `dino:<id>`.
+- Boot group is intentionally small and contains only title-critical UI assets.
+- Home / Codex / Stage / Dino / Play assets are loaded on first route entry and then reused from the loader cache.
+- Audio boot preload is reduced to UI feedback and title BGM. Stage/Boss/ZERO/Result audio is left for later playback or play-start timing.
+- Reports:
+  - `docs/assets/loading_a03_current_report.md`
+  - `docs/assets/loading_a03_current_report.json`
+  - `docs/assets/loading_a03_after_report.md`
+  - `docs/assets/loading_a03_after_report.json`

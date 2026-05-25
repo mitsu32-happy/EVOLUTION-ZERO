@@ -366,9 +366,10 @@ export class TitleScreen {
     this.setStartPressed(true);
 
     setTimeout(() => {
-      this.starting = false;
-      this.setStartPressed(false);
-      this.onStart?.();
+      Promise.resolve(this.onStart?.()).finally(() => {
+        this.starting = false;
+        this.setStartPressed(false);
+      });
     }, 120);
   }
 

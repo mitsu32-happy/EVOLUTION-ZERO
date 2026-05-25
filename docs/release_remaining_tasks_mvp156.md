@@ -185,3 +185,11 @@ Remaining audio polish:
 - The panel height now uses more of the space above the bottom navigation while keeping an 18px safety gap on the 390x844 reference layout.
 - Daily, Record, and Unlock content should remain row/text-only swaps inside the same panel surface.
 - Real-device QA should recheck iPhone Safari bottom browser chrome, tab tap targets, Daily claim flow, and bottom navigation mis-tap risk.
+
+## MVP-A03 Loading Group Follow-up
+
+- Boot now constructs only the title path plus the global loading overlay; Home, Research, Codex, Options, StageSelect, DinoSelect, AssetPreview, and PlayScene are lazy-created.
+- AssetLoader now supports grouped loading, group dedupe, loaded group tracking, and failed group key tracking.
+- START loads `home`; Codex first open loads `codex`; play start loads `battle`, selected `stage:<id>`, selected `dino:<id>`, and `zero` only in ZERO mode.
+- Boot audio preload is reduced to UI feedback and title BGM. PWA/service worker/persistent cache remain future work.
+- QA should still include public Pages cache behavior and real-device timing because Codex browser timing APIs were limited.

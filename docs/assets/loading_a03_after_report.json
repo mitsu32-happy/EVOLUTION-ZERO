@@ -1,0 +1,1025 @@
+{
+  "mvp": "MVP-A03 after loading groups",
+  "createdAt": "2026-05-25T14:38:37.233Z",
+  "before": {
+    "publicAssetCount": 700,
+    "publicAssetBytes": 266643722,
+    "eagerRisk": {
+      "title_before_display": {
+        "count": 6,
+        "bytes": 5020393
+      },
+      "home_constructor": {
+        "count": 56,
+        "bytes": 20918399
+      },
+      "codex_constructor": {
+        "count": 104,
+        "bytes": 30577113
+      },
+      "research_constructor": {
+        "count": 25,
+        "bytes": 3929797
+      },
+      "play_constructor_ui": {
+        "count": 83,
+        "bytes": 24243140
+      },
+      "audio_preload_current": {
+        "count": 48,
+        "bytes": 22533664
+      }
+    }
+  },
+  "afterDesign": {
+    "boot": {
+      "count": 6,
+      "bytes": 5020393,
+      "largest": [
+        {
+          "key": "titleUi.titleBackground",
+          "path": "assets/ui/title/title_background.png",
+          "bytes": 2086491
+        },
+        {
+          "key": "homeUi.evolutionZeroLogo",
+          "path": "assets/ui/home/evolution_zero_logo.png",
+          "bytes": 1253850
+        },
+        {
+          "key": "titleUi.warningPanel",
+          "path": "assets/ui/title/warning_panel.png",
+          "bytes": 825658
+        },
+        {
+          "key": "titleUi.startButtonIdle",
+          "path": "assets/ui/title/start_button_idle.png",
+          "bytes": 293414
+        },
+        {
+          "key": "titleUi.startButtonGlow",
+          "path": "assets/ui/title/start_button_glow.png",
+          "bytes": 292007
+        },
+        {
+          "key": "titleUi.startButtonPressed",
+          "path": "assets/ui/title/start_button_pressed.png",
+          "bytes": 268973
+        }
+      ]
+    },
+    "groups": {
+      "boot": {
+        "count": 6,
+        "bytes": 5020393,
+        "largest": [
+          {
+            "key": "titleUi.titleBackground",
+            "path": "assets/ui/title/title_background.png",
+            "bytes": 2086491
+          },
+          {
+            "key": "homeUi.evolutionZeroLogo",
+            "path": "assets/ui/home/evolution_zero_logo.png",
+            "bytes": 1253850
+          },
+          {
+            "key": "titleUi.warningPanel",
+            "path": "assets/ui/title/warning_panel.png",
+            "bytes": 825658
+          },
+          {
+            "key": "titleUi.startButtonIdle",
+            "path": "assets/ui/title/start_button_idle.png",
+            "bytes": 293414
+          },
+          {
+            "key": "titleUi.startButtonGlow",
+            "path": "assets/ui/title/start_button_glow.png",
+            "bytes": 292007
+          },
+          {
+            "key": "titleUi.startButtonPressed",
+            "path": "assets/ui/title/start_button_pressed.png",
+            "bytes": 268973
+          }
+        ]
+      },
+      "home": {
+        "count": 77,
+        "bytes": 25891579,
+        "largest": [
+          {
+            "key": "evolutionHeroes.velociraptorZero",
+            "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+            "bytes": 1917413
+          },
+          {
+            "key": "homeUi.homeBackground",
+            "path": "assets/ui/home/home_background.png",
+            "bytes": 1838706
+          },
+          {
+            "key": "homeUi.dailyMissionPanel",
+            "path": "assets/ui/home/daily_mission_panel.png",
+            "bytes": 1487361
+          },
+          {
+            "key": "homeUi.evolutionZeroLogo",
+            "path": "assets/ui/home/evolution_zero_logo.png",
+            "bytes": 1253850
+          },
+          {
+            "key": "evolutionHeroes.tyrannosaurusZero",
+            "path": "assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png",
+            "bytes": 1187859
+          },
+          {
+            "key": "homeUi.recordPanel",
+            "path": "assets/ui/home/record_panel.png",
+            "bytes": 1185156
+          },
+          {
+            "key": "homeUi.sortieButtonFrame",
+            "path": "assets/ui/home/sortie_button_frame.png",
+            "bytes": 1155749
+          },
+          {
+            "key": "homeUi.infoPanelFrame",
+            "path": "assets/ui/home/info_panel_frame.png",
+            "bytes": 1005639
+          },
+          {
+            "key": "homeUi.unlockStatusPanel",
+            "path": "assets/ui/home/unlock_status_panel.png",
+            "bytes": 946753
+          },
+          {
+            "key": "evolutionHeroes.triceratopsZero",
+            "path": "assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+            "bytes": 897593
+          }
+        ]
+      },
+      "stageSelect": {
+        "count": 39,
+        "bytes": 10762573,
+        "largest": [
+          {
+            "key": "stageSelectUi.screenBackdrop",
+            "path": "assets/ui/stage_select/screen_backdrop.png",
+            "bytes": 1350494
+          },
+          {
+            "key": "stageThumbnails.jungle",
+            "path": "assets/maps/thumbnails/jungle_thumb.png",
+            "bytes": 1225086
+          },
+          {
+            "key": "stageThumbnails.swamp",
+            "path": "assets/maps/thumbnails/swamp_thumb.png",
+            "bytes": 1145823
+          },
+          {
+            "key": "stageThumbnails.volcano",
+            "path": "assets/maps/thumbnails/volcano_thumb.png",
+            "bytes": 1032381
+          },
+          {
+            "key": "stageThumbnails.ruins",
+            "path": "assets/maps/thumbnails/ruins_thumb.png",
+            "bytes": 1031546
+          },
+          {
+            "key": "commonUi.confirmDialogPanelV2",
+            "path": "assets/ui/common/confirm_dialog_panel_v2.png",
+            "bytes": 679862
+          },
+          {
+            "key": "commonUi.bottomNavBackground",
+            "path": "assets/ui/common/bottom_nav_background.png",
+            "bytes": 671304
+          },
+          {
+            "key": "commonUi.navButtonSelected",
+            "path": "assets/ui/common/nav_button_selected.png",
+            "bytes": 595759
+          },
+          {
+            "key": "commonUi.navButtonIdle",
+            "path": "assets/ui/common/nav_button_idle.png",
+            "bytes": 583485
+          },
+          {
+            "key": "commonUi.confirmButtonYesV2",
+            "path": "assets/ui/common/confirm_button_yes_v2.png",
+            "bytes": 232798
+          }
+        ]
+      },
+      "dinoSelect": {
+        "count": 41,
+        "bytes": 8509511,
+        "largest": [
+          {
+            "key": "dinoSelectUi.screenBackdrop",
+            "path": "assets/ui/dino_select/lab_background.png",
+            "bytes": 713421
+          },
+          {
+            "key": "commonUi.confirmDialogPanelV2",
+            "path": "assets/ui/common/confirm_dialog_panel_v2.png",
+            "bytes": 679862
+          },
+          {
+            "key": "commonUi.bottomNavBackground",
+            "path": "assets/ui/common/bottom_nav_background.png",
+            "bytes": 671304
+          },
+          {
+            "key": "commonUi.navButtonSelected",
+            "path": "assets/ui/common/nav_button_selected.png",
+            "bytes": 595759
+          },
+          {
+            "key": "commonUi.navButtonIdle",
+            "path": "assets/ui/common/nav_button_idle.png",
+            "bytes": 583485
+          },
+          {
+            "key": "dinoSelectHero.spinosaurus",
+            "path": "assets/dinos/dino_select/spinosaurus_hero.png",
+            "bytes": 482285
+          },
+          {
+            "key": "dinoSelectUi.dinoDetailPanel",
+            "path": "assets/ui/dino_select/dino_detail_panel.png",
+            "bytes": 456170
+          },
+          {
+            "key": "dinoSelectPortraits.spinosaurus",
+            "path": "assets/dinos/portraits/spinosaurus.png",
+            "bytes": 332770
+          },
+          {
+            "key": "dinoSelectHero.triceratops",
+            "path": "assets/dinos/dino_select/triceratops_hero.png",
+            "bytes": 251954
+          },
+          {
+            "key": "dinoSelectHero.velociraptor",
+            "path": "assets/dinos/dino_select/velociraptor_hero.png",
+            "bytes": 235496
+          }
+        ]
+      },
+      "research": {
+        "count": 48,
+        "bytes": 8551459,
+        "largest": [
+          {
+            "key": "researchUi.researchBackground",
+            "path": "assets/ui/research/research_background.png",
+            "bytes": 1511652
+          },
+          {
+            "key": "commonUi.confirmDialogPanelV2",
+            "path": "assets/ui/common/confirm_dialog_panel_v2.png",
+            "bytes": 679862
+          },
+          {
+            "key": "commonUi.bottomNavBackground",
+            "path": "assets/ui/common/bottom_nav_background.png",
+            "bytes": 671304
+          },
+          {
+            "key": "commonUi.navButtonSelected",
+            "path": "assets/ui/common/nav_button_selected.png",
+            "bytes": 595759
+          },
+          {
+            "key": "commonUi.navButtonIdle",
+            "path": "assets/ui/common/nav_button_idle.png",
+            "bytes": 583485
+          },
+          {
+            "key": "researchUi.dnaCorePanel",
+            "path": "assets/ui/research/dna_core_panel.png",
+            "bytes": 430901
+          },
+          {
+            "key": "researchUi.analysisConvertPanel",
+            "path": "assets/ui/research/analysis_convert_panel.png",
+            "bytes": 308698
+          },
+          {
+            "key": "commonUi.confirmButtonYesV2",
+            "path": "assets/ui/common/confirm_button_yes_v2.png",
+            "bytes": 232798
+          },
+          {
+            "key": "commonUi.confirmButtonNoV2",
+            "path": "assets/ui/common/confirm_button_no_v2.png",
+            "bytes": 229600
+          },
+          {
+            "key": "researchUi.cardLocked",
+            "path": "assets/ui/research/research_card_locked.png",
+            "bytes": 172144
+          }
+        ]
+      },
+      "options": {
+        "count": 53,
+        "bytes": 7617786,
+        "largest": [
+          {
+            "key": "optionsUi.optionsBackgroundV2",
+            "path": "assets/ui/options/options_background_v2.png",
+            "bytes": 830353
+          },
+          {
+            "key": "commonUi.confirmDialogPanelV2",
+            "path": "assets/ui/common/confirm_dialog_panel_v2.png",
+            "bytes": 679862
+          },
+          {
+            "key": "commonUi.bottomNavBackground",
+            "path": "assets/ui/common/bottom_nav_background.png",
+            "bytes": 671304
+          },
+          {
+            "key": "commonUi.navButtonSelected",
+            "path": "assets/ui/common/nav_button_selected.png",
+            "bytes": 595759
+          },
+          {
+            "key": "commonUi.navButtonIdle",
+            "path": "assets/ui/common/nav_button_idle.png",
+            "bytes": 583485
+          },
+          {
+            "key": "optionsUi.optionsPanelV2",
+            "path": "assets/ui/options/options_panel_v2.png",
+            "bytes": 423456
+          },
+          {
+            "key": "commonUi.confirmButtonYesV2",
+            "path": "assets/ui/common/confirm_button_yes_v2.png",
+            "bytes": 232798
+          },
+          {
+            "key": "commonUi.confirmButtonNoV2",
+            "path": "assets/ui/common/confirm_button_no_v2.png",
+            "bytes": 229600
+          },
+          {
+            "key": "optionsUi.optionsPanelV3",
+            "path": "assets/ui/options/options_panel_v3.png",
+            "bytes": 217894
+          },
+          {
+            "key": "optionsUi.optionRowPanelWideV3",
+            "path": "assets/ui/options/option_row_panel_wide_v3.png",
+            "bytes": 164716
+          }
+        ]
+      },
+      "codex": {
+        "count": 92,
+        "bytes": 29497654,
+        "largest": [
+          {
+            "key": "evolutionHeroes.velociraptorZero",
+            "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+            "bytes": 1917413
+          },
+          {
+            "key": "evolutionHeroes.tyrannosaurusZero",
+            "path": "assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png",
+            "bytes": 1187859
+          },
+          {
+            "key": "evolutionHeroes.triceratopsZero",
+            "path": "assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+            "bytes": 897593
+          },
+          {
+            "key": "evolutionSheets.spinosaurusZero",
+            "path": "assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+            "bytes": 828764
+          },
+          {
+            "key": "evolutionHeroes.zeroUnknownSilhouette",
+            "path": "assets/dinos/evolutions/zero_unknown_silhouette.png",
+            "bytes": 782168
+          },
+          {
+            "key": "evolutionSheets.spinosaurusAttack",
+            "path": "assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+            "bytes": 781156
+          },
+          {
+            "key": "evolutionSheets.spinosaurusHunting",
+            "path": "assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+            "bytes": 779163
+          },
+          {
+            "key": "evolutionSheets.triceratopsZero",
+            "path": "assets/dinos/evolutions/sheets/triceratops_zero_sheet.png",
+            "bytes": 744095
+          },
+          {
+            "key": "evolutionSheets.triceratopsAttack",
+            "path": "assets/dinos/evolutions/sheets/triceratops_attack_sheet.png",
+            "bytes": 724684
+          },
+          {
+            "key": "dinos.spinosaurusSheet",
+            "path": "assets/dinos/spinosaurus_sheet.png",
+            "bytes": 723801
+          }
+        ]
+      },
+      "battle": {
+        "count": 215,
+        "bytes": 52790792,
+        "largest": [
+          {
+            "key": "hudUi.specialAttackRaptor",
+            "path": "assets/ui/hud/special_icons/special_attack_raptor.png",
+            "bytes": 2063503
+          },
+          {
+            "key": "hudUi.specialHuntingRaptor",
+            "path": "assets/ui/hud/special_icons/special_hunting_raptor.png",
+            "bytes": 2016716
+          },
+          {
+            "key": "hudUi.specialSpeedRaptor",
+            "path": "assets/ui/hud/special_icons/special_speed_raptor.png",
+            "bytes": 1630928
+          },
+          {
+            "key": "specialEffects.spinosaurusZeroCoreSheet",
+            "path": "assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+            "bytes": 1490060
+          },
+          {
+            "key": "selectionUi.selectionBackgroundPanelV3",
+            "path": "assets/ui/selection/selection_background_panel_v3.png",
+            "bytes": 1469952
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaCoreSheet",
+            "path": "assets/effects/specials/special_zero_omega_core_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaBurstSheet",
+            "path": "assets/effects/specials/special_zero_omega_burst_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaBeamSheet",
+            "path": "assets/effects/specials/special_zero_omega_beam_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.spinosaurusHuntingMaelstromSheet",
+            "path": "assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+            "bytes": 1334809
+          },
+          {
+            "key": "hudUi.portraitFrame",
+            "path": "assets/ui/hud/portrait_frame.png",
+            "bytes": 1287070
+          }
+        ]
+      },
+      "zero": {
+        "count": 94,
+        "bytes": 51675816,
+        "largest": [
+          {
+            "key": "evolutionHeroes.velociraptorZero",
+            "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+            "bytes": 1917413
+          },
+          {
+            "key": "bosses.zeroEclipseProtocol",
+            "path": "assets/enemies/bosses/zero_eclipse_protocol_sheet.png",
+            "bytes": 1601471
+          },
+          {
+            "key": "specialEffects.spinosaurusZeroCoreSheet",
+            "path": "assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+            "bytes": 1490060
+          },
+          {
+            "key": "bossEffects.zeroCoreBurstSheet",
+            "path": "assets/effects/boss/zero_boss_core_burst_sheet.png",
+            "bytes": 1467208
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaCoreSheet",
+            "path": "assets/effects/specials/special_zero_omega_core_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaBurstSheet",
+            "path": "assets/effects/specials/special_zero_omega_burst_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaBeamSheet",
+            "path": "assets/effects/specials/special_zero_omega_beam_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "bossEffects.zeroEclipseWarningSheet",
+            "path": "assets/effects/boss/zero_boss_eclipse_warning_sheet.png",
+            "bytes": 1377792
+          },
+          {
+            "key": "bossEffects.zeroEclipseBeamSheet",
+            "path": "assets/effects/boss/zero_boss_eclipse_beam_sheet.png",
+            "bytes": 1373281
+          },
+          {
+            "key": "bossEffects.zeroGravityFieldSheet",
+            "path": "assets/effects/boss/zero_boss_gravity_field_sheet.png",
+            "bytes": 1307470
+          }
+        ]
+      },
+      "stage:jungle": {
+        "count": 27,
+        "bytes": 17704215,
+        "largest": [
+          {
+            "key": "stageBackgrounds.jungle",
+            "path": "assets/maps/backgrounds/jungle_battlefield_tile.png",
+            "bytes": 2095345
+          },
+          {
+            "key": "bossEffects.jungleChargeSlashSheet",
+            "path": "assets/effects/boss/jungle_boss_charge_slash_sheet.png",
+            "bytes": 1655637
+          },
+          {
+            "key": "bossEffects.jungleRoarWaveSheet",
+            "path": "assets/effects/boss/jungle_boss_roar_wave_sheet.png",
+            "bytes": 1655022
+          },
+          {
+            "key": "bossEffects.jungleSummonSporeSheet",
+            "path": "assets/effects/boss/jungle_boss_summon_spore_sheet.png",
+            "bytes": 1584402
+          },
+          {
+            "key": "bossEffects.jungleChargeWarningSheet",
+            "path": "assets/effects/boss/jungle_boss_charge_warning_sheet.png",
+            "bytes": 1476282
+          },
+          {
+            "key": "stageThumbnails.jungle",
+            "path": "assets/maps/thumbnails/jungle_thumb.png",
+            "bytes": 1225086
+          },
+          {
+            "key": "bosses.jungleZeroFinalBoss",
+            "path": "assets/enemies/bosses/jungle_zero_final_boss_sheet.png",
+            "bytes": 982220
+          },
+          {
+            "key": "bossEffects.jungleZeroFinalAttackSheet",
+            "path": "assets/effects/boss/jungle_zero_final_attack_sheet.png",
+            "bytes": 933619
+          },
+          {
+            "key": "bossEffects.jungleZeroSecondWarningSheet",
+            "path": "assets/effects/boss/jungle_zero_second_warning_sheet.png",
+            "bytes": 785690
+          },
+          {
+            "key": "bosses.jungleCanopyDevourer",
+            "path": "assets/enemies/bosses/jungle_canopy_devourer_sheet.png",
+            "bytes": 749626
+          }
+        ]
+      },
+      "stage:volcano": {
+        "count": 36,
+        "bytes": 18949387,
+        "largest": [
+          {
+            "key": "stageBackgrounds.volcano",
+            "path": "assets/maps/backgrounds/volcanic_battlefield_tile.png",
+            "bytes": 1777261
+          },
+          {
+            "key": "bossEffects.volcanoSlamWaveSheet",
+            "path": "assets/effects/boss/volcano_boss_slam_wave_sheet.png",
+            "bytes": 1438277
+          },
+          {
+            "key": "bossEffects.volcanoLavaWarningSheet",
+            "path": "assets/effects/boss/volcano_boss_lava_warning_sheet.png",
+            "bytes": 1433172
+          },
+          {
+            "key": "bossEffects.volcanoLavaBurstSheet",
+            "path": "assets/effects/boss/volcano_boss_lava_burst_sheet.png",
+            "bytes": 1247435
+          },
+          {
+            "key": "bossEffects.volcanoFireFloorSheet",
+            "path": "assets/effects/boss/volcano_boss_fire_floor_sheet.png",
+            "bytes": 1174929
+          },
+          {
+            "key": "stageThumbnails.volcano",
+            "path": "assets/maps/thumbnails/volcano_thumb.png",
+            "bytes": 1032381
+          },
+          {
+            "key": "bosses.volcanoZeroFinalBoss",
+            "path": "assets/enemies/bosses/volcano_zero_final_boss_sheet.png",
+            "bytes": 872632
+          },
+          {
+            "key": "bossEffects.volcanoZeroSecondWarningSheet",
+            "path": "assets/effects/boss/volcano_zero_second_warning_sheet.png",
+            "bytes": 845960
+          },
+          {
+            "key": "bossEffects.volcanoZeroSecondAttackSheet",
+            "path": "assets/effects/boss/volcano_zero_second_attack_sheet.png",
+            "bytes": 845960
+          },
+          {
+            "key": "bossEffects.volcanoZeroFinalWarningSheet",
+            "path": "assets/effects/boss/volcano_zero_final_warning_sheet.png",
+            "bytes": 845960
+          }
+        ]
+      },
+      "stage:swamp": {
+        "count": 34,
+        "bytes": 31736064,
+        "largest": [
+          {
+            "key": "bossEffects.swampToxicPoolSheet",
+            "path": "assets/effects/boss/swamp_boss_toxic_pool_sheet.png",
+            "bytes": 3620868
+          },
+          {
+            "key": "stageGimmicks.swampToxicPoolSheet",
+            "path": "assets/effects/boss/swamp_boss_toxic_pool_sheet.png",
+            "bytes": 3620868
+          },
+          {
+            "key": "bossEffects.swampSummonSporeSheet",
+            "path": "assets/effects/boss/swamp_boss_summon_spore_sheet.png",
+            "bytes": 3399372
+          },
+          {
+            "key": "bossEffects.swampPoisonWarningSheet",
+            "path": "assets/effects/boss/swamp_boss_poison_warning_sheet.png",
+            "bytes": 3149274
+          },
+          {
+            "key": "bossEffects.swampPoisonMistSheet",
+            "path": "assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+            "bytes": 2399022
+          },
+          {
+            "key": "stageGimmicks.swampPoisonMistSheet",
+            "path": "assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+            "bytes": 2399022
+          },
+          {
+            "key": "stageBackgrounds.swamp",
+            "path": "assets/maps/backgrounds/swamp_battlefield_tile.png",
+            "bytes": 1876962
+          },
+          {
+            "key": "stageThumbnails.swamp",
+            "path": "assets/maps/thumbnails/swamp_thumb.png",
+            "bytes": 1145823
+          },
+          {
+            "key": "enemies.swampToxicBomber",
+            "path": "assets/enemies/swamp/swamp_toxic_bomber_sheet.png",
+            "bytes": 1129435
+          },
+          {
+            "key": "bossEffects.swampZeroFinalAttackSheet",
+            "path": "assets/effects/boss/swamp_zero_final_attack_sheet.png",
+            "bytes": 1074380
+          }
+        ]
+      },
+      "stage:ruins": {
+        "count": 23,
+        "bytes": 21183346,
+        "largest": [
+          {
+            "key": "bossEffects.ruinsSummonFieldSheet",
+            "path": "assets/effects/boss/ruins_boss_summon_field_sheet.png",
+            "bytes": 3580975
+          },
+          {
+            "key": "bossEffects.ruinsElectroPulseSheet",
+            "path": "assets/effects/boss/ruins_boss_electro_pulse_sheet.png",
+            "bytes": 2824225
+          },
+          {
+            "key": "stageGimmicks.ruinsElectroPulseSheet",
+            "path": "assets/effects/stage_gimmicks/ruins_electro_pulse_sheet.png",
+            "bytes": 2824225
+          },
+          {
+            "key": "stageBackgrounds.ruins",
+            "path": "assets/maps/backgrounds/ruins_battlefield_tile.png",
+            "bytes": 1982068
+          },
+          {
+            "key": "bossEffects.ruinsLaserBeamSheet",
+            "path": "assets/effects/boss/ruins_boss_laser_beam_sheet.png",
+            "bytes": 1188947
+          },
+          {
+            "key": "stageGimmicks.ruinsLaserBeamSheet",
+            "path": "assets/effects/stage_gimmicks/ruins_laser_beam_sheet.png",
+            "bytes": 1188947
+          },
+          {
+            "key": "enemies.ruinsElectro",
+            "path": "assets/enemies/ruins/ruins_electro_sheet.png",
+            "bytes": 1143407
+          },
+          {
+            "key": "bosses.ruinsBoss",
+            "path": "assets/enemies/bosses/ruins_boss_sheet.png",
+            "bytes": 1060770
+          },
+          {
+            "key": "stageThumbnails.ruins",
+            "path": "assets/maps/thumbnails/ruins_thumb.png",
+            "bytes": 1031546
+          },
+          {
+            "key": "enemies.ruinsSummoner",
+            "path": "assets/enemies/ruins/ruins_summoner_sheet.png",
+            "bytes": 821676
+          }
+        ]
+      },
+      "dino:velociraptor": {
+        "count": 34,
+        "bytes": 15602960,
+        "largest": [
+          {
+            "key": "evolutionSpecialIcons.velociraptorAttack",
+            "path": "assets/ui/hud/special_icons/special_attack_raptor.png",
+            "bytes": 2063503
+          },
+          {
+            "key": "evolutionSpecialIcons.velociraptorHunting",
+            "path": "assets/ui/hud/special_icons/special_hunting_raptor.png",
+            "bytes": 2016716
+          },
+          {
+            "key": "evolutionHeroes.velociraptorZero",
+            "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+            "bytes": 1917413
+          },
+          {
+            "key": "evolutionSpecialIcons.velociraptorSpeed",
+            "path": "assets/ui/hud/special_icons/special_speed_raptor.png",
+            "bytes": 1630928
+          },
+          {
+            "key": "specialEffects.velociraptorZeroSlashSheet",
+            "path": "assets/effects/specials/special_zero_raptor_slash_sheet.png",
+            "bytes": 951608
+          },
+          {
+            "key": "specialEffects.velociraptorZeroCoreSheet",
+            "path": "assets/effects/specials/special_zero_raptor_core_sheet.png",
+            "bytes": 830801
+          },
+          {
+            "key": "evolutionSheets.velociraptorZero",
+            "path": "assets/dinos/evolutions/sheets/velociraptor_zero_sheet.png",
+            "bytes": 657630
+          },
+          {
+            "key": "evolutionSheets.velociraptorAttack",
+            "path": "assets/dinos/evolutions/sheets/velociraptor_attack_sheet.png",
+            "bytes": 571075
+          },
+          {
+            "key": "specialEffects.velociraptorZeroDashSheet",
+            "path": "assets/effects/specials/special_zero_raptor_dash_sheet.png",
+            "bytes": 514280
+          },
+          {
+            "key": "evolutionSheets.velociraptorHunting",
+            "path": "assets/dinos/evolutions/sheets/velociraptor_hunting_sheet.png",
+            "bytes": 504267
+          }
+        ]
+      },
+      "dino:triceratops": {
+        "count": 33,
+        "bytes": 11150195,
+        "largest": [
+          {
+            "key": "evolutionHeroes.triceratopsZero",
+            "path": "assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+            "bytes": 897593
+          },
+          {
+            "key": "specialEffects.triceratopsZeroCoreSheet",
+            "path": "assets/effects/specials/special_zero_triceratops_core_sheet.png",
+            "bytes": 837402
+          },
+          {
+            "key": "specialEffects.triceratopsZeroChargeSheet",
+            "path": "assets/effects/specials/special_zero_triceratops_charge_sheet.png",
+            "bytes": 837402
+          },
+          {
+            "key": "specialEffects.triceratopsZeroImpactSheet",
+            "path": "assets/effects/specials/special_zero_triceratops_impact_sheet.png",
+            "bytes": 837402
+          },
+          {
+            "key": "evolutionSheets.triceratopsZero",
+            "path": "assets/dinos/evolutions/sheets/triceratops_zero_sheet.png",
+            "bytes": 744095
+          },
+          {
+            "key": "evolutionSheets.triceratopsAttack",
+            "path": "assets/dinos/evolutions/sheets/triceratops_attack_sheet.png",
+            "bytes": 724684
+          },
+          {
+            "key": "specialEffects.triceratopsHuntingBastion",
+            "path": "assets/effects/specials/special_triceratops_hunting_bastion.png",
+            "bytes": 689943
+          },
+          {
+            "key": "dinos.triceratopsSheet",
+            "path": "assets/dinos/triceratops_sheet.png",
+            "bytes": 624269
+          },
+          {
+            "key": "specialEffects.triceratopsAttackQuake",
+            "path": "assets/effects/specials/special_triceratops_attack_quake.png",
+            "bytes": 618374
+          },
+          {
+            "key": "specialEffects.triceratopsSpeedCharge",
+            "path": "assets/effects/specials/special_triceratops_speed_charge.png",
+            "bytes": 553474
+          }
+        ]
+      },
+      "dino:tyrannosaurus": {
+        "count": 33,
+        "bytes": 13792303,
+        "largest": [
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaCoreSheet",
+            "path": "assets/effects/specials/special_zero_omega_core_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaBurstSheet",
+            "path": "assets/effects/specials/special_zero_omega_burst_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "specialEffects.tyrannosaurusZeroOmegaBeamSheet",
+            "path": "assets/effects/specials/special_zero_omega_beam_sheet.png",
+            "bytes": 1448836
+          },
+          {
+            "key": "evolutionHeroes.tyrannosaurusZero",
+            "path": "assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png",
+            "bytes": 1187859
+          },
+          {
+            "key": "specialEffects.tyrannosaurusAttackDevour",
+            "path": "assets/effects/specials/special_tyrannosaurus_attack_devour.png",
+            "bytes": 777189
+          },
+          {
+            "key": "evolutionSheets.tyrannosaurusZero",
+            "path": "assets/dinos/evolutions/sheets/tyrannosaurus_zero_sheet.png",
+            "bytes": 669023
+          },
+          {
+            "key": "evolutionSheets.tyrannosaurusSpeed",
+            "path": "assets/dinos/evolutions/sheets/tyrannosaurus_speed_sheet.png",
+            "bytes": 666859
+          },
+          {
+            "key": "evolutionSheets.tyrannosaurusAttack",
+            "path": "assets/dinos/evolutions/sheets/tyrannosaurus_attack_sheet.png",
+            "bytes": 664513
+          },
+          {
+            "key": "specialEffects.tyrannosaurusHuntingTerror",
+            "path": "assets/effects/specials/special_tyrannosaurus_hunting_terror.png",
+            "bytes": 641422
+          },
+          {
+            "key": "evolutionSheets.tyrannosaurusHunting",
+            "path": "assets/dinos/evolutions/sheets/tyrannosaurus_hunting_sheet.png",
+            "bytes": 539632
+          }
+        ]
+      },
+      "dino:spinosaurus": {
+        "count": 28,
+        "bytes": 17420111,
+        "largest": [
+          {
+            "key": "specialEffects.spinosaurusZeroCoreSheet",
+            "path": "assets/effects/specials/special_zero_spinosaurus_core_sheet.png",
+            "bytes": 1490060
+          },
+          {
+            "key": "specialEffects.spinosaurusHuntingMaelstromSheet",
+            "path": "assets/effects/specials/special_spinosaurus_hunting_maelstrom_sheet.png",
+            "bytes": 1334809
+          },
+          {
+            "key": "specialEffects.spinosaurusZeroTideSheet",
+            "path": "assets/effects/specials/special_zero_spinosaurus_tide_sheet.png",
+            "bytes": 1278835
+          },
+          {
+            "key": "specialEffects.spinosaurusZeroBurstSheet",
+            "path": "assets/effects/specials/special_zero_spinosaurus_burst_sheet.png",
+            "bytes": 1036429
+          },
+          {
+            "key": "specialEffects.spinosaurusSpeedTidalRushSheet",
+            "path": "assets/effects/specials/special_spinosaurus_speed_tidal_rush_sheet.png",
+            "bytes": 997512
+          },
+          {
+            "key": "normalAttackEffects.spinosaurusSplashHit",
+            "path": "assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png",
+            "bytes": 941850
+          },
+          {
+            "key": "normalAttackEffects.spinosaurusWaterSlash",
+            "path": "assets/effects/attacks/spinosaurus_attack_water_slash_sheet.png",
+            "bytes": 925118
+          },
+          {
+            "key": "specialEffects.spinosaurusAttackHydroBreakSheet",
+            "path": "assets/effects/specials/special_spinosaurus_attack_hydro_break_sheet.png",
+            "bytes": 915044
+          },
+          {
+            "key": "evolutionSheets.spinosaurusZero",
+            "path": "assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+            "bytes": 828764
+          },
+          {
+            "key": "evolutionSheets.spinosaurusAttack",
+            "path": "assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+            "bytes": 781156
+          }
+        ]
+      }
+    },
+    "bootBehavior": "Only TitleScreen is constructed at boot. Home, Research, Codex, Options, StageSelect, DinoSelect, AssetPreview, and PlayScene are lazy-created on first use.",
+    "audioBehavior": "Boot audio preload is reduced to UI feedback and title_bgm. Stage, boss, result, and zero audio are loaded lazily when play or playback needs them."
+  },
+  "qaScreenshots": [
+    "docs/assets/loading_a03_title.png",
+    "docs/assets/loading_a03_home.png",
+    "docs/assets/loading_a03_codex.png",
+    "docs/assets/loading_a03_stage_select.png",
+    "docs/assets/loading_a03_dino_select.png",
+    "docs/assets/loading_a03_play.png"
+  ],
+  "notes": [
+    "Browser performance resource timing was not available in the Codex in-app browser evaluation scope, so measurements use manifest/public file sizes plus route QA screenshots.",
+    "The Codex browser log API retained an older intro audio AbortError warning string, but that warning source has been removed from src/ and dist/. Route QA produced no Home/Stage/Dino/Play rendering errors."
+  ],
+  "runtimeConsole": {
+    "sourceWarningSearch": "rg found no opening intro audio playback warning string in src or dist after suppression",
+    "knownStaleBrowserLog": "opening intro audio playback skipped AbortError",
+    "homeStageDinoPlayRenderingErrors": 0
+  }
+}

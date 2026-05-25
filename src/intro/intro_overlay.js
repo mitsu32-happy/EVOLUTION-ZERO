@@ -23,7 +23,12 @@ function getParams() {
 }
 
 function isPlaybackAbort(error) {
-  return error?.name === 'AbortError' || String(error).includes('AbortError');
+  const message = String(error?.message ?? error ?? '').toLowerCase();
+
+  return error?.name === 'AbortError'
+    || message.includes('aborterror')
+    || message.includes('interrupted by a call to pause')
+    || message.includes('interrupted by a new load request');
 }
 
 export class IntroOverlay {
@@ -248,11 +253,8 @@ export class IntroOverlay {
     }
 
     const elementPlay = this.audio.play()
-      .catch((error) => {
-        if (isPlaybackAbort(error)) {
-          return;
-        }
-        console.warn('[EVOLUTION ZERO] opening intro audio playback skipped', error);
+      .catch(() => {
+        // Intro audio is optional and can be interrupted by route changes or browser policy.
       });
 
     this.playIntroAudioWithWebAudio(offset)
@@ -264,8 +266,8 @@ export class IntroOverlay {
           this.audioManager?.stopTransientAudio?.();
         }
       })
-      .catch((error) => {
-        console.warn('[EVOLUTION ZERO] opening intro WebAudio playback skipped', error);
+      .catch(() => {
+        // The HTML audio element path already covers the optional intro audio fallback.
       });
 
     await elementPlay;

@@ -1,0 +1,689 @@
+{
+  "mvp": "MVP-A03 current load investigation",
+  "createdAt": "2026-05-25T23:28:49",
+  "publicAssetTotals": {
+    "count": 700,
+    "bytes": 266643722,
+    "byType": {
+      "image": {
+        "count": 640,
+        "bytes": 238468593
+      },
+      "font": {
+        "count": 11,
+        "bytes": 3968952
+      },
+      "video": {
+        "count": 1,
+        "bytes": 1672513
+      },
+      "audio": {
+        "count": 48,
+        "bytes": 22533664
+      }
+    }
+  },
+  "currentEagerLoadRisk": {
+    "title_before_display": {
+      "count": 6,
+      "bytes": 5020393,
+      "largest": [
+        {
+          "path": "assets/ui/title/title_background.png",
+          "bytes": 2086491,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/evolution_zero_logo.png",
+          "bytes": 1253850,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/title/warning_panel.png",
+          "bytes": 825658,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/title/start_button_idle.png",
+          "bytes": 293414,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/title/start_button_glow.png",
+          "bytes": 292007,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/title/start_button_pressed.png",
+          "bytes": 268973,
+          "ext": ".png",
+          "type": "image"
+        }
+      ]
+    },
+    "home_constructor": {
+      "count": 56,
+      "bytes": 20918399,
+      "largest": [
+        {
+          "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+          "bytes": 1917413,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/home_background.png",
+          "bytes": 1838706,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/daily_mission_panel.png",
+          "bytes": 1487361,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/evolution_zero_logo.png",
+          "bytes": 1253850,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png",
+          "bytes": 1187859,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/record_panel.png",
+          "bytes": 1185156,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/sortie_button_frame.png",
+          "bytes": 1155749,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/info_panel_frame.png",
+          "bytes": 1005639,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/unlock_status_panel.png",
+          "bytes": 946753,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+          "bytes": 897593,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/resource_panel.png",
+          "bytes": 696396,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/home/home_info_panel_common.png",
+          "bytes": 606626,
+          "ext": ".png",
+          "type": "image"
+        }
+      ]
+    },
+    "codex_constructor": {
+      "count": 104,
+      "bytes": 30577113,
+      "largest": [
+        {
+          "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+          "bytes": 1917413,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/heroes/tyrannosaurus_zero_hero.png",
+          "bytes": 1187859,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+          "bytes": 897593,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+          "bytes": 828764,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/zero_unknown_silhouette.png",
+          "bytes": 782168,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/spinosaurus_attack_sheet.png",
+          "bytes": 781156,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/spinosaurus_hunting_sheet.png",
+          "bytes": 779163,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/triceratops_zero_sheet.png",
+          "bytes": 744095,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/triceratops_attack_sheet.png",
+          "bytes": 724684,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/spinosaurus_sheet.png",
+          "bytes": 723801,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/spinosaurus_speed_sheet.png",
+          "bytes": 704723,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/dinos/evolutions/sheets/tyrannosaurus_zero_sheet.png",
+          "bytes": 669023,
+          "ext": ".png",
+          "type": "image"
+        }
+      ]
+    },
+    "research_constructor": {
+      "count": 25,
+      "bytes": 3929797,
+      "largest": [
+        {
+          "path": "assets/ui/research/research_background.png",
+          "bytes": 1511652,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/dna_core_panel.png",
+          "bytes": 430901,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/analysis_convert_panel.png",
+          "bytes": 308698,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/research_card_locked.png",
+          "bytes": 172144,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/research_card_completed.png",
+          "bytes": 166807,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/research_card_frame.png",
+          "bytes": 164408,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/icons/icon_adaptation_ability.png",
+          "bytes": 90653,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/icons/icon_stage_scan.png",
+          "bytes": 84249,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/icons/icon_unknown_dino_scan.png",
+          "bytes": 82034,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/icons/icon_body_enhancement.png",
+          "bytes": 77016,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/icons/icon_bone_spike.png",
+          "bytes": 76502,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/research/icons/icon_evolution_branch.png",
+          "bytes": 68165,
+          "ext": ".png",
+          "type": "image"
+        }
+      ]
+    },
+    "play_constructor_ui": {
+      "count": 83,
+      "bytes": 24243140,
+      "largest": [
+        {
+          "path": "assets/ui/hud/hud_icon_sheet_generated_raw.png",
+          "bytes": 2684496,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/special_icons/special_attack_raptor.png",
+          "bytes": 2063503,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/special_icons/special_hunting_raptor.png",
+          "bytes": 2016716,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/special_icons/special_speed_raptor.png",
+          "bytes": 1630928,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/boss_bar_frame_raw.png",
+          "bytes": 1324245,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/hud_top_panel_generated_raw.png",
+          "bytes": 1300557,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/portrait_frame.png",
+          "bytes": 1287070,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/gauge_bar_frame_raw.png",
+          "bytes": 1146865,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/pause/pause_panel_v3.png",
+          "bytes": 721465,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/pause/pause_panel_v2.png",
+          "bytes": 712453,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/boss_bar_frame_alpha.png",
+          "bytes": 686936,
+          "ext": ".png",
+          "type": "image"
+        },
+        {
+          "path": "assets/ui/hud/boss_bar_frame.png",
+          "bytes": 679828,
+          "ext": ".png",
+          "type": "image"
+        }
+      ]
+    },
+    "audio_preload_current": {
+      "count": 48,
+      "bytes": 22533664,
+      "largest": [
+        {
+          "path": "assets/audio/bgm/home_cyber_room.mp3",
+          "bytes": 7526563,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/bgm/stage_cyber_function.mp3",
+          "bytes": 2732544,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/bgm/zero_clear_jingle.mp3",
+          "bytes": 2695808,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/bgm/boss_midbattle.mp3",
+          "bytes": 2305879,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/bgm/zero_cyber_battle.mp3",
+          "bytes": 2178719,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/bgm/title_home_full.mp3",
+          "bytes": 1749044,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/bgm/clear_jingle.mp3",
+          "bytes": 1687812,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/ultimate/ignis_charge_full.mp3",
+          "bytes": 286510,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/intro/opening_intro.mp3",
+          "bytes": 283533,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/boss/zero_warning_full.mp3",
+          "bytes": 97174,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/se/enemy_hit_full.mp3",
+          "bytes": 65088,
+          "ext": ".mp3",
+          "type": "audio"
+        },
+        {
+          "path": "assets/audio/ultimate/omega_burst_full.mp3",
+          "bytes": 60480,
+          "ext": ".mp3",
+          "type": "audio"
+        }
+      ]
+    }
+  },
+  "recommendedBootMinimal": {
+    "count": 6,
+    "bytes": 5020393,
+    "files": [
+      {
+        "path": "assets/ui/home/evolution_zero_logo.png",
+        "bytes": 1253850,
+        "ext": ".png",
+        "type": "image"
+      },
+      {
+        "path": "assets/ui/title/start_button_glow.png",
+        "bytes": 292007,
+        "ext": ".png",
+        "type": "image"
+      },
+      {
+        "path": "assets/ui/title/start_button_idle.png",
+        "bytes": 293414,
+        "ext": ".png",
+        "type": "image"
+      },
+      {
+        "path": "assets/ui/title/start_button_pressed.png",
+        "bytes": 268973,
+        "ext": ".png",
+        "type": "image"
+      },
+      {
+        "path": "assets/ui/title/title_background.png",
+        "bytes": 2086491,
+        "ext": ".png",
+        "type": "image"
+      },
+      {
+        "path": "assets/ui/title/warning_panel.png",
+        "bytes": 825658,
+        "ext": ".png",
+        "type": "image"
+      }
+    ]
+  },
+  "largestPublicAssets": [
+    {
+      "path": "assets/audio/bgm/home_cyber_room.mp3",
+      "bytes": 7526563,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/effects/boss/swamp_boss_toxic_pool_sheet.png",
+      "bytes": 3620868,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/boss/ruins_boss_summon_field_sheet.png",
+      "bytes": 3580975,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/boss/swamp_boss_summon_spore_sheet.png",
+      "bytes": 3399372,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/boss/swamp_boss_poison_warning_sheet.png",
+      "bytes": 3149274,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/boss/ruins_boss_electro_pulse_sheet.png",
+      "bytes": 2824225,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/stage_gimmicks/ruins_electro_pulse_sheet.png",
+      "bytes": 2824225,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/audio/bgm/stage_cyber_function.mp3",
+      "bytes": 2732544,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/audio/bgm/zero_clear_jingle.mp3",
+      "bytes": 2695808,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/ui/hud/hud_icon_sheet_generated_raw.png",
+      "bytes": 2684496,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/boss/swamp_boss_poison_mist_sheet.png",
+      "bytes": 2399022,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/stage_gimmicks/swamp_poison_mist_sheet.png",
+      "bytes": 2399022,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/audio/bgm/boss_midbattle.mp3",
+      "bytes": 2305879,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/audio/bgm/zero_cyber_battle.mp3",
+      "bytes": 2178719,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/maps/backgrounds/jungle_battlefield_tile.png",
+      "bytes": 2095345,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/ui/title/title_background.png",
+      "bytes": 2086491,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/ui/hud/special_icons/special_attack_raptor.png",
+      "bytes": 2063503,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/ui/hud/special_icons/special_hunting_raptor.png",
+      "bytes": 2016716,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/maps/backgrounds/ruins_battlefield_tile.png",
+      "bytes": 1982068,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/dinos/evolutions/heroes/velociraptor_zero_hero.png",
+      "bytes": 1917413,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/maps/backgrounds/swamp_battlefield_tile.png",
+      "bytes": 1876962,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/ui/home/home_background.png",
+      "bytes": 1838706,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/maps/backgrounds/volcanic_battlefield_tile.png",
+      "bytes": 1777261,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/maps/backgrounds/mvp088_originals/jungle_battlefield_tile.png",
+      "bytes": 1756600,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/audio/bgm/title_home_full.mp3",
+      "bytes": 1749044,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/audio/bgm/clear_jingle.mp3",
+      "bytes": 1687812,
+      "ext": ".mp3",
+      "type": "audio"
+    },
+    {
+      "path": "assets/maps/backgrounds/mvp088_originals/ruins_battlefield_tile.png",
+      "bytes": 1684297,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/video/intro/opening_intro.mp4",
+      "bytes": 1672513,
+      "ext": ".mp4",
+      "type": "video"
+    },
+    {
+      "path": "assets/effects/boss/jungle_boss_charge_slash_sheet.png",
+      "bytes": 1655637,
+      "ext": ".png",
+      "type": "image"
+    },
+    {
+      "path": "assets/effects/boss/jungle_boss_roar_wave_sheet.png",
+      "bytes": 1655022,
+      "ext": ".png",
+      "type": "image"
+    }
+  ],
+  "notes": [
+    "ScreenManager currently constructs title, home, research, codex, options, assetPreview, stageSelect, dinoSelect, and play at boot.",
+    "Several screen constructors call loadAssets immediately, so assets outside title can begin loading before the first title interaction.",
+    "AudioManager.preload currently includes UI SE plus title/home/stage/zero/boss/result audio at boot."
+  ]
+}
