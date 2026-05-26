@@ -3214,3 +3214,17 @@ Runtime rules:
 - A06 service worker intentionally does not precache game images, audio, JS, CSS, or HTML.
 - Manifest/icon pathing is designed for GitHub Pages under `/EVOLUTION-ZERO/`.
 - MVP-A06b keeps the same assets and only verifies endpoints/runtime behavior; no new cache-heavy assets are added.
+
+## MVP-A06c Official PWA Icon Replacement
+
+- Replaced the temporary PWA icon art with the provided official EVOLUTION ZERO app icon source.
+- Updated generated icon files in place:
+  - `public/assets/icons/icon-192.png`
+  - `public/assets/icons/icon-512.png`
+  - `public/assets/icons/icon-512-maskable.png`
+  - `public/apple-touch-icon.png`
+- Source and QA outputs:
+  - conversation attachment `ChatGPT Image 2026年5月26日 22_38_16.png`
+  - `docs/assets/pwa_icon_mvp_a06c_contact.png`
+  - `docs/assets/pwa_icon_mvp_a06c_report.json`
+- `manifest.webmanifest` and `index.html` keep the same stable icon paths.

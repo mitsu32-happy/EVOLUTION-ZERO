@@ -92,3 +92,18 @@ Full offline support, version prompts, and bulk asset caching are deferred to a 
 - Android Chrome install prompt / Add to Home screen.
 - Phone-speaker audio unlock and SE/BGM playback.
 - Physical touch drag, special button, bottom navigation, and double-tap/pinch suppression.
+
+## MVP-A06c Official App Icon
+
+- Replaced the temporary PWA icons with the provided EVOLUTION ZERO app icon artwork.
+- Generated outputs:
+  - `public/assets/icons/icon-192.png`
+  - `public/assets/icons/icon-512.png`
+  - `public/assets/icons/icon-512-maskable.png`
+  - `public/apple-touch-icon.png`
+- The standard and Apple icons preserve the supplied composition for iOS-style rounded icon masking.
+- The maskable icon keeps the dinosaur face, DNA core, and title inside a padded central safe area for Android adaptive icon crops.
+- QA artifacts:
+  - `docs/assets/pwa_icon_mvp_a06c_contact.png`
+  - `docs/assets/pwa_icon_mvp_a06c_report.json`
+- Manifest and apple touch icon references continue to use the same stable paths, so no service worker cache policy change is required.

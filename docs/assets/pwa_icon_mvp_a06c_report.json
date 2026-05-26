@@ -1,0 +1,62 @@
+{
+  "mvp": "A06c",
+  "source": "conversation attachment official EVOLUTION ZERO app icon PNG",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "outputs": [
+    {
+      "path": "public/assets/icons/icon-192.png",
+      "size": [
+        192,
+        192
+      ],
+      "purpose": "manifest any"
+    },
+    {
+      "path": "public/assets/icons/icon-512.png",
+      "size": [
+        512,
+        512
+      ],
+      "purpose": "manifest any"
+    },
+    {
+      "path": "public/assets/icons/icon-512-maskable.png",
+      "size": [
+        512,
+        512
+      ],
+      "purpose": "manifest maskable"
+    },
+    {
+      "path": "public/apple-touch-icon.png",
+      "size": [
+        180,
+        180
+      ],
+      "purpose": "iOS apple-touch-icon"
+    }
+  ],
+  "processing": {
+    "standardIcons": "preserve source composition, mild contrast/sharpness, downscale with Lanczos",
+    "maskableIcon": "source scaled to 82 percent on dark branded pad with central safe-zone guide",
+    "cachePolicy": "no service worker cache expansion; existing manifest/icon network-first only"
+  },
+  "safeArea": {
+    "maskableImportantArtWithinCenterPercent": 82,
+    "androidAdaptiveIconExpectation": "dinosaur face, DNA core, and EVOLUTION ZERO text remain inside central maskable safe zone",
+    "iosExpectation": "standard/apple icons preserve supplied rounded app-icon art; iOS applies final corner mask"
+  },
+  "manifestReferences": {
+    "manifest": "public/manifest.webmanifest",
+    "icons": [
+      "assets/icons/icon-192.png",
+      "assets/icons/icon-512.png",
+      "assets/icons/icon-512-maskable.png"
+    ],
+    "appleTouchIconLink": "apple-touch-icon.png"
+  },
+  "sourceRepositoryStorage": "source artwork is represented in docs/assets/pwa_icon_mvp_a06c_contact.png; generated_raw copy is local-only and ignored"
+}
