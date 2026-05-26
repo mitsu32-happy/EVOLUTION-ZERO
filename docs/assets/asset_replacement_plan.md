@@ -3228,3 +3228,15 @@ Runtime rules:
   - `docs/assets/pwa_icon_mvp_a06c_contact.png`
   - `docs/assets/pwa_icon_mvp_a06c_report.json`
 - `manifest.webmanifest` and `index.html` keep the same stable icon paths.
+
+## MVP-A06d PWA Update Notice
+
+- No new large assets are added.
+- Service worker cache scope remains minimal and does not precache gameplay assets.
+- Added app version/update logic in code only:
+  - `src/data/app_version.js`
+  - `src/main.js`
+  - `src/ui/title_screen.js`
+  - `src/ui/home_screen.js`
+  - `src/core/screen_manager.js`
+- Update status and auto-apply are limited to Title and Home. Result/Play keep updates pending until a safe surface is visible.

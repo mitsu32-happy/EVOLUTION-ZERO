@@ -1,5 +1,6 @@
 ﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
 import { ASSET_KEYS } from '../data/asset_manifest.js';
+import { APP_VERSION_LABEL } from '../data/app_version.js';
 import { playPressFeedback } from './ui_feedback.js';
 import { drawButtonFrame, drawScreenBackground, UI_COLORS } from './ui_theme.js';
 
@@ -18,6 +19,7 @@ const INTRO_RECT = { x: 126, y: 712, width: 138, height: 38 };
 const WARNING_RECT = { x: 16, y: 26, width: 180, height: 72 };
 const SUBTITLE_Y = 530;
 const VERSION_Y = 802;
+const UPDATE_RECT = { x: 94, y: 760, width: 202, height: 30 };
 
 function isDebugMode() {
   if (typeof window === 'undefined') {
@@ -30,13 +32,14 @@ function isDebugMode() {
 }
 
 export class TitleScreen {
-  constructor({ width, height, assetLoader = null, onStart, onIntro, onUiFeedback }) {
+  constructor({ width, height, assetLoader = null, onStart, onIntro, onUiFeedback, onApplyUpdate }) {
     this.width = width;
     this.height = height;
     this.assetLoader = assetLoader;
     this.onStart = onStart;
     this.onIntro = onIntro;
     this.onUiFeedback = onUiFeedback;
+    this.onApplyUpdate = onApplyUpdate;
     this.textures = new Map();
     this.starting = false;
     this.glowTimer = null;
@@ -55,7 +58,8 @@ export class TitleScreen {
     this.logoSprite = new Sprite(Texture.EMPTY);
     this.logoFallback = this.createText('EVOLUTION\nZERO', 56, '#f4f7f5', 330);
     this.subtitle = this.createText('進化は、死線の先にある。', 15, '#ff5a4f', 300);
-    this.version = this.createText('EVOLUTION ZERO PROTOCOL INITIATED\nVERSION 0.0.1', 10, '#c94b43', 310);
+    this.version = this.createText(`EVOLUTION ZERO PROTOCOL INITIATED\n${APP_VERSION_LABEL}`, 10, '#c94b43', 310);
+    this.updateButton = this.createUpdateButton();
     this.startButton = this.createStartButton();
     this.introButton = this.createIntroButton();
     this.loadingOverlay = this.createLoadingOverlay();
@@ -75,6 +79,7 @@ export class TitleScreen {
       this.subtitle,
       this.startButton.view,
       this.introButton.view,
+      this.updateButton.view,
       this.version,
       this.loadingOverlay.view,
     );
@@ -91,8 +96,14 @@ export class TitleScreen {
 
   show() {
     this.view.visible = true;
+    this.renderPwaUpdate();
     this.updateDebugBadge();
     this.startGlowLoop();
+  }
+
+  setPwaUpdateInfo(updateInfo = null) {
+    this.pwaUpdateInfo = updateInfo;
+    this.renderPwaUpdate();
   }
 
   hide() {
@@ -137,8 +148,10 @@ export class TitleScreen {
 
     this.startButton.view.position.set(START_RECT.x, START_RECT.y);
     this.introButton.view.position.set(INTRO_RECT.x, INTRO_RECT.y);
+    this.updateButton.view.position.set(UPDATE_RECT.x, UPDATE_RECT.y);
     this.renderFallbackStart();
     this.renderIntroButton();
+    this.renderPwaUpdate();
     this.applyTextures();
     this.renderLoadingOverlay();
   }
@@ -329,6 +342,24 @@ export class TitleScreen {
     return { view, bg, text };
   }
 
+  createUpdateButton() {
+    const view = new Container();
+    const bg = new Graphics();
+    const text = this.createText('UPDATE DETECTED', 10, '#fff0b4', UPDATE_RECT.width - 18);
+    const sub = this.createText('自動更新中...', 9, '#d7fff2', UPDATE_RECT.width - 18);
+
+    text.anchor.set(0.5);
+    text.position.set(UPDATE_RECT.width / 2, 8);
+    sub.anchor.set(0.5);
+    sub.position.set(UPDATE_RECT.width / 2, 21);
+    view.eventMode = 'none';
+    view.cursor = 'default';
+    view.visible = false;
+    view.addChild(bg, text, sub);
+
+    return { view, bg, text, sub };
+  }
+
   renderIntroButton() {
     drawButtonFrame(this.introButton.bg, INTRO_RECT.width, INTRO_RECT.height, {
       accent: UI_COLORS.dna,
@@ -336,6 +367,26 @@ export class TitleScreen {
       glow: true,
       radius: 8,
     });
+  }
+
+  renderPwaUpdate() {
+    if (!this.updateButton) {
+      return;
+    }
+
+    const available = Boolean(this.pwaUpdateInfo?.available);
+    this.updateButton.view.visible = available;
+    this.version.text = available
+      ? `EVOLUTION ZERO PROTOCOL INITIATED\n${APP_VERSION_LABEL} / UPDATING`
+      : `EVOLUTION ZERO PROTOCOL INITIATED\n${APP_VERSION_LABEL}`;
+
+    this.updateButton.bg
+      .clear()
+      .roundRect(0, 0, UPDATE_RECT.width, UPDATE_RECT.height, 8)
+      .fill({ color: 0x250608, alpha: 0.86 })
+      .stroke({ color: UI_COLORS.gold, width: 1.4, alpha: 0.9 })
+      .rect(12, UPDATE_RECT.height - 5, UPDATE_RECT.width - 24, 2)
+      .fill({ color: UI_COLORS.dna, alpha: 0.68 });
   }
 
   setStartPressed(isPressed) {
