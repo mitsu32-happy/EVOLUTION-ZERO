@@ -569,6 +569,7 @@ export const ASSET_KEYS = {
     dinoCardFrame: 'dinoSelectUi.dinoCardFrame',
     dinoCardFrameSelected: 'dinoSelectUi.dinoCardFrameSelected',
     lockedDinoFrame: 'dinoSelectUi.lockedDinoFrame',
+    spinosaurusLockedSilhouette: 'dinoSelectUi.spinosaurusLockedSilhouette',
     dinoDetailPanel: 'dinoSelectUi.dinoDetailPanel',
     combatTypeBadge: 'dinoSelectUi.combatTypeBadge',
     branchCountBadge: 'dinoSelectUi.branchCountBadge',
@@ -4340,6 +4341,11 @@ export const ASSET_MANIFEST = {
       uiAsset: true,
       note: 'MVP-073 locked dino card frame. No lock icon baked into the image.',
     },
+    spinosaurusLockedSilhouette: {
+      path: 'assets/dinos/locked/spinosaurus_locked_silhouette.png',
+      uiAsset: true,
+      note: 'MVP-A05 dedicated locked silhouette for research-gated spinosaurus selection.',
+    },
     dinoDetailPanel: {
       path: 'assets/ui/dino_select/dino_detail_panel.png',
       uiAsset: true,
@@ -4830,6 +4836,7 @@ export const AUDIO_ASSET_REFERENCES = {
     raptorAttack: 'assets/audio/se/raptor_claw_full.mp3',
     triceratopsAttack: 'assets/audio/se/triceratops_impact_full.mp3',
     tyrannosaurusBite: 'assets/audio/se/tyrannosaurus_bite_full.mp3',
+    spinosaurusWaterSlash: 'assets/audio/se/spinosaurus_water_slash.wav',
   },
   evolution: {
     warning: 'assets/audio/evolution/evolution_warning.ogg',

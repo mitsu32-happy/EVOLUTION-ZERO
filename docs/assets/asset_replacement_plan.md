@@ -3184,3 +3184,19 @@ Runtime rules:
   - player/enemy/boss outline assist: disabled at standard, subtle at bright/high
 - This is a visibility correction layer only. Do not replace background art, recolor dinosaur assets, or turn the playfield into a bright daytime look.
 - QA should prioritize swamp, volcano, ruins, ZERO, and dark Spinosaurus body readability on mobile Safari/Chrome.
+
+## MVP-A05 Play Fix Assets
+
+- Corrected normal attack effects:
+  - `public/assets/effects/attacks/evolutions/tyrannosaurus_hunting_fang_wave.png`
+  - `public/assets/effects/attacks/evolutions/tyrannosaurus_attack_bite_burst.png`
+- Backups are stored in `docs/assets/backup/mvp_a05/`.
+- `triceratops_attack_sheet.png` move row middle frames were vertically stabilized to reduce the jumping read.
+- Added locked Spinosaurus silhouette:
+  - `public/assets/dinos/locked/spinosaurus_locked_silhouette.png`
+- Added Spinosaurus water normal attack SE:
+  - `public/assets/audio/se/spinosaurus_water_slash.wav`
+- QA artifacts:
+  - `docs/assets/fix_attack_effects_mvp_a05_contact.png`
+  - `docs/assets/fix_attack_effects_mvp_a05_report.json`
+  - `docs/assets/boss_clear_effect_mvp_a05_report.md`

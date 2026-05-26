@@ -248,6 +248,7 @@ export class PlayScene {
     this.uiLayer = new Container();
     this.vignette = new Graphics();
     this.damageFlash = new Graphics();
+    this.bossDefeatFxLayer = new Graphics();
     this.levelUpUi = new LevelUpUi({
       width,
       height,
@@ -435,6 +436,7 @@ export class PlayScene {
     this.evolutionDiscoveryResult = null;
     this.resultSaveInfo = null;
     this.resultSoundPlayed = false;
+    this.bossClearSequence = null;
     this.pickupBursts = [];
     this.pickupPopups = [];
     this.damageFlashTimer = 0;
@@ -469,6 +471,7 @@ export class PlayScene {
       this.world,
       this.vignette,
       this.damageFlash,
+      this.bossDefeatFxLayer,
       this.uiLayer,
       this.resultUi.view,
       this.pauseUi.view,
@@ -526,6 +529,7 @@ export class PlayScene {
     this.levelUpUi.update?.(delta);
     this.pauseUi.update?.(delta);
     this.resultUi.update?.(delta);
+    this.updateBossClearSequence(delta);
     this.updateZeroPhaseNotice(delta);
     this.ensureRunBgm();
 
@@ -1359,7 +1363,7 @@ export class PlayScene {
     }
 
     if (pattern === 'spinosaurusWaterSlash') {
-      return 'normal_special_hunting';
+      return 'spinosaurus_water_attack_se';
     }
 
     const dinoId = this.gameState.selectedDinoId ?? this.gameState.selectedDino?.id ?? this.gameState.selectedDino;
@@ -1377,7 +1381,7 @@ export class PlayScene {
     }
 
     if (dinoId === 'spinosaurus') {
-      return 'normal_special_hunting';
+      return 'spinosaurus_water_attack_se';
     }
 
     return 'attack';
@@ -2554,7 +2558,7 @@ export class PlayScene {
           return;
         }
         if (this.shouldCompleteRunOnBossDefeat()) {
-          this.completeStageByBossClear();
+          this.queueBossClearSequence(boss, { zeroFinal: false });
         } else {
           this.audioManager?.playBgm(this.getBaseBgmId(), { unlock: false, loop: true });
         }
@@ -2575,7 +2579,7 @@ export class PlayScene {
     this.zeroBossesDefeated = Math.max(this.zeroBossesDefeated ?? 0, boss.zeroPhase ?? 1);
 
     if ((boss.zeroPhase ?? 1) >= 3) {
-      this.completeZeroRun();
+      this.queueBossClearSequence(boss, { zeroFinal: true });
       return;
     }
 
@@ -2595,6 +2599,63 @@ export class PlayScene {
     this.pauseUi.hide();
     this.gameState.markZeroClear?.();
     this.updateResultUi();
+  }
+
+  queueBossClearSequence(boss, { zeroFinal = false } = {}) {
+    if (this.bossClearSequence || this.gameState.isGameOver) {
+      return;
+    }
+
+    this.clearInput();
+    this.bossClearSequence = {
+      age: 0,
+      duration: zeroFinal ? 0.72 : 0.48,
+      bossX: boss.position.x,
+      bossY: boss.position.y,
+      radius: Math.max(72, (boss.radius ?? 54) * (zeroFinal ? 2.1 : 1.65)),
+      zeroFinal,
+      completed: false,
+    };
+    this.triggerScreenShake(zeroFinal ? 9.2 : 6.4);
+  }
+
+  updateBossClearSequence(delta) {
+    if (!this.bossClearSequence) {
+      if (this.bossDefeatFxLayer) {
+        this.bossDefeatFxLayer.clear();
+      }
+      return;
+    }
+
+    const sequence = this.bossClearSequence;
+    sequence.age += delta;
+    const progress = Math.min(1, sequence.age / sequence.duration);
+    const fade = 1 - progress;
+    const screenPoint = this.worldToScreenPoint(sequence.bossX, sequence.bossY);
+    const radius = sequence.radius * (0.55 + progress * (sequence.zeroFinal ? 1.45 : 1.05));
+    const flashAlpha = (sequence.zeroFinal ? 0.26 : 0.18) * fade;
+
+    this.bossDefeatFxLayer
+      .clear()
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: sequence.zeroFinal ? 0xb9f8ff : 0xfff0b0, alpha: flashAlpha })
+      .circle(screenPoint.x, screenPoint.y, radius)
+      .stroke({ color: sequence.zeroFinal ? 0x9df6ff : 0xffd36b, width: sequence.zeroFinal ? 7 : 5, alpha: 0.84 * fade })
+      .circle(screenPoint.x, screenPoint.y, radius * 0.58)
+      .stroke({ color: 0xffffff, width: sequence.zeroFinal ? 3.4 : 2.4, alpha: 0.68 * fade })
+      .circle(screenPoint.x, screenPoint.y, Math.max(18, radius * 0.2))
+      .fill({ color: sequence.zeroFinal ? 0x143d54 : 0x4c1f0a, alpha: 0.28 * fade });
+
+    if (progress >= 1 && !sequence.completed) {
+      sequence.completed = true;
+      this.bossDefeatFxLayer.clear();
+      this.bossClearSequence = null;
+      if (sequence.zeroFinal) {
+        this.completeZeroRun();
+      } else {
+        this.completeStageByBossClear();
+      }
+    }
   }
 
   dropBossRewards(boss) {
@@ -3531,6 +3592,13 @@ export class PlayScene {
     };
   }
 
+  worldToScreenPoint(x, y) {
+    return {
+      x: (x - this.camera.x) * WORLD_ZOOM,
+      y: (y - this.camera.y) * WORLD_ZOOM,
+    };
+  }
+
   getEvolutionShakeIntensity(tag) {
     if (tag === 'attack') {
       return 6.2;
@@ -4333,6 +4401,8 @@ export class PlayScene {
     this.evolutionDiscoveryResult = null;
     this.resultSaveInfo = null;
     this.resultSoundPlayed = false;
+    this.bossClearSequence = null;
+    this.bossDefeatFxLayer?.clear();
     this.pickupModifiers = {
       magnetRadiusMultiplier: 1,
       pullMultiplier: 1,

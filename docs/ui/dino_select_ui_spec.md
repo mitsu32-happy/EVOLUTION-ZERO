@@ -240,6 +240,13 @@ MVP-075時点では新恐竜を本番データに追加しない。
 - `debugUnlockDino=spinosaurus` または研究解放済みの場合のみ選択可能。
 - 4体目追加によりページング表示を維持し、既存3体の選択導線を変更しない。
 
+## MVP-A05 スピノサウルス未解放表示
+
+- スピノサウルス未解放時は汎用fallback恐竜ではなく、`public/assets/dinos/locked/spinosaurus_locked_silhouette.png` を表示する。
+- ロックシルエットは公式スピノheroの形を暗転処理した専用画像で、研究対象であることが分かる程度に輪郭を残す。
+- 詳細欄は `研究: スピノサウルス解析` と `研究Pt 420で解放` を維持し、出撃ボタンは無効化する。
+- 研究解放または `debugUnlockDino=spinosaurus` 後は通常hero/portraitへ切り替える。
+
 
 ## MVP-A01d ?????????
 

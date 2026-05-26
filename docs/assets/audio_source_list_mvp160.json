@@ -437,5 +437,22 @@
     "modificationAllowed": "Allowed for use in works; modified?? redistribution prohibited.",
     "confirmedAt": "2026-05-24",
     "notes": "MVP-160b bite-like low impact replacement for trexBiteShock timing."
+  },
+  {
+    "key": "spinosaurus_water_attack_se",
+    "file": "public/assets/audio/se/spinosaurus_water_slash.wav",
+    "source": "In-house procedural generation",
+    "sourceUrl": null,
+    "licenseUrl": null,
+    "termsUrl": null,
+    "author": "OpenAI Codex local generation for EVOLUTION ZERO",
+    "materialName": "Spinosaurus water slash short SE",
+    "usage": "Spinosaurus normal attack water slash SE",
+    "category": "se",
+    "creditRequired": false,
+    "commercialAllowed": true,
+    "modificationAllowed": "Project-owned procedural audio; no external source material used.",
+    "confirmedAt": "2026-05-26",
+    "notes": "Generated locally as a short mono WAV from synthesized filtered noise and pitch sweep; avoids new external licensing dependency."
   }
 ]

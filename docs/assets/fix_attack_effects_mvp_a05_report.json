@@ -1,0 +1,109 @@
+{
+  "mvp": "A05",
+  "generatedAt": "2026-05-26T19:18:29",
+  "normalAttackEffects": [
+    {
+      "key": "venatros",
+      "path": "public/assets/effects/attacks/evolutions/tyrannosaurus_hunting_fang_wave.png",
+      "backupPath": "docs/assets/backup/mvp_a05/tyrannosaurus_hunting_fang_wave.png",
+      "action": "horizontal flip, disconnected alpha fragment cleanup",
+      "direction": "right-facing source art for runtime rotation",
+      "sizeBefore": [
+        318,
+        266
+      ],
+      "bboxBefore": [
+        22,
+        22,
+        296,
+        244
+      ],
+      "sizeAfter": [
+        318,
+        266
+      ],
+      "bboxAfter": [
+        22,
+        43,
+        296,
+        244
+      ],
+      "componentsAfter": 1,
+      "largestComponentAfter": {
+        "pixels": 32235,
+        "bbox": [
+          22,
+          43,
+          296,
+          244
+        ]
+      },
+      "frameEdgeIssues": 0,
+      "neighborCellFragments": 0
+    },
+    {
+      "key": "rexvolg",
+      "path": "public/assets/effects/attacks/evolutions/tyrannosaurus_attack_bite_burst.png",
+      "backupPath": "docs/assets/backup/mvp_a05/tyrannosaurus_attack_bite_burst.png",
+      "action": "horizontal flip, disconnected alpha fragment cleanup",
+      "direction": "right-facing source art for runtime rotation",
+      "sizeBefore": [
+        373,
+        301
+      ],
+      "bboxBefore": [
+        22,
+        22,
+        361,
+        279
+      ],
+      "sizeAfter": [
+        373,
+        301
+      ],
+      "bboxAfter": [
+        44,
+        23,
+        351,
+        278
+      ],
+      "componentsAfter": 1,
+      "largestComponentAfter": {
+        "pixels": 40982,
+        "bbox": [
+          44,
+          23,
+          351,
+          278
+        ]
+      },
+      "frameEdgeIssues": 0,
+      "neighborCellFragments": 0
+    }
+  ],
+  "triceratopsAttackMove": {
+    "path": "public/assets/dinos/evolutions/sheets/triceratops_attack_sheet.png",
+    "backupPath": "docs/assets/backup/mvp_a05/triceratops_attack_sheet.png",
+    "action": "move row middle frames shifted down 26px / 24px to reduce bounce",
+    "frameEdgeIssues": []
+  },
+  "spinosaurus": {
+    "waterSe": {
+      "path": "public/assets/audio/se/spinosaurus_water_slash.wav",
+      "source": "procedural in-house generated water slash noise/sweep",
+      "sampleRate": 44100,
+      "channels": 1,
+      "durationSeconds": 0.32
+    },
+    "lockedSilhouette": {
+      "path": "public/assets/dinos/locked/spinosaurus_locked_silhouette.png",
+      "source": "official spinosaurus hero alpha transformed to dark silhouette",
+      "bbox": [
+        281,
+        79,
+        742,
+        689
+      ]
+    }
+  }
+}

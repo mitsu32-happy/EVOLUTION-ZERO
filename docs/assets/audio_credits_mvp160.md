@@ -103,3 +103,9 @@ License conditions are the same 効果音ラボ terms recorded above: commercial
 Confirmation date: 2026-05-24
 
 The player damage cue now uses `triceratops_impact_full.mp3` (`best-step-into1.mp3`, 効果音ラボ) instead of the previous slash-like `sword-slash6.mp3`. This better matches a short heavy "zushi" impact and keeps the tail short enough not to mask BGM or normal attack feedback.
+
+## MVP-A05 Spinosaurus Water SE
+
+Confirmation date: 2026-05-26
+
+`spinosaurus_water_attack_se` uses `public/assets/audio/se/spinosaurus_water_slash.wav`, a short in-house procedural water slash generated locally from filtered noise and a descending pitch sweep. No external source material, CDN playback, or additional license dependency is used. The cue is intentionally short and is routed through the existing SE volume/mute settings.

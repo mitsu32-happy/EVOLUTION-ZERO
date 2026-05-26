@@ -287,7 +287,8 @@ export class DinoSelectScreen {
     const locked = this.isDinoLocked(dino);
     const discovered = this.getDiscoveredBranchCount(dino);
     const texture = locked ? null : this.dinoTextures.get(dino.id) ?? null;
-    const heroTexture = locked ? null : this.heroTextures.get(dino.id) ?? texture;
+    const lockedHeroTexture = locked ? this.getLockedDinoTexture(dino) : null;
+    const heroTexture = locked ? lockedHeroTexture : this.heroTextures.get(dino.id) ?? texture;
 
     this.ensureDinoPageForSelection();
     this.applyUiTextures();
@@ -409,7 +410,7 @@ export class DinoSelectScreen {
       const visible = page === this.dinoPage;
       const selected = card.dino.id === this.selectedDino;
       const locked = this.isDinoLocked(card.dino);
-      const texture = locked ? null : this.dinoTextures.get(card.dino.id) ?? null;
+      const texture = locked ? this.getLockedDinoTexture(card.dino) : this.dinoTextures.get(card.dino.id) ?? null;
       const frameKey = locked
         ? 'lockedDinoFrame'
         : selected
@@ -458,6 +459,14 @@ export class DinoSelectScreen {
     const scale = Math.min(maxWidth / sourceWidth, maxHeight / sourceHeight);
     sprite.width = sourceWidth * scale;
     sprite.height = sourceHeight * scale;
+  }
+
+  getLockedDinoTexture(dino) {
+    if (dino?.id === 'spinosaurus') {
+      return this.uiTextures.get('spinosaurusLockedSilhouette') ?? null;
+    }
+
+    return null;
   }
 
   renderPageControls() {
