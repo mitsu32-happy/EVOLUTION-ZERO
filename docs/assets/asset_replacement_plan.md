@@ -3200,3 +3200,17 @@ Runtime rules:
   - `docs/assets/fix_attack_effects_mvp_a05_contact.png`
   - `docs/assets/fix_attack_effects_mvp_a05_report.json`
   - `docs/assets/boss_clear_effect_mvp_a05_report.md`
+
+## MVP-A06 PWA Install Assets
+
+- Added PWA icons:
+  - `public/assets/icons/icon-192.png`
+  - `public/assets/icons/icon-512.png`
+  - `public/assets/icons/icon-512-maskable.png`
+  - `public/apple-touch-icon.png`
+- Added install metadata:
+  - `public/manifest.webmanifest`
+  - `public/service-worker.js`
+- A06 service worker intentionally does not precache game images, audio, JS, CSS, or HTML.
+- Manifest/icon pathing is designed for GitHub Pages under `/EVOLUTION-ZERO/`.
+- MVP-A06b keeps the same assets and only verifies endpoints/runtime behavior; no new cache-heavy assets are added.

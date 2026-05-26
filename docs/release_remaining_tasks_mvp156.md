@@ -193,3 +193,17 @@ Remaining audio polish:
 - START loads `home`; Codex first open loads `codex`; play start loads `battle`, selected `stage:<id>`, selected `dino:<id>`, and `zero` only in ZERO mode.
 - Boot audio preload is reduced to UI feedback and title BGM. PWA/service worker/persistent cache remain future work.
 - QA should still include public Pages cache behavior and real-device timing because Codex browser timing APIs were limited.
+
+## MVP-A06 PWA Initial Setup
+
+- Added installable PWA metadata for GitHub Pages with `/EVOLUTION-ZERO/` start URL and scope.
+- Added iOS standalone meta tags and apple touch icon while keeping the existing safe-area and zoom prevention viewport.
+- Added a minimal service worker that avoids strong HTML/JS/asset caching; only manifest and icon files use network-first cache.
+- PWA registration runs only in production and is silent on failure so game boot, audio unlock, and touch controls are not blocked.
+- Real-device RC remains required for iPhone Safari Add to Home Screen, Android Chrome install prompt, standalone safe-area spacing, audio unlock, and touch controls.
+## MVP-A06b PWA Verification Follow-up
+
+- Local dev and production preview confirmed `/EVOLUTION-ZERO/` manifest, service worker, icon, and apple touch icon endpoints return 200.
+- Safe-area CSS now subtracts `env(safe-area-inset-*)` from the game root dimensions for standalone display.
+- Service worker remains update-safe: no full-shell, JS, HTML, image, or audio precache.
+- Real-device iPhone Safari Add to Home Screen and Android Chrome install prompt remain manual RC checks before treating PWA as fully validated.

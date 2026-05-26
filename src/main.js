@@ -10,6 +10,28 @@ const app = new Application();
 
 let screenManager;
 
+function registerServiceWorker() {
+  if (!import.meta.env.PROD || !('serviceWorker' in navigator)) {
+    return;
+  }
+
+  const baseUrl = import.meta.env.BASE_URL || '/';
+
+  const register = () => {
+    navigator.serviceWorker
+      .register(`${baseUrl}service-worker.js`, { scope: baseUrl })
+      .catch(() => {
+        // PWA registration is optional; it must never block the game boot.
+      });
+  };
+
+  if (document.readyState === 'complete') {
+    register();
+  } else {
+    window.addEventListener('load', register, { once: true });
+  }
+}
+
 function preventIfCancelable(event) {
   if (event.cancelable) {
     event.preventDefault();
@@ -97,3 +119,5 @@ async function boot() {
 boot().catch((error) => {
   console.error('[EVOLUTION ZERO] boot failed', error);
 });
+
+registerServiceWorker();
