@@ -1,4 +1,5 @@
-const CACHE_VERSION = 'mvp-a06-v1';
+const SW_VERSION = 'mvp-a06d-v1';
+const CACHE_VERSION = SW_VERSION;
 const STATIC_CACHE = `evolution-zero-pwa-${CACHE_VERSION}`;
 const CACHEABLE_URLS = [
   'manifest.webmanifest',
@@ -22,6 +23,12 @@ self.addEventListener('activate', (event) => {
       ))
       .then(() => self.clients.claim()),
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (event) => {

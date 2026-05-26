@@ -107,3 +107,17 @@ Full offline support, version prompts, and bulk asset caching are deferred to a 
   - `docs/assets/pwa_icon_mvp_a06c_contact.png`
   - `docs/assets/pwa_icon_mvp_a06c_report.json`
 - Manifest and apple touch icon references continue to use the same stable paths, so no service worker cache policy change is required.
+
+## MVP-A06d PWA Update Flow
+
+- App version text is centralized in `src/data/app_version.js`.
+- Title screen now renders `VERSION 0.0.1` from the shared version definition.
+- `src/main.js` checks service worker updates with `registration.update()`, `updatefound`, `statechange`, and existing `registration.waiting`.
+- When a new service worker reaches `waiting`, the app dispatches `evolution-zero:pwa-update`.
+- Title and Home show a small in-app update status and then apply the update automatically.
+- PlayScene and Result do not show update UI; the pending update is held until Title or Home is visible.
+- The safe-surface auto apply dispatches `evolution-zero:pwa-apply-update`.
+- The waiting service worker receives `{ type: "SKIP_WAITING" }`; `controllerchange` then reloads the page once.
+- Reload loop prevention uses an in-memory flag plus a sessionStorage one-shot guard.
+- `debugPwaUpdate=1` forces the update status and auto-apply path in dev/preview for UI verification. `debugPwaVersion=1` confirms the version event path without applying an update.
+- Service worker cache policy is unchanged: no full asset, HTML, JS, CSS, or audio precache.

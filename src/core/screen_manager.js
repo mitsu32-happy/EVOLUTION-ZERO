@@ -86,6 +86,7 @@ export class ScreenManager {
       onStart: () => this.showHome(),
       onIntro: () => this.playIntroFromTitle(),
       onUiFeedback: (id = 'ui_confirm') => this.playOptionalUi(id),
+      onApplyUpdate: () => this.applyPwaUpdate(),
     });
     this.homeScreen = null;
     this.researchScreen = null;
@@ -106,6 +107,7 @@ export class ScreenManager {
     );
     this.installTitleShortcuts();
     this.installTitleCueUnlock();
+    this.installPwaUpdateListener();
     if (this.introOverlay.shouldShowOnBoot()) {
       this.showIntroGate();
     } else {
@@ -143,7 +145,10 @@ export class ScreenManager {
       onCodex: () => this.withUiClick(() => this.showCodex()),
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
       onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
+      onApplyUpdate: () => this.applyPwaUpdate(),
     }));
+
+    this.homeScreen.setPwaUpdateInfo?.(this.getVisiblePwaUpdateInfo('home'));
 
     return this.homeScreen;
   }
@@ -325,6 +330,7 @@ export class ScreenManager {
       }
     });
     this.currentScreen = screenName;
+    this.syncPwaUpdateNotice();
     this.updateBgmForScreen(screenName);
     if (screenName === 'title') {
       this.queueTitleCue();
@@ -410,6 +416,66 @@ export class ScreenManager {
       this.audioManager.unlockAudio();
       this.playTitleCueNow();
     }, { passive: true });
+  }
+
+  installPwaUpdateListener() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('evolution-zero:pwa-update', (event) => {
+      this.pwaUpdateInfo = {
+        available: Boolean(event.detail?.available),
+        currentVersion: event.detail?.currentVersion ?? null,
+        build: event.detail?.build ?? null,
+        debug: Boolean(event.detail?.debug),
+      };
+      this.syncPwaUpdateNotice();
+      this.queuePwaAutoApply();
+    });
+  }
+
+  getVisiblePwaUpdateInfo(surfaceName = this.currentScreen) {
+    if (!this.pwaUpdateInfo?.available) {
+      return null;
+    }
+
+    if (surfaceName !== 'title' && surfaceName !== 'home') {
+      return null;
+    }
+
+    return this.pwaUpdateInfo;
+  }
+
+  syncPwaUpdateNotice() {
+    const updateInfo = this.getVisiblePwaUpdateInfo(this.currentScreen);
+    this.titleScreen?.setPwaUpdateInfo?.(this.currentScreen === 'title' ? updateInfo : null);
+    this.homeScreen?.setPwaUpdateInfo?.(this.currentScreen === 'home' ? updateInfo : null);
+    this.queuePwaAutoApply();
+  }
+
+  applyPwaUpdate() {
+    if (!this.pwaUpdateInfo?.available || typeof window === 'undefined') {
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent('evolution-zero:pwa-apply-update'));
+  }
+
+  queuePwaAutoApply() {
+    if (!this.getVisiblePwaUpdateInfo(this.currentScreen) || this.pwaUpdateApplying) {
+      return;
+    }
+
+    this.pwaUpdateApplying = true;
+    window.setTimeout(() => {
+      if (!this.getVisiblePwaUpdateInfo(this.currentScreen)) {
+        this.pwaUpdateApplying = false;
+        return;
+      }
+
+      this.applyPwaUpdate();
+    }, 700);
   }
 
   queueTitleCue() {
