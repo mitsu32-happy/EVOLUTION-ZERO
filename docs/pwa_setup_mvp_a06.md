@@ -121,3 +121,9 @@ Full offline support, version prompts, and bulk asset caching are deferred to a 
 - Reload loop prevention uses an in-memory flag plus a sessionStorage one-shot guard.
 - `debugPwaUpdate=1` forces the auto-apply path in dev/preview for UI verification. `debugPwaVersion=1` confirms the version event path without applying an update.
 - Service worker cache policy is unchanged: no full asset, HTML, JS, CSS, or audio precache.
+
+## MVP-A06e Standalone Viewport Adjustment
+
+- PWA standalone/fullscreen mode keeps the full top safe-area inset for Dynamic Island/status-bar safety, but caps the bottom gutter so the Home Screen launch uses more vertical space.
+- The standalone `#app` layout removes the 430px/844px browser cap, so the fixed 390x844 game design can scale up on taller iPhones.
+- Normal Safari/browser display keeps the conservative safe-area sizing.

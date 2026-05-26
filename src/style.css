@@ -166,6 +166,52 @@ canvas {
   -webkit-touch-callout: none;
 }
 
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  body {
+    --pwa-top-gutter: var(--safe-top);
+    --pwa-bottom-gutter: max(8px, min(14px, var(--safe-bottom)));
+    place-items: start center;
+    padding:
+      var(--pwa-top-gutter)
+      var(--safe-right)
+      var(--pwa-bottom-gutter)
+      var(--safe-left);
+  }
+
+  #app {
+    width: min(
+      calc(100vw - var(--safe-left) - var(--safe-right)),
+      calc((100dvh - var(--pwa-top-gutter) - var(--pwa-bottom-gutter)) * 390 / 844)
+    );
+    height: min(
+      calc(100dvh - var(--pwa-top-gutter) - var(--pwa-bottom-gutter)),
+      calc((100vw - var(--safe-left) - var(--safe-right)) * 844 / 390)
+    );
+  }
+}
+
+html.ez-standalone body {
+  --pwa-top-gutter: var(--safe-top);
+  --pwa-bottom-gutter: max(8px, min(14px, var(--safe-bottom)));
+  place-items: start center;
+  padding:
+    var(--pwa-top-gutter)
+    var(--safe-right)
+    var(--pwa-bottom-gutter)
+    var(--safe-left);
+}
+
+html.ez-standalone #app {
+  width: min(
+    calc(100vw - var(--safe-left) - var(--safe-right)),
+    calc((100dvh - var(--pwa-top-gutter) - var(--pwa-bottom-gutter)) * 390 / 844)
+  );
+  height: min(
+    calc(100dvh - var(--pwa-top-gutter) - var(--pwa-bottom-gutter)),
+    calc((100vw - var(--safe-left) - var(--safe-right)) * 844 / 390)
+  );
+}
+
 .ez-intro-overlay {
   position: absolute;
   inset: 0;

@@ -170,6 +170,21 @@ function installMobileInteractionGuards() {
   }, { passive: false });
 }
 
+function installStandaloneDisplayClass() {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return;
+  }
+
+  const media = window.matchMedia?.('(display-mode: standalone)');
+  const updateClass = () => {
+    const isStandalone = Boolean(media?.matches || window.navigator?.standalone);
+    document.documentElement.classList.toggle('ez-standalone', isStandalone);
+  };
+
+  updateClass();
+  media?.addEventListener?.('change', updateClass);
+}
+
 function layout() {
   const width = app.screen.width;
   const height = app.screen.height;
@@ -182,6 +197,7 @@ function layout() {
 }
 
 async function boot() {
+  installStandaloneDisplayClass();
   installMobileInteractionGuards();
 
   await app.init({

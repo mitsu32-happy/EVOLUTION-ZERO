@@ -3240,3 +3240,9 @@ Runtime rules:
   - `src/ui/home_screen.js`
   - `src/core/screen_manager.js`
 - Auto-apply is limited to Title and Home and does not show a user-facing update prompt. Result/Play keep updates pending until a safe surface is visible.
+
+## MVP-A06e PWA Standalone Viewport Adjustment
+
+- No asset changes.
+- PWA standalone/fullscreen CSS now keeps the top safe-area inset, caps the bottom gutter, and removes the previous 430px/844px app cap so iPhone Home Screen launches can use more of the available display area.
+- Standard Safari/browser layout keeps the conservative safe-area sizing.

@@ -219,3 +219,9 @@ Remaining audio polish:
 - Update apply is now forced automatically only on Title and Home.
 - Title/Home auto-apply without visible update UI; Result and active Play keep pending updates until Title or Home is visible.
 - `debugPwaUpdate=1` verifies the safe-surface auto-apply path.
+
+## MVP-A06e PWA Viewport Follow-up
+
+- Adjusted standalone/fullscreen layout to keep the top safe-area inset while capping the bottom gutter so the playable canvas can scale larger.
+- Removed the standalone 430px/844px app cap so installed PWA launches can scale the 390x844 game design larger than Safari-style browser framing.
+- Real-device iPhone PWA confirmation remains required because dynamic-island and status-bar geometry can only be fully judged on device.
