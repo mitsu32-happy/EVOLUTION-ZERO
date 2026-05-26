@@ -251,7 +251,6 @@ export class HomeScreen {
       };
     });
     this.noticeText = this.createText('', 10, '#ffd36b', 300);
-    this.updateBanner = this.createUpdateBanner();
     this.titleSelectUi = new TitleSelectUi({
       width: this.width,
       height: this.height,
@@ -307,7 +306,6 @@ export class HomeScreen {
       this.dailyTitle,
       ...this.dailyRows.flatMap((entry) => [entry.label, entry.status, entry.reward, entry.button.view]),
       this.noticeText,
-      this.updateBanner.view,
       this.bottomNav.view,
       this.titleSelectUi.view,
     );
@@ -344,13 +342,11 @@ export class HomeScreen {
   show() {
     this.setSaveData(this.saveManager?.getData?.() ?? this.saveData, this.gameState);
     this.bottomNav.setActive('home');
-    this.renderPwaUpdate();
     this.view.visible = true;
   }
 
   setPwaUpdateInfo(updateInfo = null) {
     this.pwaUpdateInfo = updateInfo;
-    this.renderPwaUpdate();
   }
 
   hide() {
@@ -1161,39 +1157,6 @@ export class HomeScreen {
     this.drawDailyButton(bg, false);
 
     return { view, bg, text };
-  }
-
-  createUpdateBanner() {
-    const view = new Container();
-    const bg = new Graphics();
-    const title = this.createText('UPDATE', 10, '#fff0b4', 58);
-    const detail = this.createText('自動更新中', 9, '#d7fff2', 108);
-
-    view.position.set(224, 92);
-    title.anchor.set(0, 0.5);
-    title.position.set(14, 14);
-    detail.anchor.set(0, 0.5);
-    detail.position.set(72, 14);
-    view.eventMode = 'none';
-    view.cursor = 'default';
-    view.visible = false;
-    view.addChild(bg, title, detail);
-
-    return { view, bg, title, detail };
-  }
-
-  renderPwaUpdate() {
-    if (!this.updateBanner) {
-      return;
-    }
-
-    const available = Boolean(this.pwaUpdateInfo?.available);
-    this.updateBanner.view.visible = available;
-    this.updateBanner.bg
-      .clear()
-      .roundRect(0, 0, 146, 28, 8)
-      .fill({ color: 0x061214, alpha: 0.9 })
-      .stroke({ color: UI_COLORS.gold, width: 1.2, alpha: 0.82 });
   }
 
   drawDailyButton(graphics, claimed) {

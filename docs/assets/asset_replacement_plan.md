@@ -3239,4 +3239,4 @@ Runtime rules:
   - `src/ui/title_screen.js`
   - `src/ui/home_screen.js`
   - `src/core/screen_manager.js`
-- Update status and auto-apply are limited to Title and Home. Result/Play keep updates pending until a safe surface is visible.
+- Auto-apply is limited to Title and Home and does not show a user-facing update prompt. Result/Play keep updates pending until a safe surface is visible.

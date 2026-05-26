@@ -211,11 +211,11 @@ Remaining audio polish:
 
 - Added shared app version constants and connected title VERSION text to that definition.
 - Added service worker update detection for waiting workers and safe-surface SKIP_WAITING application.
-- Added update status and forced apply only on title/home; active play and result keep the update pending without popup/reload.
+- Added forced apply only on title/home without a user-facing update prompt; active play and result keep the update pending without popup/reload.
 - Added `debugPwaUpdate=1` for local auto-apply verification and `debugPwaVersion=1` for version path checks.
 - Real-device PWA update flow still needs confirmation after a Pages deployment where `service-worker.js` actually changes.
 ## MVP-A06d Update Flow Adjustment
 
 - Update apply is now forced automatically only on Title and Home.
-- Result and active Play do not show update UI; pending updates wait until Title or Home is visible.
+- Title/Home auto-apply without visible update UI; Result and active Play keep pending updates until Title or Home is visible.
 - `debugPwaUpdate=1` verifies the safe-surface auto-apply path.
