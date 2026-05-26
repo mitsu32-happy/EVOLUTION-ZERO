@@ -3244,5 +3244,5 @@ Runtime rules:
 ## MVP-A06e PWA Standalone Viewport Adjustment
 
 - No asset changes.
-- PWA standalone/fullscreen CSS now keeps the top safe-area inset, caps the bottom gutter, and removes the previous 430px/844px app cap so iPhone Home Screen launches can use more of the available display area.
+- PWA standalone/fullscreen CSS now keeps the top safe-area inset, caps the bottom gutter, removes the previous 430px/844px app cap, and applies a small 1.05 top-centered visual scale so iPhone Home Screen launches can use more of the available display area.
 - Standard Safari/browser layout keeps the conservative safe-area sizing.

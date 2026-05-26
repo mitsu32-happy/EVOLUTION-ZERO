@@ -126,4 +126,5 @@ Full offline support, version prompts, and bulk asset caching are deferred to a 
 
 - PWA standalone/fullscreen mode keeps the full top safe-area inset for Dynamic Island/status-bar safety, but caps the bottom gutter so the Home Screen launch uses more vertical space.
 - The standalone `#app` layout removes the 430px/844px browser cap, so the fixed 390x844 game design can scale up on taller iPhones.
+- The standalone app frame applies a small 1.05 visual scale from the top center to spend the remaining bottom margin without changing Safari/browser sizing.
 - Normal Safari/browser display keeps the conservative safe-area sizing.

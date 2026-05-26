@@ -225,3 +225,8 @@ Remaining audio polish:
 - Adjusted standalone/fullscreen layout to keep the top safe-area inset while capping the bottom gutter so the playable canvas can scale larger.
 - Removed the standalone 430px/844px app cap so installed PWA launches can scale the 390x844 game design larger than Safari-style browser framing.
 - Real-device iPhone PWA confirmation remains required because dynamic-island and status-bar geometry can only be fully judged on device.
+
+## MVP-A06e PWA Viewport Second Pass
+
+- Added a 1.05 top-centered visual scale only for standalone/fullscreen PWA mode to spend the remaining bottom margin and bring the installed-app view closer to the target screenshot.
+- Normal Safari/browser layout is unchanged.
