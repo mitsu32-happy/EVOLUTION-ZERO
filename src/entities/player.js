@@ -119,8 +119,8 @@ export class Player {
     this.loadAsset();
   }
 
-  setSheetKey(sheetKey) {
-    if (!sheetKey || sheetKey === this.sheetKey) {
+  setSheetKey(sheetKey, { force = false } = {}) {
+    if (!sheetKey || (!force && sheetKey === this.sheetKey)) {
       return;
     }
 
@@ -136,9 +136,9 @@ export class Player {
     this.loadSheet();
   }
 
-  setAssetKeys({ assetKey = null, sheetKey = null } = {}) {
+  setAssetKeys({ assetKey = null, sheetKey = null, forceSheet = false } = {}) {
     this.setAssetKey(assetKey);
-    this.setSheetKey(sheetKey);
+    this.setSheetKey(sheetKey, { force: forceSheet });
   }
 
   loadAsset() {

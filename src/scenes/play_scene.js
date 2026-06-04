@@ -947,24 +947,7 @@ export class PlayScene {
     }
 
     if (tag === 'zero') {
-      this.syncZeroEvolutionUnlocks();
-      this.seedDebugSkills(tag);
-      this.applyDebugAdaptationAllLevelIfRequested();
-      ['speed', 'hunting', 'attack'].forEach((adaptationTag) => {
-        this.gameState.adaptationProgress[adaptationTag] = Math.max(this.gameState.adaptationProgress[adaptationTag] ?? 0, 3);
-      });
-      this.gameState.playerLevel = Math.max(this.gameState.playerLevel, 8);
-      this.gameState.detectZeroEvolutionCandidate();
-      const selectedEvolution = this.gameState.selectEvolution('zero');
-
-      if (!selectedEvolution) {
-        return;
-      }
-
-      this.gameState.isDebugEvolutionHud = true;
-      this.applySelectedEvolution(selectedEvolution);
-      this.gameState.ultimateGauge = 100;
-      this.gameState.ultimateReady = true;
+      this.applyDebugZeroEvolution();
       return;
     }
 
@@ -1002,6 +985,32 @@ export class PlayScene {
     this.applySelectedEvolution(selectedEvolution);
     this.gameState.ultimateGauge = 100;
     this.gameState.ultimateReady = true;
+
+    if (getDebugForceEvolutionTag() === 'zero') {
+      this.applyDebugZeroEvolution();
+    }
+  }
+
+  applyDebugZeroEvolution() {
+    this.syncZeroEvolutionUnlocks();
+    this.seedDebugSkills('zero');
+    this.applyDebugAdaptationAllLevelIfRequested();
+    ['speed', 'hunting', 'attack'].forEach((adaptationTag) => {
+      this.gameState.adaptationProgress[adaptationTag] = Math.max(this.gameState.adaptationProgress[adaptationTag] ?? 0, 3);
+    });
+    this.gameState.playerLevel = Math.max(this.gameState.playerLevel, 8);
+    this.gameState.detectZeroEvolutionCandidate();
+    const selectedEvolution = this.gameState.selectEvolution('zero');
+
+    if (!selectedEvolution) {
+      return null;
+    }
+
+    this.gameState.isDebugEvolutionHud = true;
+    this.applySelectedEvolution(selectedEvolution);
+    this.gameState.ultimateGauge = 100;
+    this.gameState.ultimateReady = true;
+    return selectedEvolution;
   }
 
   applyDebugEvolutionReadyIfRequested() {
@@ -3648,7 +3657,7 @@ export class PlayScene {
     const evolutionSheetKey = this.getEvolutionSheetKey(selectedEvolution);
 
     if (evolutionSheetKey) {
-      this.player.setSheetKey(evolutionSheetKey);
+      this.player.setSheetKey(evolutionSheetKey, { force: selectedEvolution.tag === 'zero' });
     }
 
     this.combatSystem.applyEvolution(selectedEvolution);
