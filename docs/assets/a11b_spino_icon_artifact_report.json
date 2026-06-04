@@ -1,0 +1,197 @@
+{
+  "items": [
+    {
+      "id": "spinosaurus",
+      "path": "public/assets/dinos/portraits/spinosaurus.png",
+      "size": [
+        512,
+        512
+      ],
+      "beforeBbox": [
+        44,
+        34,
+        467,
+        478
+      ],
+      "afterBbox": [
+        44,
+        115,
+        467,
+        478
+      ],
+      "componentCount": 153,
+      "keptArea": 105953,
+      "keptBbox": [
+        44,
+        115,
+        467,
+        478
+      ],
+      "removedArea": 8360,
+      "removedComponents": 152,
+      "largestRemoved": [
+        226,
+        34,
+        435,
+        62
+      ]
+    },
+    {
+      "id": "spinosaurus_speed",
+      "path": "public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png",
+      "size": [
+        512,
+        512
+      ],
+      "beforeBbox": [
+        34,
+        40,
+        478,
+        472
+      ],
+      "afterBbox": [
+        108,
+        124,
+        478,
+        472
+      ],
+      "componentCount": 219,
+      "keptArea": 78791,
+      "keptBbox": [
+        108,
+        124,
+        478,
+        472
+      ],
+      "removedArea": 9759,
+      "removedComponents": 218,
+      "largestRemoved": [
+        92,
+        40,
+        272,
+        70
+      ]
+    },
+    {
+      "id": "spinosaurus_hunting",
+      "path": "public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png",
+      "size": [
+        512,
+        512
+      ],
+      "beforeBbox": [
+        34,
+        40,
+        478,
+        472
+      ],
+      "afterBbox": [
+        108,
+        135,
+        478,
+        472
+      ],
+      "componentCount": 206,
+      "keptArea": 86917,
+      "keptBbox": [
+        108,
+        135,
+        478,
+        472
+      ],
+      "removedArea": 11840,
+      "removedComponents": 205,
+      "largestRemoved": [
+        98,
+        40,
+        478,
+        76
+      ]
+    },
+    {
+      "id": "spinosaurus_attack",
+      "path": "public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png",
+      "size": [
+        512,
+        512
+      ],
+      "beforeBbox": [
+        34,
+        38,
+        478,
+        473
+      ],
+      "afterBbox": [
+        73,
+        126,
+        478,
+        473
+      ],
+      "componentCount": 163,
+      "keptArea": 96710,
+      "keptBbox": [
+        73,
+        126,
+        478,
+        473
+      ],
+      "removedArea": 10692,
+      "removedComponents": 162,
+      "largestRemoved": [
+        72,
+        38,
+        474,
+        69
+      ]
+    },
+    {
+      "id": "spinosaurus_zero",
+      "path": "public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+      "size": [
+        512,
+        512
+      ],
+      "beforeBbox": [
+        66,
+        34,
+        446,
+        478
+      ],
+      "afterBbox": [
+        77,
+        118,
+        446,
+        478
+      ],
+      "componentCount": 182,
+      "keptArea": 87644,
+      "keptBbox": [
+        77,
+        118,
+        446,
+        478
+      ],
+      "removedArea": 11107,
+      "removedComponents": 181,
+      "largestRemoved": [
+        66,
+        34,
+        439,
+        69
+      ]
+    }
+  ],
+  "method": "kept largest connected alpha component for spinosaurus portrait/icon sources",
+  "displayFixes": {
+    "dinoSelectTopCard": "Uses the cleaned spinosaurus portrait source; no sprite-sheet source is referenced.",
+    "playHudBaseIcon": "Upper-left HUD remains selected/base dinosaur and now uses aspect-preserving small-frame fit.",
+    "branchIcon": "BRANCH evolution portrait uses aspect-preserving fit with smaller max bounds to avoid clipping.",
+    "codexSelector": "Codex selector already uses contain fit; cleaned portrait/source policy is documented for icon-like contexts."
+  },
+  "runtimeQa": {
+    "dinoSelectSpinosaurusCard": "checked in browser; cleaned portrait displayed with no top detached fragment",
+    "playHudBaseIcon": "checked in browser; spinosaurus base icon displayed without top detached fragment and remains base icon while evolved",
+    "branchIcon": "checked in browser with spinosaurus_zero; portrait visible inside A10b frame without clipping",
+    "browserLogs": "Vite debug connect logs only; no application error/warn records from browser dev logs"
+  }
+}

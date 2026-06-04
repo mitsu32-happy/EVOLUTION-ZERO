@@ -120,3 +120,20 @@
 - Intent: make the base velociraptor clearly feel like the hand-speed dinosaur without raising one-hit damage.
 - This should improve early-game feel while keeping evolution, adaptation skills, and ZERO balance from being dominated by a single heavy hit.
 - Recheck ZERO routes for excessive normal-attack DPS after future boss HP tuning.
+## MVP-A11 Gameplay Feel Tuning
+
+MVP-A11 shifts combat balance toward stronger late-game pressure while preserving early readability.
+
+- Early enemy count stays close to the previous public build.
+- Mid and late enemy caps rise more clearly, especially in ENDLESS and ZERO.
+- HARD and EXPERT now apply stronger enemy HP/damage multipliers.
+- Adaptation skills receive modest base buffs and stronger level scaling so level-ups are easier to feel.
+- Base dinosaur identity is more distinct: velociraptor is faster, triceratops is sturdier, tyrannosaurus hits harder, and spinosaurus controls mid-range groups.
+- Normal evolution is tuned as a clear power spike.
+- ZERO evolution gains stronger range, damage, target count, ultimate value, and boss relevance.
+
+See:
+
+- `docs/design/a11_gameplay_balance_audit.md`
+- `docs/design/a11_gameplay_balance_report.md`
+- `docs/design/a11_gameplay_balance_before_after.md`

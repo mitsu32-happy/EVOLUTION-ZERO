@@ -36,13 +36,14 @@ export class SpawnSystem {
     const difficulty = getDifficultyConfig(gameState.selectedDifficulty);
     const modeScale = this.getModeScaling(gameState);
     const modeBonus = ['endless', 'zero'].includes(gameState.selectedMode) ? modeScale.maxEnemyBonus : 0;
+    const elapsedPressureBonus = this.getElapsedEnemyPressureBonus(gameState);
     const maxEnemies = Math.min(
       gameState.selectedMode === 'endless'
         ? ENDLESS_SCALING_CONFIG.softEnemyCap
         : gameState.selectedMode === 'zero'
           ? ZERO_SCALING_CONFIG.softEnemyCap
           : this.maxEnemies + difficulty.maxEnemyBonus + modeBonus,
-      10 + difficulty.maxEnemyBonus + modeBonus + Math.floor(gameState.elapsedTime / (['endless', 'zero'].includes(gameState.selectedMode) ? 8 : 11)),
+      10 + difficulty.maxEnemyBonus + modeBonus + elapsedPressureBonus,
     );
 
     if (enemies.length >= maxEnemies) {
@@ -63,26 +64,37 @@ export class SpawnSystem {
       ...this.getSpawnPoint(camera, player),
       enemyType: this.pickEnemyType(gameState),
       assetLoader: this.assetLoader,
-      hpMultiplier: modeScale.hp,
-      damageMultiplier: modeScale.damage,
+      hpMultiplier: modeScale.hp * (difficulty.enemyHpMultiplier ?? 1),
+      damageMultiplier: modeScale.damage * (difficulty.enemyDamageMultiplier ?? 1),
       expMultiplier: modeScale.exp,
       scoreMultiplier: modeScale.score,
     }));
   }
 
+  getElapsedEnemyPressureBonus(gameState) {
+    const elapsed = gameState.elapsedTime ?? 0;
+    const isEndgameMode = ['endless', 'zero'].includes(gameState.selectedMode);
+
+    if (isEndgameMode) {
+      return Math.floor(elapsed / 9) + Math.floor(Math.max(0, elapsed - 180) / 10) + Math.floor(Math.max(0, elapsed - 300) / 8);
+    }
+
+    return Math.floor(elapsed / 14) + Math.floor(Math.max(0, elapsed - 80) / 13) + Math.floor(Math.max(0, elapsed - 140) / 10);
+  }
+
   getModeScaling(gameState) {
     if (gameState?.selectedMode === 'zero') {
       const elapsed = gameState.elapsedTime ?? 0;
-      const midPressure = Math.min(0.28, Math.max(0, elapsed - 105) / 430);
-      const latePressure = Math.min(0.34, Math.max(0, elapsed - 205) / 520);
+      const midPressure = Math.min(0.34, Math.max(0, elapsed - 95) / 380);
+      const latePressure = Math.min(0.46, Math.max(0, elapsed - 190) / 440);
       const pressure = midPressure + latePressure;
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.34,
-        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 0.68,
-        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 10),
-        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.1,
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.48,
+        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 0.86,
+        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 14),
+        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.12,
         exp: 1.24,
         score: 1.35,
       };
@@ -106,13 +118,13 @@ export class SpawnSystem {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(0.45, overtime / 900);
+    const longRunBonus = Math.min(0.62, overtime / 780);
 
     return {
       hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.34,
-      spawnRate: phase.spawnRate + longRunBonus * 0.55,
-      maxEnemyBonus: phase.maxEnemyBonus,
+      damage: phase.damage + longRunBonus * 0.44,
+      spawnRate: phase.spawnRate + longRunBonus * 0.72,
+      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 10),
       eliteBonus: phase.eliteBonus,
       exp: 1 + Math.min(0.28, elapsed / 900),
       score: 1 + Math.min(0.5, elapsed / 720),

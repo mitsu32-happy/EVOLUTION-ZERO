@@ -302,3 +302,8 @@
 - Top dinosaur selector images are nudged toward visual center by widening the image area and shifting the sprite center left.
 - The bottom explanatory note is hidden to reduce information density; card-level condition and description text remains.
 - The selector remains horizontally scrollable and should continue to tolerate 4+ dinosaurs.
+## MVP-A11b Spinosaurus Icon Source Note
+
+- Codex selector images still use contain fitting and must not reference sprite-sheet frames.
+- Spinosaurus small-icon contexts should use the cleaned portrait family after A11b so detached top fragments do not reappear.
+- If future codex-specific thumbnails are introduced, they should preserve transparent margins and avoid tight crops around fins, horns, or ZERO glow.

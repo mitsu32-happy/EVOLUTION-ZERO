@@ -749,3 +749,14 @@ Result / unlock expectations:
   - FINAL PROTOCOL: 2.62s.
 - FINAL PROTOCOL may dim the screen, but alpha should remain low enough that the player, enemies, and warning guides remain visible.
 - Boss defeat slow flash/shockwave remains the transition bridge into CLEAR / ZERO CLEAR and must not be confused with game-over feedback.
+## MVP-A11 Difficulty Tuning
+
+MVP-A11 keeps NORMAL爽快感-focused and widens the pressure gap for higher difficulties.
+
+- NORMAL remains readable and forgiving.
+- HARD makes repeated contact damage meaningfully dangerous.
+- EXPERT increases enemy durability, contact danger, and late density.
+- ENDLESS late phases scale harder after the long-run phase.
+- ZERO is intentionally heavier: enemy damage, late density, second boss pressure, final boss hazard damage, and final summons are stronger.
+
+The tuning target is not instant death. The goal is that late mistakes matter and clears feel earned.

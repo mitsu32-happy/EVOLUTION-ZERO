@@ -5406,7 +5406,7 @@ Object.assign(ASSET_MANIFEST.dinoSelectPortraits, {
   spinosaurus: {
     path: 'assets/dinos/portraits/spinosaurus.png',
     uiPortrait: true,
-    note: 'MVP-A01b dedicated spinosaurus portrait.',
+    note: 'MVP-A11b cleaned spinosaurus portrait for selector/HUD icon use; detached top fragments removed.',
   },
 });
 
@@ -5453,10 +5453,10 @@ Object.assign(ASSET_MANIFEST.evolutionHeroes, {
 });
 
 Object.assign(ASSET_MANIFEST.evolutionPortraits, {
-  spinosaurusSpeed: { path: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png', note: 'MVP-A01b dedicated Stream Spino portrait.' },
-  spinosaurusHunting: { path: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png', note: 'MVP-A01b dedicated Abyss Spino portrait.' },
-  spinosaurusAttack: { path: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png', note: 'MVP-A01b dedicated Death Spino portrait.' },
-  spinosaurusZero: { path: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png', note: 'MVP-A01b dedicated Neptorex portrait.' },
+  spinosaurusSpeed: { path: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png', note: 'MVP-A11b cleaned Stream Spino portrait for BRANCH icon use; detached top fragments removed.' },
+  spinosaurusHunting: { path: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png', note: 'MVP-A11b cleaned Abyss Spino portrait for BRANCH icon use; detached top fragments removed.' },
+  spinosaurusAttack: { path: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png', note: 'MVP-A11b cleaned Death Spino portrait for BRANCH icon use; detached top fragments removed.' },
+  spinosaurusZero: { path: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png', note: 'MVP-A11b cleaned Neptorex portrait for BRANCH icon use; detached top fragments removed.' },
 });
 
 Object.assign(ASSET_MANIFEST.evolutionSpecialIcons, {

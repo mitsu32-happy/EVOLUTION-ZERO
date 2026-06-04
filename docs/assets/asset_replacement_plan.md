@@ -3497,3 +3497,28 @@ Runtime rules:
 - QA/report artifacts:
   - `docs/assets/a12d_spinosaurus_hero_cleanup_contact.png`
   - `docs/assets/a12d_spinosaurus_hero_cleanup_report.json`
+## MVP-A11 Gameplay Tuning Note
+
+MVP-A11 did not add or replace visual assets.
+
+Changed area:
+
+- Gameplay balance only.
+- Enemy pressure, difficulty multipliers, adaptation skill values, dinosaur identities, evolution bonuses, and ZERO ultimate values.
+
+No new image/audio asset generation is required for this MVP.
+
+## MVP-A11b Spinosaurus Icon Artifact Cleanup
+
+- Cleaned detached top fragments from existing spinosaurus portrait assets used by selector/HUD icon contexts:
+  - `public/assets/dinos/portraits/spinosaurus.png`
+  - `public/assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png`
+  - `public/assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png`
+  - `public/assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png`
+  - `public/assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png`
+- No new dedicated thumbnail files were required; the existing formal portrait paths remain the runtime source.
+- HUD rendering now contains base and BRANCH portraits inside their generated frames with aspect-preserving fit.
+- QA/contact/report artifacts:
+  - `docs/assets/a11b_spino_icon_artifact_audit.md`
+  - `docs/assets/a11b_spino_icon_artifact_contact.png`
+  - `docs/assets/a11b_spino_icon_artifact_report.json`

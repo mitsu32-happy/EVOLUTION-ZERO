@@ -335,3 +335,11 @@
 - After the notice ends, the boss HP bar is restored automatically when an active boss exists.
 - If BRANCH is active, the restored boss HP bar is offset downward to avoid direct overlap with the BRANCH card.
 - QA artifacts are recorded in `docs/assets/a10d3_hud_overlap_audit.md`.
+
+## MVP-A11b Spinosaurus HUD Icon Cleanup
+
+- The upper-left HUD portrait remains fixed to the run's selected/base dinosaur via `selectedDino`; evolution portraits are shown only in the BRANCH card.
+- Spinosaurus base and evolved portrait sources were cleaned to remove detached top fragments that appeared in small icon contexts.
+- HUD base and BRANCH portraits now use aspect-preserving small-frame fitting instead of fixed square stretching.
+- BRANCH portraits use smaller bounds inside `branch_icon_frame_a10b.png` so fins, horns, heads, and ZERO outer glow do not clip.
+- QA artifacts are recorded in `docs/assets/a11b_spino_icon_artifact_audit.md`, `docs/assets/a11b_spino_icon_artifact_contact.png`, and `docs/assets/a11b_spino_icon_artifact_report.json`.

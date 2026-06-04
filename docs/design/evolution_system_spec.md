@@ -658,3 +658,13 @@ The velociraptor branch ids and display names remain unchanged. `discoveredEvolu
 
 - spinosaurus_speed / spinosaurus_hunting / spinosaurus_attack / spinosaurus_zero ?hero?portrait?4x4 sheet?special icon?special effect?A01c??????????PNG??????
 - ????3???ZERO???????????A01b????????????????????????
+## MVP-A11 Evolution Power Tuning
+
+MVP-A11 strengthens the combat payoff of evolution without changing the evolution UI or unlock flow.
+
+- Speed evolution attacks faster and acquires targets more comfortably.
+- Hunting evolution gains more reach, target access, and control value.
+- Attack evolution hits harder and pushes groups back more decisively.
+- ZERO evolution is tuned above normal evolution with stronger damage, range, target acquisition, adaptation skill synergy, and ultimate output.
+
+ZERO evolution should feel like a reward moment, while ZERO mode remains threatening enough that the reward does not trivialize the route.

@@ -2194,11 +2194,11 @@ export class PlayScene {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(0.45, overtime / 900);
+    const longRunBonus = Math.min(0.62, overtime / 780);
 
     return {
       hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.45,
+      damage: phase.damage + longRunBonus * 0.52,
       score: 1 + Math.min(0.55, elapsed / 700),
       exp: 1 + Math.min(0.25, elapsed / 900),
     };
@@ -2293,14 +2293,14 @@ export class PlayScene {
         speed: Math.max(34, Math.round((finalBase.speed ?? 38) * 0.96)),
         radius: Math.max(66, finalBase.radius ?? 62),
         attacks: {
-          melee: { ...(finalBase.attacks?.melee ?? {}), cooldown: 5.4, windup: 0.82, duration: 0.48, radius: 154, damageMultiplier: 0.84 },
+          melee: { ...(finalBase.attacks?.melee ?? {}), cooldown: 5.2, windup: 0.82, duration: 0.48, radius: 158, damageMultiplier: 0.9 },
           eclipseBeam: {
             enabled: true,
             cooldown: 8.8,
             windup: 1.2,
             active: 0.62,
             radius: 108,
-            damage: 20,
+            damage: 24,
             count: 1,
             lineLength: 560,
             lineWidth: 52,
@@ -2315,7 +2315,7 @@ export class PlayScene {
             windup: 1.25,
             active: 1.8,
             radius: 138,
-            damage: 5,
+            damage: 7,
             count: 1,
             slowMultiplier: 0.48,
             color: stageFinal.fieldColor,
@@ -2329,14 +2329,14 @@ export class PlayScene {
             windup: 1.35,
             active: 0.82,
             radius: 162,
-            damage: 23,
+            damage: 29,
             count: 1,
             color: stageFinal.burstColor,
             alpha: 0.74,
             assetKey: stageFinal.attackAssetKey,
             warningAssetKey: stageFinal.warningAssetKey ?? ASSET_KEYS.bossEffects.zeroEclipseWarningSheet,
           },
-          summon: { ...(finalBase.attacks?.summon ?? {}), enabled: true, cooldown: 15.5, windup: 1.1, count: 2, enemyType: stageFinal.summonEnemyType },
+          summon: { ...(finalBase.attacks?.summon ?? {}), enabled: true, cooldown: 14.5, windup: 1.1, count: 3, enemyType: stageFinal.summonEnemyType },
         },
         effectKeys: {
           roarWave: stageFinal.attackAssetKey,
@@ -2416,11 +2416,11 @@ export class PlayScene {
             ...(base.attacks ?? {}),
             melee: {
               ...(base.attacks?.melee ?? {}),
-              cooldown: 5.8,
+              cooldown: 5.5,
               windup: 0.72,
               duration: 0.42,
               radius: stageId === 'jungle' ? 132 : 142,
-              damageMultiplier: stageId === 'jungle' ? 0.72 : 0.78,
+              damageMultiplier: stageId === 'jungle' ? 0.76 : 0.82,
             },
             eclipseBeam: {
               enabled: true,
@@ -2428,7 +2428,7 @@ export class PlayScene {
               windup: 1.05,
               active: 0.54,
               radius: 88,
-              damage: stageId === 'jungle' ? 15 : 16,
+              damage: stageId === 'jungle' ? 17 : 18,
               count: 1,
               lineLength: stageId === 'jungle' ? 470 : 430,
               lineWidth: stageId === 'jungle' ? 44 : 50,
@@ -2443,7 +2443,7 @@ export class PlayScene {
               windup: 1.0,
               active: stageId === 'jungle' ? 1.25 : 1.75,
               radius: stageId === 'jungle' ? 112 : 124,
-              damage: stageId === 'jungle' ? 3 : 4,
+              damage: stageId === 'jungle' ? 4 : 5,
               count: 1,
               slowMultiplier: stageId === 'jungle' ? 0.72 : 0.56,
               color: secondBoss.fieldColor,
@@ -2457,7 +2457,7 @@ export class PlayScene {
               windup: 1.08,
               active: 0.62,
               radius: stageId === 'jungle' ? 134 : 146,
-              damage: stageId === 'jungle' ? 17 : 18,
+              damage: stageId === 'jungle' ? 19 : 21,
               count: 1,
               color: secondBoss.burstColor,
               alpha: 0.7,

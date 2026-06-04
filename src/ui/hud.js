@@ -464,11 +464,13 @@ export class Hud {
     this.portraitFrame.clear();
 
     if (texture) {
-      this.portraitSprite.texture = texture;
-      this.portraitSprite.position.set(TOP_HUD.portrait.x, TOP_HUD.portrait.y);
-      this.portraitSprite.width = TOP_HUD.portrait.width;
-      this.portraitSprite.height = TOP_HUD.portrait.height;
-      this.portraitSprite.visible = true;
+      const fit = this.getBasePortraitFit(gameState);
+      this.fitHudPortraitSprite(this.portraitSprite, texture, {
+        centerX: TOP_HUD.portrait.x + fit.offsetX,
+        centerY: TOP_HUD.portrait.y + fit.offsetY,
+        maxWidth: fit.maxWidth,
+        maxHeight: fit.maxHeight,
+      });
       this.portraitFallback.clear();
       return;
     }
@@ -518,12 +520,13 @@ export class Hud {
 
     this.branchIcon.clear();
     if (portraitTexture) {
-      this.branchPortraitSprite.texture = portraitTexture;
-      this.branchPortraitSprite.position.set(40, 39);
-      this.branchPortraitSprite.width = 52;
-      this.branchPortraitSprite.height = 52;
-      this.branchPortraitSprite.alpha = 1;
-      this.branchPortraitSprite.visible = true;
+      const fit = this.getBranchPortraitFit(gameState);
+      this.fitHudPortraitSprite(this.branchPortraitSprite, portraitTexture, {
+        centerX: 40 + fit.offsetX,
+        centerY: 39 + fit.offsetY,
+        maxWidth: fit.maxWidth,
+        maxHeight: fit.maxHeight,
+      });
       this.branchIconFrameSprite.visible = Boolean(this.assetTextures.branchIconFrame);
       return;
     }
@@ -536,6 +539,48 @@ export class Hud {
       .moveTo(30, 49)
       .lineTo(50, 29)
       .stroke({ color: 0xffc739, width: 3, alpha: 0.9 });
+  }
+
+  fitHudPortraitSprite(sprite, texture, { centerX, centerY, maxWidth, maxHeight, alpha = 1 }) {
+    const sourceWidth = texture?.width || maxWidth;
+    const sourceHeight = texture?.height || maxHeight;
+    const scale = Math.min(maxWidth / sourceWidth, maxHeight / sourceHeight);
+    sprite.texture = texture;
+    sprite.position.set(centerX, centerY);
+    sprite.width = sourceWidth * scale;
+    sprite.height = sourceHeight * scale;
+    sprite.alpha = alpha;
+    sprite.visible = true;
+  }
+
+  getBasePortraitFit(gameState) {
+    const dinoId = gameState?.selectedDino ?? 'velociraptor';
+    if (dinoId === 'spinosaurus') {
+      return { maxWidth: 44, maxHeight: 44, offsetX: 0, offsetY: 2 };
+    }
+
+    if (dinoId === 'triceratops') {
+      return { maxWidth: 46, maxHeight: 44, offsetX: 0, offsetY: 1 };
+    }
+
+    return { maxWidth: TOP_HUD.portrait.width, maxHeight: TOP_HUD.portrait.height, offsetX: 0, offsetY: 0 };
+  }
+
+  getBranchPortraitFit(gameState) {
+    const dinoId = gameState?.selectedEvolution?.dinoId ?? gameState?.selectedDino ?? 'velociraptor';
+    if (dinoId === 'spinosaurus') {
+      return { maxWidth: 43, maxHeight: 43, offsetX: 0, offsetY: 1 };
+    }
+
+    if (dinoId === 'triceratops') {
+      return { maxWidth: 43, maxHeight: 41, offsetX: 0, offsetY: 1 };
+    }
+
+    if (dinoId === 'tyrannosaurus') {
+      return { maxWidth: 44, maxHeight: 44, offsetX: 0, offsetY: 1 };
+    }
+
+    return { maxWidth: 45, maxHeight: 45, offsetX: 0, offsetY: 0 };
   }
 
   updateSkillSlots(ownedSkills = []) {

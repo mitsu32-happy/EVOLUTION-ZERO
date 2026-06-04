@@ -271,3 +271,10 @@ MVP-075時点では新恐竜を本番データに追加しない。
 - Unlocked dinosaur cards use portrait textures, falling back to hero textures if portraits are not loaded yet.
 - Only locked dinosaurs use silhouette/lock display.
 - Spinosaurus detail copy uses a narrower word-wrapped text area to avoid right-edge overflow on mobile width.
+
+## MVP-A11b Spinosaurus Selector Icon Cleanup
+
+- Dino select top cards continue to prefer portrait textures over hero textures.
+- The spinosaurus portrait source was cleaned because a detached top alpha fragment was visible in the small top-card icon.
+- The selector must not use sprite-sheet textures for top-card icons.
+- Spinosaurus locked state still uses `spinosaurus_locked_silhouette.png`; debug/research-unlocked state uses the cleaned portrait.
