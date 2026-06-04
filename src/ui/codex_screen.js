@@ -310,13 +310,13 @@ CODEX_DINOS.forEach((dino) => {
 
 const ZERO_ROUTE_BRANCH = {
   id: 'zero',
-  name: '???',
+  name: 'ZERO進化',
   tag: 'zero',
   image: 'assets/dinos/evolutions/zero_unknown_silhouette.png',
   codexImage: 'assets/dinos/evolutions/zero_unknown_silhouette.png',
-  desc: 'ZERO environment branch remains unparsed.',
-  condition: 'ZERO clear reward',
-  stats: 'Unknown',
+  desc: 'ZEROルートは未解析です。',
+  condition: 'ZERO CLEAR報酬で解析',
+  stats: '未解析',
   zeroRoute: true,
   locked: true,
 };
@@ -325,10 +325,11 @@ const CODEX_ASSETS = {
   backgroundV2: 'assets/ui/codex/codex_background_v2.png',
   archivePanelV2: 'assets/ui/codex/archive_panel_v2.png',
   selectedDinoPanelV3: 'assets/ui/codex/codex_selected_dino_panel_v3.png',
-  dinoSelectorCardV3: 'assets/ui/codex/codex_dino_selector_card_v3.png',
-  branchCardKnownV3: 'assets/ui/codex/codex_branch_card_known_v3.png',
-  branchCardUnknownV3: 'assets/ui/codex/codex_branch_card_unknown_v3.png',
-  originCardV3: 'assets/ui/codex/codex_origin_card_v3.png',
+  dinoSelectorCardV3: 'assets/ui/codex/codex_selector_chip_a12b.png',
+  branchCardKnownV3: 'assets/ui/codex/codex_card_known_a12b.png',
+  branchCardUnknownV3: 'assets/ui/codex/codex_card_locked_a12b.png',
+  branchCardZeroA12b: 'assets/ui/codex/codex_card_zero_a12b.png',
+  originCardV3: 'assets/ui/codex/codex_card_known_a12b.png',
   portraitFrame: 'assets/ui/codex/codex_portrait_frame.png',
   unknownSilhouette: 'assets/ui/codex/codex_unknown_dino_silhouette.png',
   background: 'assets/ui/codex/codex_background.png',
@@ -378,7 +379,7 @@ const SELECTOR = {
   gap: 118,
   width: 110,
   height: 56,
-  image: { x: 26, y: 6, width: 58, height: 30 },
+  image: { x: 10, y: 6, width: 80, height: 30 },
 };
 
 const CARD = {
@@ -460,6 +461,8 @@ export class CodexScreen {
     this.dinoSelectorViewport.addChild(this.dinoSelectorHit, this.dinoSelectorContent);
     this.dinoSelectorViewport.mask = this.dinoSelectorMask;
     this.wireDinoSelectorScroll();
+
+    this.noteText.visible = false;
 
     this.view.addChild(
       this.background,
@@ -787,9 +790,12 @@ export class CodexScreen {
     const found = dinoUnlocked && this.isBranchFound(dino, branch, discovered);
     const meta = TAG_META[branch.tag] ?? TAG_META.speed;
     card.view.position.set(CARD.x, CARD.branchYs[index]);
+    const unknownTextureFrame = branch.zeroRoute
+      ? (this.assetTextures.branchCardZeroA12b ?? this.assetTextures.branchCardUnknownV3)
+      : this.assetTextures.branchCardUnknownV3;
     const texture = found
       ? (this.assetTextures.branchCardKnownV3 ?? this.assetTextures.lineageCard)
-      : (this.assetTextures.branchCardUnknownV3 ?? this.assetTextures.lineageCard);
+      : (unknownTextureFrame ?? this.assetTextures.lineageCard);
     this.renderFrame(card, texture, meta.color, found);
     const cardTexture = this.getFirstTextureForPaths([
       branch.codexImage,
@@ -801,11 +807,11 @@ export class CodexScreen {
       ? (this.assetTextures.zeroUnknownSilhouette ?? this.assetTextures.unknownSilhouette)
       : this.assetTextures.unknownSilhouette;
     this.renderCardImage(card, found ? cardTexture : unknownTexture, !found);
-    card.name.text = found ? branch.name : '???';
-    card.tag.text = found ? this.getBranchCardTag(branch, meta) : `${meta.label} / 未解析`;
-    card.desc.text = found ? this.getBranchCardDescription(branch) : '未解析個体。詳細データ不足。';
-    card.condition.text = found ? this.getBranchCardCondition(branch) : '発見条件: 未達';
-    card.stats.text = found ? this.getBranchCardStats(branch) : '調査中';
+    card.name.text = found ? branch.name : branch.zeroRoute ? 'ZERO進化' : branch.name !== '???' ? branch.name : '未解析分岐';
+    card.tag.text = found ? this.getBranchCardTag(branch, meta) : branch.zeroRoute ? 'ZERO / 未解析' : `${meta.label} / 未解析`;
+    card.desc.text = found ? this.getBranchCardDescription(branch) : branch.zeroRoute ? 'ZERO CLEARで解析されます。' : '条件達成で詳細を表示。';
+    card.condition.text = found ? this.getBranchCardCondition(branch) : branch.zeroRoute ? '条件: ZEROルート報酬' : '条件: 進化分岐を発見';
+    card.stats.text = found ? this.getBranchCardStats(branch) : '状態: 未解析';
     this.positionCardTexts(card);
     card.name.style.fill = found ? toCssColor(meta.color) : '#8da49e';
     card.tag.style.fill = found ? '#e7fff6' : '#768580';
@@ -882,7 +888,7 @@ export class CodexScreen {
     if (conditions.length > 0) {
       return '';
     }
-    return `迚ｹ諤ｧ: ${clampText(branch.stats, 9)}`;
+    return `特徴: ${clampText(branch.stats, 9)}`;
   }
 
   getBranchCardTag(branch, meta) {

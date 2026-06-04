@@ -18,10 +18,10 @@ const RESEARCH_ASSET_PATHS = {
   dnaCorePanel: 'assets/ui/research/dna_core_panel.png',
   categoryTab: 'assets/ui/research/research_category_tab.png',
   categoryTabSelected: 'assets/ui/research/research_category_tab_selected.png',
-  cardFrame: 'assets/ui/research/research_card_frame.png',
-  cardLocked: 'assets/ui/research/research_card_locked.png',
-  cardCompleted: 'assets/ui/research/research_card_completed.png',
-  costBadge: 'assets/ui/research/research_cost_badge.png',
+  cardFrame: 'assets/ui/research/research_card_ready_a12b.png',
+  cardLocked: 'assets/ui/research/research_card_locked_a12b.png',
+  cardCompleted: 'assets/ui/research/research_card_done_a12b.png',
+  costBadge: 'assets/ui/research/research_button_study_a12b.png',
   analysisConvertPanel: 'assets/ui/research/analysis_convert_panel.png',
 };
 
@@ -63,16 +63,16 @@ const CARD_LAYOUT = {
   iconY: 23,
   iconSize: 36,
   textX: 94,
-  textWidth: 156,
-  badgeX: 264,
+  textWidth: 150,
+  badgeX: 258,
   badgeY: 47,
-  badgeWidth: 68,
+  badgeWidth: 92,
   badgeHeight: 26,
   progressX: 94,
   nameLimit: 15,
-  descLimit: 18,
+  descLimit: 20,
   effectLimit: 12,
-  stepLimit: 12,
+  stepLimit: 16,
 };
 
 const CATEGORY_COLORS = {
@@ -285,7 +285,7 @@ export class ResearchScreen {
         costPtIcon: new Sprite(Texture.EMPTY),
         costDnaText: this.createText('', 9, '#fff0b4', 42),
         costPtText: this.createText('', 9, '#d7f2ff', 42),
-        status: this.createText('', 10, '#e7fff6', CARD_LAYOUT.badgeWidth - 8),
+        status: this.createText('', 12, '#e7fff6', CARD_LAYOUT.badgeWidth - 8),
         button: new Container(),
         buttonBg: new Graphics(),
       };
@@ -669,7 +669,7 @@ export class ResearchScreen {
       card.step.text = isLocked
         ? this.truncate(item.unlockHint ?? '解析待ち', layout.stepLimit)
         : isDinoUnlock
-          ? this.truncate(`必要: ${this.formatCost(cost)}`, layout.stepLimit)
+          ? this.truncate(this.formatCost(cost), layout.stepLimit)
           : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
       const isBodyEnhancement = item.category === RESEARCH_CATEGORY_IDS.bodyEnhancement;
       const dnaIcon = this.textures.get('icon:dnaResource');
@@ -692,19 +692,19 @@ export class ResearchScreen {
       card.costPtIcon.width = 14;
       card.costPtIcon.height = 14;
       card.costPtText.position.set(bodyCostX + 62, bodyCostY - 1);
-      card.costDnaText.style.fontSize = 8;
-      card.costPtText.style.fontSize = 8;
+      card.costDnaText.style.fontSize = 9;
+      card.costPtText.style.fontSize = 9;
       card.status.text = isMax
         ? (isDinoUnlock ? '研究済み' : '完了')
         : isLocked
           ? 'LOCK'
           : canBuy
-            ? (isBodyEnhancement ? '' : this.formatCostShort(cost))
+            ? (isBodyEnhancement ? '' : isDinoUnlock ? '研究する' : this.formatCostShort(cost))
             : this.getInsufficientLabel(cost, data);
       card.status.style.fill = isLocked || (!canBuy && !isMax) ? '#ffaaa2' : isMax ? '#b6ffd0' : '#e7fff6';
       if (isBodyEnhancement) {
         card.status.position.set(layout.badgeX + layout.badgeWidth / 2, 63);
-        card.status.style.fontSize = 9;
+        card.status.style.fontSize = 10;
         card.status.style.wordWrapWidth = layout.badgeWidth - 6;
       }
       card.costBadge.visible = !!this.textures.get('costBadge');

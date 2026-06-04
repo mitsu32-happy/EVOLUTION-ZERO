@@ -282,3 +282,23 @@
 - Research-locked dinos remain selectable in the top selector, but their image is shown as an unknown silhouette until unlocked.
 - Locked dino names may be visible, but detailed lineage, stats, origin, and branch cards stay limited.
 - Spinosaurus follows this rule unless unlocked through research or debug unlock parameters.
+
+## MVP-A12 Codex Readability
+
+- Locked dinosaur and branch cards keep silhouette art but use readable state labels instead of relying only on `???`.
+- ZERO route cards show `ZERO進化` / `ZERO / 未解析` until the route is discovered.
+- Card labels use `特徴` for stat/feature text; mojibake labels are not allowed in runtime UI.
+- Conditions should explain the next action in short text, such as `条件: 進化分岐を発見` or `条件: ZEROルート報酬`.
+- A12 QA artifacts: `docs/assets/a12_codex_qa.png`, `docs/assets/a12_management_ui_contact.png`, and `docs/assets/a12_management_ui_report.json`.
+
+## MVP-A12b Codex Asset Refresh
+
+- Codex selector and lineage cards now use generated A12b management-card assets with broader dark text-safe areas.
+- Known, locked, and ZERO-unresolved cards have distinct frames: cyan known, dark locked, and violet ZERO analysis.
+- Portrait frames and silhouettes remain unchanged so discovered/undiscovered state logic stays stable.
+- The selector remains horizontally scrollable for 4+ dinosaurs and continues to avoid page-level horizontal overflow.
+## MVP-A12c Codex Selector Cleanup
+
+- Top dinosaur selector images are nudged toward visual center by widening the image area and shifting the sprite center left.
+- The bottom explanatory note is hidden to reduce information density; card-level condition and description text remains.
+- The selector remains horizontally scrollable and should continue to tolerate 4+ dinosaurs.

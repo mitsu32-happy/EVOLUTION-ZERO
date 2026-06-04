@@ -13,6 +13,7 @@ const SETTING_GROUPS = [
   {
     id: 'effects',
     label: '演出',
+    description: '画面演出と数値表示を切り替えます',
     options: [
       { key: 'screenShake', label: '揺れ' },
       { key: 'flash', label: '発光' },
@@ -23,6 +24,7 @@ const SETTING_GROUPS = [
   {
     id: 'controls',
     label: '操作',
+    description: '移動補助と危険範囲ガイドを調整します',
     options: [
       { key: 'virtualStick', label: 'スティック表示' },
       { key: 'touchAssist', label: 'タッチ補助' },
@@ -32,6 +34,7 @@ const SETTING_GROUPS = [
   {
     id: 'display',
     label: '表示',
+    description: '暗い背景やHUDの見やすさを調整します',
     options: [
       { key: 'visibilityAssist', label: '視認性補正', mode: 'visibilityCycle' },
       { key: 'backgroundDim', label: '背景暗転' },
@@ -53,8 +56,8 @@ const OPTIONS_ASSETS = {
   backgroundV2: 'assets/ui/options/options_background_v2.png',
   panelV3: 'assets/ui/options/options_panel_v3.png',
   panelV2: 'assets/ui/options/options_panel_v2.png',
-  rowPanelV3: 'assets/ui/options/option_row_panel_wide_v3.png',
-  sectionPanelV3: 'assets/ui/options/option_section_panel_v3.png',
+  rowPanelV3: 'assets/ui/options/options_slider_row_a12b.png',
+  sectionPanelV3: 'assets/ui/options/options_section_panel_a12b.png',
   sliderFrameV3: 'assets/ui/options/slider_frame_v3.png',
   sliderKnobV3: 'assets/ui/options/slider_knob_v3.png',
   toggleOnV3: 'assets/ui/options/mute_toggle_on.png',
@@ -64,6 +67,8 @@ const OPTIONS_ASSETS = {
   devButtonV3: 'assets/ui/options/dev_button_frame_v3.png',
   chipCyanV3: 'assets/ui/options/option_chip_cyan_v3.png',
   chipAmberV3: 'assets/ui/options/option_chip_amber_v3.png',
+  toggleChipOnA12b: 'assets/ui/options/options_toggle_on_a12b.png',
+  toggleChipOffA12b: 'assets/ui/options/options_toggle_off_a12b.png',
   sliderFrameV2: 'assets/ui/options/slider_frame_v2.png',
   sliderKnobV2: 'assets/ui/options/slider_knob_v2.png',
   toggleOnV2: 'assets/ui/options/toggle_on_v2.png',
@@ -236,7 +241,7 @@ export class OptionsScreen {
       this.backgroundSprite.position.set(0, 0);
       this.backgroundSprite.width = this.width;
       this.backgroundSprite.height = this.height;
-      this.backgroundSprite.alpha = 0.94;
+      this.backgroundSprite.alpha = 0.82;
       this.backgroundSprite.visible = true;
       this.background.clear();
     }
@@ -247,7 +252,7 @@ export class OptionsScreen {
       this.panelSprite.position.set(SAFE.panel.x, SAFE.panel.y);
       this.panelSprite.width = SAFE.panel.width;
       this.panelSprite.height = SAFE.panel.height;
-      this.panelSprite.alpha = 0.96;
+      this.panelSprite.alpha = 0.22;
       this.panelSprite.visible = true;
       this.panelFallback.clear();
     }
@@ -349,11 +354,13 @@ export class OptionsScreen {
       const row = this.createRowShell();
       row.group = group;
       row.label = this.createText(group.label, 14, '#f4f7f5', 64);
+      row.description = this.createText(group.description ?? '', 8, '#91aaa4', 188);
       row.chips = [];
       row.view.position.set(SAFE.rowX, 458 + index * 70);
       row.label.anchor.set(0, 0.5);
-      row.label.position.set(22, SAFE.settingHeight / 2);
-      row.view.addChild(row.label);
+      row.label.position.set(22, 22);
+      row.description.position.set(22, 39);
+      row.view.addChild(row.label, row.description);
 
       group.options.forEach((option, optionIndex) => {
         const layout = this.getChipLayout(group.id, optionIndex);
@@ -597,7 +604,7 @@ export class OptionsScreen {
         return enabled ? '発光ON' : '発光OFF';
       }
       if (option.key === 'damageNumbers') {
-        return enabled ? 'ダメージON' : 'ダメージOFF';
+        return enabled ? '数字ON' : '数字OFF';
       }
       if (option.key === 'simpleEffects') {
         return enabled ? '簡易表示ON' : '簡易表示OFF';
@@ -606,10 +613,10 @@ export class OptionsScreen {
 
     if (groupId === 'controls') {
       if (option.key === 'virtualStick') {
-        return enabled ? 'スティック表示' : 'スティック非表示';
+        return enabled ? 'スティックON' : 'スティックOFF';
       }
       if (option.key === 'touchAssist') {
-        return enabled ? 'タッチ補助ON' : 'タッチ補助OFF';
+        return enabled ? '補助ON' : '補助OFF';
       }
       if (option.key === 'controlGuide') {
         return enabled ? '警告ON' : '警告OFF';
@@ -735,18 +742,30 @@ export class OptionsScreen {
     const textColor = visibilityPalette?.text ?? (active ? '#ffffff' : '#f9d5a0');
 
     chip.bg.clear();
-    chip.frame.visible = false;
-    chip.bg
-      .roundRect(0, 0, chipWidth, CHIP_HEIGHT, 8)
-      .fill({ color: fillColor, alpha: visibilityPalette?.fillAlpha ?? (active ? 0.92 : 0.86) })
-      .stroke({ color: strokeColor, width: 1.4, alpha: visibilityPalette?.strokeAlpha ?? (active ? 0.86 : 0.72) })
-      .roundRect(4, 5, chipWidth - 8, CHIP_HEIGHT - 10, 7)
-      .fill({ color: innerColor, alpha: visibilityPalette?.innerAlpha ?? 0.58 });
+    const chipTexture = active
+      ? this.assetTextures.toggleChipOnA12b
+      : this.assetTextures.toggleChipOffA12b;
+    if (chipTexture) {
+      chip.frame.texture = chipTexture;
+      chip.frame.position.set(0, 0);
+      chip.frame.width = chipWidth;
+      chip.frame.height = CHIP_HEIGHT;
+      chip.frame.alpha = active ? 0.98 : 0.9;
+      chip.frame.visible = true;
+    } else {
+      chip.frame.visible = false;
+      chip.bg
+        .roundRect(0, 0, chipWidth, CHIP_HEIGHT, 8)
+        .fill({ color: fillColor, alpha: visibilityPalette?.fillAlpha ?? (active ? 0.92 : 0.86) })
+        .stroke({ color: strokeColor, width: 1.4, alpha: visibilityPalette?.strokeAlpha ?? (active ? 0.86 : 0.72) })
+        .roundRect(4, 5, chipWidth - 8, CHIP_HEIGHT - 10, 7)
+        .fill({ color: innerColor, alpha: visibilityPalette?.innerAlpha ?? 0.58 });
+    }
 
     chip.text.text = this.getChipText(groupId, option, rawValue);
     chip.text.position.set(chipWidth / 2, CHIP_HEIGHT / 2);
     chip.text.style.fill = textColor;
-    chip.text.style.fontSize = chip.text.text.length >= 7 ? 6.5 : 7.5;
+    chip.text.style.fontSize = chip.text.text.length >= 7 ? 7 : 8;
     chip.text.style.stroke = { color: '#020607', width: 2 };
     chip.text.style.wordWrapWidth = chipWidth - 6;
   }
@@ -802,7 +821,7 @@ export class OptionsScreen {
       row.frame.position.set(0, 0);
       row.frame.width = width;
       row.frame.height = height;
-      row.frame.alpha = 0.94;
+      row.frame.alpha = 0.52;
       row.frame.visible = true;
       return;
     }

@@ -14,3 +14,22 @@ See also `docs/ui/dna_research_ui_spec.md` for the broader DNA research layout r
 - Research Pt-only unlock cards show `研究Pt 220` instead of `D0/P220`.
 - Spinosaurus unlock failure uses `Pt不足` when Research Pt is short.
 - Completed dinosaur unlock cards show `研究済み`.
+
+## MVP-A12 Management UI Readability
+
+- Research cards prioritize readable status states: `��������`, `Pt�s��`, and `�����ς�`.
+- Research Pt-only unlocks keep the full `����Pt` label and avoid compact `D/P` style labels.
+- Card badge width and status text size were increased so the required cost and current action are easier to read on 390px mobile layouts.
+- A12 QA artifacts: `docs/assets/a12_research_qa.png`, `docs/assets/a12_management_ui_contact.png`, and `docs/assets/a12_management_ui_report.json`.
+
+## MVP-A12b Management UI Asset Refresh
+
+- Research card frames now use generated A12b assets for ready / completed / locked states.
+- The study/status badge uses the A12b primary research button frame so `研究する`, `Pt不足`, and `研究済み` read as clear actions/states.
+- Existing research background, category tabs, and research icons remain unchanged to avoid over-decorating the screen.
+- Shared asset audit/contact/report: `docs/assets/a12b_management_ui_asset_audit.md`, `docs/assets/a12b_management_ui_contact.png`, and `docs/assets/a12b_management_ui_report.json`.
+## MVP-A12c Research Text Simplification
+
+- Research card descriptions are shortened to player-facing one-line explanations.
+- Development terms such as MVP notes and implementation-target hints must not appear in runtime research cards.
+- Unlock hints use short public-facing labels such as `今後解放予定`, `研究後に候補へ追加`, and `条件を満たすと表示`.

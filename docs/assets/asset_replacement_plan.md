@@ -3445,3 +3445,55 @@ Runtime rules:
 - No new result assets were added.
 - Runtime layout moves the result subtitle line upward to avoid overlap with the main result/reward panel.
 - Existing A08 result panels/buttons remain unchanged.
+
+## MVP-A12 Management UI Readability
+
+- No new raster UI panels were generated for A12.
+- Existing research, codex, and options assets remain in use; readability was improved through runtime text, spacing, and status-label changes.
+- Added QA/contact/report artifacts:
+  - `docs/assets/a12_research_qa.png`
+  - `docs/assets/a12_codex_qa.png`
+  - `docs/assets/a12_options_qa.png`
+  - `docs/assets/a12_management_ui_contact.png`
+  - `docs/assets/a12_management_ui_report.json`
+
+## MVP-A12b Management UI Asset Refresh
+
+- Added generated common management UI source/contact/report:
+  - `docs/assets/a12b_management_ui_source_sheet.png`
+  - `docs/assets/a12b_management_ui_contact.png`
+  - `docs/assets/a12b_management_ui_report.json`
+  - `docs/assets/a12b_management_ui_asset_audit.md`
+  - `docs/assets/a12b_management_ui_asset_audit.json`
+- Added shared management assets:
+  - `public/assets/ui/management/management_panel_outer_a12b.png`
+  - `public/assets/ui/management/management_card_panel_a12b.png`
+  - `public/assets/ui/management/management_card_selected_a12b.png`
+  - `public/assets/ui/management/management_resource_chip_a12b.png`
+- Added and connected research/codex/options A12b assets:
+  - `public/assets/ui/research/research_card_ready_a12b.png`
+  - `public/assets/ui/research/research_card_done_a12b.png`
+  - `public/assets/ui/research/research_card_locked_a12b.png`
+  - `public/assets/ui/research/research_button_study_a12b.png`
+  - `public/assets/ui/codex/codex_card_known_a12b.png`
+  - `public/assets/ui/codex/codex_card_locked_a12b.png`
+  - `public/assets/ui/codex/codex_card_zero_a12b.png`
+  - `public/assets/ui/codex/codex_selector_chip_a12b.png`
+  - `public/assets/ui/options/options_section_panel_a12b.png`
+  - `public/assets/ui/options/options_slider_row_a12b.png`
+  - `public/assets/ui/options/options_toggle_on_a12b.png`
+  - `public/assets/ui/options/options_toggle_off_a12b.png`
+- Runtime text remains code-rendered. Graphics fallback is retained only for missing generated textures.
+## MVP-A12c Management UI Micro Polish
+
+- No new raster assets were generated for A12c.
+- Research copy was simplified in `src/data/research.js`.
+- Codex selector image placement was adjusted and the bottom note was removed from the normal visual flow.
+- Options screen visual density was reduced through alpha tuning rather than extra decoration.
+## MVP-A12d Spinosaurus Hero Cleanup
+
+- Spinosaurus hero and portrait PNGs were cleaned with a detached-fragment pass while preserving the main alpha component.
+- Backup copies are kept locally under `docs/assets/backup/a12d_spinosaurus_hero_cleanup/` but should not be pushed unless explicitly needed.
+- QA/report artifacts:
+  - `docs/assets/a12d_spinosaurus_hero_cleanup_contact.png`
+  - `docs/assets/a12d_spinosaurus_hero_cleanup_report.json`

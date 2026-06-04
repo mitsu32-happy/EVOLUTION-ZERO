@@ -1,0 +1,45 @@
+{
+  "mvp": "A12b",
+  "goal": "Generate and connect common management UI assets for research, codex, and options screens.",
+  "generatedAssets": [
+    "public/assets/ui/management/management_panel_outer_a12b.png",
+    "public/assets/ui/management/management_card_panel_a12b.png",
+    "public/assets/ui/management/management_card_selected_a12b.png",
+    "public/assets/ui/management/management_resource_chip_a12b.png",
+    "public/assets/ui/research/research_card_ready_a12b.png",
+    "public/assets/ui/research/research_card_done_a12b.png",
+    "public/assets/ui/research/research_card_locked_a12b.png",
+    "public/assets/ui/research/research_button_study_a12b.png",
+    "public/assets/ui/codex/codex_card_known_a12b.png",
+    "public/assets/ui/codex/codex_card_locked_a12b.png",
+    "public/assets/ui/codex/codex_card_zero_a12b.png",
+    "public/assets/ui/codex/codex_selector_chip_a12b.png",
+    "public/assets/ui/options/options_section_panel_a12b.png",
+    "public/assets/ui/options/options_slider_row_a12b.png",
+    "public/assets/ui/options/options_toggle_on_a12b.png",
+    "public/assets/ui/options/options_toggle_off_a12b.png"
+  ],
+  "connectedScreens": {
+    "research": ["readyCard", "doneCard", "lockedCard", "studyButton"],
+    "codex": ["selectorChip", "knownCard", "lockedCard", "zeroCard", "originCard"],
+    "options": ["sectionPanel", "rowPanel", "toggleOnChip", "toggleOffChip"]
+  },
+  "qualityPolicy": [
+    "Text-free generated assets",
+    "Outer-frame focused",
+    "Restrained cyan/violet glow",
+    "Broad dark text-safe centers",
+    "Graphics fallback retained only as fallback"
+  ],
+  "qa": {
+    "nodeCheck": "passed",
+    "build": "passed",
+    "runtimeConsoleErrors": 0,
+    "mobileWidth": "checked in in-app browser at narrow portrait canvas",
+    "screenshots": [
+      "docs/assets/a12b_research_qa.png",
+      "docs/assets/a12b_codex_qa.png",
+      "docs/assets/a12b_options_qa.png"
+    ]
+  }
+}

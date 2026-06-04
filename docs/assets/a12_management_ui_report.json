@@ -1,0 +1,47 @@
+{
+  "mvp": "A12",
+  "date": "2026-06-04",
+  "scope": [
+    "research_screen",
+    "codex_screen",
+    "options_screen"
+  ],
+  "assetGeneration": {
+    "generatedNewAssets": false,
+    "reason": "Existing generated panels were retained; readability was improved through layout, copy, font size, and spacing changes."
+  },
+  "screenshots": {
+    "research": "docs/assets/a12_research_qa.png",
+    "codex": "docs/assets/a12_codex_qa.png",
+    "options": "docs/assets/a12_options_qa.png",
+    "contact": "docs/assets/a12_management_ui_contact.png"
+  },
+  "changes": {
+    "research": [
+      "Expanded research status badge width.",
+      "Increased cost/status text size.",
+      "Changed dinosaur unlock CTA to show readable states such as research available, Pt shortage, and completed."
+    ],
+    "codex": [
+      "Replaced remaining mojibake label with a readable feature label.",
+      "Made locked and ZERO unparsed cards explain what unlocks the information instead of showing only question marks.",
+      "Kept silhouette behavior for locked/unparsed entries."
+    ],
+    "options": [
+      "Added short descriptions to effects, controls, and display setting groups.",
+      "Shortened chip labels for narrow mobile readability.",
+      "Slightly increased chip text size."
+    ]
+  },
+  "qa": {
+    "viewport": "in-app browser mobile game viewport",
+    "screensChecked": [
+      "research",
+      "codex",
+      "options"
+    ],
+    "runtimeConsoleErrors": 0,
+    "runtimeConsoleWarnings": 0,
+    "horizontalOverflowObserved": false
+  }
+}

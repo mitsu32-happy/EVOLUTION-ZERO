@@ -104,3 +104,22 @@
 ## fallback
 - v3アセット未読込時はv2/v1アセット、またはGraphics描画へfallbackする。
 - 音声素材未配置時でもoptional SE呼び出しによりconsole warn/errorを出さない。
+
+## MVP-A12 Options Readability
+
+- Setting groups show short descriptions so players understand what each row changes.
+- Chip labels are shortened for mobile readability while retaining the meaning of ON/OFF or cycle states.
+- Effects, controls, and display groups prioritize readable Japanese labels over compact technical labels.
+- A12 QA artifacts: `docs/assets/a12_options_qa.png`, `docs/assets/a12_management_ui_contact.png`, and `docs/assets/a12_management_ui_report.json`.
+
+## MVP-A12b Options Asset Refresh
+
+- Settings rows and section panels now use generated A12b management UI assets with cleaner interior safe areas.
+- ON/OFF and cycle chips use generated A12b toggle chip textures when available; Graphics fallback remains only for missing textures.
+- Existing background, main options panel, slider knob, and mute switch assets remain unchanged to keep the screen visually stable.
+- Chip text remains code-rendered and must stay short enough for 390px mobile layouts.
+## MVP-A12c Options Simplification
+
+- Options screen decoration is reduced by lowering the background, outer panel, and row frame alpha.
+- Setting rows, labels, descriptions, and chips remain the primary visual focus.
+- No additional frames or decorative assets were added for A12c.

@@ -236,3 +236,15 @@ Remaining audio polish:
 - Upper duplicate BEST messaging and acquired adaptation skill display are removed from the A08 result route.
 - Dedicated A08 result panels/buttons/headers were generated and connected through the manifest.
 - Remaining manual RC: physical-device CLEAR / GAME OVER / ENDLESS / ZERO CLEAR pass, especially dense ZERO rewards on iPhone standalone.
+## MVP-A12 Management UI Readability
+
+- Research, Codex, and Options readability pass completed.
+- Future candidate: generate a shared management-card asset set only if the existing panels cannot support longer post-release content.
+- Combat balance, new dinosaurs, ruins ZERO, and PWA changes were intentionally left out of A12.
+
+## MVP-A12b Management UI Asset Refresh
+
+- Generated and connected shared management UI assets for Research, Codex, and Options.
+- Research cards, Codex lineage cards/selector, and Options rows/chips now use A12b generated panels where readability was weakest.
+- The shared asset set is intentionally small and reusable; future management screens should prefer these common panels before adding new one-off frames.
+- Remaining RC: physical iPhone/PWA check for Japanese text rasterization and touch comfort on Research/Codex/Options.

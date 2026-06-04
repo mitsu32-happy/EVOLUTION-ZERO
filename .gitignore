@@ -5,6 +5,10 @@ tmp/
 docs/assets/backup/
 docs/assets/generated_raw/
 
+__pycache__/
+*.pyc
+*.pyo
+
 *.local
 *.log
 npm-debug.log*

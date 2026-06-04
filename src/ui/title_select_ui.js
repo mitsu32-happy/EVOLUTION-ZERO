@@ -83,8 +83,16 @@ export class TitleSelectUi {
     this.backdrop.eventMode = 'static';
     this.backdrop.hitArea = new Rectangle(0, 0, this.width, this.height);
     this.backdrop.cursor = 'default';
-    this.backdrop.on('pointertap', (event) => event?.stopPropagation?.());
+    this.backdrop.on('pointertap', () => this.close());
     this.backdrop.on('pointerup', (event) => event?.stopPropagation?.());
+    this.panel.eventMode = 'static';
+    this.panel.hitArea = new Rectangle(24, 92, this.width - 48, 632);
+    this.panel.on('pointertap', (event) => event?.stopPropagation?.());
+    this.panel.on('pointerup', (event) => event?.stopPropagation?.());
+    this.panelSprite.eventMode = 'static';
+    this.panelSprite.hitArea = new Rectangle(0, 0, this.width - 48, 632);
+    this.panelSprite.on('pointertap', (event) => event?.stopPropagation?.());
+    this.panelSprite.on('pointerup', (event) => event?.stopPropagation?.());
 
     this.title.anchor.set(0.5, 0);
     this.title.position.set(this.width / 2, 116);
@@ -236,7 +244,8 @@ export class TitleSelectUi {
     this.page = Math.max(0, Math.min(pageMax, this.page));
     this.drawTab(this.titleTab, this.activeTab === 'titles');
     this.drawTab(this.frameTab, this.activeTab === 'frames');
-    this.drawActionButton(this.closeButton);
+    this.closeButton.view.visible = false;
+    this.closeButton.view.eventMode = 'none';
     this.drawActionButton(this.prevButton);
     this.drawActionButton(this.nextButton);
     this.pageText.text = `${this.page + 1} / ${pageMax + 1}`;

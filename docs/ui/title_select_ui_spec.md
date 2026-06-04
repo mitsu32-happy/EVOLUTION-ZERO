@@ -70,3 +70,9 @@
   - `volcano_zero_frame` -> `title_frame_zero_volcano.png`
   - `swamp_zero_frame` -> `title_frame_zero_swamp.png`
 - Contact sheet for QA: `docs/assets/title_frames_mvp160f_contact.png`.
+
+## MVP-A12d Title Select Close Behavior
+
+- The title/frame selection modal no longer shows the close button.
+- Tapping outside the modal panel closes it, matching the News modal rule.
+- Taps inside the panel, tabs, title/frame rows, paging controls, and equip buttons must not close the modal accidentally.

@@ -1,0 +1,50 @@
+{
+  "mvp": "A12b",
+  "scope": ["research", "codex", "options"],
+  "classification": [
+    {
+      "area": "common",
+      "parts": ["outerPanel", "cardPanel", "selectedCardPanel", "resourceChip"],
+      "classification": "commonized",
+      "action": "generated"
+    },
+    {
+      "area": "research",
+      "parts": ["background", "categoryTabs", "icons"],
+      "classification": "keepExisting",
+      "action": "unchanged"
+    },
+    {
+      "area": "research",
+      "parts": ["readyCard", "doneCard", "lockedCard", "studyButton"],
+      "classification": "assetGenerationNeeded",
+      "action": "generatedAndConnected"
+    },
+    {
+      "area": "codex",
+      "parts": ["background", "portraitFrame", "silhouette"],
+      "classification": "keepExisting",
+      "action": "unchanged"
+    },
+    {
+      "area": "codex",
+      "parts": ["knownCard", "lockedCard", "zeroCard", "selectorChip"],
+      "classification": "assetGenerationNeeded",
+      "action": "generatedAndConnected"
+    },
+    {
+      "area": "options",
+      "parts": ["background", "mainPanel", "sliderKnob"],
+      "classification": "keepExisting",
+      "action": "unchanged"
+    },
+    {
+      "area": "options",
+      "parts": ["sectionPanel", "rowPanel", "toggleOnChip", "toggleOffChip"],
+      "classification": "assetGenerationNeeded",
+      "action": "generatedAndConnected"
+    }
+  ],
+  "sourceSheet": "docs/assets/a12b_management_ui_source_sheet.png",
+  "contactSheet": "docs/assets/a12b_management_ui_contact.png"
+}

@@ -564,3 +564,8 @@ MVP-082 ではホーム画面の主要操作に短い押下フィードバック
 - The old Graphics triangle remains fallback only when the A10 left icon is unavailable.
 - Runtime text stays code-rendered so `出撃` and `ステージ選択へ` remain crisp on mobile/PWA displays.
 - QA artifact: `docs/assets/a10_ui_contact.png`.
+
+## MVP-A12d News / Title Modal Polish
+
+- News receives a new public-facing update entry for the management UI, evolution UI, Spinosaurus image cleanup, and title modal behavior polish.
+- Title settings now close by tapping outside the panel instead of using a visible close button.
