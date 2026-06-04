@@ -1,0 +1,373 @@
+{
+  "source": "docs/assets/a11d2_ignicera_chromakey_source.png",
+  "target": "public/assets/dinos/evolutions/sheets/triceratops_zero_sheet.png",
+  "backup": "docs/assets/backup/a11d2_ignicera/triceratops_zero_sheet_before_a11d2.png",
+  "keyColor": [
+    237,
+    18,
+    237
+  ],
+  "removedConnectedBackgroundPixels": 781370,
+  "frameEdgeIssues": 0,
+  "frames": [
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        9,
+        61,
+        244,
+        236
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        6,
+        60,
+        256,
+        236
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        0,
+        61,
+        256,
+        236
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "bbox": [
+        0,
+        62,
+        231,
+        236
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        13,
+        67,
+        247,
+        216
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        10,
+        62,
+        250,
+        216
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        10,
+        66,
+        256,
+        216
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "bbox": [
+        0,
+        67,
+        225,
+        213
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        7,
+        74,
+        241,
+        198
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        6,
+        63,
+        244,
+        196
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        6,
+        56,
+        256,
+        206
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "bbox": [
+        0,
+        83,
+        246,
+        199
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "bbox": [
+        13,
+        68,
+        244,
+        188
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "bbox": [
+        9,
+        78,
+        253,
+        188
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "bbox": [
+        0,
+        84,
+        256,
+        188
+      ],
+      "edgeIssue": true
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "bbox": [
+        0,
+        102,
+        241,
+        190
+      ],
+      "edgeIssue": true
+    }
+  ],
+  "decision": "Replaced the player triceratops_zero_sheet with a new chroma-keyed player-scale Ignicera sheet. Hero and portrait were kept.",
+  "frameEdgeIssuesAfterCellCleanup": 0,
+  "cellCleanup": "Removed small edge-touching fragments per cell, then refit each cell inside a 232x232 safe box.",
+  "framesAfterCellCleanup": [
+    {
+      "row": 1,
+      "col": 1,
+      "bbox": [
+        12,
+        41,
+        244,
+        214
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "bbox": [
+        13,
+        40,
+        243,
+        216
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "bbox": [
+        12,
+        42,
+        244,
+        213
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "bbox": [
+        12,
+        41,
+        243,
+        215
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "bbox": [
+        12,
+        54,
+        244,
+        202
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "bbox": [
+        12,
+        53,
+        244,
+        202
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "bbox": [
+        12,
+        55,
+        244,
+        201
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "bbox": [
+        15,
+        55,
+        240,
+        201
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "bbox": [
+        12,
+        66,
+        244,
+        189
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "bbox": [
+        12,
+        74,
+        244,
+        182
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "bbox": [
+        18,
+        63,
+        238,
+        193
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "bbox": [
+        14,
+        70,
+        242,
+        186
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "bbox": [
+        12,
+        68,
+        243,
+        188
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "bbox": [
+        12,
+        75,
+        244,
+        180
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "bbox": [
+        12,
+        76,
+        244,
+        179
+      ],
+      "edgeIssue": false
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "bbox": [
+        12,
+        85,
+        244,
+        170
+      ],
+      "edgeIssue": false
+    }
+  ],
+  "initialFrameEdgeIssuesAfterChroma": 9,
+  "qaSummary": "Adopted sheet reads closer to Ignicera hero/portrait, remains distinct from volcano ZERO boss, and has 0 frame edge issues after per-cell cleanup."
+}

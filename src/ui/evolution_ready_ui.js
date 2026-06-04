@@ -31,6 +31,7 @@ const EVOLUTION_CARD_TYPE_CHIP_ASSET = 'assets/ui/selection/evolution_card_type_
 const EVOLUTION_CARD_SELECT_BUTTON_ASSET = 'assets/ui/selection/evolution_card_button_select_a10.png';
 const EVOLUTION_SELECT_BACKGROUND_ASSET = 'assets/ui/selection/evolution_select_background_a10b.png';
 const EVOLUTION_SELECT_OVERLAY_ASSET = 'assets/ui/selection/evolution_select_overlay_a10b.png';
+const CANDIDATE_PORTRAIT_BOUNDS = { width: 70, height: 70 };
 
 function assetUrl(path) {
   return `${import.meta.env.BASE_URL}${path}`;
@@ -193,7 +194,10 @@ export class EvolutionReadyUi {
       card.image.texture = imageTexture ?? Texture.EMPTY;
       card.image.visible = !!imageTexture;
       if (imageTexture) {
-        const scale = Math.min(88 / imageTexture.width, 88 / imageTexture.height);
+        const scale = Math.min(
+          CANDIDATE_PORTRAIT_BOUNDS.width / imageTexture.width,
+          CANDIDATE_PORTRAIT_BOUNDS.height / imageTexture.height,
+        );
         card.image.width = imageTexture.width * scale;
         card.image.height = imageTexture.height * scale;
         if (this.portraitFrameTexture) {

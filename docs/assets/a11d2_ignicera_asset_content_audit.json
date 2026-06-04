@@ -1,0 +1,6 @@
+{
+  "hero": "public/assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+  "portrait": "public/assets/dinos/evolutions/portraits/triceratops_zero_portrait.png",
+  "sheet": "public/assets/dinos/evolutions/sheets/triceratops_zero_sheet.png",
+  "note": "Existing sheet cells are compared against hero/portrait and volcano ZERO boss first cells."
+}

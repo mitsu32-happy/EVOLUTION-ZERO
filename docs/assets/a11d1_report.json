@@ -1,0 +1,110 @@
+{
+  "summary": "Ignicera player assets and volcano ZERO boss assets are separate manifest paths; comparison uses first sheet cell for sheets.",
+  "items": [
+    {
+      "label": "player triceratops_zero_sheet",
+      "path": "public/assets/dinos/evolutions/sheets/triceratops_zero_sheet.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "previewKind": "sheet",
+      "alphaBbox": [
+        22,
+        41,
+        233,
+        218
+      ]
+    },
+    {
+      "label": "player triceratops_zero_hero",
+      "path": "public/assets/dinos/evolutions/heroes/triceratops_zero_hero.png",
+      "sourceSize": [
+        1024,
+        768
+      ],
+      "previewKind": "image",
+      "alphaBbox": [
+        124,
+        69,
+        899,
+        698
+      ]
+    },
+    {
+      "label": "player triceratops_zero_portrait",
+      "path": "public/assets/dinos/evolutions/portraits/triceratops_zero_portrait.png",
+      "sourceSize": [
+        512,
+        512
+      ],
+      "previewKind": "image",
+      "alphaBbox": [
+        46,
+        85,
+        465,
+        426
+      ]
+    },
+    {
+      "label": "boss volcano_zero_second_sheet",
+      "path": "public/assets/enemies/bosses/volcano_zero_second_boss_sheet.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "previewKind": "sheet",
+      "alphaBbox": [
+        16,
+        91,
+        240,
+        226
+      ]
+    },
+    {
+      "label": "boss volcano_zero_final_sheet",
+      "path": "public/assets/enemies/bosses/volcano_zero_final_boss_sheet.png",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "previewKind": "sheet",
+      "alphaBbox": [
+        26,
+        63,
+        230,
+        226
+      ]
+    },
+    {
+      "label": "boss volcano_zero_second_portrait",
+      "path": "public/assets/enemies/bosses/volcano_zero_second_boss_portrait.png",
+      "sourceSize": [
+        512,
+        512
+      ],
+      "previewKind": "image",
+      "alphaBbox": [
+        46,
+        129,
+        465,
+        382
+      ]
+    },
+    {
+      "label": "boss volcano_zero_final_portrait",
+      "path": "public/assets/enemies/bosses/volcano_zero_final_boss_portrait.png",
+      "sourceSize": [
+        512,
+        512
+      ],
+      "previewKind": "image",
+      "alphaBbox": [
+        46,
+        88,
+        465,
+        423
+      ]
+    }
+  ]
+}

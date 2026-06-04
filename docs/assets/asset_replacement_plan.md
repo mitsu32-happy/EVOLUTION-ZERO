@@ -3522,3 +3522,21 @@ No new image/audio asset generation is required for this MVP.
   - `docs/assets/a11b_spino_icon_artifact_audit.md`
   - `docs/assets/a11b_spino_icon_artifact_contact.png`
   - `docs/assets/a11b_spino_icon_artifact_report.json`
+
+## MVP-A11d Evolution / Attack Display Fix
+
+- No new assets were generated.
+- Evolution candidate portraits now use smaller safe-box fitting in the existing A10 card frame.
+- Triceratops ZERO is connected to the formal `triceratopsZero` sprite sheet.
+- Spinosaurus normal attack data was adjusted so the formal water slash effect better matches its hit area near the player.
+
+## MVP-A11d.2 Ignicera Player Sheet Replacement
+
+- Replaced `public/assets/dinos/evolutions/sheets/triceratops_zero_sheet.png` because the old player sheet read too much like a different / boss-like character in gameplay.
+- Kept the existing Ignicera hero and portrait assets.
+- The new sheet is a player-scale triceratops ZERO form with broad frill, three horns, volcanic armor, lava cracks, and purple ZERO core.
+- Chroma-key removal and per-cell cleanup were applied; final frame edge issues are 0.
+- QA artifacts:
+  - `docs/assets/a11d2_ignicera_asset_content_audit.md`
+  - `docs/assets/a11d2_ignicera_contact.png`
+  - `docs/assets/a11d2_ignicera_report.json`

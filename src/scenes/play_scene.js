@@ -4670,6 +4670,10 @@ export class PlayScene {
     const tag = selectedEvolution?.tag ?? this.gameState.selectedEvolution?.tag;
 
     if (dinoId === 'triceratops') {
+      if (tag === 'zero') {
+        return ASSET_KEYS.evolutionSheets?.triceratopsZero ?? ASSET_KEYS.evolutionSheets?.triceratopsAttack ?? null;
+      }
+
       if (tag === 'speed') {
         return ASSET_KEYS.evolutionSheets?.triceratopsSpeed ?? null;
       }

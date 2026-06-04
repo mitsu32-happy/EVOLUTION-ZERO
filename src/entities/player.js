@@ -131,6 +131,8 @@ export class Player {
     this.animationFrameIndex = 0;
     this.animationTimer = 0;
     this.animationLocked = false;
+    this.assetSprite.visible = false;
+    this.placeholder.visible = true;
     this.loadSheet();
   }
 

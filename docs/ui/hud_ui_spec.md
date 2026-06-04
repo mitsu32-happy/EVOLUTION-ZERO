@@ -343,3 +343,9 @@
 - HUD base and BRANCH portraits now use aspect-preserving small-frame fitting instead of fixed square stretching.
 - BRANCH portraits use smaller bounds inside `branch_icon_frame_a10b.png` so fins, horns, heads, and ZERO outer glow do not clip.
 - QA artifacts are recorded in `docs/assets/a11b_spino_icon_artifact_audit.md`, `docs/assets/a11b_spino_icon_artifact_contact.png`, and `docs/assets/a11b_spino_icon_artifact_report.json`.
+
+## MVP-A11d Evolution Visual Guard
+
+- The upper-left HUD remains fixed to the base dinosaur after evolution.
+- BRANCH remains responsible for evolved portrait/name display.
+- Player sprite sheet switching now includes triceratops ZERO and hides stale sheet art while the new sheet resolves, preventing the pre-evolution body from lingering during the branch transition.

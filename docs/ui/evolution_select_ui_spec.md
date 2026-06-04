@@ -54,3 +54,9 @@
 - Evolution candidate cards keep the A10 frame assets but render the candidate portrait above the portrait frame interior so the image is visible in the actual card.
 - Candidate image loading still prefers `portraitPath`, then `heroPath`, then any fallback candidate image.
 - `debugEvolutionReady=<tag>` is available as a QA-only route to open the candidate screen without auto-selecting a branch.
+
+## MVP-A11d Candidate Icon Fit
+
+- Candidate portrait/icon art is fitted into a smaller 70x70 safe box inside the portrait frame.
+- The reduced contain fit prevents horns, fins, heads, tails, and ZERO glow from clipping in the evolution selection card.
+- Candidate cards still prefer `portraitPath` before `heroPath`.

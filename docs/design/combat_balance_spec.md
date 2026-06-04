@@ -137,3 +137,9 @@ See:
 - `docs/design/a11_gameplay_balance_audit.md`
 - `docs/design/a11_gameplay_balance_report.md`
 - `docs/design/a11_gameplay_balance_before_after.md`
+
+## MVP-A11d Spinosaurus Normal Attack Alignment
+
+- `spinosaurusWaterSlash` keeps its mid-range control role, but its cone origin is pulled closer to the player.
+- The water slash visual center is also moved closer so the effect and hit area agree more clearly.
+- Range/angle changes are intentionally small; the goal is to catch close frontal enemies reliably without turning the base attack into a full-screen sweep.
