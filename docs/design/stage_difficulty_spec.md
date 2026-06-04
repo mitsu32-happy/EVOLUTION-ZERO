@@ -736,3 +736,16 @@ Result / unlock expectations:
   - Jungle NORMAL should stay approachable for first-time players.
   - Jungle HARD, EXPERT, and ZERO should increasingly punish runs that do not invest in adaptation skills and research upgrades.
   - ZERO should feel more dangerous in the mid-to-late run without causing immediate early collapse.
+
+## MVP-A09 Boss / ZERO Notice Timing
+
+- Standard boss arrival remains non-blocking and does not pause the run.
+- Standard boss notice target duration is 1.95s.
+- ZERO start / PHASE / FINAL notices are non-blocking and must not duplicate the normal boss banner.
+- ZERO timing targets:
+  - ZERO MODE start: 1.90s.
+  - PHASE 1: 2.02s.
+  - PHASE 2: 2.12s.
+  - FINAL PROTOCOL: 2.62s.
+- FINAL PROTOCOL may dim the screen, but alpha should remain low enough that the player, enemies, and warning guides remain visible.
+- Boss defeat slow flash/shockwave remains the transition bridge into CLEAR / ZERO CLEAR and must not be confused with game-over feedback.

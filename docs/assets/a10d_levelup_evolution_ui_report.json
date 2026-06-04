@@ -1,0 +1,23 @@
+{
+  "mvp": "A10d",
+  "contactSheet": "docs/assets/a10d_levelup_evolution_ui_contact.png",
+  "audit": "docs/assets/a10d_stat_card_icon_audit.md",
+  "adoptedPolicy": "Policy A: A10c stat cards use embedded icons; code-side stat icon overlays are disabled for normal tagless stat cards.",
+  "changes": [
+    "Stopped separate icon overlay for normal stat upgrade cards to prevent double icons and position drift.",
+    "Shifted stat card text right so it does not collide with embedded card icons.",
+    "Added STATUS / ???? label for stat upgrade cards to distinguish them from adaptation cards.",
+    "Passed branch heroPath/portraitPath into evolution candidate UI.",
+    "Evolution candidate UI now prefers portraitPath before heroPath.",
+    "BRANCH HUD keeps portrait rendering and fallback only for missing texture cases."
+  ],
+  "portraitChecks": {
+    "evolutionCandidateCards": "candidate portraitPath is now passed from branch data and preferred by the card image loader",
+    "branchHud": "HUD getPortraitTexture covers velociraptor/triceratops/tyrannosaurus/spinosaurus and ZERO branch portraits"
+  },
+  "qa": {
+    "nodeCheck": "passed: levelup_ui.js, evolution_ready_ui.js, hud.js, play_scene.js, asset_manifest.js",
+    "build": "passed: npm.cmd run build",
+    "browserRuntime": "passed: localhost:5175 A10d route console error/warn count 0"
+  }
+}

@@ -244,7 +244,14 @@ MVP-075時点では新恐竜を本番データに追加しない。
 
 - スピノサウルス未解放時は汎用fallback恐竜ではなく、`public/assets/dinos/locked/spinosaurus_locked_silhouette.png` を表示する。
 - ロックシルエットは公式スピノheroの形を暗転処理した専用画像で、研究対象であることが分かる程度に輪郭を残す。
-- 詳細欄は `研究: スピノサウルス解析` と `研究Pt 420で解放` を維持し、出撃ボタンは無効化する。
+- 詳細欄は `研究: スピノサウルス解析` と `研究Pt 220で解放` を維持し、出撃ボタンは無効化する。
+
+## MVP-A07 Dino Select Readability
+
+- Dino type descriptions are short role labels: speed, defense, firepower, and mid-range.
+- Locked dinos show their name instead of `???`; image display remains silhouette/lock style.
+- Dino select opens on the same base dino selected on Home when available.
+- Wording such as `移動は重め` is normalized to `移動が遅い`.
 - 研究解放または `debugUnlockDino=spinosaurus` 後は通常hero/portraitへ切り替える。
 
 
@@ -252,3 +259,15 @@ MVP-075時点では新恐竜を本番データに追加しない。
 
 - ???????????????hero??A01c???????????A01d???????
 - ????LOCK?debugUnlockDino=spinosaurus??????????????A01b????????
+## MVP-A07b Spinosaurus Locked State
+
+- Spinosaurus remains locked unless `unlockedDinos.spinosaurus.unlocked` is saved or `debugUnlockDino=spinosaurus` is present.
+- Locked Spinosaurus cards use the dedicated silhouette and keep the public name visible.
+- Card portrait sprites are masked inside the card art safe area to prevent top-edge fragments or neighboring image pieces from appearing.
+- Debug unlock behavior is intentionally limited to QA URLs and should not change the saved research state.
+
+## MVP-A07c Dino Select Fixes
+
+- Unlocked dinosaur cards use portrait textures, falling back to hero textures if portraits are not loaded yet.
+- Only locked dinosaurs use silhouette/lock display.
+- Spinosaurus detail copy uses a narrower word-wrapped text area to avoid right-edge overflow on mobile width.

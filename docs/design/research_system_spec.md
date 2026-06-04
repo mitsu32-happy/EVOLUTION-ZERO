@@ -241,14 +241,18 @@ MVP-086の反映対象:
 ## MVP-A01: スピノサウルス研究解放
 
 - 未知領域カテゴリに `spinosaurus_unlock` を追加。
-- コストは研究Pt 420。DNAは消費しない。
+- コストは研究Pt 220。DNAは消費しない。
 - 購入成功時に `unlockedDinos.spinosaurus` を保存し、恐竜選択/ホームへ反映する。
 - 研究Ptはデイリーと変換で入手する方針を維持する。
 
 ## MVP-A01b: Spinosaurus Research Unlock Fix
 
-- `spinosaurus_unlock` is a Research Pt-only unlock: DNA 0 / Research Pt 420.
-- Research cards and confirmation dialogs must show `必要: 研究Pt 420` and `解放: スピノサウルス解放`.
+- `spinosaurus_unlock` is a Research Pt-only unlock: DNA 0 / Research Pt 220.
+- Research cards and confirmation dialogs must show `必要: 研究Pt 220` and `解放: スピノサウルス解放`.
+
+## MVP-A07 Spinosaurus Cost
+
+- Spinosaurus research unlock cost is relaxed from ResearchPt 420 to ResearchPt 220 for the first post-release unlock target.
 - Research Pt shortage must display `Pt不足`, not `DNA不足`.
 - If an older save has `researchLevels.spinosaurus_unlock >= 1` but lacks `unlockedDinos.spinosaurus`, loading normalizes it as unlocked.
 

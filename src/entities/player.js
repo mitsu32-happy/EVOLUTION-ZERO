@@ -337,25 +337,32 @@ export class Player {
     this.evolutionPulseTimer = 0.72;
 
     if (evolution.tag === 'speed') {
-      this.moveSpeed += 58;
-      this.turnResponsiveness = 0.36;
+      this.moveSpeed += 72;
+      this.turnResponsiveness = 0.39;
       this.accelerationBase = 0.0004;
       this.accentColor = 0x35d7ff;
       this.accentGlowColor = 0x81f0ff;
     }
 
     if (evolution.tag === 'hunting') {
-      this.moveSpeed += 18;
-      this.turnResponsiveness = 0.27;
+      this.moveSpeed += 26;
+      this.turnResponsiveness = 0.3;
       this.accentColor = 0xffc94d;
       this.accentGlowColor = 0xffe28a;
     }
 
     if (evolution.tag === 'attack') {
-      this.moveSpeed += 8;
-      this.turnResponsiveness = 0.2;
+      this.moveSpeed += 12;
+      this.turnResponsiveness = 0.22;
       this.accentColor = 0xff4d38;
       this.accentGlowColor = 0xff8a62;
+    }
+
+    if (evolution.tag === 'zero') {
+      this.moveSpeed += 46;
+      this.turnResponsiveness = 0.34;
+      this.accentColor = 0xb94dff;
+      this.accentGlowColor = 0x82f7ff;
     }
   }
 

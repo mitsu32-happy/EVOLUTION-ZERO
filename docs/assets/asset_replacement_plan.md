@@ -3246,3 +3246,202 @@ Runtime rules:
 - No asset changes.
 - PWA standalone/fullscreen CSS now keeps the top safe-area inset, caps the bottom gutter, removes the previous 430px/844px app cap, and applies a small 1.05 top-centered visual scale so iPhone Home Screen launches can use more of the available display area.
 - Standard Safari/browser layout keeps the conservative safe-area sizing.
+## MVP-A07 UI / Balance Follow-up
+
+- No new large raster asset pack was added in this pass.
+- Home uses existing generated home panel and sortie button assets, with a runtime readable name plate and notice line.
+- Evolution candidate cards now prefer existing hero art inside the card when available instead of simple marker-only cards.
+- Further polish candidate: regenerate the sortie button frame as a dedicated textless launch frame if a future art pass is scheduled.
+## MVP-A07b Dedicated UI Assets
+
+- Added Home news UI assets:
+  - `public/assets/ui/home/news_entry_button_a07b.png`
+  - `public/assets/ui/home/news_panel_a07b.png`
+  - `public/assets/ui/home/news_list_card_a07b.png`
+  - `public/assets/ui/home/news_detail_panel_a07b.png`
+- Added boss / ZERO notice assets:
+  - `public/assets/ui/hud/boss_warning_panel_a07b.png`
+  - `public/assets/ui/hud/boss_appear_alert_chip_a07b.png`
+  - `public/assets/ui/hud/zero_phase_notice_panel_a07b.png`
+  - `public/assets/ui/hud/zero_final_notice_panel_a07b.png`
+- Added selection assets:
+  - `public/assets/ui/selection/evolution_candidate_card_a07b.png`
+  - `public/assets/ui/selection/fallback_reward_card_a07b.png`
+- All are text-free PNGs; runtime code renders labels and body copy for localization and future update reuse.
+
+## MVP-A07c Generated UI Replacement
+
+- A07c generated a text-free illustrated UI source sheet and 18 adopted PNG assets.
+- Runtime paths now prefer A07c assets for news, boss/ZERO notices, evolution candidates, and fallback reward cards.
+- A07b assets remain as historical artifacts but are classified as simple and not the preferred runtime route.
+- QA artifacts: `docs/assets/a07c_ui_assets_contact.png`, `docs/assets/a07c_ui_assets_report.json`, `docs/a07b_asset_quality_audit_mvp_a07c.md`, and `docs/a07b_asset_quality_audit_mvp_a07c.json`.
+## MVP-A07d News UI Asset Polish
+
+- Added generated A07d news UI assets under `public/assets/ui/home/`.
+- Normal route now uses:
+  - `news_button_a07d.png`
+  - `news_panel_outer_a07d.png`
+  - `news_list_item_a07d.png`
+  - `news_button_close_a07d.png`
+  - `news_button_back_a07d.png`
+  - `news_badge_update_a07d.png`
+- A07c news assets remain in the repository for traceability but are no longer referenced by the normal news UI.
+- The A07d policy is a shared outer frame, minimal inner decoration, and code-rendered text over a matte readable surface.
+
+## MVP-A07e News UI Final Adjustment
+
+- No new replacement assets were required.
+- News modal button placement was corrected in code so close/back controls sit inside the A07d outer frame.
+- The modal overlay now acts as the outside-click close target while the panel captures internal taps.
+- Home news entry text was enlarged and centered over `news_button_a07d.png`.
+
+## MVP-A07e.1 News UI Micro Adjustment
+
+- No new replacement assets were required.
+- Home news entry text was increased and re-centered over the existing A07d button asset.
+- The detail close button was removed from the normal detail route; only the back button remains in-frame.
+- The detail back button was moved inward to avoid the outer frame decoration.
+
+## MVP-A07e.2 News UI Micro Adjustment
+
+- No new replacement assets were required.
+- The news close button is removed from both list and detail views in code.
+- Closing the modal is handled by tapping outside the A07d frame.
+- The Home news button text was nudged downward over the existing `news_button_a07d.png`.
+
+## MVP-A08 Result UI Redesign
+
+- Added generated text-free result UI assets:
+  - `public/assets/ui/result/result_summary_panel_a08.png`
+  - `public/assets/ui/result/result_reward_panel_a08.png`
+  - `public/assets/ui/result/result_reward_row_a08.png`
+  - `public/assets/ui/result/result_next_button_a08.png`
+  - `public/assets/ui/result/result_retry_button_a08.png`
+  - `public/assets/ui/result/result_home_button_a08.png`
+  - `public/assets/ui/result/result_clear_header_a08.png`
+  - `public/assets/ui/result/result_gameover_header_a08.png`
+  - `public/assets/ui/result/result_endless_header_a08.png`
+  - `public/assets/ui/result/result_zero_clear_header_a08.png`
+- Runtime result flow now uses a summary panel first and a reward panel second.
+- Old result Graphics panels remain fallback only. Normal route should prefer A08 PNG assets from the manifest.
+- QA/contact artifacts: `docs/assets/result_ui_a08_contact.png`, `docs/assets/result_ui_a08_report.json`, and `docs/assets/result_ui_a08_audit.md`.
+
+## MVP-A09 Boss / ZERO Notice Polish
+
+- No new bitmap replacement assets were required.
+- Existing A07c assets remain the preferred runtime path:
+  - `public/assets/ui/hud/boss_notice_panel_a07c.png`
+  - `public/assets/ui/hud/boss_notice_alert_chip_a07c.png`
+  - `public/assets/ui/hud/zero_notice_panel_a07c.png`
+  - `public/assets/ui/hud/zero_final_protocol_panel_a07c.png`
+- A09 adjusts placement, duration, text safe area, fade, pulse, and overlay alpha in code only.
+- Audit artifact: `docs/assets/a09_boss_notice_audit.md`.
+
+## MVP-A10 Unfinished UI Asset Replacement
+
+- Added generated text-free A10 UI assets for the limited A10 target scope.
+- Home sortie assets:
+  - `public/assets/ui/home/sortie_button_frame_a10.png`
+  - `public/assets/ui/home/sortie_button_left_icon_a10.png`
+  - `public/assets/ui/home/sortie_button_glow_a10.png`
+  - `public/assets/ui/home/sortie_panel_a10.png`
+- Evolution candidate assets:
+  - `public/assets/ui/selection/evolution_card_panel_a10.png`
+  - `public/assets/ui/selection/evolution_card_selected_a10.png`
+  - `public/assets/ui/selection/evolution_card_portrait_frame_a10.png`
+  - `public/assets/ui/selection/evolution_card_type_chip_a10.png`
+  - `public/assets/ui/selection/evolution_card_button_select_a10.png`
+- Evolution presentation assets:
+  - `public/assets/ui/evolution/evolution_unlock_panel_a10.png`
+  - `public/assets/ui/evolution/evolution_unlock_frame_a10.png`
+  - `public/assets/ui/evolution/evolution_unlock_glow_a10.png`
+- Source/contact/report artifacts:
+  - `docs/assets/a10_ui_source_sheet.png`
+  - `docs/assets/a10_ui_contact.png`
+  - `docs/assets/a10_ui_report.json`
+- Runtime text and portraits stay code-rendered. Existing older assets are retained but are no longer preferred for the A10 routes.
+
+## MVP-A10b Evolution UI Asset Replacement
+
+- Added generated text-free A10b assets for the remaining evolution UI surfaces.
+- Level-up branch reaction assets:
+  - `public/assets/ui/selection/evolution_reaction_panel_a10b.png`
+  - `public/assets/ui/selection/evolution_reaction_glow_a10b.png`
+  - `public/assets/ui/selection/evolution_reaction_chip_a10b.png`
+- Evolution selection background assets:
+  - `public/assets/ui/selection/evolution_select_background_a10b.png`
+  - `public/assets/ui/selection/evolution_select_overlay_a10b.png`
+- Play HUD BRANCH assets:
+  - `public/assets/ui/hud/branch_panel_a10b.png`
+  - `public/assets/ui/hud/branch_icon_frame_a10b.png`
+  - `public/assets/ui/hud/branch_glow_a10b.png`
+- Source/contact/report artifacts:
+  - `docs/assets/a10b_evolution_ui_source_sheet.png`
+  - `docs/assets/a10b_branch_ui_source_sheet.png`
+  - `docs/assets/a10b_evolution_ui_contact.png`
+  - `docs/assets/a10b_evolution_ui_report.json`
+- Runtime labels and branch portraits remain code-rendered. Graphics fallback remains only for missing textures.
+## MVP-A10c Level-up / Evolution UI Polish
+
+- Added generated A10c stat upgrade cards and icons:
+  - `public/assets/ui/selection/levelup_stat_card_common_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_card_hp_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_card_attack_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_card_speed_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_card_rate_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_card_pickup_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_icon_hp_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_icon_attack_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_icon_speed_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_icon_rate_a10c.png`
+  - `public/assets/ui/selection/levelup_stat_icon_pickup_a10c.png`
+- Source/contact/report artifacts:
+  - `docs/assets/a10c_levelup_evolution_ui_source_sheet.png`
+  - `docs/assets/a10c_levelup_rate_ui_source_sheet.png`
+  - `docs/assets/a10c_levelup_evolution_ui_contact.png`
+  - `docs/assets/a10c_levelup_evolution_ui_report.json`
+- A10c keeps text code-rendered, improves branch reaction contrast, simplifies stat copy, tightens evolution candidate card layout, and enlarges BRANCH HUD portrait display.
+## MVP-A10d Level-up / Evolution UI Fix
+
+- A10d adopts embedded icons for A10c stat cards and disables code-side stat icon overlay on normal stat cards.
+- Added audit/contact/report artifacts:
+  - `docs/assets/a10d_stat_card_icon_audit.md`
+  - `docs/assets/a10d_levelup_evolution_ui_contact.png`
+  - `docs/assets/a10d_levelup_evolution_ui_report.json`
+- Evolution candidate cards now receive branch `heroPath`/`portraitPath` and prefer portrait images for card display.
+- BRANCH HUD portrait route remains required, with fallback only for missing textures.
+## MVP-A10d.1 Level-up / Evolution UI Fix
+
+- Added A10d.1 stat card tone variants under `public/assets/ui/selection/`.
+- Candidate cards and BRANCH HUD now draw the portrait sprite above the generated frame interior to avoid hidden/blank icon areas.
+- QA artifacts:
+  - `docs/assets/a10d1_levelup_stat_card_qa.png`
+  - `docs/assets/a10d1_evolution_portrait_qa.png`
+  - `docs/assets/a10d1_branch_portrait_qa.png`
+  - `docs/assets/a10d1_report.json`
+
+## MVP-A10d.2 HUD Base / Branch Role Split
+
+- Upper-left HUD portrait now stays on the selected base dinosaur for the full run.
+- BRANCH HUD owns the evolved destination portrait and display name.
+- QA screenshots:
+  - `docs/assets/a10d2_hud_branch_velociraptor_qa.png`
+  - `docs/assets/a10d2_hud_branch_triceratops_qa.png`
+  - `docs/assets/a10d2_hud_branch_tyrannosaurus_qa.png`
+  - `docs/assets/a10d2_hud_branch_spinosaurus_zero_qa.png`
+  - `docs/assets/a10d2_hud_branch_velociraptor_zero_qa.png`
+
+## MVP-A10d.3 HUD Overlap Layout
+
+- No new assets were added for A10d.3.
+- Boss / ZERO notices keep their existing A07c generated panels.
+- BRANCH keeps the A10b generated panel/frame/glow assets.
+- Runtime layout now suppresses the boss HP bar while boss / ZERO notices are visible.
+- When BRANCH is active and the notice has ended, the boss HP bar is restored lower in the HUD to avoid overlap.
+- Audit and QA notes: `docs/assets/a10d3_hud_overlap_audit.md`.
+
+## MVP-A10d.4 Result Subtitle Spacing
+
+- No new result assets were added.
+- Runtime layout moves the result subtitle line upward to avoid overlap with the main result/reward panel.
+- Existing A08 result panels/buttons remain unchanged.

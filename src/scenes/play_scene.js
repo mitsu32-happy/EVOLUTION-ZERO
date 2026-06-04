@@ -103,6 +103,20 @@ function getDebugForceEvolutionTag() {
   return tag;
 }
 
+function getDebugEvolutionReadyTag() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const tag = new URLSearchParams(window.location.search).get('debugEvolutionReady');
+
+  if (!DEBUG_EVOLUTION_TAGS.has(tag)) {
+    return null;
+  }
+
+  return tag;
+}
+
 function getDebugDinoId() {
   if (typeof window === 'undefined') {
     return null;
@@ -271,11 +285,20 @@ export class PlayScene {
         fontSize: 18,
         fontWeight: '700',
         letterSpacing: 0,
+        align: 'center',
+        wordWrap: true,
+        wordWrapWidth: 252,
+        dropShadow: true,
+        dropShadowColor: '#090102',
+        dropShadowBlur: 3,
       },
     });
     this.bossWarningLayer = new Container();
     this.bossWarningBg = new Graphics();
     this.bossWarningArrow = new Graphics();
+    this.bossWarningPanelSprite = new Sprite(Texture.EMPTY);
+    this.bossWarningChipSprite = new Sprite(Texture.EMPTY);
+    this.bossWarningTextures = new Map();
     this.bossWarningText = new Text({
       text: '',
       style: {
@@ -313,6 +336,9 @@ export class PlayScene {
         fontWeight: '700',
         letterSpacing: 0,
         align: 'center',
+        dropShadow: true,
+        dropShadowColor: '#020006',
+        dropShadowBlur: 4,
       },
     });
     this.zeroPhaseTimer = 0;
@@ -419,6 +445,7 @@ export class PlayScene {
     this.bossSpawnInterval = this.getBossSpawnInterval();
     this.resetZeroBossProgress();
     this.bossWarningTimer = 0;
+    this.bossWarningDuration = 0;
     this.stageGimmicks = [];
     this.stageGimmickConfig = null;
     this.stageGimmickTimer = 0;
@@ -509,7 +536,8 @@ export class PlayScene {
     this.bindInput();
     this.updateCamera(1);
     this.updateMap(true);
-    this.hud.update(this.gameState, this.getActiveBoss());
+    this.applyDebugEvolutionReadyIfRequested();
+    this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
     this.triggerZeroStartNotice();
     this.playDebugEvolutionDemoIfRequested();
   }
@@ -537,7 +565,7 @@ export class PlayScene {
       this.updateLevelUpSequence(delta);
       this.updateEvolutionWarning(delta);
       this.updateBossWarning(delta);
-      this.hud.update(this.gameState, this.getActiveBoss());
+      this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
       return;
     }
 
@@ -545,7 +573,7 @@ export class PlayScene {
       this.updateEvolutionReadySequence(delta);
       this.updateEvolutionWarning(delta);
       this.updateBossWarning(delta);
-      this.hud.update(this.gameState, this.getActiveBoss());
+      this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
       return;
     }
 
@@ -553,7 +581,7 @@ export class PlayScene {
       this.updateEvolutionFeedback(delta);
       this.updateEvolutionWarning(delta);
       this.updateBossWarning(delta);
-      this.hud.update(this.gameState, this.getActiveBoss());
+      this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
       return;
     }
 
@@ -611,11 +639,27 @@ export class PlayScene {
     this.updateCamera(delta);
     this.updateMap(false);
     this.updateJoystick();
-    this.hud.update(this.gameState, this.getActiveBoss());
+    this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
     this.updatePauseUi();
     this.updateResultUi();
     this.updateEvolutionWarning(delta);
     this.queueEvolutionReadyIfNeeded();
+  }
+
+  getHudLayoutOptions() {
+    return {
+      suppressBossBar: this.isHudNoticeActive(),
+      offsetBossBarForBranch: Boolean(this.gameState.selectedEvolution),
+    };
+  }
+
+  isHudNoticeActive() {
+    return this.bossWarningTimer > 0
+      || (
+        this.gameState.selectedMode === 'zero'
+        && this.zeroPhaseTimer > 0
+        && this.zeroPhaseLayer.visible
+      );
   }
 
   ensureRunBgm() {
@@ -960,6 +1004,42 @@ export class PlayScene {
     this.gameState.ultimateReady = true;
   }
 
+  applyDebugEvolutionReadyIfRequested() {
+    const tag = getDebugEvolutionReadyTag();
+
+    if (!tag || this.gameState.selectedEvolution) {
+      return;
+    }
+
+    if (tag === 'zero') {
+      this.syncZeroEvolutionUnlocks();
+      this.seedDebugSkills(tag);
+      ['speed', 'hunting', 'attack'].forEach((adaptationTag) => {
+        this.gameState.adaptationProgress[adaptationTag] = Math.max(this.gameState.adaptationProgress[adaptationTag] ?? 0, 3);
+      });
+      this.gameState.playerLevel = Math.max(this.gameState.playerLevel, 8);
+      this.gameState.detectZeroEvolutionCandidate();
+    } else {
+      const candidate = getEvolutionCandidate(tag);
+
+      if (!candidate) {
+        return;
+      }
+
+      this.seedDebugSkills(tag);
+      this.gameState.playerLevel = Math.max(this.gameState.playerLevel, 5);
+      this.gameState.evolutionCandidateDetected = true;
+      this.gameState.evolutionCandidates[tag] = {
+        ...candidate,
+        detectedAt: this.gameState.elapsedTime,
+        progress: 3,
+      };
+    }
+
+    this.evolutionReadyTimer = 0;
+    this.isEvolutionReadyUiOpen = false;
+  }
+
   applyDebugSpecialReadyIfRequested() {
     if (
       !(getDebugFlag('debugSpecialReady') || getDebugFlag('debugUltimateBalance'))
@@ -1085,6 +1165,8 @@ export class PlayScene {
           dinoId: this.gameState.selectedDino,
           mutationName: branch?.mutationName ?? candidate.name,
           evolutionName: branch?.evolutionName ?? candidate.evolutionName,
+          heroPath: branch?.heroPath ?? candidate.heroPath ?? candidate.image ?? null,
+          portraitPath: branch?.portraitPath ?? candidate.portraitPath ?? null,
         };
       });
       this.evolutionReadyUi.show(candidates);
@@ -3450,6 +3532,12 @@ export class PlayScene {
   }
 
   selectLevelUpOption(option) {
+    if (option?.type === 'fallbackReward') {
+      this.applyLevelUpFallbackReward(option);
+      this.finishLevelUpSelection();
+      return;
+    }
+
     const acquiredSkill = this.gameState.acquireSkill(option.id);
 
     if (!acquiredSkill) {
@@ -3463,6 +3551,10 @@ export class PlayScene {
     this.gameState.consumeEvolutionDetections().forEach((candidate) => {
       this.triggerEvolutionWarning(candidate);
     });
+    this.finishLevelUpSelection();
+  }
+
+  finishLevelUpSelection() {
     this.pendingLevelUps.shift();
     this.isLevelUpUiOpen = false;
     this.levelUpUi.hide();
@@ -3475,6 +3567,21 @@ export class PlayScene {
     } else {
       this.queueEvolutionReadyIfNeeded();
     }
+  }
+
+  applyLevelUpFallbackReward(option) {
+    if (option.rewardType === 'heal') {
+      const healAmount = Math.max(12, Math.floor(this.gameState.playerMaxHp * 0.25));
+      this.gameState.playerHp = Math.min(this.gameState.playerMaxHp, this.gameState.playerHp + healAmount);
+      return;
+    }
+
+    if (option.rewardType === 'score') {
+      this.gameState.score += 250;
+      return;
+    }
+
+    this.gameState.bonusDna = (this.gameState.bonusDna ?? 0) + 18;
   }
 
   applyUtilitySkill(skillId, level) {
@@ -3884,10 +3991,15 @@ export class PlayScene {
   createBossWarningLayer() {
     this.bossWarningLayer.visible = false;
     this.bossWarningLayer.alpha = 0;
-    this.bossWarningLayer.position.set(this.width / 2, 178);
+    this.bossWarningLayer.position.set(this.width / 2, 164);
+
+    this.bossWarningPanelSprite.anchor.set(0.5);
+    this.bossWarningPanelSprite.visible = false;
+    this.bossWarningChipSprite.anchor.set(0.5);
+    this.bossWarningChipSprite.visible = false;
 
     this.bossWarningBg
-      .roundRect(-154, -31, 308, 62, 9)
+      .roundRect(-164, -36, 328, 72, 10)
       .fill({ color: 0x170405, alpha: 0.92 })
       .stroke({ color: 0xff3848, width: 2, alpha: 0.9 });
 
@@ -3895,12 +4007,58 @@ export class PlayScene {
       .poly([-10, -15, 23, 0, -10, 15, -3, 0])
       .fill({ color: 0xffd36b, alpha: 0.95 })
       .stroke({ color: 0xff3848, width: 1.5, alpha: 0.9 });
-    this.bossWarningArrow.position.set(-124, 0);
+    this.bossWarningArrow.position.set(-132, 2);
 
     this.bossWarningText.anchor.set(0.5);
-    this.bossWarningText.position.set(0, 0);
+    this.bossWarningText.position.set(18, 2);
 
-    this.bossWarningLayer.addChild(this.bossWarningBg, this.bossWarningArrow, this.bossWarningText);
+    this.bossWarningLayer.addChild(
+      this.bossWarningBg,
+      this.bossWarningPanelSprite,
+      this.bossWarningChipSprite,
+      this.bossWarningArrow,
+      this.bossWarningText,
+    );
+    this.loadBossWarningAssets();
+  }
+
+  loadBossWarningAssets() {
+    [
+      ['panel', ASSET_KEYS.hudUi?.bossWarningPanel],
+      ['chip', ASSET_KEYS.hudUi?.bossAppearAlertChip],
+    ].forEach(([name, key]) => {
+      if (!key) {
+        return;
+      }
+
+      this.assetLoader?.load(key).then((texture) => {
+        if (texture) {
+          this.bossWarningTextures.set(name, texture);
+          this.layoutBossWarningAssets();
+        }
+      }).catch(() => {});
+    });
+  }
+
+  layoutBossWarningAssets() {
+    const panelTexture = this.bossWarningTextures.get('panel') ?? null;
+    const chipTexture = this.bossWarningTextures.get('chip') ?? null;
+
+    this.bossWarningPanelSprite.texture = panelTexture ?? Texture.EMPTY;
+    this.bossWarningPanelSprite.visible = Boolean(panelTexture);
+    if (panelTexture) {
+      this.bossWarningPanelSprite.width = 342;
+      this.bossWarningPanelSprite.height = 84;
+      this.bossWarningBg.clear();
+    }
+
+    this.bossWarningChipSprite.texture = chipTexture ?? Texture.EMPTY;
+    this.bossWarningChipSprite.visible = Boolean(chipTexture);
+    if (chipTexture) {
+      this.bossWarningChipSprite.width = 104;
+      this.bossWarningChipSprite.height = 29;
+      this.bossWarningChipSprite.position.set(-106, -36);
+    }
   }
 
   triggerBossWarning(boss) {
@@ -3911,9 +4069,10 @@ export class PlayScene {
         boss.position.y - this.player.position.y,
         boss.position.x - this.player.position.x,
       );
-      this.bossWarningTimer = 2.1;
+      this.bossWarningDuration = 1.95;
+      this.bossWarningTimer = this.bossWarningDuration;
       this.bossWarningLayer.visible = true;
-      this.bossWarningLayer.alpha = 1;
+      this.bossWarningLayer.alpha = 0;
     } else {
       this.bossWarningTimer = 0;
       this.bossWarningLayer.visible = false;
@@ -3982,10 +4141,13 @@ export class PlayScene {
     }
 
     this.bossWarningTimer = Math.max(0, this.bossWarningTimer - delta);
-    const pulse = 1 + Math.sin(this.bossWarningTimer * 28) * 0.035;
+    const age = Math.max(0, (this.bossWarningDuration || 1.95) - this.bossWarningTimer);
+    const fadeIn = Math.min(1, age / 0.14);
+    const fadeOut = Math.min(1, this.bossWarningTimer / 0.28);
+    const pulse = 1 + Math.sin(age * 18) * 0.018;
 
     this.bossWarningLayer.scale.set(pulse);
-    this.bossWarningLayer.alpha = Math.min(1, this.bossWarningTimer / 0.24);
+    this.bossWarningLayer.alpha = Math.min(fadeIn, fadeOut);
   }
 
   createZeroPhaseLayer() {
@@ -4034,6 +4196,9 @@ export class PlayScene {
       ['phasePanel', ASSET_KEYS.zeroUi?.phasePanel],
       ['warningPanel', ASSET_KEYS.zeroUi?.warningPanel],
       ['finalWarningPanel', ASSET_KEYS.zeroUi?.finalWarningPanel],
+      ['a07bPhasePanel', ASSET_KEYS.hudUi?.zeroPhaseNoticePanel],
+      ['a07bWarningPanel', ASSET_KEYS.hudUi?.zeroPhaseNoticePanel],
+      ['a07bFinalPanel', ASSET_KEYS.hudUi?.zeroFinalNoticePanel],
       ['phaseChip', ASSET_KEYS.zeroUi?.phaseChip],
     ];
 
@@ -4045,6 +4210,9 @@ export class PlayScene {
       this.assetLoader?.load(key).then((texture) => {
         if (texture) {
           this.zeroPhaseTextures.set(name, texture);
+          if (this.zeroPhaseLayer.visible || this.zeroPhaseTimer > 0) {
+            this.layoutZeroPhaseNotice();
+          }
         }
       }).catch(() => {});
     });
@@ -4081,7 +4249,7 @@ export class PlayScene {
       title: 'ZERO MODE',
       subtitle: '死線到達プロトコル開始',
       variant: 'phase',
-      duration: 2.1,
+      duration: 1.9,
     });
   }
 
@@ -4098,7 +4266,7 @@ export class PlayScene {
           title: 'FINAL PROTOCOL',
           subtitle: `${boss?.name ?? 'エクリプス・プロトコル'} 起動`,
           variant: 'final',
-          duration: 2.75,
+          duration: 2.62,
         }
       : phase === 2
         ? {
@@ -4106,14 +4274,14 @@ export class PlayScene {
             title: 'PHASE 2',
             subtitle: 'ZERO変異反応',
             variant: 'warning',
-            duration: 2.35,
+            duration: 2.12,
           }
         : {
             key: 'zero-phase-1-boss',
             title: 'PHASE 1',
             subtitle: '異常個体接近',
             variant: 'warning',
-            duration: 2.2,
+            duration: 2.02,
           };
 
     this.showZeroPhaseNotice(notice);
@@ -4190,14 +4358,21 @@ export class PlayScene {
   layoutZeroPhaseNotice() {
     const isFinal = this.zeroPhaseVariant === 'final';
     const isWarning = this.zeroPhaseVariant === 'warning';
-    const y = isFinal ? Math.max(178, this.height * 0.32) : 148;
-    const panelWidth = Math.min(this.width - 34, isFinal ? 354 : 334);
-    const panelHeight = isFinal ? 110 : isWarning ? 98 : 86;
-    const panelKey = isFinal ? 'finalWarningPanel' : isWarning ? 'warningPanel' : 'phasePanel';
+    const y = isFinal ? Math.max(188, this.height * 0.335) : 158;
+    const panelWidth = Math.min(this.width - 28, isFinal ? 366 : 344);
+    const panelHeight = isFinal ? 116 : isWarning ? 104 : 90;
+    const panelKey = isFinal
+      ? (this.zeroPhaseTextures.has('a07bFinalPanel') ? 'a07bFinalPanel' : 'finalWarningPanel')
+      : isWarning
+        ? (this.zeroPhaseTextures.has('a07bWarningPanel') ? 'a07bWarningPanel' : 'warningPanel')
+        : (this.zeroPhaseTextures.has('a07bPhasePanel') ? 'a07bPhasePanel' : 'phasePanel');
     const panelTexture = this.zeroPhaseTextures.get(panelKey);
     const chipTexture = this.zeroPhaseTextures.get('phaseChip');
 
     this.zeroPhaseDim.visible = isFinal;
+    this.zeroPhaseDim.clear()
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x030007, alpha: isFinal ? 0.24 : 0.18 });
     this.zeroPhasePanelSprite.visible = Boolean(panelTexture);
     this.zeroPhaseFallbackPanel.visible = !panelTexture;
     this.zeroPhasePanelSprite.texture = panelTexture ?? Texture.EMPTY;
@@ -4227,19 +4402,24 @@ export class PlayScene {
       this.zeroPhaseChipSprite.scale.set(Math.min(0.86, panelWidth / chipTexture.width * 0.7));
     }
 
-    this.zeroPhaseTitle.position.set(this.width / 2, y - (isFinal ? 18 : 14));
-    this.zeroPhaseTitle.style.fontSize = isFinal ? 24 : 20;
+    this.zeroPhaseTitle.position.set(this.width / 2, y - (isFinal ? 20 : 15));
+    this.zeroPhaseTitle.style.fontSize = isFinal ? 23 : 20;
     this.zeroPhaseTitle.style.fill = isFinal ? '#fff2f6' : '#ffffff';
-    this.zeroPhaseSubtitle.position.set(this.width / 2, y + (isFinal ? 22 : 18));
+    this.zeroPhaseTitle.style.dropShadow = true;
+    this.zeroPhaseTitle.style.dropShadowColor = '#020006';
+    this.zeroPhaseTitle.style.dropShadowBlur = isFinal ? 5 : 4;
+    this.zeroPhaseSubtitle.position.set(this.width / 2, y + (isFinal ? 24 : 20));
     this.zeroPhaseSubtitle.style.fill = isFinal ? '#ffd8e4' : '#d7fbff';
 
     this.zeroPhaseNoiseSprite.visible = isWarning || isFinal;
     this.zeroPhaseNoiseSprite.position.set(this.width / 2, y);
-    this.zeroPhaseNoiseSprite.scale.set(isFinal ? 1.22 : 0.95);
+    this.zeroPhaseNoiseSprite.alpha = isFinal ? 0.26 : 0.18;
+    this.zeroPhaseNoiseSprite.scale.set(isFinal ? 1.14 : 0.88);
 
     this.zeroPhaseCoreSprite.visible = isFinal;
     this.zeroPhaseCoreSprite.position.set(this.width / 2, y + 2);
-    this.zeroPhaseCoreSprite.scale.set(0.75);
+    this.zeroPhaseCoreSprite.alpha = 0.62;
+    this.zeroPhaseCoreSprite.scale.set(0.68);
   }
 
   updateZeroPhaseNotice(delta) {
@@ -4430,6 +4610,7 @@ export class PlayScene {
     this.applyDebugAdaptationAllLevelIfRequested();
     this.applyDebugEvolutionIfRequested();
     this.applyDebugSpecialReadyIfRequested();
+    this.applyDebugEvolutionReadyIfRequested();
     this.didPlayDebugEvolutionDemo = false;
     this.playDebugEvolutionDemoIfRequested();
 
@@ -4455,7 +4636,7 @@ export class PlayScene {
     this.createStageGimmicks();
     this.updateCamera(1);
     this.updateMap(true);
-    this.hud.update(this.gameState, this.getActiveBoss());
+    this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
     this.triggerZeroStartNotice();
     this.updateResultUi();
     this.updateRunInfoLabel();

@@ -1,0 +1,325 @@
+{
+  "mvp": "A07c",
+  "sourceSheet": "docs/assets/a07c_ui_asset_source_sheet.png",
+  "assets": [
+    {
+      "id": "news_button",
+      "path": "public/assets/ui/home/news_button_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        52,
+        635,
+        502,
+        708
+      ],
+      "size": [
+        172,
+        44
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_panel_list",
+      "path": "public/assets/ui/home/news_panel_list_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        184,
+        29,
+        536,
+        604
+      ],
+      "size": [
+        354,
+        610
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_panel_detail",
+      "path": "public/assets/ui/home/news_panel_detail_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        570,
+        29,
+        970,
+        605
+      ],
+      "size": [
+        354,
+        610
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_list_item",
+      "path": "public/assets/ui/home/news_list_item_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        52,
+        635,
+        502,
+        708
+      ],
+      "size": [
+        322,
+        72
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_list_item_unread",
+      "path": "public/assets/ui/home/news_list_item_unread_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        52,
+        747,
+        503,
+        829
+      ],
+      "size": [
+        322,
+        72
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_button_close",
+      "path": "public/assets/ui/home/news_button_close_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        570,
+        666,
+        640,
+        738
+      ],
+      "size": [
+        52,
+        42
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_button_back",
+      "path": "public/assets/ui/home/news_button_back_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        665,
+        666,
+        738,
+        738
+      ],
+      "size": [
+        52,
+        42
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_badge_update",
+      "path": "public/assets/ui/home/news_badge_update_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        573,
+        776,
+        734,
+        838
+      ],
+      "size": [
+        92,
+        30
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "news_badge_normal",
+      "path": "public/assets/ui/home/news_badge_normal_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        778,
+        776,
+        951,
+        838
+      ],
+      "size": [
+        92,
+        30
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "boss_notice_panel",
+      "path": "public/assets/ui/hud/boss_notice_panel_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        30,
+        860,
+        499,
+        989
+      ],
+      "size": [
+        360,
+        86
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "boss_notice_alert_chip",
+      "path": "public/assets/ui/hud/boss_notice_alert_chip_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        748,
+        666,
+        820,
+        738
+      ],
+      "size": [
+        116,
+        32
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "zero_notice_panel",
+      "path": "public/assets/ui/hud/zero_notice_panel_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        526,
+        866,
+        994,
+        982
+      ],
+      "size": [
+        360,
+        112
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "zero_final_protocol_panel",
+      "path": "public/assets/ui/hud/zero_final_protocol_panel_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        151,
+        1014,
+        862,
+        1187
+      ],
+      "size": [
+        360,
+        128
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "evolution_card_panel",
+      "path": "public/assets/ui/selection/evolution_card_panel_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        30,
+        1210,
+        465,
+        1352
+      ],
+      "size": [
+        330,
+        100
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "evolution_card_selected",
+      "path": "public/assets/ui/selection/evolution_card_selected_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        30,
+        1358,
+        465,
+        1498
+      ],
+      "size": [
+        330,
+        100
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "fallback_card_dna",
+      "path": "public/assets/ui/selection/fallback_card_dna_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        492,
+        1208,
+        642,
+        1480
+      ],
+      "size": [
+        330,
+        104
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "fallback_card_heal",
+      "path": "public/assets/ui/selection/fallback_card_heal_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        674,
+        1208,
+        824,
+        1480
+      ],
+      "size": [
+        330,
+        104
+      ],
+      "generatedSource": true,
+      "adopted": true
+    },
+    {
+      "id": "fallback_card_score",
+      "path": "public/assets/ui/selection/fallback_card_score_a07c.png",
+      "source": "docs/assets/a07c_ui_asset_source_sheet.png",
+      "sourceBox": [
+        842,
+        1208,
+        992,
+        1480
+      ],
+      "size": [
+        330,
+        104
+      ],
+      "generatedSource": true,
+      "adopted": true
+    }
+  ],
+  "qa": {
+    "sourceIsGeneratedIllustration": true,
+    "textFree": true,
+    "graphicsFallbackOnlyEmergency": true,
+    "largeModalPanelsKeepOpaqueTextSafeArea": true,
+    "homeNewsDetailScreenshot": "docs/assets/a07c_news_detail_qa.png",
+    "dinoSelectSpinoScreenshot": "docs/assets/a07c_dino_select_spino_qa.png",
+    "newsTextOverflow": false,
+    "homeBottomNewsLineRemoved": true,
+    "dinoCardsUnlockedUseArt": true,
+    "runtimeConsoleErrorsOrWarnings": 0,
+    "build": "npm.cmd run build succeeded"
+  }
+}

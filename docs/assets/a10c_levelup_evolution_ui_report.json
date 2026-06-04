@@ -1,0 +1,165 @@
+{
+  "mvp": "A10c",
+  "source": "docs/assets/a10c_levelup_evolution_ui_source_sheet.png",
+  "assets": [
+    {
+      "path": "public/assets/ui/selection/levelup_stat_card_common_a10c.png",
+      "size": [
+        899,
+        219
+      ],
+      "sourceBox": [
+        58,
+        54,
+        967,
+        276
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_card_hp_a10c.png",
+      "size": [
+        903,
+        223
+      ],
+      "sourceBox": [
+        58,
+        300,
+        967,
+        526
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_card_attack_a10c.png",
+      "size": [
+        902,
+        221
+      ],
+      "sourceBox": [
+        58,
+        550,
+        967,
+        778
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_card_speed_a10c.png",
+      "size": [
+        902,
+        219
+      ],
+      "sourceBox": [
+        58,
+        795,
+        967,
+        1022
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_card_pickup_a10c.png",
+      "size": [
+        902,
+        212
+      ],
+      "sourceBox": [
+        58,
+        1040,
+        967,
+        1270
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_icon_hp_a10c.png",
+      "size": [
+        197,
+        197
+      ],
+      "sourceBox": [
+        58,
+        1295,
+        255,
+        1504
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_icon_attack_a10c.png",
+      "size": [
+        198,
+        197
+      ],
+      "sourceBox": [
+        300,
+        1295,
+        498,
+        1504
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_icon_speed_a10c.png",
+      "size": [
+        185,
+        197
+      ],
+      "sourceBox": [
+        548,
+        1295,
+        742,
+        1504
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_icon_pickup_a10c.png",
+      "size": [
+        177,
+        197
+      ],
+      "sourceBox": [
+        790,
+        1295,
+        972,
+        1504
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_card_rate_a10c.png",
+      "size": [
+        1445,
+        375
+      ],
+      "sourceBox": [
+        44,
+        86,
+        1510,
+        466
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/levelup_stat_icon_rate_a10c.png",
+      "size": [
+        450,
+        418
+      ],
+      "sourceBox": [
+        536,
+        520,
+        1000,
+        940
+      ]
+    }
+  ],
+  "qualityNotes": [
+    "Generated text-free stat upgrade cards and icons on #ff00ff chroma key, then converted to alpha PNG.",
+    "Cards prioritize dark readable centers with distinct HP/attack/speed/pickup accent language.",
+    "Runtime labels remain code-rendered for readability and localization.",
+    "Attack-rate card/icon are generated as separate A10c assets for future attack interval upgrades."
+  ],
+  "contactSheet": "docs/assets/a10c_levelup_evolution_ui_contact.png",
+  "qa": {
+    "nodeCheck": "passed: levelup_ui.js, evolution_ready_ui.js, hud.js, skills.js, asset_manifest.js",
+    "build": "passed: npm.cmd run build",
+    "browserRuntime": "passed: localhost:5175 A10c route console error/warn count 0"
+  },
+  "sources": [
+    "docs/assets/a10c_levelup_evolution_ui_source_sheet.png",
+    "docs/assets/a10c_levelup_rate_ui_source_sheet.png"
+  ]
+}

@@ -10,6 +10,54 @@ const ADAPTATION_LABELS = {
   attack: '攻撃適応',
 };
 
+const FALLBACK_LEVELUP_OPTIONS = [
+  {
+    id: 'fallback_dna_reward',
+    type: 'fallbackReward',
+    rewardType: 'dna',
+    color: UI_COLORS.dna,
+    displayName: 'DNA獲得',
+    name: 'DNA獲得',
+    displayDescription: '追加DNAを獲得して戦闘を続ける。',
+    description: '追加DNAを獲得して戦闘を続ける。',
+    adaptationTags: [],
+    countsAsAdaptation: false,
+    maxLevel: 1,
+    levelUpText: 'DNA +18',
+    upgradeSummary: 'DNA +18',
+  },
+  {
+    id: 'fallback_heal_reward',
+    type: 'fallbackReward',
+    rewardType: 'heal',
+    color: UI_COLORS.green,
+    displayName: 'HP回復',
+    name: 'HP回復',
+    displayDescription: 'HPを回復して戦線を立て直す。',
+    description: 'HPを回復して戦線を立て直す。',
+    adaptationTags: [],
+    countsAsAdaptation: false,
+    maxLevel: 1,
+    levelUpText: 'HP +25%',
+    upgradeSummary: 'HP +25%',
+  },
+  {
+    id: 'fallback_score_reward',
+    type: 'fallbackReward',
+    rewardType: 'score',
+    color: UI_COLORS.gold,
+    displayName: 'スコア加算',
+    name: 'スコア加算',
+    displayDescription: 'スコアを獲得して次の戦闘へ戻る。',
+    description: 'スコアを獲得して次の戦闘へ戻る。',
+    adaptationTags: [],
+    countsAsAdaptation: false,
+    maxLevel: 1,
+    levelUpText: 'SCORE +250',
+    upgradeSummary: 'SCORE +250',
+  },
+];
+
 const SELECTION_ASSETS = {
   backgroundPanelV3: 'assets/ui/selection/selection_background_panel_v3.png',
   headerPanelV3: 'assets/ui/selection/selection_header_panel_v3.png',
@@ -23,7 +71,13 @@ const SELECTION_ASSETS = {
   badgeUpgradeV2: 'assets/ui/selection/badge_upgrade_v2.png',
   badgeOwnedV2: 'assets/ui/selection/badge_owned_v2.png',
   badgeLockedV2: 'assets/ui/selection/badge_locked_v2.png',
-  warningChip: 'assets/ui/selection/analysis_warning_chip.png',
+  fallbackRewardCardA07b: 'assets/ui/selection/fallback_reward_card_a07b.png',
+  fallbackRewardCardDnaA07c: 'assets/ui/selection/fallback_card_dna_a07c.png',
+  fallbackRewardCardHealA07c: 'assets/ui/selection/fallback_card_heal_a07c.png',
+  fallbackRewardCardScoreA07c: 'assets/ui/selection/fallback_card_score_a07c.png',
+  warningChip: 'assets/ui/selection/evolution_reaction_panel_a10b.png',
+  warningGlow: 'assets/ui/selection/evolution_reaction_glow_a10b.png',
+  warningAccentChip: 'assets/ui/selection/evolution_reaction_chip_a10b.png',
   headerIcon: 'assets/ui/selection/dna_analysis_header_icon.png',
   backgroundPanel: 'assets/ui/selection/selection_background_panel.png',
   headerPanel: 'assets/ui/selection/selection_header_panel.png',
@@ -43,8 +97,19 @@ const SELECTION_ASSETS = {
   cardAttack: 'assets/ui/selection/adaptation_card_attack_panel.png',
   cardNoneV2: 'assets/ui/selection/adaptation_card_none_panel_v2.png',
   cardNoneSelectedV2: 'assets/ui/selection/adaptation_card_none_panel_selected_v2.png',
+  statCardCommonA10d1: 'assets/ui/selection/levelup_stat_card_common_a10d1.png',
+  statCardHpA10d1: 'assets/ui/selection/levelup_stat_card_hp_a10d1.png',
+  statCardAttackA10d1: 'assets/ui/selection/levelup_stat_card_attack_a10d1.png',
+  statCardSpeedA10d1: 'assets/ui/selection/levelup_stat_card_speed_a10d1.png',
+  statCardRateA10d1: 'assets/ui/selection/levelup_stat_card_rate_a10d1.png',
+  statCardPickupA10d1: 'assets/ui/selection/levelup_stat_card_pickup_a10d1.png',
   cardNone: 'assets/ui/selection/adaptation_card_none_panel.png',
   cardNoneSelected: 'assets/ui/selection/adaptation_card_none_panel_selected.png',
+  statIconHpA10c: 'assets/ui/selection/levelup_stat_icon_hp_a10c.png',
+  statIconAttackA10c: 'assets/ui/selection/levelup_stat_icon_attack_a10c.png',
+  statIconSpeedA10c: 'assets/ui/selection/levelup_stat_icon_speed_a10c.png',
+  statIconRateA10c: 'assets/ui/selection/levelup_stat_icon_rate_a10c.png',
+  statIconPickupA10c: 'assets/ui/selection/levelup_stat_icon_pickup_a10c.png',
   iconSpeed: 'assets/ui/adaptations/icon_adapt_speed.png',
   iconHunting: 'assets/ui/adaptations/icon_adapt_hunting.png',
   iconAttack: 'assets/ui/adaptations/icon_adapt_attack.png',
@@ -76,19 +141,19 @@ function assetUrl(path) {
 
 function compactText(text = '', maxLength = 32) {
   const normalized = String(text).replace(/\s+/g, '');
-  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}…` : normalized;
+  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 3)}...` : normalized;
 }
 
 const SKILL_COPY = {
   attack_power_up: {
-    name: '攻撃出力',
-    type: '基礎火力',
-    description: '通常技と適応技の威力を少し高める。',
+    name: '攻撃力増加',
+    type: '火力',
+    description: '攻撃の威力が上がる。',
   },
   move_speed_up: {
-    name: '脚力強化',
-    type: '移動補助',
-    description: '移動速度を少し引き上げる。',
+    name: '移動速度増加',
+    type: '移動',
+    description: '移動が速くなる。',
   },
   poison_bite: {
     name: '毒牙',
@@ -101,14 +166,14 @@ const SKILL_COPY = {
     description: '攻撃時、敵に裂傷ダメージを与える。',
   },
   hard_skin: {
-    name: '硬質皮膚',
-    type: '防御適応',
-    description: '最大HPを少し引き上げる。',
+    name: 'HP増加',
+    type: '耐久',
+    description: '最大HPが増える。',
   },
   exp_sense: {
-    name: 'EXP感知',
-    type: '回収補助',
-    description: 'EXP結晶を引き寄せやすくする。',
+    name: '回収範囲増加',
+    type: '回収',
+    description: 'EXPを拾いやすくなる。',
   },
   predator_instinct: {
     name: '捕食本能',
@@ -123,6 +188,11 @@ const SKILL_COPY = {
 };
 
 function getSkillCopy(skill) {
+  const override = SKILL_COPY[skill.id];
+  if (override) {
+    return override;
+  }
+
   return {
     name: skill.displayName ?? skill.name,
     type: skill.type,
@@ -149,7 +219,7 @@ function getAdaptationHint(progress = {}) {
   if (hunting >= 3) return '狩猟適応が分岐進化へ近づいています';
   if (attack >= 3) return '攻撃適応が分岐進化へ近づいています';
   if (speed + hunting + attack >= 3) return 'DNAが新しい適応方向を探索中です';
-  return 'DNA適応の安定解析中です';
+  return '選択可能な適応を表示中です';
 }
 
 function getUpgradePreview(skill, currentLevel, nextLevel) {
@@ -190,11 +260,13 @@ export class LevelUpUi {
     this.headerSprite = new Sprite(Texture.EMPTY);
     this.subtitleSprite = new Sprite(Texture.EMPTY);
     this.footerSprite = new Sprite(Texture.EMPTY);
+    this.warningGlowSprite = new Sprite(Texture.EMPTY);
     this.warningChipSprite = new Sprite(Texture.EMPTY);
+    this.warningAccentSprite = new Sprite(Texture.EMPTY);
     this.responseChipSprite = new Sprite(Texture.EMPTY);
     this.headerIconSprite = new Sprite(Texture.EMPTY);
-    this.title = this.createText('DNA適応候補', 22, '#ffd36b', 250);
-    this.subtitle = this.createText('解析候補を選択', 12, '#e7fff6', 210);
+    this.title = this.createText('レベルアップ！', 22, '#ffd36b', 250);
+    this.subtitle = this.createText('新しい適応を選択', 12, '#e7fff6', 210);
     this.levelText = this.createText('', 12, '#a9ff55', 240);
     this.hintText = this.createText('', 12, '#ffd36b', 300);
     this.rerollButton = new Container();
@@ -208,8 +280,8 @@ export class LevelUpUi {
     this.motionTime = 0;
     this.assetTextures = {};
     this.rerollPressed = false;
-    this.title.text = 'DNA適応候補';
-    this.subtitle.text = '解析候補を選択';
+    this.title.text = 'レベルアップ！';
+    this.subtitle.text = '新しい適応を選択';
 
     this.view.visible = false;
     this.view.eventMode = 'static';
@@ -217,8 +289,10 @@ export class LevelUpUi {
     this.headerSprite.visible = false;
     this.subtitleSprite.visible = false;
     this.footerSprite.visible = false;
+    this.warningGlowSprite.visible = false;
     this.overlaySprite.visible = false;
     this.warningChipSprite.visible = false;
+    this.warningAccentSprite.visible = false;
     this.responseChipSprite.visible = false;
     this.headerIconSprite.visible = false;
     this.headerIconSprite.anchor.set(0.5);
@@ -230,7 +304,9 @@ export class LevelUpUi {
       this.headerSprite,
       this.subtitleSprite,
       this.footerSprite,
+      this.warningGlowSprite,
       this.warningChipSprite,
+      this.warningAccentSprite,
       this.responseChipSprite,
       this.headerIconSprite,
       this.title,
@@ -264,7 +340,7 @@ export class LevelUpUi {
     this.rerolls = rerolls;
     this.gameState = gameState;
     this.options = this.rollOptions();
-    this.levelText.text = `反応 ${fromLevel} → ${toLevel}`;
+    this.levelText.text = `レベル ${fromLevel} → ${toLevel}`;
     this.hintText.text = this.getStableAnalysisText(gameState.adaptationProgress);
     this.view.visible = true;
     this.motionTime = 0;
@@ -338,6 +414,12 @@ export class LevelUpUi {
     this.shuffle(candidates).forEach((skill) => {
       if (selected.length < 3 && !selected.some((item) => item.id === skill.id)) {
         selected.push(skill);
+      }
+    });
+
+    FALLBACK_LEVELUP_OPTIONS.forEach((option) => {
+      if (selected.length < 3 && !selected.some((item) => item.id === option.id)) {
+        selected.push(option);
       }
     });
 
@@ -420,17 +502,19 @@ export class LevelUpUi {
       const tags = option.adaptationTags ?? [];
       const isTagless = tags.length === 0 || option.countsAsAdaptation === false;
       const primaryTag = tags[0] ?? 'none';
-      const currentLevel = this.gameState?.getSkillLevel(option.id) ?? 0;
+      const isFallbackReward = option.type === 'fallbackReward';
+      const isStatUpgrade = isTagless && !isFallbackReward;
+      const currentLevel = isFallbackReward ? 0 : this.gameState?.getSkillLevel(option.id) ?? 0;
       const nextLevel = Math.min(currentLevel + 1, option.maxLevel);
       const copy = getSkillCopy(option);
-      const badgeState = currentLevel >= option.maxLevel ? 'owned' : currentLevel > 0 ? 'upgrade' : 'new';
-      const levelText = badgeState === 'owned' ? '解析済み' : badgeState === 'upgrade' ? `強化 ${currentLevel}->${nextLevel}` : '新規解析';
-      const previewText = currentLevel >= option.maxLevel ? '最大強化済み' : getUpgradePreview(option, currentLevel, nextLevel);
-      const frameTexture = this.getCardFrameTexture(primaryTag, isTagless, badgeState);
-      const iconTexture = this.getOptionIconTexture(option, primaryTag);
+      const badgeState = isFallbackReward ? 'new' : currentLevel >= option.maxLevel ? 'owned' : currentLevel > 0 ? 'upgrade' : 'new';
+      const frameTexture = isFallbackReward
+        ? this.getFallbackRewardCardTexture(option) ?? this.assetTextures.fallbackRewardCardA07b ?? this.getCardFrameTexture(primaryTag, true, badgeState)
+        : this.getCardFrameTexture(primaryTag, isTagless, badgeState, option);
+      const iconTexture = isStatUpgrade ? null : this.getOptionIconTexture(option, primaryTag);
       const badgeTexture = this.getBadgeTexture(badgeState);
-      const safeLevelText = badgeState === 'owned' ? '解析済み' : badgeState === 'upgrade' ? `強化 ${currentLevel}->${nextLevel}` : '新規解析';
-      const safePreviewText = currentLevel >= option.maxLevel ? '最大強化済み' : getUpgradePreview(option, currentLevel, nextLevel);
+      const safeLevelText = isFallbackReward ? '補助' : badgeState === 'owned' ? '解析済み' : badgeState === 'upgrade' ? `強化 ${currentLevel}->${nextLevel}` : '新規解析';
+      const safePreviewText = isFallbackReward ? option.levelUpText : currentLevel >= option.maxLevel ? '最大強化済み' : getUpgradePreview(option, currentLevel, nextLevel);
 
       if (frameTexture) {
         card.frame.texture = frameTexture;
@@ -456,11 +540,12 @@ export class LevelUpUi {
 
       if (iconTexture) {
         card.iconSprite.texture = iconTexture;
-        card.iconSprite.position.set(isTagless ? 48 : 38, 52);
-        card.iconSprite.width = 48;
-        card.iconSprite.height = 48;
+        card.iconSprite.position.set(isTagless ? 49 : 38, 52);
+        const iconSize = isTagless ? 54 : 48;
+        card.iconSprite.width = iconSize;
+        card.iconSprite.height = iconSize;
         card.iconSprite.visible = true;
-      } else {
+      } else if (!isStatUpgrade) {
         const iconX = isTagless ? 48 : 38;
         card.icon
           .circle(iconX, 52, 24)
@@ -491,28 +576,29 @@ export class LevelUpUi {
       }
 
       card.name.text = compactText(copy.name, 12);
-      card.type.text = isTagless ? '基礎強化' : getAdaptationLabel(primaryTag);
+      card.type.text = isStatUpgrade ? 'STATUS / 能力強化' : isTagless ? copy.type : getAdaptationLabel(primaryTag);
       card.description.text = compactText(copy.description, 42);
       card.tag.text = compactText(safePreviewText, 28);
       card.level.text = safeLevelText;
-      card.name.style.fill = toCssColor(color);
+      card.name.style.fill = isTagless ? '#f1fbff' : toCssColor(color);
       card.tag.style.fill = toCssColor(color);
 
-      card.name.style.fontSize = 15;
-      card.name.style.wordWrapWidth = 142;
-      card.type.style.fontSize = 10;
-      card.type.style.wordWrapWidth = 142;
-      card.description.style.fontSize = 9;
-      card.description.style.lineHeight = 11;
-      card.description.style.wordWrapWidth = 224;
+      card.name.style.fontSize = isStatUpgrade ? 15 : isTagless ? 16 : 15;
+      card.name.style.wordWrapWidth = isStatUpgrade ? 150 : isTagless ? 160 : 142;
+      card.type.style.fontSize = isStatUpgrade ? 9.5 : isTagless ? 11 : 10;
+      card.type.style.wordWrapWidth = isStatUpgrade ? 148 : 142;
+      card.description.style.fontSize = isTagless ? 10 : 9;
+      card.description.style.lineHeight = isTagless ? 12 : 11;
+      card.description.style.wordWrapWidth = isStatUpgrade ? 178 : 224;
       card.tag.style.fontSize = 9;
       card.tag.style.wordWrapWidth = 212;
       card.level.style.fontSize = 9;
       card.level.style.wordWrapWidth = 72;
-      card.name.position.set(78, 13);
-      card.type.position.set(78, 35);
-      card.description.position.set(78, 52);
-      card.tag.position.set(78, 84);
+      const textX = isStatUpgrade ? 116 : 78;
+      card.name.position.set(textX, 13);
+      card.type.position.set(textX, 35);
+      card.description.position.set(textX, 52);
+      card.tag.position.set(textX, 84);
       card.level.anchor.set(0.5);
       card.level.position.set(this.width - 101, 25);
     });
@@ -570,7 +656,15 @@ export class LevelUpUi {
     this.subtitle.anchor.set(0.5);
     this.subtitle.position.set(this.width / 2, 171);
     this.hintText.anchor.set(0.5);
-    this.hintText.position.set(this.width / 2, 229);
+    this.hintText.position.set(this.width / 2, 227);
+    this.hintText.style.fill = '#fff7d2';
+    this.hintText.style.fontSize = 13;
+    this.hintText.style.fontWeight = '900';
+    this.hintText.style.dropShadow = true;
+    this.hintText.style.dropShadowColor = '#001018';
+    this.hintText.style.dropShadowAlpha = 0.95;
+    this.hintText.style.dropShadowBlur = 3;
+    this.hintText.style.dropShadowDistance = 1;
     this.applyAssetLayout();
   }
 
@@ -610,11 +704,27 @@ export class LevelUpUi {
 
     if (this.assetTextures.warningChip) {
       this.warningChipSprite.texture = this.assetTextures.warningChip;
-      this.warningChipSprite.position.set(70, 214);
-      this.warningChipSprite.width = this.width - 140;
-      this.warningChipSprite.height = 30;
-      this.warningChipSprite.alpha = 0.86;
+      this.warningChipSprite.position.set(48, 200);
+      this.warningChipSprite.width = this.width - 96;
+      this.warningChipSprite.height = 58;
+      this.warningChipSprite.alpha = 0.82;
       this.warningChipSprite.visible = true;
+    }
+    if (this.assetTextures.warningGlow) {
+      this.warningGlowSprite.texture = this.assetTextures.warningGlow;
+      this.warningGlowSprite.position.set(92, 239);
+      this.warningGlowSprite.width = this.width - 148;
+      this.warningGlowSprite.height = 12;
+      this.warningGlowSprite.alpha = 0.34;
+      this.warningGlowSprite.visible = true;
+    }
+    if (this.assetTextures.warningAccentChip) {
+      this.warningAccentSprite.texture = this.assetTextures.warningAccentChip;
+      this.warningAccentSprite.position.set(this.width - 99, 213);
+      this.warningAccentSprite.width = 46;
+      this.warningAccentSprite.height = 22;
+      this.warningAccentSprite.alpha = 0.38;
+      this.warningAccentSprite.visible = true;
     }
   }
 
@@ -653,14 +763,19 @@ export class LevelUpUi {
       return '反応探索中';
     }
 
-    return '安定解析中';
+    return '選択可能';
   }
 
-  getCardFrameTexture(tag, isTagless = false, state = 'new') {
+  getCardFrameTexture(tag, isTagless = false, state = 'new', option = null) {
     if (isTagless) {
-      return state === 'upgrade' || state === 'owned'
+      const statTexture = this.getStatCardTexture(option);
+      if (statTexture) {
+        return statTexture;
+      }
+
+      return this.assetTextures.statCardCommonA10c ?? (state === 'upgrade' || state === 'owned'
         ? this.assetTextures.cardNoneSelectedV2 ?? this.assetTextures.cardNoneSelected ?? this.assetTextures.cardNoneV2 ?? this.assetTextures.cardNone
-        : this.assetTextures.cardNoneV2 ?? this.assetTextures.cardNone;
+        : this.assetTextures.cardNoneV2 ?? this.assetTextures.cardNone);
     }
 
     if (tag === 'hunting') {
@@ -674,15 +789,42 @@ export class LevelUpUi {
     return this.assetTextures.cardSpeed;
   }
 
+  getFallbackRewardCardTexture(option) {
+    if (option?.rewardType === 'heal') {
+      return this.assetTextures.fallbackRewardCardHealA07c;
+    }
+    if (option?.rewardType === 'score') {
+      return this.assetTextures.fallbackRewardCardScoreA07c;
+    }
+    return this.assetTextures.fallbackRewardCardDnaA07c;
+  }
+
+  getStatCardTexture(option) {
+    const map = {
+      hard_skin: this.assetTextures.statCardHpA10d1,
+      attack_power_up: this.assetTextures.statCardAttackA10d1,
+      move_speed_up: this.assetTextures.statCardSpeedA10d1,
+      attack_speed_up: this.assetTextures.statCardRateA10d1,
+      exp_sense: this.assetTextures.statCardPickupA10d1,
+      pickup_range_up: this.assetTextures.statCardPickupA10d1,
+    };
+
+    return map[option?.id] ?? this.assetTextures.statCardCommonA10d1;
+  }
+
   getOptionIconTexture(option, tag) {
     const boostIconMap = {
-      hard_skin: this.assetTextures.iconBoostHp,
-      move_speed_up: this.assetTextures.iconBoostMoveSpeed,
-      attack_speed_up: this.assetTextures.iconBoostAttackRate,
+      fallback_dna_reward: this.assetTextures.iconBoostDnaGain,
+      fallback_heal_reward: this.assetTextures.iconBoostHp,
+      fallback_score_reward: this.assetTextures.iconNone,
+      hard_skin: this.assetTextures.statIconHpA10c ?? this.assetTextures.iconBoostHp,
+      attack_power_up: this.assetTextures.statIconAttackA10c ?? this.assetTextures.iconBoostAttackRange,
+      move_speed_up: this.assetTextures.statIconSpeedA10c ?? this.assetTextures.iconBoostMoveSpeed,
+      attack_speed_up: this.assetTextures.statIconRateA10c ?? this.assetTextures.iconBoostAttackRate,
       attack_range_up: this.assetTextures.iconBoostAttackRange,
-      pickup_range_up: this.assetTextures.iconBoostPickupRange,
+      pickup_range_up: this.assetTextures.statIconPickupA10c ?? this.assetTextures.iconBoostPickupRange,
       dna_gain_up: this.assetTextures.iconBoostDnaGain,
-      exp_sense: this.assetTextures.iconBoostExpSense,
+      exp_sense: this.assetTextures.statIconPickupA10c ?? this.assetTextures.iconBoostExpSense,
     };
     const skillIconMap = {
       afterimage_claw: this.assetTextures.iconAfterimageClaw,

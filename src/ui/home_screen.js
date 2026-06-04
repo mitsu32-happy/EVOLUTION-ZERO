@@ -9,6 +9,7 @@ import {
 import { getDinoConfig } from '../data/run_config.js';
 import { getTitleById, getTitleFrameById } from '../data/reward_titles.js';
 import { DAILY_MISSION_COUNT, formatDailyReward, getDailyMissionTemplate } from '../data/daily_missions.js';
+import { UPDATE_NEWS } from '../data/update_news.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
 import { playPressFeedback } from './ui_feedback.js';
@@ -27,7 +28,18 @@ const HOME_ASSET_PATHS = {
   homeDinoSwitchLeft: 'assets/ui/home/home_dino_switch_left.png',
   homeDinoSwitchRight: 'assets/ui/home/home_dino_switch_right.png',
   homeDinoSelector: 'assets/ui/home/home_dino_selector.png',
-  sortieButtonFrame: 'assets/ui/home/sortie_button_frame.png',
+  sortieButtonFrame: 'assets/ui/home/sortie_button_frame_a10.png',
+  sortieButtonLeftIcon: 'assets/ui/home/sortie_button_left_icon_a10.png',
+  sortieButtonGlow: 'assets/ui/home/sortie_button_glow_a10.png',
+  newsEntryButton: 'assets/ui/home/news_button_a07d.png',
+  newsPanel: 'assets/ui/home/news_panel_outer_a07d.png',
+  newsListCard: 'assets/ui/home/news_list_item_a07d.png',
+  newsListCardUnread: 'assets/ui/home/news_list_item_a07d.png',
+  newsDetailPanel: 'assets/ui/home/news_panel_outer_a07d.png',
+  newsButtonClose: 'assets/ui/home/news_button_close_a07d.png',
+  newsButtonBack: 'assets/ui/home/news_button_back_a07d.png',
+  newsBadgeUpdate: 'assets/ui/home/news_badge_update_a07d.png',
+  newsBadgeNormal: 'assets/ui/home/news_badge_update_a07d.png',
   titleFrames: {
     normal_clear_frame: 'assets/ui/titles/title_frame_normal.png',
     hard_clear_frame: 'assets/ui/titles/title_frame_hard.png',
@@ -57,32 +69,28 @@ const HOME_BRANCH_ORDER = ['speed', 'hunting', 'attack', 'zero'];
 const HOME_DINO_PROFILES = {
   velociraptor: {
     label: 'ヴェロキラプトル',
-    shortLabel: 'ラプトル',
-    line: '機動型 / 索敵と連撃に適性',
+    line: 'スピード型',
     width: 292,
     height: 206,
     y: 280,
   },
   triceratops: {
     label: 'トリケラトプス',
-    shortLabel: 'トリケラ',
-    line: '重装型 / 生存と押し返しに適性',
+    line: '防御型',
     width: 278,
     height: 198,
     y: 282,
   },
   tyrannosaurus: {
     label: 'ティラノサウルス',
-    shortLabel: 'ティラノ',
-    line: '強襲型 / 高威力の制圧に適性',
+    line: '火力型',
     width: 300,
     height: 212,
     y: 278,
   },
   spinosaurus: {
     label: 'スピノサウルス',
-    shortLabel: 'スピノ',
-    line: '制圧型 / 水流と渦で群れを整理',
+    line: '中距離型',
     width: 300,
     height: 214,
     y: 280,
@@ -201,8 +209,14 @@ export class HomeScreen {
     this.titleFrame = new Graphics();
     this.panelGraphics = new Graphics();
     this.iconGraphics = new Graphics();
+    this.deployGlow = new Sprite(Texture.EMPTY);
     this.deployFrame = new Sprite(Texture.EMPTY);
+    this.deployLeftIcon = new Sprite(Texture.EMPTY);
     this.selectorPlate = new Sprite(Texture.EMPTY);
+    this.newsEntryFrame = new Sprite(Texture.EMPTY);
+    this.newsEntryFallback = new Graphics();
+    this.newsEntryText = this.createText('お知らせ', 14, '#f2fffb', 122);
+    this.newsModal = this.createNewsModal();
     this.switchLeft = new Sprite(Texture.EMPTY);
     this.switchRight = new Sprite(Texture.EMPTY);
     this.switchFallback = new Graphics();
@@ -227,6 +241,7 @@ export class HomeScreen {
     this.unlockTitle = this.createText('解放', 12, '#7cf7d4', 90);
     this.recordTitle = this.createText('記録', 12, '#7cf7d4', 90);
     this.dailyTitle = this.createText('デイリー', 12, '#7cf7d4', 120);
+    this.dailyClaimAllButton = this.createDailyClaimAllButton();
     this.infoTabButtons = HOME_INFO_TABS.map((item) => this.createHomeInfoTabButton(item));
     this.unlockRows = UNLOCK_STATUS_ITEMS.map((item) => ({
       item,
@@ -281,7 +296,9 @@ export class HomeScreen {
       this.infoPanelGlow,
       ...this.infoTabButtons.map((entry) => entry.view),
       this.resourcePanel,
+      this.deployGlow,
       this.deployFrame,
+      this.deployLeftIcon,
       this.selectorPlate,
       this.switchFallback,
       this.switchLeft,
@@ -292,6 +309,9 @@ export class HomeScreen {
       ...this.resourceIcons.map((entry) => entry.sprite),
       this.logoSprite,
       this.logoFallback,
+      this.newsEntryFallback,
+      this.newsEntryFrame,
+      this.newsEntryText,
       ...this.resourceTexts.flatMap((entry) => [entry.label, entry.value]),
       this.dinoName,
       this.dinoLine,
@@ -304,16 +324,24 @@ export class HomeScreen {
       this.recordTitle,
       ...this.recordRows.flatMap((entry) => [entry.label, entry.value]),
       this.dailyTitle,
+      this.dailyClaimAllButton.view,
       ...this.dailyRows.flatMap((entry) => [entry.label, entry.status, entry.reward, entry.button.view]),
       this.noticeText,
       this.bottomNav.view,
       this.titleSelectUi.view,
+      this.newsModal.view,
     );
 
     this.drawStatic();
     this.deployFrame.eventMode = 'static';
     this.deployFrame.cursor = 'pointer';
     this.deployFrame.on('pointertap', () => this.handleDeployTap());
+    this.newsEntryFrame.eventMode = 'static';
+    this.newsEntryFrame.cursor = 'pointer';
+    this.newsEntryFrame.on('pointertap', () => this.openNewsModal());
+    this.newsEntryFallback.eventMode = 'static';
+    this.newsEntryFallback.cursor = 'pointer';
+    this.newsEntryFallback.on('pointertap', () => this.openNewsModal());
     this.switchLeft.eventMode = 'static';
     this.switchLeft.cursor = 'pointer';
     this.switchLeft.on('pointertap', () => this.handleDinoSwitchTap(-1));
@@ -387,7 +415,7 @@ export class HomeScreen {
     this.dinoName.text = homeTarget.branch?.evolutionName ?? profile.label;
     this.dinoName.style.fill = toCssColor(dino.accentColor);
     this.dinoLine.text = homeTarget.branch?.role ?? profile.line;
-    this.homeDinoHint.text = homeTarget.branch?.evolutionName ?? profile.shortLabel;
+    this.homeDinoHint.text = '表示恐竜を切り替え';
     this.unlockRows.forEach(({ item, value }) => {
       value.text = unlockValues[item.id] ?? '? / ?';
     });
@@ -395,6 +423,7 @@ export class HomeScreen {
       value.text = recordValues[item.id] ?? '-';
     });
     const dailyMissions = this.saveManager?.getDailyMissions?.() ?? data.dailyMissions ?? { missions: [] };
+    let claimableDailyCount = 0;
     this.dailyRows.forEach((row, index) => {
       const mission = dailyMissions.missions?.[index] ?? null;
       const template = getDailyMissionTemplate(mission?.id);
@@ -413,6 +442,9 @@ export class HomeScreen {
       const progress = Math.min(template.target, Math.max(0, Math.floor(mission.progress ?? 0)));
       const complete = Boolean(mission.completed) || progress >= template.target;
       const claimed = Boolean(mission.claimed);
+      if (complete && !claimed) {
+        claimableDailyCount += 1;
+      }
 
       row.label.text = template.shortLabel ?? template.label;
       status.text = complete ? (claimed ? '受取済み' : '達成') : `${this.formatNumber(progress)}/${this.formatNumber(template.target)}`;
@@ -427,7 +459,12 @@ export class HomeScreen {
       button.text.style.fill = claimed ? '#8da49e' : '#071015';
       this.drawDailyButton(button.bg, claimed);
     });
-
+    this.dailyClaimAllButton.view.visible = this.activeHomeInfoTab === 'daily';
+    this.dailyClaimAllButton.view.eventMode = claimableDailyCount > 0 ? 'static' : 'none';
+    this.dailyClaimAllButton.view.cursor = claimableDailyCount > 0 ? 'pointer' : 'default';
+    this.dailyClaimAllButton.view.alpha = claimableDailyCount > 0 ? 1 : 0.58;
+    this.dailyClaimAllButton.text.text = claimableDailyCount > 0 ? '一括受取' : '受取なし';
+    this.drawDailyClaimAllButton(this.dailyClaimAllButton.bg, claimableDailyCount <= 0);
     this.applyTextures(homeDinoId, homeTarget.evolutionId);
     this.updateHomeInfoTabVisibility();
     this.updateEquippedTitle(data);
@@ -736,6 +773,30 @@ export class HomeScreen {
     this.setSaveData(this.saveData, this.gameState);
   }
 
+  claimAllDailyMissions() {
+    const claimableRows = this.dailyRows.filter((row) => {
+      const mission = row?.mission;
+      return mission && !mission.claimed && row.status.text === '達成';
+    });
+
+    if (claimableRows.length <= 0) {
+      this.noticeText.text = '受け取れるデイリーはありません';
+      return;
+    }
+
+    let claimedCount = 0;
+    claimableRows.forEach((row) => {
+      const result = this.saveManager?.claimDailyMission?.(row.mission.id) ?? false;
+      if (result) {
+        claimedCount += 1;
+      }
+    });
+
+    this.saveData = this.saveManager?.getData?.() ?? this.saveData;
+    this.noticeText.text = claimedCount > 0 ? `デイリー ${claimedCount}件を受け取りました` : '受け取り済み';
+    this.setSaveData(this.saveData, this.gameState);
+  }
+
   openTitleSelect() {
     this.playUiFeedback('ui_select');
     this.titleSelectUi.show(this.saveManager?.getData?.() ?? this.saveData);
@@ -760,6 +821,17 @@ export class HomeScreen {
       ['homeDinoSwitchRight', ASSET_KEYS.homeUi?.homeDinoSwitchRight, HOME_ASSET_PATHS.homeDinoSwitchRight],
       ['homeDinoSelector', ASSET_KEYS.homeUi?.homeDinoSelector, HOME_ASSET_PATHS.homeDinoSelector],
       ['sortieButtonFrame', ASSET_KEYS.homeUi?.sortieButtonFrame, HOME_ASSET_PATHS.sortieButtonFrame],
+      ['sortieButtonLeftIcon', ASSET_KEYS.homeUi?.sortieButtonLeftIcon, HOME_ASSET_PATHS.sortieButtonLeftIcon],
+      ['sortieButtonGlow', ASSET_KEYS.homeUi?.sortieButtonGlow, HOME_ASSET_PATHS.sortieButtonGlow],
+      ['newsEntryButton', ASSET_KEYS.homeUi?.newsEntryButton, HOME_ASSET_PATHS.newsEntryButton],
+      ['newsPanel', ASSET_KEYS.homeUi?.newsPanel, HOME_ASSET_PATHS.newsPanel],
+      ['newsListCard', ASSET_KEYS.homeUi?.newsListCard, HOME_ASSET_PATHS.newsListCard],
+      ['newsListCardUnread', ASSET_KEYS.homeUi?.newsListCardUnread, HOME_ASSET_PATHS.newsListCardUnread],
+      ['newsDetailPanel', ASSET_KEYS.homeUi?.newsDetailPanel, HOME_ASSET_PATHS.newsDetailPanel],
+      ['newsButtonClose', ASSET_KEYS.homeUi?.newsButtonClose, HOME_ASSET_PATHS.newsButtonClose],
+      ['newsButtonBack', ASSET_KEYS.homeUi?.newsButtonBack, HOME_ASSET_PATHS.newsButtonBack],
+      ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
+      ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
       ...Object.entries(HOME_ASSET_PATHS.titleFrames).map(([id, path]) => [
         `titleFrame:${id}`,
         ASSET_KEYS.titleFrames?.[id],
@@ -820,11 +892,25 @@ export class HomeScreen {
       this.applySprite(selectedSprite, this.textures.get('homeInfoTabSelected'), { x: 0, y: 0, width: INFO_TAB.width, height: INFO_TAB.height }, 0.96);
       this.applySprite(inactiveSprite, this.textures.get('homeInfoTabInactive'), { x: 0, y: 0, width: INFO_TAB.width, height: INFO_TAB.height }, 0.88);
     });
-    this.applySprite(this.deployFrame, this.textures.get('sortieButtonFrame'), DEPLOY, 0.86);
+    this.applySprite(this.deployGlow, this.textures.get('sortieButtonGlow'), {
+      x: DEPLOY.x + 64,
+      y: DEPLOY.y + 48,
+      width: DEPLOY.width - 90,
+      height: 14,
+    }, 0.66);
+    this.applySprite(this.deployFrame, this.textures.get('sortieButtonFrame'), DEPLOY, 0.92);
+    this.applySprite(this.deployLeftIcon, this.textures.get('sortieButtonLeftIcon'), {
+      x: DEPLOY.x + 14,
+      y: DEPLOY.y + 8,
+      width: 50,
+      height: 50,
+    }, 0.96);
     this.resourceIcons.forEach(({ item, sprite }) => {
       this.applySprite(sprite, this.textures.get(item.iconName), { x: item.iconX - 10, y: 43, width: 20, height: 20 }, 0.95);
     });
     this.applySprite(this.selectorPlate, this.textures.get('homeDinoSelector'), { x: SELECTOR.pillX, y: SELECTOR.y, width: 138, height: 28 }, 0.9);
+    this.applySprite(this.newsEntryFrame, this.textures.get('newsEntryButton'), { x: 204, y: 94, width: 172, height: 44 }, 0.96);
+    this.newsEntryFallback.visible = !this.newsEntryFrame.visible;
     this.applySprite(this.switchLeft, this.textures.get('homeDinoSwitchLeft'), { x: SELECTOR.leftX, y: SELECTOR.y - 2, width: 34, height: 34 }, 0.9);
     this.applySprite(this.switchRight, this.textures.get('homeDinoSwitchRight'), { x: SELECTOR.rightX, y: SELECTOR.y - 2, width: 34, height: 34 }, 0.9);
 
@@ -864,7 +950,7 @@ export class HomeScreen {
 
   handleNav(id) {
     if (id === 'home') {
-      this.noticeText.text = 'ホームを表示中';
+      this.noticeText.text = '';
       return;
     }
 
@@ -905,6 +991,11 @@ export class HomeScreen {
     this.homeDinoHint.anchor.set(0.5, 0);
     this.homeDinoHint.style.align = 'center';
     this.homeDinoHint.position.set(this.width / 2, SELECTOR.y + 8);
+    this.newsEntryText.style.dropShadow = true;
+    this.newsEntryText.style.dropShadowColor = '#001014';
+    this.newsEntryText.style.dropShadowBlur = 3;
+    this.newsEntryText.anchor.set(0.5);
+    this.newsEntryText.position.set(284, 120);
 
     this.deployTitle.anchor.set(0.5);
     this.deployTitle.position.set(this.width / 2 + 16, DEPLOY.y + 25);
@@ -942,6 +1033,7 @@ export class HomeScreen {
     });
 
     this.dailyTitle.position.set(DAILY_CONTENT.titleX, DAILY_CONTENT.titleY);
+    this.dailyClaimAllButton.view.position.set(INFO_PANEL.x + INFO_PANEL.width - 92, INFO_PANEL.y + 12);
     this.dailyRows.forEach(({ label, status, reward, button }, index) => {
       const y = DAILY_CONTENT.rowStartY + index * DAILY_CONTENT.rowGap;
 
@@ -972,6 +1064,9 @@ export class HomeScreen {
     this.panelGraphics
       .rect(HERO.x, HERO.y, HERO.width, HERO.height)
       .fill({ color: 0x000000, alpha: this.homeBackground.visible ? 0.1 : 0 })
+      .roundRect(54, 336, 282, 56, 14)
+      .fill({ color: 0xf3ffff, alpha: 0.14 })
+      .stroke({ color: 0xffffff, width: 1.1, alpha: 0.24 })
       .ellipse(this.width / 2, 408, 120, 18)
       .fill({ color: 0x000000, alpha: 0.32 })
       .ellipse(this.width / 2, 407, 78, 7)
@@ -988,6 +1083,13 @@ export class HomeScreen {
     }
     if (!this.selectorPlate.visible) {
       this.drawPanel(this.switchFallback, SELECTOR.pillX, SELECTOR.y, 138, 28, UI_COLORS.dna, 0.74);
+    }
+    if (!this.newsEntryFrame.visible) {
+      this.newsEntryFallback
+        .clear()
+        .roundRect(204, 94, 172, 44, 9)
+        .fill({ color: 0x061012, alpha: 0.82 })
+        .stroke({ color: UI_COLORS.dna, width: 1.1, alpha: 0.66 });
     }
     if (!this.switchLeft.visible) {
       this.drawSwitchFallback(this.switchFallback, SELECTOR.leftX, SELECTOR.y - 2, -1);
@@ -1058,12 +1160,266 @@ export class HomeScreen {
       });
     }
 
-    this.iconGraphics
-      .circle(82, DEPLOY.y + 33, 21)
-      .fill({ color: 0x211504, alpha: 0.82 })
-      .stroke({ color: UI_COLORS.gold, width: 1.8, alpha: 0.86 })
-      .poly([75, DEPLOY.y + 43, 88, DEPLOY.y + 25, 98, DEPLOY.y + 43])
-      .fill({ color: UI_COLORS.gold, alpha: 0.84 });
+    if (!this.deployLeftIcon.visible) {
+      this.iconGraphics
+        .circle(82, DEPLOY.y + 33, 21)
+        .fill({ color: 0x211504, alpha: 0.82 })
+        .stroke({ color: UI_COLORS.gold, width: 1.8, alpha: 0.86 })
+        .poly([75, DEPLOY.y + 43, 88, DEPLOY.y + 25, 98, DEPLOY.y + 43])
+        .fill({ color: UI_COLORS.gold, alpha: 0.84 });
+    }
+  }
+
+  createNewsModal() {
+    const view = new Container();
+    const dim = new Graphics();
+    const panelFallback = new Graphics();
+    const panelSprite = new Sprite(Texture.EMPTY);
+    const detailSprite = new Sprite(Texture.EMPTY);
+    const closeSprite = new Sprite(Texture.EMPTY);
+    const backSprite = new Sprite(Texture.EMPTY);
+    const detailBodyMask = new Graphics();
+    const detailBodyHit = new Graphics();
+    const title = this.createText('お知らせ', 22, '#f4f7f5', 220);
+    const subtitle = this.createText('アップデート情報', 10, '#7cf7d4', 210);
+    const close = this.createText('閉じる', 12, '#ffd36b', 80);
+    const back = this.createText('一覧へ', 12, '#7cf7d4', 80);
+    const cards = UPDATE_NEWS.slice(0, 5).map((item) => ({
+      item,
+      view: new Container(),
+      bg: new Sprite(Texture.EMPTY),
+      fallback: new Graphics(),
+      badge: new Sprite(Texture.EMPTY),
+      date: this.createText(item.date, 9, '#8da49e', 90),
+      title: this.createText(item.title, 13, '#ffffff', 198),
+      category: this.createText(item.category, 9, item.isImportant ? '#ffd36b' : '#7cf7d4', 72),
+    }));
+    const detailTitle = this.createText('', 16, '#ffffff', 266);
+    const detailDate = this.createText('', 10, '#8da49e', 160);
+    const detailBody = this.createText('', 12, '#d7fff2', 268);
+
+    view.visible = false;
+    view.eventMode = 'static';
+    view.sortableChildren = true;
+    dim.rect(0, 0, this.width, this.height).fill({ color: 0x000000, alpha: 0.68 });
+    dim.eventMode = 'static';
+    dim.cursor = 'default';
+    dim.on('pointertap', () => this.closeNewsModal());
+    panelFallback.eventMode = 'static';
+    panelFallback.cursor = 'default';
+    panelFallback.on('pointertap', () => {});
+    panelSprite.position.set(18, 86);
+    panelSprite.width = 354;
+    panelSprite.height = 610;
+    panelSprite.eventMode = 'static';
+    panelSprite.cursor = 'default';
+    panelSprite.on('pointertap', () => {});
+    panelSprite.visible = false;
+    detailSprite.position.set(34, 252);
+    detailSprite.width = 322;
+    detailSprite.height = 390;
+    detailSprite.visible = false;
+    closeSprite.anchor.set(0.5);
+    closeSprite.position.set(326, 154);
+    closeSprite.width = 42;
+    closeSprite.height = 34;
+    closeSprite.eventMode = 'static';
+    closeSprite.cursor = 'pointer';
+    closeSprite.on('pointertap', () => this.closeNewsModal());
+    backSprite.anchor.set(0.5);
+    backSprite.position.set(86, 154);
+    backSprite.width = 42;
+    backSprite.height = 34;
+    backSprite.eventMode = 'static';
+    backSprite.cursor = 'pointer';
+    backSprite.on('pointertap', () => this.showNewsList());
+    title.anchor.set(0.5, 0);
+    title.position.set(this.width / 2, 118);
+    subtitle.anchor.set(0.5, 0);
+    subtitle.position.set(this.width / 2, 150);
+    close.anchor.set(0.5, 0);
+    close.position.set(326, 162);
+    close.eventMode = 'static';
+    close.cursor = 'pointer';
+    close.on('pointertap', () => this.closeNewsModal());
+    back.anchor.set(0.5, 0);
+    back.position.set(86, 162);
+    back.eventMode = 'static';
+    back.cursor = 'pointer';
+    back.on('pointertap', () => this.showNewsList());
+    cards.forEach((card, index) => {
+      const y = 192 + index * 78;
+      card.view.position.set(34, y);
+      card.view.eventMode = 'static';
+      card.view.cursor = 'pointer';
+      card.view.on('pointertap', () => this.showNewsDetail(card.item));
+      card.bg.width = 322;
+      card.bg.height = 72;
+      card.date.position.set(18, 13);
+      card.title.position.set(18, 31);
+      card.title.style.lineHeight = 16;
+      card.badge.position.set(218, 8);
+      card.badge.width = 92;
+      card.badge.height = 30;
+      card.category.anchor.set(1, 0);
+      card.category.position.set(294, 13);
+      card.view.addChild(card.fallback, card.bg, card.badge, card.date, card.title, card.category);
+    });
+    detailTitle.position.set(50, 182);
+    detailDate.position.set(52, 214);
+    detailBody.position.set(50, 272);
+    detailBody.style.lineHeight = 19;
+    detailBody.style.breakWords = true;
+    detailBody.mask = detailBodyMask;
+    detailBodyMask.rect(48, 268, 292, 326).fill({ color: 0xffffff, alpha: 1 });
+    detailBodyHit.rect(46, 264, 296, 334).fill({ color: 0x000000, alpha: 0.001 });
+    detailBodyHit.eventMode = 'static';
+    detailBodyHit.cursor = 'grab';
+    detailBodyHit.visible = false;
+    detailBodyHit.on('pointerdown', (event) => {
+      this.newsDetailDrag = {
+        startY: event.global.y,
+        startScrollY: this.newsDetailScrollY ?? 0,
+      };
+    });
+    detailBodyHit.on('pointermove', (event) => {
+      if (!this.newsDetailDrag) {
+        return;
+      }
+      this.updateNewsDetailScroll(this.newsDetailDrag.startScrollY + this.newsDetailDrag.startY - event.global.y);
+    });
+    detailBodyHit.on('pointerup', () => {
+      this.newsDetailDrag = null;
+    });
+    detailBodyHit.on('pointerupoutside', () => {
+      this.newsDetailDrag = null;
+    });
+    view.addChild(
+      dim,
+      panelFallback,
+      panelSprite,
+      closeSprite,
+      backSprite,
+      title,
+      subtitle,
+      close,
+      back,
+      ...cards.map((card) => card.view),
+      detailSprite,
+      detailTitle,
+      detailDate,
+      detailBodyMask,
+      detailBody,
+      detailBodyHit,
+    );
+
+    return {
+      view,
+      dim,
+      panelFallback,
+      panelSprite,
+      detailSprite,
+      closeSprite,
+      backSprite,
+      detailBodyMask,
+      detailBodyHit,
+      title,
+      subtitle,
+      close,
+      back,
+      cards,
+      detailTitle,
+      detailDate,
+      detailBody,
+      mode: 'list',
+    };
+  }
+
+  openNewsModal() {
+    this.playUiFeedback('ui_select');
+    this.newsModal.view.visible = true;
+    this.showNewsList();
+  }
+
+  closeNewsModal() {
+    this.playUiFeedback('ui_click');
+    this.newsModal.view.visible = false;
+  }
+
+  showNewsList() {
+    const modal = this.newsModal;
+    modal.mode = 'list';
+    modal.subtitle.text = 'アップデート情報';
+    modal.back.visible = false;
+    modal.backSprite.visible = false;
+    modal.detailBodyHit.visible = false;
+    modal.detailSprite.visible = false;
+    modal.detailTitle.visible = false;
+    modal.detailDate.visible = false;
+    modal.detailBody.visible = false;
+    modal.cards.forEach((card) => {
+      const texture = this.textures.get(card.item.isImportant ? 'newsListCardUnread' : 'newsListCard') ?? this.textures.get('newsListCard');
+      const badgeTexture = card.item.isImportant ? this.textures.get('newsBadgeUpdate') : null;
+      card.bg.texture = texture ?? Texture.EMPTY;
+      card.bg.visible = !!texture;
+      card.badge.texture = badgeTexture ?? Texture.EMPTY;
+      card.badge.visible = !!badgeTexture;
+      card.fallback.clear();
+      if (!texture) {
+        card.fallback.roundRect(0, 0, 322, 72, 10).fill({ color: 0x061012, alpha: 0.9 }).stroke({ color: UI_COLORS.dna, width: 1, alpha: 0.58 });
+      }
+      card.view.visible = true;
+    });
+    this.drawNewsPanel();
+  }
+
+  showNewsDetail(item) {
+    const modal = this.newsModal;
+    modal.mode = 'detail';
+    modal.subtitle.text = item.category;
+    modal.back.visible = true;
+    modal.backSprite.visible = true;
+    modal.detailBodyHit.visible = true;
+    modal.cards.forEach((card) => {
+      card.view.visible = false;
+    });
+    modal.detailTitle.text = item.title;
+    modal.detailDate.text = item.date;
+    modal.detailBody.text = item.body.join('\n\n');
+    this.newsDetailScrollY = 0;
+    modal.detailTitle.visible = true;
+    modal.detailDate.visible = true;
+    modal.detailBody.visible = true;
+    modal.detailSprite.visible = false;
+    this.updateNewsDetailScroll(0);
+    this.drawNewsPanel();
+  }
+
+  updateNewsDetailScroll(scrollY = 0) {
+    const modal = this.newsModal;
+    if (!modal) {
+      return;
+    }
+    const maxScroll = Math.max(0, Math.ceil((modal.detailBody.height || 0) - 318));
+    this.newsDetailScrollY = Math.max(0, Math.min(maxScroll, scrollY));
+    modal.detailBody.position.set(50, 272 - this.newsDetailScrollY);
+  }
+
+  drawNewsPanel() {
+    const modal = this.newsModal;
+    const texture = this.textures.get(modal.mode === 'detail' ? 'newsDetailPanel' : 'newsPanel');
+    modal.panelSprite.texture = texture ?? Texture.EMPTY;
+    modal.panelSprite.visible = !!texture;
+    modal.closeSprite.texture = this.textures.get('newsButtonClose') ?? Texture.EMPTY;
+    modal.closeSprite.visible = false;
+    modal.backSprite.texture = this.textures.get('newsButtonBack') ?? Texture.EMPTY;
+    modal.backSprite.visible = modal.mode === 'detail' && !!modal.backSprite.texture && modal.backSprite.texture !== Texture.EMPTY;
+    modal.close.visible = false;
+    modal.back.visible = modal.mode === 'detail' && !modal.backSprite.visible;
+    modal.panelFallback.clear();
+    if (!texture) {
+      modal.panelFallback.roundRect(18, 86, 354, 610, 18).fill({ color: 0x061012, alpha: 0.96 }).stroke({ color: UI_COLORS.dna, width: 1.4, alpha: 0.78 });
+    }
   }
 
   createHomeInfoTabButton(item) {
@@ -1102,6 +1458,7 @@ export class HomeScreen {
     this.infoPanel.visible = this.hasTexture(this.infoPanel);
     this.infoPanelGlow.visible = false;
     this.dailyTitle.visible = showDaily;
+    this.dailyClaimAllButton.view.visible = showDaily;
     this.recordTitle.visible = showRecord;
     this.unlockTitle.visible = showUnlock;
     this.dailyRows.forEach((row) => {
@@ -1157,6 +1514,34 @@ export class HomeScreen {
     this.drawDailyButton(bg, false);
 
     return { view, bg, text };
+  }
+
+  createDailyClaimAllButton() {
+    const view = new Container();
+    const bg = new Graphics();
+    const text = this.createText('一括受取', 8.5, '#071015', 58);
+
+    text.anchor.set(0.5);
+    text.position.set(34, 12);
+    view.eventMode = 'static';
+    view.cursor = 'pointer';
+    view.on('pointertap', () => {
+      playPressFeedback(view, { width: 68, height: 24, scale: 0.95, alpha: 0.78, duration: 110 });
+      this.playUiFeedback('ui_confirm');
+      setTimeout(() => this.claimAllDailyMissions(), 80);
+    });
+    view.addChild(bg, text);
+    this.drawDailyClaimAllButton(bg, false);
+
+    return { view, bg, text };
+  }
+
+  drawDailyClaimAllButton(graphics, disabled) {
+    graphics
+      .clear()
+      .roundRect(0, 0, 68, 24, 7)
+      .fill({ color: disabled ? 0x182225 : UI_COLORS.gold, alpha: disabled ? 0.78 : 0.92 })
+      .stroke({ color: disabled ? UI_COLORS.line : UI_COLORS.gold, width: 1, alpha: 0.78 });
   }
 
   drawDailyButton(graphics, claimed) {

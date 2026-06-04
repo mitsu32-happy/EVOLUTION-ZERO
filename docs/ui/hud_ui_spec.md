@@ -274,3 +274,64 @@
 - `標準` は現行見た目を維持する。`やや明るい` / `明るい` でもHUD発光、ZERO警告、必殺演出が白飛びしてプレイヤー位置を隠さないことを優先する。
 - スピノサウルス系の暗色ボディはプレイヤー輪郭補助で背景から分離する。専用アセット自体の色やalphaは変更しない。
 - iPhone Safariや屋外プレイ想定では、swamp / ruins / ZERO終盤でプレイヤー、敵、pickup、warning guideが最短で読めることをQA対象にする。
+
+## MVP-A07b Boss / ZERO Notice Assets
+
+- Normal boss arrival notices now prefer `boss_warning_panel_a07b.png` with `boss_appear_alert_chip_a07b.png`; text is still rendered in code.
+- ZERO notices now prefer `zero_phase_notice_panel_a07b.png` for phase warnings and `zero_final_notice_panel_a07b.png` for FINAL PROTOCOL.
+- Graphics fallback remains only for missing texture cases.
+- The notices must not appear during level-up, evolution choice, result display, or other blocking UI.
+
+## MVP-A07c Generated Boss / ZERO Notice Assets
+
+- Boss and ZERO notice runtime paths now point to illustrated A07c assets: `boss_notice_panel_a07c.png`, `boss_notice_alert_chip_a07c.png`, `zero_notice_panel_a07c.png`, and `zero_final_protocol_panel_a07c.png`.
+- Text remains code-rendered so the same art can support normal boss, ZERO phase, and final protocol copy.
+
+## MVP-A09 Boss / ZERO Notice Polish
+
+- Normal boss notice uses the A07c red warning panel at the upper play area with code-rendered boss text.
+- Normal notice duration is 1.95s with short fade-in/fade-out and reduced pulse so it reads quickly without covering combat.
+- Long boss labels wrap inside a 252px text safe area and use subtle shadow for readability.
+- ZERO PHASE notices remain separate from the normal boss banner; PHASE 1 is 2.02s, PHASE 2 is 2.12s, and the ZERO start notice is 1.90s.
+- FINAL PROTOCOL uses the A07c final panel with wider/lower placement, 2.62s duration, reduced dim/noise alpha, and stronger text treatment.
+- Notices must continue to be suppressed during level-up, evolution choice, pause, result, and game-over surfaces.
+## MVP-A10b Branch HUD
+
+- The post-evolution BRANCH notice now prefers generated A10b assets:
+  - `public/assets/ui/hud/branch_panel_a10b.png`
+  - `public/assets/ui/hud/branch_icon_frame_a10b.png`
+  - `public/assets/ui/hud/branch_glow_a10b.png`
+- Runtime text remains code-rendered: `BRANCH` plus the selected evolution display name.
+- The evolved portrait is shown inside the generated icon frame when a portrait texture exists.
+- The portrait route covers velociraptor, triceratops, tyrannosaurus, spinosaurus, and ZERO evolution branches through the existing HUD portrait resolver.
+- Graphics fallback is reserved for missing portrait or missing texture cases only.
+## MVP-A10c Branch HUD Polish
+
+- BRANCH notice keeps the A10b generated panel/frame/glow assets.
+- Evolution portrait/icon size is increased and the text block is shifted right to avoid overlap.
+- The notice stays compact in the upper-left play HUD and remains hidden until an evolution is active.
+## MVP-A10d Branch HUD Portrait Confirmation
+
+- BRANCH HUD continues to use the A10b panel/frame/glow assets.
+- Portrait rendering is required for normal and ZERO branches; fallback graphics are only for missing textures.
+- Existing portrait resolution covers velociraptor, triceratops, tyrannosaurus, spinosaurus, and ZERO branch portraits.
+## MVP-A10d.1 BRANCH Portrait Display
+
+- BRANCH HUD uses the A10b panel, frame, and glow with a larger upper-left placement below the top HUD.
+- The evolved portrait is rendered above the portrait frame interior so it is visible in the actual HUD card.
+- Runtime QA verified the BRANCH card portrait with `debugEvolution=speed` and normal difficulty.
+
+## MVP-A10d.2 HUD Base / Branch Role Split
+
+- The upper-left HUD portrait is now fixed to the run's starting/base dinosaur via `selectedDino`.
+- Evolution portraits are no longer used for the upper-left base portrait after branching.
+- The BRANCH HUD card is responsible for the evolved branch portrait and branch display name.
+- QA routes confirmed base portrait + BRANCH portrait/name separation for velociraptor, triceratops, tyrannosaurus, spinosaurus, and ZERO evolution.
+
+## MVP-A10d.3 HUD Notice / Boss Bar Priority
+
+- HUD priority is FINAL PROTOCOL, ZERO notice, normal boss notice, BRANCH, then boss HP bar.
+- While boss / ZERO notice timers are active, the boss HP bar is hidden so notice text and frames stay readable.
+- After the notice ends, the boss HP bar is restored automatically when an active boss exists.
+- If BRANCH is active, the restored boss HP bar is offset downward to avoid direct overlap with the BRANCH card.
+- QA artifacts are recorded in `docs/assets/a10d3_hud_overlap_audit.md`.

@@ -16,8 +16,7 @@ const STAGES = [
     zone: 'JUNGLE ZONE',
     sub: '群れが潜む基礎環境',
     detail: '濃い密林を進む基本ステージ。\n群れと高速個体への対応を覚える。',
-    adaptation: '高速適応 / 狩猟適応',
-    recommended: 'ラプトル系',
+    adaptation: '敵数は標準。移動と攻撃の基本を確認しやすい。',
     color: 0x65e878,
     risk: '標準',
   },
@@ -27,8 +26,7 @@ const STAGES = [
     zone: 'VOLCANIC ZONE',
     sub: '熱と攻撃性が高い危険環境',
     detail: '黒い岩場と溶岩光が残る危険地帯。\n爆発・火炎床と硬い敵に注意。',
-    adaptation: '攻撃適応 / 爆発耐性',
-    recommended: 'トリケラ系',
+    adaptation: '火炎床と硬い敵が増える。位置取りが重要。',
     color: 0xff5a3c,
     risk: '危険',
   },
@@ -38,8 +36,7 @@ const STAGES = [
     zone: 'SWAMP ZONE',
     sub: '足を奪う毒沼と毒性の気流',
     detail: '毒霧と毒沼が広がる湿地。\n移動経路を見極めながら戦う。',
-    adaptation: '防御適応 / 狩猟適応',
-    recommended: 'ティラノ系',
+    adaptation: '毒沼で逃げ場が狭い。囲まれない判断が重要。',
     color: 0xae73ff,
     risk: '不安定',
   },
@@ -49,8 +46,7 @@ const STAGES = [
     zone: 'RUINS ZONE',
     sub: '旧施設の残骸が眠る未調査区画',
     detail: '崩れた研究施設跡を進む高難度区画。\n電磁攻撃と遠距離射撃に注意。',
-    adaptation: '解析中 / 変異圧',
-    recommended: '未確定',
+    adaptation: '遠距離攻撃が多い。危険表示を見て避ける。',
     color: 0x9ca8ff,
     risk: '未解析',
   },
@@ -64,7 +60,7 @@ const DEPLOY_TYPES = [
     difficulty: 'normal',
     color: 0x31d7ff,
     locked: false,
-    summary: '標準的な敵密度。ステージ確認と安定したDNA回収向け。',
+    summary: '基本の難易度。敵を倒しながらステージに慣れよう。',
     density: '標準',
     dnaMultiplier: 'x1.0',
   },
@@ -75,7 +71,7 @@ const DEPLOY_TYPES = [
     difficulty: 'hard',
     color: 0xffc739,
     locked: false,
-    summary: '敵の出現が少し早くなる。慣れてきた時の出撃向け。',
+    summary: '敵の数と強さが上がる。強化を選びながら押し切ろう。',
     density: '+少し',
     dnaMultiplier: 'x1.3',
   },
@@ -86,7 +82,7 @@ const DEPLOY_TYPES = [
     difficulty: 'expert',
     color: 0xae73ff,
     locked: false,
-    summary: 'ELITE / MUTANTの圧が高い危険設定。回避判断が重要。',
+    summary: '強敵と物量がさらに増える。育成済みの恐竜向け。',
     density: '+高め',
     dnaMultiplier: 'x1.7',
   },
@@ -97,7 +93,7 @@ const DEPLOY_TYPES = [
     difficulty: 'normal',
     color: 0x65e878,
     locked: false,
-    summary: '時間制限なしの生存記録モード。長時間ビルド確認向け。',
+    summary: '倒れるまで続く記録挑戦。生存時間と撃破数を伸ばそう。',
     density: '+継続',
     dnaMultiplier: 'x1.5',
   },
@@ -108,7 +104,7 @@ const DEPLOY_TYPES = [
     difficulty: 'expert',
     color: 0xff3848,
     locked: true,
-    summary: 'EXPERT\u30af\u30ea\u30a2\u5f8c\u306eZERO\u6700\u7d42\u8a66\u9a13\u3002jungle / volcano / swamp\u3092\u516c\u958b\u524d\u5bfe\u8c61\u3068\u3057\u3066\u89e3\u653e\u3002',
+    summary: 'EXPERTクリア後の超高難度。ZERO進化と報酬を狙う挑戦。',
     density: 'ZERO',
     dnaMultiplier: '-',
   },
@@ -141,7 +137,7 @@ export class StageSelectScreen {
     this.background = new Graphics();
     this.screenBackdrop = new Sprite(Texture.EMPTY);
     this.title = this.createText('ステージ選択', 31, '#f4f7f5', 260);
-    this.subtitle = this.createText('進化環境と出撃条件を選択', 12, '#ff8f7d', 310);
+    this.subtitle = this.createText('ステージと難易度を選択', 12, '#ff8f7d', 310);
     this.backButton = this.createSmallButton('‹');
     this.stageCards = [];
     this.deployButtons = [];
@@ -159,7 +155,7 @@ export class StageSelectScreen {
     this.detailBody = this.createText('', 10, '#d7fff2', 300);
     this.detailAdaptation = this.createText('', 10, '#ffd36b', 300);
     this.detailRecommend = this.createText('', 10, '#7cf7d4', 300);
-    this.deployTitle = this.createText('出撃タイプ', 13, '#8da49e', 220);
+    this.deployTitle = this.createText('難易度', 13, '#8da49e', 220);
     this.deployDescBg = new Graphics();
     this.deployDescTitle = this.createText('', 15, '#ffffff', 150);
     this.deployDescBody = this.createText('', 11, '#d7fff2', 208);
@@ -375,8 +371,8 @@ export class StageSelectScreen {
     this.detailZone.text = selectedStage.zone;
     this.detailRisk.text = `危険度 ${selectedStage.risk}`;
     this.detailBody.text = selectedStage.detail;
-    this.detailAdaptation.text = `出やすい適応: ${selectedStage.adaptation}`;
-    this.detailRecommend.text = `推奨恐竜タイプ: ${selectedStage.recommended}`;
+    this.detailAdaptation.text = selectedStage.adaptation;
+    this.detailRecommend.text = '';
 
     this.drawDetailPanel(selectedStage, texture);
     this.renderStageCards(selectedStage.id);
@@ -675,13 +671,13 @@ export class StageSelectScreen {
       if (this.selectedStage === 'ruins' && !allowRuinsZeroDebug) {
         return {
           locked: true,
-          reason: 'ruins ZERO\u306f\u516c\u958b\u5f8c\u8ffd\u52a0\u4e88\u5b9a',
+          reason: 'ruins ZEROは今後追加予定',
         };
       }
 
       return {
         locked: !progress.expert?.cleared,
-        reason: 'ZERO\u306fEXPERT\u30af\u30ea\u30a2\u3067\u89e3\u653e',
+        reason: 'ZEROはEXPERTクリアで解放',
       };
     }
 

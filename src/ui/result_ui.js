@@ -86,15 +86,15 @@ const RESULT_TEXT_SAFE = {
 const RESULT_SECTION_LAYOUT = {
   header: { y: 96, height: 92 },
   summary: { y: 190, height: 118 },
-  reward: { y: 314, height: 108 },
-  skills: { y: 426, height: 112 },
-  future: { y: 542, height: 90 },
+  reward: { y: 314, height: 156 },
+  skills: { y: 472, height: 0 },
+  future: { y: 486, height: 112 },
   progress: { y: 556, height: 98 },
   progressWithFuture: { y: 636, height: 76 },
-  retryY: 698,
-  homeY: 764,
-  retryWithFutureY: 720,
-  homeWithFutureY: 778,
+  retryY: 674,
+  homeY: 740,
+  retryWithFutureY: 714,
+  homeWithFutureY: 772,
 };
 
 const RESULT_SKILL_COLORS = {
@@ -117,6 +117,22 @@ const RESULT_ASSET_VISUAL_BOUNDS = {
   headerZeroClear: { width: 420, height: 92, left: 0, top: 0, right: 420, bottom: 92 },
   retryButton: { width: 556, height: 130, left: 3, top: 0, right: 501, bottom: 121 },
   homeButton: { width: 542, height: 124, left: 2, top: 0, right: 459, bottom: 121 },
+};
+
+const RESULT_A08_LAYOUT = {
+  header: { x: 45, y: 100, width: 300, height: 58 },
+  headerZero: { x: 35, y: 96, width: 320, height: 62 },
+  panel: { x: 27, y: 172, width: 336, height: 455 },
+  statStartY: 246,
+  statGapY: 56,
+  rewardStartY: 244,
+  rewardGapY: 50,
+  buttonX: 73,
+  nextY: 652,
+  retryY: 650,
+  homeY: 714,
+  buttonWidth: 244,
+  buttonHeight: 54,
 };
 
 export class ResultUi {
@@ -147,6 +163,10 @@ export class ResultUi {
     this.latestGameState = null;
     this.hasFutureRewards = false;
     this.currentResultKind = 'result';
+    this.resultPage = 'summary';
+    this.lastResultKey = '';
+    this.summaryRows = [];
+    this.rewardRows = [];
 
     this.title = this.createText('RESULT', 30, '#f4f7f5', 238);
     this.subtitle = this.createText('生存データを解析しました', 12, '#7cf7d4', 286);
@@ -163,6 +183,7 @@ export class ResultUi {
 
     this.retryButton = this.createButton('もう一度出撃する', 'retry', 0xffc739, '#fff0b4');
     this.homeButton = this.createButton('ホームへ', 'home', 0x35d7ff, '#d7fff2');
+    this.nextButton = this.createButton('次へ', 'next', 0x35d7ff, '#d7fff2');
     this.wasVisible = false;
     this.motionTime = 0;
 
@@ -204,6 +225,13 @@ export class ResultUi {
       this.view.addChild(label, value);
     }
 
+    this.rewardRowFrames = Array.from({ length: 7 }, () => {
+      const sprite = new Sprite(Texture.EMPTY);
+      sprite.visible = false;
+      this.view.addChild(sprite);
+      return sprite;
+    });
+
     for (let index = 0; index < 3; index += 1) {
       const view = new Container();
       const frame = new Graphics();
@@ -234,8 +262,14 @@ export class ResultUi {
       this.view.addChild(label, value);
     }
 
+    this.nextButton.view.on('pointertap', () => this.showRewardPage());
     this.retryButton.view.on('pointertap', () => this.onRetry());
     this.homeButton.view.on('pointertap', () => this.onHome());
+    this.view.on('pointertap', () => {
+      if (this.resultPage === 'summary') {
+        this.showRewardPage();
+      }
+    });
     this.title.eventMode = 'static';
     this.title.cursor = 'pointer';
     this.title.on('pointertap', (event) => {
@@ -244,7 +278,7 @@ export class ResultUi {
     });
     this.evolutionPortraitSprite.anchor.set(0.5);
     this.evolutionPortraitSprite.visible = false;
-    this.view.addChild(this.retryButton.view, this.homeButton.view);
+    this.view.addChild(this.nextButton.view, this.retryButton.view, this.homeButton.view);
     this.loadAssets();
     this.drawStatic();
   }
@@ -292,6 +326,7 @@ export class ResultUi {
   }
 
   show(gameState, saveInfo = null) {
+    const resultKey = `${gameState?.runResult?.type ?? 'result'}:${gameState?.score ?? 0}:${Math.floor(gameState?.elapsedTime ?? 0)}:${saveInfo?.bestScore ?? 0}:${saveInfo?.bestSurvivalTime ?? 0}`;
     if (!this.wasVisible) {
       if (this.panelSprite.visible) {
         this.panelSprite.__introMotion = null;
@@ -300,6 +335,11 @@ export class ResultUi {
         resetIntroMotion(this.fallbackPanel, { duration: 0.24, startScale: 0.98 });
       }
       this.motionTime = 0;
+      this.resultPage = 'summary';
+      this.lastResultKey = resultKey;
+    } else if (resultKey !== this.lastResultKey) {
+      this.resultPage = 'summary';
+      this.lastResultKey = resultKey;
     }
 
     this.wasVisible = true;
@@ -322,7 +362,7 @@ export class ResultUi {
       updateIntroMotion(this.fallbackPanel, delta);
     }
 
-    if (this.recordText.text.startsWith('NEW RECORD')) {
+    if (this.recordText.text.startsWith('NEW!')) {
       pulseAlpha(this.recordText, this.motionTime, 0.72, 1);
     }
   }
@@ -355,9 +395,8 @@ export class ResultUi {
       ['生存時間', this.formatTime(gameState.elapsedTime)],
       ['撃破数', `${gameState.defeatedCount}`],
       ['スコア', this.formatNumber(gameState.score)],
-      ['恐竜', this.compact(dinoResultName, 5)],
-      ['進化', this.compact(evolutionName, 8)],
-      ['到達強度', `強${gameState.playerLevel}`],
+      ['最高スコア', `${this.formatNumber(saveInfo?.bestScore ?? gameState.score)}${saveInfo?.isNewBestScore ? ' NEW!' : ''}`],
+      ['最高生存', `${this.formatTime(saveInfo?.bestSurvivalTime ?? gameState.elapsedTime)}${saveInfo?.isNewBestSurvivalTime ? ' NEW!' : ''}`],
     ];
     const tags = Object.entries(gameState.adaptationProgress ?? {})
       .filter(([, value]) => value > 0)
@@ -369,54 +408,41 @@ export class ResultUi {
     this.subtitle.text = resultType.subtitle;
     this.dinoText.text = `${dinoName} / ${modeName}`;
     this.evolutionText.text = `進化: ${evolutionName}`;
-    this.skillText.text = skills.length > 0
-      ? '取得適応技'
-      : tags.length > 0
-        ? `適応傾向: ${tags.map(([tag, value]) => `${getAdaptationLabel(tag)} ${value}`).join(' / ')}`
-        : '取得適応技: なし';
+    this.skillText.text = '';
+    this.skillText.visible = false;
 
-    this.recordText.text = this.createRecordText(saveInfo);
-    this.recordText.alpha = saveInfo ? 1 : 0;
-    this.recordText.scale.set(saveInfo?.isNewBestScore || saveInfo?.isNewBestSurvivalTime ? 1.05 : 1);
-    this.recordText.style.fill = saveInfo?.isNewBestScore || saveInfo?.isNewBestSurvivalTime ? '#ff3848' : '#ffd36b';
+    this.recordText.text = 'TAP / 次へ';
+    this.recordText.alpha = 0.86;
+    this.recordText.scale.set(1);
+    this.recordText.style.fill = '#ffd36b';
 
     this.statTexts.forEach((entry, index) => {
       const stat = stats[index];
-      entry.label.text = stat[0];
-      entry.value.text = stat[1];
+      entry.label.text = stat?.[0] ?? '';
+      entry.value.text = stat?.[1] ?? '';
+      entry.value.style.fill = stat?.[1]?.includes('NEW!') ? '#ffd36b' : '#ffffff';
     });
 
-    const rewards = isZeroClear
-      ? [
-          ['DNA', dnaEarned > 0 ? `+${this.formatNumber(dnaEarned)}` : '0'],
-          ['ZERO称号', rewardTitles.length > 0 ? this.compact(rewardTitles[0]?.name ?? rewardTitles[0], 7) : '取得済み'],
-          ['ZEROフレーム', titleFrames.length > 0 ? this.compact(titleFrames[0]?.name ?? titleFrames[0], 7) : '取得済み'],
-          ['進化ルート', saveInfo?.newEvolutionRoute ? this.compact(saveInfo.newEvolutionRoute.routeName ?? '発見', 7) : '解析済み'],
-        ]
-      : [
-          ['DNA', dnaEarned > 0 ? `+${this.formatNumber(dnaEarned)}` : '0'],
-          ['初回報酬', firstClearRewards.length > 0 ? `${firstClearRewards.length}件` : '未発生'],
-          ['称号', rewardTitles.length > 0 ? this.compact(rewardTitles[0]?.name ?? rewardTitles[0], 7) : '未獲得'],
-          ['新規進化', saveInfo?.newEvolutionRoute ? this.compact(saveInfo.newEvolutionRoute.routeName ?? '発見', 7) : '未発生'],
-        ];
-
-    this.rewardTexts.forEach((entry, index) => {
-      const reward = rewards[index];
-      entry.label.text = reward[0];
-      entry.value.text = reward[1];
-      entry.value.alpha = ['未発見', '未獲得', '未発生', '0'].includes(reward[1]) ? 0.62 : 1;
-    });
-
-    const future = this.createFirstClearRows({
+    const rewards = this.createRewardRows({
+      dnaEarned,
       rewardTitles,
       titleFrames,
       firstClearRewards,
       zeroRewards,
       newEvolutionRoute: saveInfo?.newEvolutionRoute,
       stageResult: saveInfo?.stageResult,
-      unlockedDifficulties: saveInfo?.unlockedDifficulties ?? [],
+      resultKind: resultType.kind,
     });
-    this.hasFutureRewards = future.length > 0;
+
+    this.rewardTexts.forEach((entry, index) => {
+      const reward = rewards[index];
+      entry.label.text = reward?.[0] ?? '';
+      entry.value.text = reward?.[1] ?? '';
+      entry.value.alpha = reward && ['未発見', '未獲得', '未発生', '0'].includes(reward[1]) ? 0.62 : 1;
+    });
+
+    const future = [];
+    this.hasFutureRewards = false;
 
     this.futureTexts.forEach((entry, index) => {
       const item = future[index];
@@ -424,8 +450,7 @@ export class ResultUi {
       entry.value.text = item?.[1] ?? '';
       entry.value.alpha = item ? 1 : 0;
     });
-    this.futurePanel.visible = this.hasFutureRewards;
-    this.layoutDynamicSections();
+    this.futurePanel.visible = false;
 
     const progress = [
       ['BEST SCORE', this.formatNumber(saveInfo?.bestScore ?? gameState.score)],
@@ -438,8 +463,11 @@ export class ResultUi {
     });
 
     this.rewardNotice.text = resultType.kind === 'zeroClear' ? 'ZERO報酬' : '獲得報酬';
-    this.renderSkillEntries(skills);
+    this.renderSkillEntries([]);
     this.updateEvolutionPortrait(gameState);
+    this.summaryRows = stats;
+    this.rewardRows = rewards;
+    this.renderResultPage();
   }
 
   drawStatic() {
@@ -467,6 +495,7 @@ export class ResultUi {
     this.evolutionText.visible = false;
     this.rewardNotice.position.set(contentX + RESULT_TEXT_SAFE.cardLeft, 340);
     this.skillText.position.set(contentX + RESULT_TEXT_SAFE.cardLeft, 464);
+    this.skillText.visible = false;
 
     this.layoutHeaderTexts();
     this.layoutStatTexts();
@@ -487,13 +516,16 @@ export class ResultUi {
     this.applySprite(this.panelSprite, sharedPanel, { x: RESULT_PANEL.x, y: RESULT_PANEL.y, width: panelWidth, height: panelHeight }, 0.94);
     this.applyVisualSprite(this.summaryPanel, this.textures.get('scorePanel'), sections.summary, 1, RESULT_ASSET_VISUAL_BOUNDS.scorePanel);
     this.applyVisualSprite(this.rewardPanel, this.textures.get('rewardPanel'), sections.reward, 1, RESULT_ASSET_VISUAL_BOUNDS.rewardPanel);
-    this.applyVisualSprite(this.skillsPanel, this.textures.get('rewardPanel'), sections.skills, 0.82, RESULT_ASSET_VISUAL_BOUNDS.rewardPanel);
+    this.skillsPanel.visible = false;
     this.applyVisualSprite(this.futurePanel, this.textures.get('rewardPanel'), sections.future, 0.82, RESULT_ASSET_VISUAL_BOUNDS.rewardPanel);
     this.applyVisualSprite(this.progressPanel, this.textures.get('scorePanel'), sections.progress, 0.86, RESULT_ASSET_VISUAL_BOUNDS.scorePanel);
     this.applyButtonSprite(this.retryButton, this.textures.get('retryButton'), this.getButtonSize('retry'));
     this.applyButtonSprite(this.homeButton, this.textures.get('homeButton'), this.getButtonSize('home'));
     this.fallbackPanel.visible = !this.textures.get('panel');
     this.layoutDynamicSections();
+    if (this.view.visible) {
+      this.renderResultPage();
+    }
   }
 
   applyHeader(resultType) {
@@ -544,6 +576,14 @@ export class ResultUi {
   }
 
   applyButtonSprite(button, texture, size) {
+    if (texture && texture.width <= 320 && texture.height <= 120) {
+      this.applySprite(button.sprite, texture, { x: 0, y: 0, width: size.width, height: size.height }, 1);
+      button.bg.visible = false;
+      button.text.position.set(size.width / 2, size.height / 2);
+      button.view.hitArea = new Rectangle(0, 0, size.width, size.height);
+      return;
+    }
+
     const bounds = button.kind === 'retry'
       ? RESULT_ASSET_VISUAL_BOUNDS.retryButton
       : RESULT_ASSET_VISUAL_BOUNDS.homeButton;
@@ -725,7 +765,15 @@ export class ResultUi {
     const progressRect = this.hasFutureRewards ? rects.progressWithFuture : rects.progress;
 
     this.futurePanel.visible = this.hasFutureRewards && this.futurePanel.texture !== Texture.EMPTY;
-    this.applyVisualSprite(this.progressPanel, this.textures.get('scorePanel'), progressRect, 0.86, RESULT_ASSET_VISUAL_BOUNDS.scorePanel);
+    this.progressPanel.visible = false;
+    this.skillsPanel.visible = false;
+    this.progressTexts.forEach((entry) => {
+      entry.label.visible = false;
+      entry.value.visible = false;
+    });
+    this.skillEntries.forEach((entry) => {
+      entry.view.visible = false;
+    });
     this.applyButtonSprite(this.retryButton, this.textures.get('retryButton'), this.getButtonSize('retry'));
     this.applyButtonSprite(this.homeButton, this.textures.get('homeButton'), this.getButtonSize('home'));
     this.layoutProgressTexts();
@@ -866,6 +914,221 @@ export class ResultUi {
     this.renderSkillEntries(this.latestSkillRenderData);
   }
 
+  showRewardPage() {
+    if (!this.view.visible || this.resultPage === 'reward') {
+      return;
+    }
+
+    this.resultPage = 'reward';
+    this.renderResultPage();
+  }
+
+  renderResultPage() {
+    const showSummary = this.resultPage !== 'reward';
+    const resultType = { kind: this.currentResultKind };
+
+    this.summaryPanel.visible = showSummary;
+    this.rewardPanel.visible = !showSummary;
+    this.headerSprite.visible = this.headerSprite.texture !== Texture.EMPTY;
+    this.title.visible = true;
+    this.subtitle.visible = true;
+    this.recordText.visible = showSummary;
+    this.rewardNotice.visible = !showSummary;
+    this.nextButton.view.visible = showSummary;
+    this.retryButton.view.visible = !showSummary;
+    this.homeButton.view.visible = !showSummary;
+    this.futurePanel.visible = false;
+    this.progressPanel.visible = false;
+    this.skillsPanel.visible = false;
+    this.skillText.visible = false;
+    this.dinoText.visible = false;
+    this.evolutionText.visible = false;
+    this.evolutionPortraitSprite.visible = false;
+
+    this.applyA08PanelTextures();
+    this.layoutA08Header(resultType);
+    if (showSummary) {
+      this.layoutA08Summary();
+    } else {
+      this.layoutA08Rewards();
+    }
+    this.layoutA08Buttons();
+  }
+
+  applyA08PanelTextures() {
+    this.applySprite(
+      this.summaryPanel,
+      this.textures.get('scorePanel'),
+      RESULT_A08_LAYOUT.panel,
+      1,
+    );
+    this.applySprite(
+      this.rewardPanel,
+      this.textures.get('rewardPanel'),
+      RESULT_A08_LAYOUT.panel,
+      1,
+    );
+    this.summaryPanel.visible = this.resultPage !== 'reward' && this.summaryPanel.texture !== Texture.EMPTY;
+    this.rewardPanel.visible = this.resultPage === 'reward' && this.rewardPanel.texture !== Texture.EMPTY;
+  }
+
+  layoutA08Header(resultType = { kind: 'result' }) {
+    const isZero = resultType.kind === 'zeroClear';
+    const rect = isZero ? RESULT_A08_LAYOUT.headerZero : RESULT_A08_LAYOUT.header;
+    const texture = resultType.kind === 'gameover'
+      ? this.textures.get('headerGameover')
+      : resultType.kind === 'zeroClear'
+        ? this.textures.get('headerZeroClear') ?? this.textures.get('headerClear')
+        : resultType.kind === 'endless'
+          ? this.textures.get('headerEndless') ?? this.textures.get('headerClear')
+          : this.textures.get('headerClear');
+
+    this.applySprite(this.headerSprite, texture, rect, 1);
+    this.title.anchor.set(0.5);
+    this.subtitle.anchor.set(0.5);
+    this.recordText.anchor.set(0.5);
+    this.title.position.set(this.width / 2, rect.y + rect.height / 2 - 2);
+    this.subtitle.position.set(this.width / 2, rect.y + rect.height + 6);
+    this.recordText.position.set(this.width / 2, RESULT_A08_LAYOUT.nextY - 22);
+  }
+
+  layoutA08Summary() {
+    const leftX = RESULT_A08_LAYOUT.panel.x + 48;
+    const rightX = RESULT_A08_LAYOUT.panel.x + RESULT_A08_LAYOUT.panel.width - 48;
+    this.statTexts.forEach((entry, index) => {
+      const row = this.summaryRows[index];
+      const y = RESULT_A08_LAYOUT.statStartY + index * RESULT_A08_LAYOUT.statGapY;
+      entry.label.text = row?.[0] ?? '';
+      entry.value.text = row?.[1] ?? '';
+      entry.label.visible = Boolean(row);
+      entry.value.visible = Boolean(row);
+      entry.label.anchor.set(0, 0.5);
+      entry.value.anchor.set(1, 0.5);
+      entry.label.position.set(leftX, y);
+      entry.value.position.set(rightX, y);
+    });
+
+    this.rewardTexts.forEach((entry) => {
+      entry.label.visible = false;
+      entry.value.visible = false;
+    });
+    this.futureTexts.forEach((entry) => {
+      entry.title.visible = false;
+      entry.value.visible = false;
+    });
+    this.progressTexts.forEach((entry) => {
+      entry.label.visible = false;
+      entry.value.visible = false;
+    });
+    this.rewardRowFrames.forEach((sprite) => {
+      sprite.visible = false;
+    });
+    this.statTexts.forEach((entry) => {
+      this.view.addChild(entry.label, entry.value);
+    });
+    this.view.addChild(this.recordText, this.nextButton.view);
+  }
+
+  layoutA08Rewards() {
+    const rows = this.rewardRows.length > 0
+      ? this.rewardRows
+      : [['報酬', '獲得報酬なし']];
+    const rowEntries = [
+      ...this.rewardTexts.map((entry) => ({ label: entry.label, value: entry.value })),
+      ...this.futureTexts.map((entry) => ({ label: entry.title, value: entry.value })),
+    ];
+    const leftX = RESULT_A08_LAYOUT.panel.x + 52;
+    const rightX = RESULT_A08_LAYOUT.panel.x + RESULT_A08_LAYOUT.panel.width - 46;
+
+    this.statTexts.forEach((entry) => {
+      entry.label.visible = false;
+      entry.value.visible = false;
+    });
+    this.rewardNotice.anchor.set(0.5);
+    this.rewardNotice.position.set(this.width / 2, 212);
+    this.rewardNotice.style.fill = this.currentResultKind === 'zeroClear' ? '#ffd36b' : '#8defff';
+
+    rowEntries.forEach((entry, index) => {
+      const row = rows[index];
+      const y = RESULT_A08_LAYOUT.rewardStartY + index * RESULT_A08_LAYOUT.rewardGapY;
+      entry.label.text = row?.[0] ?? '';
+      entry.value.text = row?.[1] ?? '';
+      entry.label.visible = Boolean(row);
+      entry.value.visible = Boolean(row);
+      entry.label.anchor.set(0, 0.5);
+      entry.value.anchor.set(1, 0.5);
+      entry.label.position.set(leftX, y);
+      entry.value.position.set(rightX, y);
+      entry.value.style.fill = row?.[2] === 'muted' ? '#8da49e' : '#fff4c8';
+      entry.value.style.wordWrapWidth = 150;
+    });
+    this.progressTexts.forEach((entry) => {
+      entry.label.visible = false;
+      entry.value.visible = false;
+    });
+    this.rewardRowFrames.forEach((sprite, index) => {
+      const row = rows[index];
+      sprite.texture = this.textures.get('rewardRow') ?? Texture.EMPTY;
+      sprite.visible = Boolean(row && sprite.texture !== Texture.EMPTY);
+      sprite.position.set(RESULT_A08_LAYOUT.panel.x + 22, RESULT_A08_LAYOUT.rewardStartY - 24 + index * RESULT_A08_LAYOUT.rewardGapY);
+      sprite.width = 292;
+      sprite.height = 48;
+      sprite.alpha = row?.[2] === 'zero' ? 1 : 0.82;
+    });
+    rowEntries.forEach((entry) => {
+      this.view.addChild(entry.label, entry.value);
+    });
+    this.view.addChild(this.rewardNotice, this.retryButton.view, this.homeButton.view);
+  }
+
+  layoutA08Buttons() {
+    const buttonRect = {
+      x: RESULT_A08_LAYOUT.buttonX,
+      y: this.resultPage === 'reward' ? RESULT_A08_LAYOUT.retryY : RESULT_A08_LAYOUT.nextY,
+      width: RESULT_A08_LAYOUT.buttonWidth,
+      height: RESULT_A08_LAYOUT.buttonHeight,
+    };
+
+    this.nextButton.view.position.set(buttonRect.x, RESULT_A08_LAYOUT.nextY);
+    this.retryButton.view.position.set(RESULT_A08_LAYOUT.buttonX, RESULT_A08_LAYOUT.retryY);
+    this.homeButton.view.position.set(RESULT_A08_LAYOUT.buttonX, RESULT_A08_LAYOUT.homeY);
+    const size = { width: RESULT_A08_LAYOUT.buttonWidth, height: RESULT_A08_LAYOUT.buttonHeight };
+    this.applyButtonSprite(this.nextButton, this.textures.get('nextButton'), size);
+    this.applyButtonSprite(this.retryButton, this.textures.get('retryButton'), size);
+    this.applyButtonSprite(this.homeButton, this.textures.get('homeButton'), size);
+  }
+
+  createRewardRows({ dnaEarned = 0, rewardTitles = [], titleFrames = [], firstClearRewards = [], zeroRewards = [], newEvolutionRoute = null, stageResult = null, resultKind = 'result' }) {
+    const rows = [];
+
+    rows.push(['獲得DNA', dnaEarned > 0 ? `+${this.formatNumber(dnaEarned)}` : '0', dnaEarned > 0 ? 'normal' : 'muted']);
+
+    if (resultKind === 'zeroClear') {
+      rows.push(['獲得称号', rewardTitles[0]?.name ?? rewardTitles[0] ?? '取得済み', rewardTitles.length > 0 ? 'zero' : 'muted']);
+      rows.push(['獲得フレーム', titleFrames[0]?.name ?? titleFrames[0] ?? '取得済み', titleFrames.length > 0 ? 'zero' : 'muted']);
+      rows.push(['獲得進化先', newEvolutionRoute?.routeName ?? newEvolutionRoute?.name ?? '解析済み', newEvolutionRoute ? 'zero' : 'muted']);
+      return rows.slice(0, 7);
+    }
+
+    if (stageResult?.isFirstClear || firstClearRewards.length > 0) {
+      rows.push(['初回クリア報酬', firstClearRewards.length > 0 ? `${firstClearRewards.length}件` : this.getDifficultyLabel(stageResult?.difficultyId), 'normal']);
+    } else {
+      rows.push(['初回クリア報酬', '取得済み', 'muted']);
+    }
+
+    rows.push(['獲得称号', rewardTitles[0]?.name ?? rewardTitles[0] ?? 'なし', rewardTitles.length > 0 ? 'normal' : 'muted']);
+
+    if (newEvolutionRoute) {
+      rows.push(['獲得進化先', newEvolutionRoute.routeName ?? newEvolutionRoute.name ?? '発見', 'normal']);
+    }
+
+    if (rows.every(([, value]) => ['0', 'なし', '取得済み'].includes(String(value)))) {
+      rows.push(['報酬', '獲得報酬なし', 'muted']);
+    }
+
+    return rows.slice(0, 7);
+  }
+
   createFirstClearRows({ rewardTitles, titleFrames = [], firstClearRewards, zeroRewards, newEvolutionRoute, stageResult, unlockedDifficulties = [] }) {
     const rows = [];
 
@@ -928,23 +1191,23 @@ export class ResultUi {
     const records = [];
 
     if (saveInfo.newEvolutionRoute) {
-      records.push('NEW EVOLUTION');
+      records.push('進化');
     }
 
     if (saveInfo.stageResult?.isFirstClear) {
-      records.push('FIRST CLEAR');
+      records.push('初回クリア');
     }
 
     if (saveInfo.isNewBestScore) {
-      records.push('SCORE');
+      records.push('スコア');
     }
 
     if (saveInfo.isNewBestSurvivalTime) {
-      records.push('TIME');
+      records.push('生存時間');
     }
 
     if (records.length > 0) {
-      return `NEW RECORD ${records.join(' / ')}`;
+      return `NEW! ${records.join(' / ')}`;
     }
 
     return `BEST ${this.formatNumber(saveInfo.bestScore)} / ${this.formatTime(saveInfo.bestSurvivalTime)}`;
@@ -979,7 +1242,7 @@ export class ResultUi {
 
     if (gameState.selectedMode === 'endless') {
       return {
-        kind: 'result',
+        kind: 'endless',
         title: 'ENDLESS RESULT',
         subtitle: '長時間生存データを解析しました',
         titleColor: '#65e878',

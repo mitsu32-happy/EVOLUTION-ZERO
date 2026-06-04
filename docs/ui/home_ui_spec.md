@@ -509,3 +509,58 @@ MVP-082 ではホーム画面の主要操作に短い押下フィードバック
 - Bottom navigation starts around `y=750`; the panel ends around `y=732`, leaving an 18px tap-safety gap.
 - Daily remains the default tab and keeps three mission rows with ResearchPt-only rewards.
 - Record and Unlock tabs use the same panel with larger values and wider row spacing for narrow iPhone Safari readability.
+
+## MVP-A07 Home Readability
+
+- Dino name now sits on a light translucent plate so long names remain readable over dark hero art.
+- Home dino selector hint no longer shows short dino nicknames; it uses `表示恐竜を切り替え`.
+- Daily tab has a small `一括受取` action. It claims all completed, unclaimed daily missions and keeps ResearchPt-only rewards.
+- Home keeps a compact notice line for update notes without adding another large panel.
+- Dino type copy is shortened to simple roles such as `スピード型`, `防御型`, `火力型`, and `中距離型`.
+## MVP-A07b News Menu
+
+- Home now has a small `お知らせ` entry button near the upper information area.
+- The entry opens a dedicated news modal with a generated SF panel, generated list cards, and a generated detail panel.
+- News content is defined in `src/data/update_news.js` with `date`, `category`, `title`, `body`, and `isImportant`.
+- The compact Home notice line may still show the latest title, but long update notes belong in the modal detail view.
+- The modal must stay readable on 390px mobile width and must close without affecting the Daily / Record / Unlock tabs.
+
+## MVP-A07c Generated News UI Assets
+
+- News UI now uses illustrated A07c assets generated from `docs/assets/a07c_ui_asset_source_sheet.png` instead of the simpler A07b PNG set.
+- Runtime preferred assets include `news_button_a07c.png`, `news_panel_list_a07c.png`, `news_panel_detail_a07c.png`, list item variants, close/back buttons, and update/normal badges.
+- The old compact bottom news line is removed from default Home display; the dedicated news button is the primary entry.
+- News detail body uses a narrower wrapped text area and a masked scroll area for long update text.
+## MVP-A07d News UI Simplification
+
+- The Home news entry now uses `news_button_a07d.png`, a higher-contrast compact button that stays secondary to the sortie button.
+- News list and detail views share `news_panel_outer_a07d.png` so the UI reads as one consistent menu instead of multiple nested panels.
+- News list rows use `news_list_item_a07d.png` with date, title, and category rendered in code. Normal items no longer need a separate badge asset.
+- Detail text uses a wider word-wrap area and a taller masked scroll region to reduce right-edge clipping and improve long-body readability.
+- Close/back controls use icon-first A07d button images; text labels are fallback-only when the images are missing.
+
+## MVP-A07e News UI Final Adjustment
+
+- Close/back buttons are placed inside the shared news panel with enough padding from the outer frame.
+- The dark modal overlay closes the news UI when tapped outside the panel.
+- The panel itself captures taps, so list cards, detail text, and scroll gestures do not accidentally close the modal.
+- The Home news entry label is larger, centered, and given a subtle shadow for readability over the dark home background.
+
+## MVP-A07e.1 News UI Final Micro Adjustment
+
+- The Home news entry label was enlarged again and vertically centered inside `news_button_a07d.png`.
+- The detail view no longer shows the close button; users return to the list with the back button or close the modal by tapping outside the frame.
+- The detail back button was moved further inside the shared panel so it does not touch the outer frame ornament.
+
+## MVP-A07e.2 News UI Final Micro Adjustment
+
+- The close button is hidden in both news list and news detail views.
+- News modal close behavior is unified to tapping outside the panel.
+- The Home news entry label keeps the A07e.1 size and is moved slightly downward for visual vertical centering.
+
+## MVP-A10 Sortie Panel Asset Replacement
+
+- The Home sortie area now prefers A10 generated assets: `sortie_button_frame_a10.png`, `sortie_button_left_icon_a10.png`, and `sortie_button_glow_a10.png`.
+- The old Graphics triangle remains fallback only when the A10 left icon is unavailable.
+- Runtime text stays code-rendered so `出撃` and `ステージ選択へ` remain crisp on mobile/PWA displays.
+- QA artifact: `docs/assets/a10_ui_contact.png`.

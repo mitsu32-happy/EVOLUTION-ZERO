@@ -74,6 +74,14 @@
 - `DNA適応候補` はヘッダー中央の安全領域に置き、外枠やアイコンに重ねない。
 - `適応反応 n→m` は `反応 n→m` に短縮し、ヘッダー右側の小型ステータスチップとして表示する。
 - `解析候補を選択` は `selection_subtitle_panel_v2.png` の中に配置する。
+
+## MVP-A07 Copy And Fallback Cards
+
+- Runtime level-up title is `レベルアップ！`.
+- Subtitle is `新しい適応を選択`.
+- Level transition is shown as `レベル n → n`.
+- If normal adaptation candidates run out, fallback cards fill the empty slots so play can continue.
+- Fallback cards: `DNA獲得`, `HP回復`, and `スコア加算`.
 - `DNA適応は安定解析中です` 系の説明は `安定解析中` など短い状態文へ変換し、`analysis_warning_chip.png` 上に表示する。
 - 長い説明文を上部に縦積みしない。ヘッダー、サブヘッダー、状態チップに役割を分ける。
 - v2背景パネルは左右に余白を残しすぎず、3カードとフッターをまとめる画面全体の受け皿として扱う。
@@ -177,3 +185,8 @@
 - `疾風刃`: 左右/斜めへ高速刃を放つ軌道型として説明する。
 - `感知棘`: 周囲に索敵棘を設置する罠型として説明する。
 - `爆裂牙`: 遅延爆発する設置型として説明する。
+## MVP-A07b Fallback Reward Card
+
+- If fewer than three level-up adaptations are available, fallback rewards keep the run moving.
+- Fallback reward choices use `fallback_reward_card_a07b.png` instead of a plain Graphics frame.
+- Current fallback rewards are DNA gain, HP recovery, and score gain. They do not count as adaptation tags and do not occupy skill slots.

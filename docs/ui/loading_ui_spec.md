@@ -30,3 +30,8 @@
 - GitHub Pages:
   - All manifest asset loads continue to resolve through `import.meta.env.BASE_URL`, preserving `/EVOLUTION-ZERO/`.
   - No service worker or persistent cache is introduced in MVP-A03.
+## MVP-A07 Loading Copy
+
+- Main loading title is always `ロード中`.
+- Detail text may still describe the current task, such as `資源読み込み中` or `ステージ一覧読み込み中`.
+- The goal is immediate readability on mobile over lore-heavy wording.

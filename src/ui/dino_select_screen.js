@@ -19,8 +19,8 @@ const BASE_DINOS = [
     id: 'velociraptor',
     name: 'ヴェロキラプトル',
     shortName: 'ラプトル',
-    type: '高速捕食型',
-    style: '軽快な移動と連続攻撃で敵を切り抜ける、扱いやすいハンター。',
+    type: 'スピード型',
+    style: '移動が速く、細かく避けながら連続攻撃できる。',
     branchBase: 3,
     sortieNote: '軽快な動きで戦場を切り開く',
     traits: ['移動が軽い', '攻撃テンポが速い', '小回りが利く'],
@@ -51,11 +51,11 @@ const BASE_DINOS = [
     id: 'tyrannosaurus',
     name: 'ティラノサウルス',
     shortName: 'ティラノ',
-    type: '重火力型',
+    type: '火力型',
     style: '重い一撃と広めの攻撃範囲で強敵を削る。火力重視の選択。',
     branchBase: 2,
     sortieNote: '重火力で危険個体を押し返す',
-    traits: ['攻撃力が高い', '攻撃範囲が広い', '移動は重め'],
+    traits: ['攻撃力が高い', '攻撃範囲が広い', '移動が遅い'],
     color: 0xff4d38,
     assetKey: ASSET_KEYS.dinoSelectPortraits.tyrannosaurus,
     heroKey: ASSET_KEYS.dinoSelectHero.tyrannosaurus,
@@ -67,17 +67,17 @@ const BASE_DINOS = [
     id: 'spinosaurus',
     name: 'スピノサウルス',
     shortName: 'スピノ',
-    type: '中距離制圧型',
+    type: '中距離型',
     style: '水刃と渦で敵をまとめて押し返す。雑魚整理と範囲維持に優れる。',
     branchBase: 0,
     sortieNote: '水流で群れを整理する',
-    traits: ['中距離が得意', '範囲維持', '動きは少し重い'],
+    traits: ['中距離が得意', '範囲維持', '移動が遅い'],
     color: 0x2fdfff,
     assetKey: ASSET_KEYS.dinoSelectPortraits.spinosaurus,
     heroKey: ASSET_KEYS.dinoSelectHero.spinosaurus,
     locked: 'research',
     unlockCondition: '研究: スピノサウルス解析',
-    unlockHint: '研究Pt 420で解放',
+    unlockHint: '研究Pt 220で解放',
   },
 ];
 
@@ -134,7 +134,7 @@ export class DinoSelectScreen {
     this.subtitle = this.createText('戦い方を選び、出撃を開始', 12, '#d7fff2', 310);
     this.detailName = this.createText('', 26, '#ffffff', 220);
     this.detailType = this.createText('', 13, '#31d7ff', 110);
-    this.detailStyle = this.createText('', 12, '#d7fff2', 300);
+    this.detailStyle = this.createText('', 11, '#d7fff2', 276);
     this.branchText = this.createText('', 12, '#7cf7d4', 120);
     this.recordsText = this.createText('', 11, '#ffffff', 156);
     this.traitTitle = this.createText('初期特徴', 14, '#7cf7d4', 140);
@@ -193,7 +193,8 @@ export class DinoSelectScreen {
   }
 
   show() {
-    this.selectedDino = this.getSafeSelectedDinoId(this.gameState.selectedDino ?? this.selectedDino);
+    const preferredHomeDino = this.saveData?.currentHomeDino ?? this.saveData?.favoriteDinoId ?? this.saveData?.homeDinoId;
+    this.selectedDino = this.getSafeSelectedDinoId(preferredHomeDino ?? this.gameState.selectedDino ?? this.selectedDino);
     this.ensureDinoPageForSelection();
     this.renderSelection();
     this.view.visible = true;
@@ -293,12 +294,12 @@ export class DinoSelectScreen {
     this.ensureDinoPageForSelection();
     this.applyUiTextures();
 
-    this.detailName.text = locked ? '???' : dino.name;
+    this.detailName.text = dino.name;
     this.detailName.style.fill = toCssColor(dino.color);
-    this.detailType.text = locked ? '未解析' : dino.type;
+    this.detailType.text = locked ? '研究で解放' : dino.type;
     this.detailType.style.fill = locked ? '#8da49e' : toCssColor(dino.color);
     this.detailStyle.text = locked ? 'DNA研究で出撃登録に必要なデータを解析中。' : dino.style;
-    this.branchText.text = locked ? '進化: ???' : `進化: ${discovered} / 8`;
+    this.branchText.text = locked ? '進化: 未解析' : `進化: ${discovered} / 8`;
     this.recordsText.text = locked
       ? `解放条件\n${dino.unlockCondition ?? 'DNA研究で解放'}\n${dino.unlockHint ?? '条件未達'}`
       : `出撃回数 ${this.formatNumber(this.saveData.totalRuns ?? 0)}回\n最長生存 ${this.formatTime(this.saveData.bestSurvivalTime ?? 0)}\n最多撃破 ${this.formatNumber(this.saveData.totalDefeated ?? 0)}体`;
@@ -410,7 +411,9 @@ export class DinoSelectScreen {
       const visible = page === this.dinoPage;
       const selected = card.dino.id === this.selectedDino;
       const locked = this.isDinoLocked(card.dino);
-      const texture = locked ? this.getLockedDinoTexture(card.dino) : this.dinoTextures.get(card.dino.id) ?? null;
+      const texture = locked
+        ? this.getLockedDinoTexture(card.dino)
+        : this.dinoTextures.get(card.dino.id) ?? this.heroTextures.get(card.dino.id) ?? null;
       const frameKey = locked
         ? 'lockedDinoFrame'
         : selected
@@ -439,15 +442,18 @@ export class DinoSelectScreen {
       card.sprite.visible = !!texture;
 
       if (texture) {
-        this.fitSpriteContain(card.sprite, 88, 56);
+        const imageMaxWidth = card.dino.id === 'spinosaurus' ? 78 : 88;
+        const imageMaxHeight = card.dino.id === 'spinosaurus' ? 52 : 56;
+        card.sprite.position.set(52, card.dino.id === 'spinosaurus' ? 45 : 43);
+        this.fitSpriteContain(card.sprite, imageMaxWidth, imageMaxHeight);
       } else if (locked) {
         this.drawLockedDinoSilhouette(card.marker, 52, 40, 0.52, selected ? 0.9 : 0.64);
       } else {
         this.drawDinoFallback(card.dino, card.marker, 52, 43, 0.56, selected ? 0.9 : 0.54);
       }
 
-      card.name.text = locked ? '未解放' : card.dino.shortName;
-      card.type.text = locked ? '解析待ち' : card.dino.type;
+      card.name.text = card.dino.shortName;
+      card.type.text = locked ? 'ロック中' : card.dino.type;
       card.name.style.fill = locked ? (selected ? '#d7fff2' : '#8da49e') : selected ? toCssColor(card.dino.color) : '#ffffff';
       card.type.style.fill = locked ? '#a16d6d' : selected ? '#d7fff2' : '#8da49e';
     });
@@ -535,6 +541,8 @@ export class DinoSelectScreen {
     this.detailType.anchor.set(1, 0);
     this.detailType.position.set(this.width - 42, 302);
     this.detailStyle.position.set(42, 328);
+    this.detailStyle.style.lineHeight = 15;
+    this.detailStyle.style.breakWords = true;
     this.branchText.position.set(44, 624);
     this.recordsText.position.set(214, 624);
     this.recordsText.style.align = 'right';

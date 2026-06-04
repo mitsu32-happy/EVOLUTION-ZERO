@@ -1,0 +1,39 @@
+﻿{
+    "mvp":  "A10d.2",
+    "scope":  "HUD display role split only",
+    "changes":  {
+                    "upperLeftHud":  "Uses base dinosaur portrait from selectedDino and no longer switches to selectedEvolution portrait.",
+                    "branchHud":  "Uses selectedEvolution portrait/name and remains the only HUD area for evolved branch identity."
+                },
+    "qa":  [
+               {
+                   "route":  "velociraptor speed",
+                   "screenshot":  "docs/assets/a10d2_hud_branch_velociraptor_qa.png",
+                   "consoleErrorWarn":  0
+               },
+               {
+                   "route":  "triceratops attack",
+                   "screenshot":  "docs/assets/a10d2_hud_branch_triceratops_qa.png",
+                   "consoleErrorWarn":  0
+               },
+               {
+                   "route":  "tyrannosaurus hunting",
+                   "screenshot":  "docs/assets/a10d2_hud_branch_tyrannosaurus_qa.png",
+                   "consoleErrorWarn":  0
+               },
+               {
+                   "route":  "velociraptor zero",
+                   "screenshot":  "docs/assets/a10d2_hud_branch_velociraptor_zero_qa.png",
+                   "consoleErrorWarn":  0
+               },
+               {
+                   "route":  "spinosaurus zero",
+                   "screenshot":  "docs/assets/a10d2_hud_branch_spinosaurus_zero_qa.png",
+                   "consoleErrorWarn":  0
+               }
+           ],
+    "checks":  {
+                   "nodeCheck":  "passed: src/ui/hud.js",
+                   "build":  "passed: npm.cmd run build"
+               }
+}

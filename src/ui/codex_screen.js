@@ -652,30 +652,32 @@ export class CodexScreen {
     const data = this.saveManager.getData();
     const discovered = normalizeDiscoveredEvolutions(data.discoveredEvolutions);
     const dino = CODEX_DINOS.find((entry) => entry.id === this.selectedDinoId) ?? CODEX_DINOS[0];
+    const dinoUnlocked = this.isDinoUnlocked(dino, data);
     const branches = this.getDisplayBranches(dino);
-    const foundBranches = branches.filter((branch) => this.isBranchFound(dino, branch, discovered));
+    const foundBranches = dinoUnlocked ? branches.filter((branch) => this.isBranchFound(dino, branch, discovered)) : [];
     const unknownCount = branches.length - foundBranches.length;
 
-    this.lineageText.text = dino.lineage;
-    this.typeText.text = `${dino.type} / ${dino.trait}`;
+    this.lineageText.text = dinoUnlocked ? dino.lineage : `${dino.name} / 未解放`;
+    this.typeText.text = dinoUnlocked ? `${dino.type} / ${dino.trait}` : '研究で解放すると詳細を表示';
     this.foundText.text = `発見済み ${foundBranches.length} / ${branches.length}`;
     this.unresolvedText.text = `未解析 ${unknownCount}`;
 
-    this.renderDinoSelectors(dino);
-    this.renderSelectedDinoPanel(dino, foundBranches.length, unknownCount);
+    this.renderDinoSelectors(dino, data);
+    this.renderSelectedDinoPanel(dino, foundBranches.length, unknownCount, dinoUnlocked);
     this.renderBranchLines();
-    this.renderOriginCard(dino);
+    this.renderOriginCard(dino, dinoUnlocked);
     this.branchCards.forEach((card, index) => {
-      this.renderBranchCard(card, dino, branches[index], discovered, index);
+      this.renderBranchCard(card, dino, branches[index], discovered, index, dinoUnlocked);
     });
   }
 
-  renderDinoSelectors(selectedDino) {
+  renderDinoSelectors(selectedDino, data) {
     this.dinoSelectors.forEach((selector) => {
       const selected = selector.dino.id === selectedDino.id;
+      const unlocked = this.isDinoUnlocked(selector.dino, data);
       const texture = this.assetTextures.dinoSelectorCardV3;
       selector.name.text = selector.dino.shortName;
-      selector.name.style.fill = selected ? '#ffffff' : '#9fb7b0';
+      selector.name.style.fill = unlocked ? selected ? '#ffffff' : '#9fb7b0' : '#8da49e';
       selector.selectedStroke.clear();
       if (texture) {
         selector.frame.texture = texture;
@@ -698,11 +700,12 @@ export class CodexScreen {
           .roundRect(4, 4, SELECTOR.width - 8, SELECTOR.height - 8, 10)
           .stroke({ color: UI_COLORS.gold, width: 1.5, alpha: 0.78 });
       }
-      this.applyImage(selector.image, this.getTextureForPath(selector.dino.image), SELECTOR.image.x, SELECTOR.image.y, SELECTOR.image.width, SELECTOR.image.height, selected ? 1 : 0.62);
+      const selectorTexture = unlocked ? this.getTextureForPath(selector.dino.image) : this.assetTextures.unknownSilhouette;
+      this.applyImage(selector.image, selectorTexture, SELECTOR.image.x, SELECTOR.image.y, SELECTOR.image.width, SELECTOR.image.height, unlocked ? selected ? 1 : 0.62 : 0.7);
     });
   }
 
-  renderSelectedDinoPanel(dino, foundCount, unknownCount) {
+  renderSelectedDinoPanel(dino, foundCount, unknownCount, unlocked = true) {
     const texture = this.assetTextures.selectedDinoPanelV3 ?? this.assetTextures.archivePanelV2;
     if (texture) {
       this.selectedPanelSprite.texture = texture;
@@ -721,8 +724,8 @@ export class CodexScreen {
       });
     }
     this.selectedImageFallback.clear();
-    const imageTexture = this.getTextureForPath(dino.image);
-    this.applyImage(this.selectedImage, imageTexture, SELECTED_PANEL.image.x, SELECTED_PANEL.image.y, SELECTED_PANEL.image.width, SELECTED_PANEL.image.height, 0.96);
+    const imageTexture = unlocked ? this.getTextureForPath(dino.image) : this.assetTextures.unknownSilhouette;
+    this.applyImage(this.selectedImage, imageTexture, SELECTED_PANEL.image.x, SELECTED_PANEL.image.y, SELECTED_PANEL.image.width, SELECTED_PANEL.image.height, unlocked ? 0.96 : 0.78);
     if (!imageTexture) {
       this.selectedImage.visible = false;
       this.selectedImageFallback
@@ -757,16 +760,16 @@ export class CodexScreen {
     });
   }
 
-  renderOriginCard(dino) {
+  renderOriginCard(dino, unlocked = true) {
     const card = this.originCard;
     card.view.position.set(CARD.x, CARD.originY);
     const texture = this.assetTextures.originCardV3 ?? this.assetTextures.lineageCard;
-    this.renderFrame(card, texture, UI_COLORS.dna, true);
-    this.renderCardImage(card, this.getTextureForPath(dino.image), false);
-    card.name.text = dino.origin.name;
-    card.tag.text = '原種 / 基礎系統';
-    card.desc.text = clampText(dino.origin.desc, 20);
-    card.condition.text = clampText(dino.origin.stats, 18);
+    this.renderFrame(card, texture, UI_COLORS.dna, unlocked);
+    this.renderCardImage(card, unlocked ? this.getTextureForPath(dino.image) : this.assetTextures.unknownSilhouette, !unlocked);
+    card.name.text = unlocked ? dino.origin.name : dino.name;
+    card.tag.text = unlocked ? '原種 / 基礎系統' : '未解放';
+    card.desc.text = unlocked ? clampText(dino.origin.desc, 20) : '研究で解放すると詳細を表示。';
+    card.condition.text = unlocked ? clampText(dino.origin.stats, 18) : '解放条件: 研究';
     card.stats.text = '';
     this.positionCardTexts(card);
     card.name.style.fill = '#ffffff';
@@ -774,14 +777,14 @@ export class CodexScreen {
     card.condition.style.fill = '#ffd36b';
   }
 
-  renderBranchCard(card, dino, branch, discovered, index) {
+  renderBranchCard(card, dino, branch, discovered, index, dinoUnlocked = true) {
     if (!branch) {
       card.view.visible = false;
       return;
     }
 
     card.view.visible = true;
-    const found = this.isBranchFound(dino, branch, discovered);
+    const found = dinoUnlocked && this.isBranchFound(dino, branch, discovered);
     const meta = TAG_META[branch.tag] ?? TAG_META.speed;
     card.view.position.set(CARD.x, CARD.branchYs[index]);
     const texture = found
@@ -1022,6 +1025,17 @@ export class CodexScreen {
       zeroRoute: true,
       locked: true,
     };
+  }
+
+  isDinoUnlocked(dino, data = this.saveManager.getData()) {
+    if (!dino || dino.id !== 'spinosaurus') {
+      return true;
+    }
+
+    const debug = new URLSearchParams(window.location.search);
+    return data?.unlockedDinos?.spinosaurus?.unlocked
+      || debug.get('debugUnlockDino') === 'spinosaurus'
+      || debug.get('debugUnlockAllDinos') === '1';
   }
 
   isBranchFound(dino, branch, discovered) {

@@ -439,6 +439,14 @@ MVP-074で4枚単位のカード送り、ページドット、左右矢印の基
 - Ruins ZERO remains locked as post-release content and should not unlock through `debugUnlockDifficulties` in normal QA.
 - `debugAllowRuinsZero=1` is the explicit QA-only override for ruins ZERO.
 - Stage select final QA should verify lock text remains readable on mobile.
+
+## MVP-A07 Stage Select Copy
+
+- The subtitle is `ステージと難易度を選択`.
+- `出撃タイプ` is renamed to `難易度`.
+- Recommended dino text is removed so players can choose any unlocked dino freely.
+- Stage detail text focuses on hazards and play expectations instead of development or internal tuning wording.
+- ENDLESS and ZERO summaries use release-facing descriptions.
 ## MVP-159 Final Polish
 
 - ステージ選択タイトルはタップでタイトル画面へ戻るショートカットとして扱う。

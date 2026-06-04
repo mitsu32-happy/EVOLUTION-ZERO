@@ -1,0 +1,138 @@
+{
+  "mvp": "A10b",
+  "sources": [
+    "docs/assets/a10b_evolution_ui_source_sheet.png",
+    "docs/assets/a10b_branch_ui_source_sheet.png"
+  ],
+  "chromaKey": "#ff00ff narrow removal plus edge decontamination",
+  "assets": [
+    {
+      "path": "public/assets/ui/selection/evolution_reaction_panel_a10b.png",
+      "size": [
+        864,
+        188
+      ],
+      "sourceBox": [
+        250,
+        48,
+        1102,
+        224
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_reaction_glow_a10b.png",
+      "size": [
+        717,
+        58
+      ],
+      "sourceBox": [
+        205,
+        280,
+        910,
+        326
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_reaction_chip_a10b.png",
+      "size": [
+        336,
+        110
+      ],
+      "sourceBox": [
+        940,
+        262,
+        1264,
+        360
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_select_background_a10b.png",
+      "size": [
+        466,
+        623
+      ],
+      "sourceBox": [
+        236,
+        375,
+        690,
+        986
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_select_overlay_a10b.png",
+      "size": [
+        508,
+        596
+      ],
+      "sourceBox": [
+        770,
+        402,
+        1266,
+        986
+      ]
+    },
+    {
+      "path": "public/assets/ui/hud/branch_panel_a10b.png",
+      "size": [
+        1746,
+        458
+      ],
+      "sourceBox": [
+        82,
+        70,
+        1816,
+        516
+      ]
+    },
+    {
+      "path": "public/assets/ui/hud/branch_icon_frame_a10b.png",
+      "size": [
+        232,
+        232
+      ],
+      "sourceBox": [
+        150,
+        560,
+        370,
+        780
+      ]
+    },
+    {
+      "path": "public/assets/ui/hud/branch_glow_a10b.png",
+      "size": [
+        934,
+        66
+      ],
+      "sourceBox": [
+        470,
+        635,
+        1392,
+        704
+      ]
+    }
+  ],
+  "qualityNotes": [
+    "Text-free generated UI assets; runtime overlays Japanese labels and portraits.",
+    "Evolution reaction panel replaces the previous plain warning chip route.",
+    "Evolution select background/overlay replaces Graphics-only modal background.",
+    "BRANCH HUD panel includes a dedicated portrait-safe frame and glow strip."
+  ],
+  "connectionStatus": "connected",
+  "qaPending": [],
+  "connectedFiles": [
+    "src/ui/levelup_ui.js",
+    "src/ui/evolution_ready_ui.js",
+    "src/ui/hud.js",
+    "src/data/asset_manifest.js"
+  ],
+  "portraitDisplay": {
+    "evolutionCandidateCards": "A10 cards continue to render candidate portraits inside the generated portrait frame.",
+    "evolutionSequence": "A10 evolution presentation continues to resolve branch-specific portraits.",
+    "branchHud": "A10b BRANCH HUD uses getPortraitTexture(gameState), so evolved velociraptor/triceratops/tyrannosaurus/spinosaurus and ZERO portraits are shown when available."
+  },
+  "qa": {
+    "nodeCheck": "passed: levelup_ui.js, evolution_ready_ui.js, hud.js, asset_manifest.js",
+    "build": "passed: npm.cmd run build",
+    "browserRuntime": "passed: localhost:5175 A10b route console error/warn count 0"
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "mvp": "A08",
+  "purpose": "Two-step result UI assets for summary and reward screens.",
+  "sourceGeneratedImage": "C:/Users/oushi/.codex/generated_images/019e5eb7-bc4f-76e3-b6c7-23276e187e20/ig_036c4786ec9c6ceb016a1c4f819ac48191a89b205a67bb40fa.png",
+  "workspaceSourceSheet": "docs/assets/result_ui_a08_source_sheet.png",
+  "contactSheet": "docs/assets/result_ui_a08_contact.png",
+  "generatedAssets": [
+    {
+      "file": "public/assets/ui/result/result_summary_panel_a08.png",
+      "sourceBox": [
+        64,
+        46,
+        515,
+        695
+      ],
+      "size": [
+        336,
+        455
+      ],
+      "description": "summary page panel",
+      "alphaBBox": [
+        0,
+        1,
+        336,
+        455
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_reward_panel_a08.png",
+      "sourceBox": [
+        575,
+        28,
+        1150,
+        815
+      ],
+      "size": [
+        336,
+        455
+      ],
+      "description": "reward page panel",
+      "alphaBBox": [
+        0,
+        0,
+        336,
+        455
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_reward_row_a08.png",
+      "sourceBox": [
+        48,
+        725,
+        530,
+        815
+      ],
+      "size": [
+        292,
+        48
+      ],
+      "description": "reward row frame",
+      "alphaBBox": [
+        0,
+        0,
+        292,
+        48
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_next_button_a08.png",
+      "sourceBox": [
+        45,
+        860,
+        445,
+        965
+      ],
+      "size": [
+        244,
+        54
+      ],
+      "description": "next button frame",
+      "alphaBBox": [
+        0,
+        0,
+        244,
+        54
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_retry_button_a08.png",
+      "sourceBox": [
+        485,
+        860,
+        840,
+        965
+      ],
+      "size": [
+        244,
+        54
+      ],
+      "description": "retry button frame",
+      "alphaBBox": [
+        0,
+        0,
+        244,
+        54
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_home_button_a08.png",
+      "sourceBox": [
+        880,
+        860,
+        1215,
+        965
+      ],
+      "size": [
+        244,
+        54
+      ],
+      "description": "home button frame",
+      "alphaBBox": [
+        0,
+        0,
+        244,
+        54
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_clear_header_a08.png",
+      "sourceBox": [
+        40,
+        1012,
+        420,
+        1110
+      ],
+      "size": [
+        300,
+        58
+      ],
+      "description": "clear header frame",
+      "alphaBBox": [
+        0,
+        0,
+        300,
+        58
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_gameover_header_a08.png",
+      "sourceBox": [
+        445,
+        1012,
+        810,
+        1110
+      ],
+      "size": [
+        300,
+        58
+      ],
+      "description": "game over header frame",
+      "alphaBBox": [
+        0,
+        0,
+        300,
+        58
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_endless_header_a08.png",
+      "sourceBox": [
+        850,
+        1012,
+        1210,
+        1110
+      ],
+      "size": [
+        300,
+        58
+      ],
+      "description": "endless header frame",
+      "alphaBBox": [
+        0,
+        0,
+        300,
+        58
+      ]
+    },
+    {
+      "file": "public/assets/ui/result/result_zero_clear_header_a08.png",
+      "sourceBox": [
+        380,
+        1120,
+        880,
+        1215
+      ],
+      "size": [
+        320,
+        62
+      ],
+      "description": "zero clear header frame",
+      "alphaBBox": [
+        0,
+        0,
+        320,
+        62
+      ]
+    }
+  ],
+  "designPolicy": [
+    "text-free generated bitmap UI",
+    "summary and reward separated",
+    "readable matte interiors",
+    "ZERO header has stronger purple accent"
+  ],
+  "cropRevision": "2026-06-01 actual 1254px source coordinates",
+  "implementation": {
+    "flow": "summary -> reward",
+    "removedDisplays": [
+      "upper duplicate BEST block",
+      "acquired adaptation skill block",
+      "oversized NEW RECORD / NEW EVOLUTION messaging"
+    ],
+    "manifestKeys": [
+      "headerClear",
+      "headerGameover",
+      "headerEndless",
+      "headerZeroClear",
+      "scorePanel",
+      "rewardPanel",
+      "rewardRow",
+      "nextButton",
+      "retryButton",
+      "homeButton"
+    ]
+  },
+  "qa": {
+    "nodeCheck": "pass",
+    "build": "pass",
+    "browserSmoke": "partial: title/home/play route reached without console error before result; full end-to-end result transition needs manual route confirmation after debug level-up selection responsiveness is rechecked",
+    "textClippingRisk": "reduced by separating summary and reward pages"
+  }
+}

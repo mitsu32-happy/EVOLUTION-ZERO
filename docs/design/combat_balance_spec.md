@@ -105,3 +105,18 @@
 - スピノサウルス通常攻撃は `spinosaurus_water_attack_se` を使い、水刃の短い水流SEとして鳴らす。攻撃間隔やダメージは変更しない。
 - グランボルグのmove行は中間フレームの縦位置を抑え、重量級の歩行に寄せる。idle / attack / death行は変更しない。
 - ボス撃破CLEARは即リザルトではなく、短い衝撃波/フラッシュを挟んでから既存CLEAR処理へ入る。ZERO finalは少し長く強い演出にするが、報酬/保存ロジックは既存の結果処理に任せる。
+
+## MVP-A07 Volume And Power Tuning
+
+- Enemy spawn starts earlier and denser: standard mode uses a larger early enemy cap and shorter spawn interval.
+- Per-enemy standard contact damage is reduced so defeat pressure comes more from volume than single hits.
+- NORMAL emphasizes爽快感, HARD adds pressure, EXPERT increases both volume and durability, and ZERO remains intentionally harsh.
+- Base dino identity is stronger: velociraptor is faster, triceratops is sturdier, tyrannosaurus hits harder, and spinosaurus has longer mid-range control.
+- Evolution bonuses are stronger. ZERO evolution receives a clearly higher attack, range, knockback, and mobility boost.
+- Level-up candidate shortages are filled with fallback reward cards: DNA gain, HP heal, or score gain.
+## MVP-A07b Velociraptor Hand-Speed Tuning
+
+- Velociraptor normal attack interval multiplier is reduced from `0.90` to `0.78`.
+- Intent: make the base velociraptor clearly feel like the hand-speed dinosaur without raising one-hit damage.
+- This should improve early-game feel while keeping evolution, adaptation skills, and ZERO balance from being dominated by a single heavy hit.
+- Recheck ZERO routes for excessive normal-attack DPS after future boss HP tuning.

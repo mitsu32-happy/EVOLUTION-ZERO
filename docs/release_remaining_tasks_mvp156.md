@@ -230,3 +230,9 @@ Remaining audio polish:
 
 - Added a 1.05 top-centered visual scale only for standalone/fullscreen PWA mode to spend the remaining bottom margin and bring the installed-app view closer to the target screenshot.
 - Normal Safari/browser layout is unchanged.
+## MVP-A08 Result UI Follow-up
+
+- Result is now staged into summary and reward pages to reduce narrow-screen information density.
+- Upper duplicate BEST messaging and acquired adaptation skill display are removed from the A08 result route.
+- Dedicated A08 result panels/buttons/headers were generated and connected through the manifest.
+- Remaining manual RC: physical-device CLEAR / GAME OVER / ENDLESS / ZERO CLEAR pass, especially dense ZERO rewards on iPhone standalone.

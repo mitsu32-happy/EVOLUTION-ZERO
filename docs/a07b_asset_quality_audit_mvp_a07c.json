@@ -1,0 +1,79 @@
+{
+  "mvp": "A07c",
+  "summary": "All A07b-added UI PNGs are classified as simple assets and require generated replacement.",
+  "assets": [
+    {
+      "path": "public/assets/ui/home/news_entry_button_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/home/news_button_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/home/news_panel_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/home/news_panel_list_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/home/news_detail_panel_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/home/news_panel_detail_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/home/news_list_card_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/home/news_list_item_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/hud/boss_warning_panel_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/hud/boss_notice_panel_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/hud/boss_appear_alert_chip_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/hud/boss_notice_alert_chip_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/hud/zero_phase_notice_panel_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/hud/zero_notice_panel_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/hud/zero_final_notice_panel_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/hud/zero_final_protocol_panel_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_candidate_card_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/selection/evolution_card_panel_a07c.png",
+      "a07cStatus": "replaced"
+    },
+    {
+      "path": "public/assets/ui/selection/fallback_reward_card_a07b.png",
+      "classification": "simple",
+      "action": "regenerate",
+      "replacement": "public/assets/ui/selection/fallback_card_dna_a07c.png",
+      "a07cStatus": "replaced"
+    }
+  ],
+  "generatedSourceSheet": "docs/assets/a07c_ui_asset_source_sheet.png",
+  "contactSheet": "docs/assets/a07c_ui_assets_contact.png",
+  "report": "docs/assets/a07c_ui_assets_report.json"
+}

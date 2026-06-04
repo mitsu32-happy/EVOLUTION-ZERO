@@ -13,7 +13,9 @@ const HUD_ASSETS = {
   specialButtonReady: 'assets/ui/hud/special_button_ready.png',
   specialButtonDisabled: 'assets/ui/hud/special_button_disabled.png',
   pauseButton: 'assets/ui/hud/pause_button_frame.png',
-  evolutionNotice: 'assets/ui/hud/evolution_notice_panel.png',
+  evolutionNotice: 'assets/ui/hud/branch_panel_a10b.png',
+  branchIconFrame: 'assets/ui/hud/branch_icon_frame_a10b.png',
+  branchGlow: 'assets/ui/hud/branch_glow_a10b.png',
   dnaIcon: 'assets/ui/home/icon_dna_red.png',
   portraitVelociraptor: 'assets/dinos/portraits/velociraptor.png',
   portraitTriceratops: 'assets/dinos/portraits/triceratops.png',
@@ -168,7 +170,10 @@ export class Hud {
     this.pauseButtonBg = new Graphics();
     this.pauseButtonIcon = new Graphics();
     this.branchPanel = new Container();
+    this.branchGlowSprite = new Sprite(Texture.EMPTY);
     this.branchSprite = new Sprite(Texture.EMPTY);
+    this.branchPortraitSprite = new Sprite(Texture.EMPTY);
+    this.branchIconFrameSprite = new Sprite(Texture.EMPTY);
     this.branchFallback = new Graphics();
     this.branchIcon = new Graphics();
     this.branchTitle = this.createText(11, '#ffd36b');
@@ -244,7 +249,16 @@ export class Hud {
     this.pauseButton.cursor = 'pointer';
     this.pauseButton.position.set(width - 34, 114);
 
-    this.branchPanel.addChild(this.branchSprite, this.branchFallback, this.branchIcon, this.branchTitle, this.branchName);
+    this.branchPanel.addChild(
+      this.branchGlowSprite,
+      this.branchSprite,
+      this.branchIconFrameSprite,
+      this.branchFallback,
+      this.branchIcon,
+      this.branchPortraitSprite,
+      this.branchTitle,
+      this.branchName,
+    );
 
     this.ultimateButton.addChild(
       this.ultimateButtonSprite,
@@ -268,7 +282,10 @@ export class Hud {
       this.bossFrameSprite,
       this.dnaIconSprite,
       this.pauseButtonSprite,
+      this.branchGlowSprite,
       this.branchSprite,
+      this.branchPortraitSprite,
+      this.branchIconFrameSprite,
       this.ultimateButtonSprite,
       this.ultimateIconSprite,
       this.portraitSprite,
@@ -282,6 +299,7 @@ export class Hud {
     this.dnaIconSprite.anchor.set(0.5);
     this.portraitSprite.anchor.set(0.5);
     this.portraitFrameSprite.anchor.set(0.5);
+    this.branchPortraitSprite.anchor.set(0.5);
   }
 
   createSkillSlots() {
@@ -363,10 +381,26 @@ export class Hud {
 
     if (this.assetTextures.evolutionNotice) {
       this.branchSprite.texture = this.assetTextures.evolutionNotice;
-      this.branchSprite.width = 210;
-      this.branchSprite.height = 52;
+      this.branchSprite.width = 260;
+      this.branchSprite.height = 72;
       this.branchSprite.visible = true;
       this.branchFallback.visible = false;
+    }
+    if (this.assetTextures.branchGlow) {
+      this.branchGlowSprite.texture = this.assetTextures.branchGlow;
+      this.branchGlowSprite.position.set(62, 61);
+      this.branchGlowSprite.width = 174;
+      this.branchGlowSprite.height = 14;
+      this.branchGlowSprite.alpha = 0.55;
+      this.branchGlowSprite.visible = true;
+    }
+    if (this.assetTextures.branchIconFrame) {
+      this.branchIconFrameSprite.texture = this.assetTextures.branchIconFrame;
+      this.branchIconFrameSprite.position.set(9, 8);
+      this.branchIconFrameSprite.width = 62;
+      this.branchIconFrameSprite.height = 62;
+      this.branchIconFrameSprite.alpha = 0.94;
+      this.branchIconFrameSprite.visible = true;
     }
 
     this.skillSlots.forEach((slot) => {
@@ -374,7 +408,7 @@ export class Hud {
     });
   }
 
-  update(gameState, boss = null) {
+  update(gameState, boss = null, options = {}) {
     const minutes = Math.floor(gameState.elapsedTime / 60);
     const seconds = Math.floor(gameState.elapsedTime % 60);
     const time = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
@@ -401,10 +435,10 @@ export class Hud {
     this.updateBars(hpProgress, expProgress);
     this.updatePortrait(gameState);
     this.updateDanger(hpProgress);
-    this.updateBranchNotice(gameState.selectedEvolution);
+    this.updateBranchNotice(gameState);
     this.updateSkillSlots(gameState.ownedSkills);
     this.updateUltimate(gameState, ultimateProgress);
-    this.drawBossBar(boss);
+    this.drawBossBar(options.suppressBossBar ? null : boss, options);
   }
 
   updateBars(hpProgress, expProgress) {
@@ -424,8 +458,8 @@ export class Hud {
   }
 
   updatePortrait(gameState) {
-    const texture = this.getPortraitTexture(gameState);
-    const color = this.getPortraitColor(gameState.selectedEvolution?.tag);
+    const texture = this.getBasePortraitTexture(gameState);
+    const color = this.getPortraitColor(null);
 
     this.portraitFrame.clear();
 
@@ -460,25 +494,47 @@ export class Hud {
     this.dangerText.position.set(this.width / 2, 156);
   }
 
-  updateBranchNotice(selectedEvolution) {
+  updateBranchNotice(gameState) {
+    const selectedEvolution = gameState?.selectedEvolution ?? null;
     const hasEvolution = Boolean(selectedEvolution);
     this.branchPanel.visible = hasEvolution;
 
     if (!hasEvolution) {
+      this.branchPortraitSprite.visible = false;
+      this.branchIconFrameSprite.visible = false;
       return;
     }
 
+    const portraitTexture = this.getEvolutionPortraitTexture(gameState);
     this.branchTitle.text = 'BRANCH';
-    this.branchName.text = (selectedEvolution.evolutionName ?? selectedEvolution.tag ?? '').toUpperCase();
-    this.branchPanel.position.set(18, 92);
-    this.branchTitle.position.set(62, 12);
-    this.branchName.position.set(62, 30);
+    this.branchName.text = selectedEvolution.evolutionName ?? selectedEvolution.tag ?? '';
+    this.branchPanel.position.set(10, TOP_HUD.y + TOP_HUD.height + 8);
+    this.branchPanel.alpha = 0.98;
+    this.branchTitle.position.set(86, 12);
+    this.branchName.position.set(86, 36);
+    this.branchTitle.style.fontSize = 11.5;
+    this.branchName.style.fontSize = 11;
+    this.branchName.style.wordWrapWidth = 154;
+
+    this.branchIcon.clear();
+    if (portraitTexture) {
+      this.branchPortraitSprite.texture = portraitTexture;
+      this.branchPortraitSprite.position.set(40, 39);
+      this.branchPortraitSprite.width = 52;
+      this.branchPortraitSprite.height = 52;
+      this.branchPortraitSprite.alpha = 1;
+      this.branchPortraitSprite.visible = true;
+      this.branchIconFrameSprite.visible = Boolean(this.assetTextures.branchIconFrame);
+      return;
+    }
+
+    this.branchPortraitSprite.visible = false;
+    this.branchIconFrameSprite.visible = false;
     this.branchIcon
-      .clear()
-      .circle(30, 26, 18)
+      .circle(40, 39, 22)
       .stroke({ color: 0xffc739, width: 2, alpha: 0.86 })
-      .moveTo(22, 34)
-      .lineTo(38, 18)
+      .moveTo(30, 49)
+      .lineTo(50, 29)
       .stroke({ color: 0xffc739, width: 3, alpha: 0.9 });
   }
 
@@ -664,7 +720,25 @@ export class Hud {
     return this.assetTextures[`adapt${icon}`] ?? null;
   }
 
-  getPortraitTexture(gameState) {
+  getBasePortraitTexture(gameState) {
+    const dinoId = gameState?.selectedDino ?? 'velociraptor';
+
+    if (dinoId === 'triceratops') {
+      return this.assetTextures.portraitTriceratops;
+    }
+
+    if (dinoId === 'tyrannosaurus') {
+      return this.assetTextures.portraitTyrannosaurus;
+    }
+
+    if (dinoId === 'spinosaurus') {
+      return this.assetTextures.portraitSpinosaurus;
+    }
+
+    return this.assetTextures.portraitVelociraptor;
+  }
+
+  getEvolutionPortraitTexture(gameState) {
     const tag = gameState.selectedEvolution?.tag;
     const evolvedDinoId = gameState.selectedEvolution?.dinoId ?? gameState.selectedDino;
 
@@ -740,21 +814,7 @@ export class Hud {
       }
     }
 
-    const dinoId = gameState.selectedDino ?? 'velociraptor';
-
-    if (dinoId === 'triceratops') {
-      return this.assetTextures.portraitTriceratops;
-    }
-
-    if (dinoId === 'tyrannosaurus') {
-      return this.assetTextures.portraitTyrannosaurus;
-    }
-
-    if (dinoId === 'spinosaurus') {
-      return this.assetTextures.portraitSpinosaurus;
-    }
-
-    return this.assetTextures.portraitVelociraptor;
+    return null;
   }
 
   getPortraitColor(tag) {
@@ -944,7 +1004,7 @@ export class Hud {
     });
   }
 
-  drawBossBar(boss) {
+  drawBossBar(boss, options = {}) {
     this.bossBarBack.clear();
     this.bossBarFill.clear();
     this.bossNameText.text = '';
@@ -957,7 +1017,7 @@ export class Hud {
     const barWidth = this.width - 88;
     const progress = Math.max(0, Math.min(boss.hp / boss.maxHp, 1));
     const x = BOSS_BAR.x;
-    const y = BOSS_BAR.y;
+    const y = options.offsetBossBarForBranch ? BOSS_BAR.y + 38 : BOSS_BAR.y;
     const frameWidth = barWidth + 12;
     const frameX = x - 6;
     const frameY = y - 8;

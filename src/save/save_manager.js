@@ -798,7 +798,8 @@ export class SaveManager {
   calculateRunDna(gameState) {
     const base = Math.floor((gameState.totalExpGained ?? 0) * 0.8)
       + Math.floor((gameState.defeatedCount ?? 0) * 0.25)
-      + (gameState.defeatedBosses ?? 0) * 18;
+      + (gameState.defeatedBosses ?? 0) * 18
+      + Math.max(0, Math.floor(gameState.bonusDna ?? 0));
     const multiplier = getBodyResearchBonuses(this.data.researchLevels).dnaMultiplier;
 
     return Math.max(1, Math.floor(base * multiplier));

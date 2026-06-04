@@ -2,10 +2,10 @@ import { Container, Graphics, Text } from 'pixi.js';
 import { UI_COLORS } from './ui_theme.js';
 
 const TIPS = [
-  '適応Lvを高めると進化候補が出現する',
-  'ZEROルートは高難度クリアで解析される',
-  'デイリーは毎日0時に更新される',
-  '研究Ptはデイリーと解析で集められる',
+  '適応Lvを上げると進化候補が出現します',
+  'ZEROルートは高難度クリアで解析されます',
+  'デイリーは毎日0時に更新されます',
+  '研究Ptはデイリーと解析で集められます',
 ];
 
 export class LoadingUi {
@@ -20,7 +20,7 @@ export class LoadingUi {
     this.panel = new Graphics();
     this.barBg = new Graphics();
     this.barFill = new Graphics();
-    this.title = this.createText('DNA解析中...', 18, '#f4fffb', 300);
+    this.title = this.createText('ロード中', 18, '#f4fffb', 300);
     this.detail = this.createText('資源読み込み中', 11, '#9fc5c0', 300);
     this.tip = this.createText(TIPS[0], 10, '#ffd36b', 300);
 
@@ -29,7 +29,7 @@ export class LoadingUi {
     this.draw();
   }
 
-  show({ title = 'DNA解析中...', detail = '資源読み込み中', progress = 0 } = {}) {
+  show({ title = 'ロード中', detail = '資源読み込み中', progress = 0 } = {}) {
     this.title.text = title;
     this.detail.text = detail;
     this.tip.text = TIPS[this.tipIndex % TIPS.length];

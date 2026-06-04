@@ -29,18 +29,43 @@ const TYPE_CONFIGS = {
     danger: 0xff1e2f,
     message: 'FANG STRIKE MUTATION',
   },
+  zero: {
+    name: 'ZERO EVOLUTION',
+    primary: 0x9a66ff,
+    secondary: 0xf2f0ff,
+    danger: 0xff3848,
+    message: 'ZERO CORE AWAKENING',
+  },
 };
 
 const PORTRAIT_PATHS = {
   speed: 'assets/dinos/evolutions/portraits/velociraptor_speed_portrait.png',
   hunting: 'assets/dinos/evolutions/portraits/velociraptor_hunting_portrait.png',
   attack: 'assets/dinos/evolutions/portraits/velociraptor_attack_portrait.png',
+  zero: 'assets/dinos/evolutions/portraits/velociraptor_zero_portrait.png',
+  velociraptor_speed: 'assets/dinos/evolutions/portraits/velociraptor_speed_portrait.png',
+  velociraptor_hunting: 'assets/dinos/evolutions/portraits/velociraptor_hunting_portrait.png',
+  velociraptor_attack: 'assets/dinos/evolutions/portraits/velociraptor_attack_portrait.png',
+  velociraptor_zero: 'assets/dinos/evolutions/portraits/velociraptor_zero_portrait.png',
+  triceratops_speed: 'assets/dinos/evolutions/portraits/triceratops_speed_portrait.png',
+  triceratops_hunting: 'assets/dinos/evolutions/portraits/triceratops_hunting_portrait.png',
+  triceratops_attack: 'assets/dinos/evolutions/portraits/triceratops_attack_portrait.png',
+  triceratops_zero: 'assets/dinos/evolutions/portraits/triceratops_zero_portrait.png',
+  tyrannosaurus_speed: 'assets/dinos/evolutions/portraits/tyrannosaurus_speed_portrait.png',
+  tyrannosaurus_hunting: 'assets/dinos/evolutions/portraits/tyrannosaurus_hunting_portrait.png',
+  tyrannosaurus_attack: 'assets/dinos/evolutions/portraits/tyrannosaurus_attack_portrait.png',
+  tyrannosaurus_zero: 'assets/dinos/evolutions/portraits/tyrannosaurus_zero_portrait.png',
+  spinosaurus_speed: 'assets/dinos/evolutions/portraits/spinosaurus_speed_portrait.png',
+  spinosaurus_hunting: 'assets/dinos/evolutions/portraits/spinosaurus_hunting_portrait.png',
+  spinosaurus_attack: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png',
+  spinosaurus_zero: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png',
 };
 
 const UI_ASSET_PATHS = {
-  panel: 'assets/ui/evolution/evolution_panel.png',
+  panel: 'assets/ui/evolution/evolution_unlock_panel_a10.png',
   namePlate: 'assets/ui/evolution/evolution_name_plate.png',
-  portraitFrame: 'assets/ui/evolution/evolution_portrait_frame.png',
+  portraitFrame: 'assets/ui/evolution/evolution_unlock_frame_a10.png',
+  unlockGlow: 'assets/ui/evolution/evolution_unlock_glow_a10.png',
   dnaRing: 'assets/ui/evolution/evolution_dna_ring.png',
   codexUpdateChip: 'assets/ui/evolution/codex_update_chip.png',
   newEvolutionChip: 'assets/ui/evolution/new_evolution_chip.png',
@@ -371,16 +396,17 @@ export class EvolutionSequence {
     const centerY = y + panelHeight / 2;
     const hasPortrait = Boolean(this.portraitSprite.texture && this.portraitSprite.texture !== Texture.EMPTY);
 
-    const flashTexture = this.getFlashTexture();
+    const flashTexture = this.uiTextures.unlockGlow ?? this.getFlashTexture();
     if (flashTexture) {
+      const useUnlockGlow = Boolean(this.uiTextures.unlockGlow);
       const flashAlpha = phase === 'awakening'
         ? 0.66 * (1 - phaseProgress * 0.28)
         : 0.34 + phaseProgress * 0.28;
       this.flashSprite.texture = flashTexture;
-      this.flashSprite.position.set(this.width / 2, centerY + 2);
-      this.flashSprite.width = Math.min(this.width - 20, 372);
-      this.flashSprite.height = 118;
-      this.flashSprite.alpha = flashAlpha;
+      this.flashSprite.position.set(useUnlockGlow && hasPortrait ? x + 58 : this.width / 2, useUnlockGlow && hasPortrait ? y + 66 : centerY + 2);
+      this.flashSprite.width = useUnlockGlow ? 118 : Math.min(this.width - 20, 372);
+      this.flashSprite.height = useUnlockGlow ? 136 : 118;
+      this.flashSprite.alpha = useUnlockGlow ? flashAlpha * 0.72 : flashAlpha;
       this.flashSprite.visible = true;
     }
 
@@ -522,7 +548,12 @@ export class EvolutionSequence {
     Object.entries(PORTRAIT_PATHS).forEach(([tag, path]) => {
       Assets.load(assetUrl(path)).then((texture) => {
         this.portraitTextures[tag] = texture;
-        if (this.evolution?.tag === tag) {
+        this.portraitTextures[path] = texture;
+        if (
+          this.evolution?.tag === tag
+          || this.evolution?.id === tag
+          || this.evolution?.portraitPath === path
+        ) {
           this.applyPortraitTexture();
         }
       }).catch(() => {});
@@ -550,7 +581,10 @@ export class EvolutionSequence {
   }
 
   applyPortraitTexture() {
-    const texture = this.portraitTextures[this.evolution?.tag];
+    const portraitPath = this.evolution?.portraitPath;
+    const texture = this.portraitTextures[this.evolution?.id]
+      ?? this.portraitTextures[this.evolution?.tag]
+      ?? (portraitPath ? this.portraitTextures[portraitPath] : null);
 
     if (!texture) {
       this.portraitSprite.texture = Texture.EMPTY;

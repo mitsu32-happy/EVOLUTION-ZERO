@@ -282,7 +282,7 @@ export class ScreenManager {
     return this.playScene;
   }
 
-  async loadAssetGroups(groupIds, label, title = 'DNA解析中...') {
+  async loadAssetGroups(groupIds, label, title = 'ロード中') {
     const groups = (Array.isArray(groupIds) ? groupIds : [groupIds]).filter(Boolean);
     const alreadyLoaded = groups.every((groupId) => this.assetLoader.loadedGroups.has(groupId));
 
@@ -537,7 +537,7 @@ export class ScreenManager {
     this.applyDebugResearchPt();
     this.applyDebugStageProgress();
     this.applyDebugRunSelection();
-    await this.loadAssetGroups(['stageSelect'], 'ステージ一覧読み込み中', 'ステージ構築中...');
+    await this.loadAssetGroups(['stageSelect'], 'ステージ一覧読み込み中', 'ロード中');
     this.ensureStageSelectScreen();
     this.syncSelectionScreens();
     this.stageSelectScreen.setSaveData?.(this.saveManager.getData());
@@ -778,7 +778,7 @@ export class ScreenManager {
       `dino:${this.gameState.selectedDino ?? 'velociraptor'}`,
       this.gameState.selectedMode === 'zero' ? 'zero' : null,
     ].filter(Boolean);
-    await this.loadAssetGroups(playGroups, 'プレイ資源読み込み中', 'ステージ構築中...');
+    await this.loadAssetGroups(playGroups, 'プレイ資源読み込み中', 'ロード中');
     this.audioManager.preload([
       'home_bgm',
       'jungle_bgm',

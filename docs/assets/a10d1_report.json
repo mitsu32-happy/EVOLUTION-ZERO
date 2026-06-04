@@ -1,0 +1,33 @@
+﻿{
+  "mvp": "A10d.1",
+  "statCardTonePolicy": "A10d1 stat cards are recolored toward the HP card cyan-green stat-upgrade tone. Embedded icon policy is maintained; code-side icon overlay stays disabled for normal stat cards.",
+  "statCards": [
+    { "path": "public/assets/ui/selection/levelup_stat_card_common_a10d1.png", "source": "public/assets/ui/selection/levelup_stat_card_common_a10c.png", "size": [899, 219] },
+    { "path": "public/assets/ui/selection/levelup_stat_card_hp_a10d1.png", "source": "public/assets/ui/selection/levelup_stat_card_hp_a10c.png", "size": [903, 223] },
+    { "path": "public/assets/ui/selection/levelup_stat_card_attack_a10d1.png", "source": "public/assets/ui/selection/levelup_stat_card_attack_a10c.png", "size": [902, 221] },
+    { "path": "public/assets/ui/selection/levelup_stat_card_speed_a10d1.png", "source": "public/assets/ui/selection/levelup_stat_card_speed_a10c.png", "size": [902, 219] },
+    { "path": "public/assets/ui/selection/levelup_stat_card_rate_a10d1.png", "source": "public/assets/ui/selection/levelup_stat_card_rate_a10c.png", "size": [1445, 375] },
+    { "path": "public/assets/ui/selection/levelup_stat_card_pickup_a10d1.png", "source": "public/assets/ui/selection/levelup_stat_card_pickup_a10c.png", "size": [902, 212] }
+  ],
+  "implementation": {
+    "statCardManifest": "Registered A10d.1 stat card variants and routed tagless stat upgrades to those textures.",
+    "embeddedIconPolicy": "Maintained. Normal stat cards do not add separate code-side stat icon sprites.",
+    "candidatePortrait": "Candidate portrait sprite is rendered above the portrait frame interior and reloads from portraitPath/heroPath.",
+    "branchPortrait": "BRANCH portrait sprite is rendered above the generated frame interior, with larger upper-left HUD placement."
+  },
+  "qaImages": {
+    "statCards": "docs/assets/a10d1_levelup_stat_card_qa.png",
+    "evolutionCandidatePortrait": "docs/assets/a10d1_evolution_portrait_qa.png",
+    "branchPortrait": "docs/assets/a10d1_branch_portrait_qa.png"
+  },
+  "qa": {
+    "nodeCheck": "passed: levelup_ui.js, evolution_ready_ui.js, hud.js, play_scene.js, asset_manifest.js",
+    "build": "passed: npm.cmd run build",
+    "browserRuntime": "passed: in-app browser console error/warn 0 during A10d.1 candidate and BRANCH QA",
+    "screenQa": {
+      "statCards": "QA sheet shows attack/speed/rate/pickup/common cards shifted toward the HP teal stat-card tone.",
+      "evolutionCandidatePortrait": "Verified portrait visible inside the evolution candidate card via debugEvolutionReady=speed.",
+      "branchPortrait": "Verified portrait visible inside the BRANCH HUD card via debugEvolution=speed."
+    }
+  }
+}

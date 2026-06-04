@@ -1,0 +1,191 @@
+{
+  "mvp": "A10",
+  "source": "C:/05.GitHub/EVOLUTION-ZERO/docs/assets/a10_ui_source_sheet.png",
+  "chromaKey": "#ff00ff narrow removal plus edge decontamination",
+  "assets": [
+    {
+      "path": "public/assets/ui/home/sortie_panel_a10.png",
+      "size": [
+        763,
+        255
+      ],
+      "sourceBox": [
+        16,
+        130,
+        780,
+        382
+      ]
+    },
+    {
+      "path": "public/assets/ui/home/sortie_button_frame_a10.png",
+      "size": [
+        763,
+        255
+      ],
+      "sourceBox": [
+        16,
+        130,
+        780,
+        382
+      ]
+    },
+    {
+      "path": "public/assets/ui/home/sortie_button_left_icon_a10.png",
+      "size": [
+        218,
+        224
+      ],
+      "sourceBox": [
+        790,
+        150,
+        1000,
+        375
+      ]
+    },
+    {
+      "path": "public/assets/ui/home/sortie_button_glow_a10.png",
+      "size": [
+        916,
+        55
+      ],
+      "sourceBox": [
+        54,
+        466,
+        960,
+        514
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_card_panel_a10.png",
+      "size": [
+        1195,
+        318
+      ],
+      "source": "docs/assets/a10_ui_source_sheet_selection.png",
+      "sourceBox": [
+        170,
+        52,
+        1366,
+        360
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_card_selected_a10.png",
+      "size": [
+        1214,
+        332
+      ],
+      "source": "docs/assets/a10_ui_source_sheet_selection.png",
+      "sourceBox": [
+        168,
+        418,
+        1370,
+        738
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_card_portrait_frame_a10.png",
+      "size": [
+        237,
+        226
+      ],
+      "source": "docs/assets/a10_ui_source_sheet_selection.png",
+      "sourceBox": [
+        225,
+        758,
+        456,
+        983
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_card_type_chip_a10.png",
+      "size": [
+        306,
+        119
+      ],
+      "source": "docs/assets/a10_ui_source_sheet_selection.png",
+      "sourceBox": [
+        584,
+        826,
+        884,
+        934
+      ]
+    },
+    {
+      "path": "public/assets/ui/selection/evolution_card_button_select_a10.png",
+      "size": [
+        360,
+        138
+      ],
+      "source": "docs/assets/a10_ui_source_sheet_selection.png",
+      "sourceBox": [
+        976,
+        820,
+        1324,
+        946
+      ]
+    },
+    {
+      "path": "public/assets/ui/evolution/evolution_unlock_panel_a10.png",
+      "size": [
+        454,
+        336
+      ],
+      "sourceBox": [
+        22,
+        1090,
+        466,
+        1416
+      ]
+    },
+    {
+      "path": "public/assets/ui/evolution/evolution_unlock_frame_a10.png",
+      "size": [
+        270,
+        340
+      ],
+      "sourceBox": [
+        493,
+        1088,
+        752,
+        1416
+      ]
+    },
+    {
+      "path": "public/assets/ui/evolution/evolution_unlock_glow_a10.png",
+      "size": [
+        252,
+        343
+      ],
+      "sourceBox": [
+        754,
+        1082,
+        1003,
+        1425
+      ]
+    }
+  ],
+  "qualityNotes": [
+    "Generated as text-free EVOLUTION ZERO sci-fi UI components.",
+    "Runtime overlays all Japanese text and portraits.",
+    "Home sortie left icon, evolution candidate frames, and evolution unlock portrait frame are dedicated A10 assets."
+  ],
+  "connectionStatus": "connected",
+  "connectedFiles": [
+    "src/ui/home_screen.js",
+    "src/ui/evolution_ready_ui.js",
+    "src/effects/evolution_sequence.js",
+    "src/data/asset_manifest.js"
+  ],
+  "qaPending": [],
+  "qa": {
+    "nodeCheck": "passed: home_screen.js, evolution_ready_ui.js, evolution_sequence.js, asset_manifest.js",
+    "build": "passed: npm.cmd run build",
+    "browserRuntime": "passed: localhost:5175 home route loaded with console error/warn count 0",
+    "assetExistence": "passed: 12 generated A10 PNG assets present",
+    "portraitDisplay": "code path updated: candidate cards load candidate hero/portrait; evolution sequence now resolves branch-specific portraits including ZERO routes"
+  },
+  "contactSheet": "docs/assets/a10_ui_contact.png",
+  "comparison": "contact sheet includes old A07/MVP assets and new A10 assets for the target areas",
+  "additionalSource": "docs/assets/a10_ui_source_sheet_selection.png"
+}

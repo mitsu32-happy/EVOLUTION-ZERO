@@ -24,8 +24,8 @@ export class SpawnSystem {
     this.viewHeight = viewHeight;
     this.assetLoader = assetLoader;
     this.spawnTimer = 0;
-    this.spawnInterval = 3.2;
-    this.maxEnemies = 24;
+    this.spawnInterval = 2.55;
+    this.maxEnemies = 32;
   }
 
   reset() {
@@ -42,7 +42,7 @@ export class SpawnSystem {
         : gameState.selectedMode === 'zero'
           ? ZERO_SCALING_CONFIG.softEnemyCap
           : this.maxEnemies + difficulty.maxEnemyBonus + modeBonus,
-      6 + difficulty.maxEnemyBonus + modeBonus + Math.floor(gameState.elapsedTime / (['endless', 'zero'].includes(gameState.selectedMode) ? 10 : 15)),
+      10 + difficulty.maxEnemyBonus + modeBonus + Math.floor(gameState.elapsedTime / (['endless', 'zero'].includes(gameState.selectedMode) ? 8 : 11)),
     );
 
     if (enemies.length >= maxEnemies) {
@@ -56,7 +56,7 @@ export class SpawnSystem {
     }
 
     this.spawnTimer = Math.max(
-      0.82,
+      0.58,
       (this.spawnInterval - gameState.elapsedTime * 0.017) * difficulty.spawnIntervalMultiplier / modeScale.spawnRate,
     );
     onSpawn(new Enemy({
@@ -79,7 +79,7 @@ export class SpawnSystem {
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.42,
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.34,
         spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 0.68,
         maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 10),
         eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.1,
@@ -93,7 +93,7 @@ export class SpawnSystem {
 
   getEndlessScaling(gameState) {
     if (gameState?.selectedMode !== 'endless') {
-      return { hp: 1, damage: 1, spawnRate: 1, maxEnemyBonus: 0, eliteBonus: 0, exp: 1, score: 1 };
+      return { hp: 0.9, damage: 0.82, spawnRate: 1, maxEnemyBonus: 0, eliteBonus: 0, exp: 1, score: 1 };
     }
 
     const elapsed = gameState.elapsedTime ?? 0;
@@ -110,7 +110,7 @@ export class SpawnSystem {
 
     return {
       hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.45,
+      damage: phase.damage + longRunBonus * 0.34,
       spawnRate: phase.spawnRate + longRunBonus * 0.55,
       maxEnemyBonus: phase.maxEnemyBonus,
       eliteBonus: phase.eliteBonus,

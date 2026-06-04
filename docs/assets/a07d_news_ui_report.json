@@ -1,0 +1,172 @@
+{
+  "mvp": "A07d",
+  "purpose": "Simplify and improve readability of news UI assets after A07c.",
+  "sourceGeneratedImage": "C:/Users/oushi/.codex/generated_images/019e5eb7-bc4f-76e3-b6c7-23276e187e20/ig_036c4786ec9c6ceb016a1be88a6ec48191aef276f9eef1c39c.png",
+  "workspaceSourceSheet": "docs/assets/a07d_news_ui_source_sheet.png",
+  "contactSheet": "docs/assets/a07d_news_ui_contact.png",
+  "generatedAssets": [
+    {
+      "file": "public/assets/ui/home/news_button_a07d.png",
+      "sourceBox": [
+        48,
+        120,
+        510,
+        292
+      ],
+      "size": [
+        172,
+        44
+      ],
+      "description": "compact home news button",
+      "alphaBBox": [
+        0,
+        0,
+        171,
+        44
+      ],
+      "opaqueRatio": 0.9284
+    },
+    {
+      "file": "public/assets/ui/home/news_panel_outer_a07d.png",
+      "sourceBox": [
+        555,
+        118,
+        1210,
+        1125
+      ],
+      "size": [
+        354,
+        610
+      ],
+      "description": "shared list/detail outer modal panel",
+      "alphaBBox": [
+        2,
+        2,
+        352,
+        608
+      ],
+      "opaqueRatio": 0.9634
+    },
+    {
+      "file": "public/assets/ui/home/news_list_item_a07d.png",
+      "sourceBox": [
+        48,
+        470,
+        520,
+        610
+      ],
+      "size": [
+        322,
+        72
+      ],
+      "description": "simple list item card",
+      "alphaBBox": [
+        0,
+        0,
+        320,
+        70
+      ],
+      "opaqueRatio": 0.9525
+    },
+    {
+      "file": "public/assets/ui/home/news_button_back_a07d.png",
+      "sourceBox": [
+        78,
+        728,
+        250,
+        898
+      ],
+      "size": [
+        52,
+        42
+      ],
+      "description": "back button frame",
+      "alphaBBox": [
+        0,
+        0,
+        52,
+        42
+      ],
+      "opaqueRatio": 0.9423
+    },
+    {
+      "file": "public/assets/ui/home/news_button_close_a07d.png",
+      "sourceBox": [
+        304,
+        728,
+        476,
+        898
+      ],
+      "size": [
+        52,
+        42
+      ],
+      "description": "close button frame",
+      "alphaBBox": [
+        0,
+        1,
+        51,
+        42
+      ],
+      "opaqueRatio": 0.9089
+    },
+    {
+      "file": "public/assets/ui/home/news_badge_update_a07d.png",
+      "sourceBox": [
+        128,
+        1026,
+        428,
+        1116
+      ],
+      "size": [
+        92,
+        30
+      ],
+      "description": "small update badge chip",
+      "alphaBBox": [
+        1,
+        0,
+        91,
+        29
+      ],
+      "opaqueRatio": 0.9138
+    }
+  ],
+  "designPolicy": [
+    "shared outer frame for list and detail",
+    "minimal inner decoration",
+    "large matte text-safe center",
+    "small reusable controls",
+    "text remains code-rendered"
+  ],
+  "a07cAssetsRemovedFromNormalRoute": [
+    "news_panel_list_a07c.png",
+    "news_panel_detail_a07c.png",
+    "news_list_item_a07c.png",
+    "news_list_item_unread_a07c.png",
+    "news_button_a07c.png",
+    "news_button_back_a07c.png",
+    "news_button_close_a07c.png",
+    "news_badge_update_a07c.png",
+    "news_badge_normal_a07c.png"
+  ],
+  "qa": {
+    "build": "passed",
+    "nodeCheck": [
+      "src/data/asset_manifest.js",
+      "src/data/update_news.js",
+      "src/ui/home_screen.js"
+    ],
+    "browserScreens": [
+      "docs/assets/a07d_news_list_qa.png",
+      "docs/assets/a07d_news_detail_qa.png"
+    ],
+    "runtimeConsoleErrorWarn": 0,
+    "checks": [
+      "home news button has stronger contrast",
+      "list uses shared outer frame and simple cards",
+      "detail body wraps without right overflow",
+      "close/back controls do not overlap text labels"
+    ]
+  }
+}

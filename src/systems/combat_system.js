@@ -67,7 +67,7 @@ export class CombatSystem {
     this.loadEvolutionNormalAttackEffect(evolution.normalAttackEffectKey ?? null, this.evolutionNormalAttackEffectId);
 
     if (evolution.tag === 'speed') {
-      this.attackInterval = Math.max(0.19, this.attackInterval * 0.66);
+      this.attackInterval = Math.max(0.17, this.attackInterval * 0.6);
       this.attackRange = Math.max(104, this.attackRange - 6);
       this.targetAcquireRange = Math.max(this.targetAcquireRange, this.attackRange + 10);
       this.effectColor = 0x35d7ff;
@@ -76,23 +76,34 @@ export class CombatSystem {
     }
 
     if (evolution.tag === 'hunting') {
-      this.attackRange += 68;
-      this.targetAcquireRange = Math.max(this.targetAcquireRange + 110, this.attackRange + 72);
+      this.attackRange += 88;
+      this.targetAcquireRange = Math.max(this.targetAcquireRange + 132, this.attackRange + 90);
       this.effectColor = 0xffc94d;
       this.effectGlowColor = 0xffefb0;
       this.effectWeight = 1.18;
-      this.knockback = Math.max(this.knockback, 12);
+      this.knockback = Math.max(this.knockback, 22);
     }
 
     if (evolution.tag === 'attack') {
       this.attackInterval = Math.min(0.78, this.attackInterval * 1.2);
-      this.damage = Math.round(this.damage * 1.78);
-      this.attackRange += 18;
+      this.damage = Math.round(this.damage * 2.05);
+      this.attackRange += 30;
       this.targetAcquireRange = Math.max(this.targetAcquireRange, this.attackRange + 26);
       this.knockback = 66;
       this.effectColor = 0xff4d38;
       this.effectGlowColor = 0xffd1a0;
       this.effectWeight = 1.58;
+    }
+
+    if (evolution.tag === 'zero') {
+      this.attackInterval = Math.max(0.22, this.attackInterval * 0.56);
+      this.damage = Math.round(this.damage * 2.55);
+      this.attackRange += 96;
+      this.targetAcquireRange = Math.max(this.targetAcquireRange + 170, this.attackRange + 120);
+      this.knockback = 92;
+      this.effectColor = 0xb94dff;
+      this.effectGlowColor = 0x82f7ff;
+      this.effectWeight = 2.1;
     }
   }
 

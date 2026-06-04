@@ -346,9 +346,9 @@ export const RESEARCH_ITEMS = [
     maxLevel: 1,
     baseCost: 0,
     costStep: 0,
-    researchPtCost: 420,
+    researchPtCost: 220,
     unlockDinoId: 'spinosaurus',
-    unlockHint: '研究Pt 420で解放',
+    unlockHint: '研究Pt 220で解放',
   },
   {
     id: 'deep_stage_scan',

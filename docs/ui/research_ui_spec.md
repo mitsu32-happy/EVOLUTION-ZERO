@@ -11,6 +11,6 @@ See also `docs/ui/dna_research_ui_spec.md` for the broader DNA research layout r
 
 ## MVP-A01b: Research Card Cost Display
 
-- Research Pt-only unlock cards show `研究Pt 420` instead of `D0/P420`.
+- Research Pt-only unlock cards show `研究Pt 220` instead of `D0/P220`.
 - Spinosaurus unlock failure uses `Pt不足` when Research Pt is short.
 - Completed dinosaur unlock cards show `研究済み`.
