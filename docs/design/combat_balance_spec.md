@@ -143,3 +143,12 @@ See:
 - `spinosaurusWaterSlash` keeps its mid-range control role, but its cone origin is pulled closer to the player.
 - The water slash visual center is also moved closer so the effect and hit area agree more clearly.
 - Range/angle changes are intentionally small; the goal is to catch close frontal enemies reliably without turning the base attack into a full-screen sweep.
+
+## MVP-A11 Late-Game Pressure Follow-Up
+
+- Early spawn pacing is intentionally kept close to the previous A11 build.
+- Standard mode now adds only modest late enemy HP/damage pressure, weighted more strongly on HARD and EXPERT than NORMAL.
+- ENDLESS late phases and overtime scaling are stronger so long runs are less likely to continue indefinitely.
+- ZERO enemy damage, late spawn pressure, enemy cap, and boss scaling are increased, with most extra pressure arriving after the opening.
+- Boss damage scaling now also affects explicit boss attack entries such as hazard damage and melee multipliers.
+- Heal pickup value is slightly reduced in HARD, EXPERT, ZERO, and ENDLESS late runs while NORMAL early recovery remains close to the previous value.

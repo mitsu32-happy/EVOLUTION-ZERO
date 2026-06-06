@@ -2203,11 +2203,11 @@ export class PlayScene {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(0.62, overtime / 780);
+    const longRunBonus = Math.min(1.05, overtime / 620);
 
     return {
       hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.52,
+      damage: phase.damage + longRunBonus * 0.7,
       score: 1 + Math.min(0.55, elapsed / 700),
       exp: 1 + Math.min(0.25, elapsed / 900),
     };
@@ -2240,7 +2240,30 @@ export class PlayScene {
       damage: Math.max(1, Math.round((config.damage ?? 24) * (scale.damage ?? 1))),
       scoreReward: Math.max(1, Math.round((config.scoreReward ?? 2400) * (scale.score ?? 1))),
       expReward: Math.max(1, Math.round((config.expReward ?? 18) * (scale.exp ?? 1))),
+      attacks: this.scaleBossAttackConfig(config.attacks, scale.damage ?? 1),
     };
+  }
+
+  scaleBossAttackConfig(attacks, damageScale = 1) {
+    if (!attacks || damageScale === 1) {
+      return attacks;
+    }
+
+    return Object.fromEntries(Object.entries(attacks).map(([key, attack]) => {
+      if (!attack || typeof attack !== 'object') {
+        return [key, attack];
+      }
+
+      return [key, {
+        ...attack,
+        damage: typeof attack.damage === 'number'
+          ? Math.max(1, Math.round(attack.damage * damageScale))
+          : attack.damage,
+        damageMultiplier: typeof attack.damageMultiplier === 'number'
+          ? Number((attack.damageMultiplier * (1 + (damageScale - 1) * 0.55)).toFixed(3))
+          : attack.damageMultiplier,
+      }];
+    }));
   }
 
   getZeroBossConfig(phase = 1) {
@@ -2528,9 +2551,21 @@ export class PlayScene {
   getBossConfig() {
     const config = getStageBossConfig(this.gameState.selectedStage, this.gameState.selectedDifficulty);
     const endlessScale = this.getEndlessBossScale();
-    const scaledConfig = this.gameState.selectedMode === 'endless'
-      ? this.scaleBossConfig(config, endlessScale)
-      : config;
+    const difficultyScale = {
+      hp: 1,
+      damage: this.difficultyConfig?.bossDamageMultiplier ?? 1,
+      score: 1,
+      exp: 1,
+    };
+    const runScale = this.gameState.selectedMode === 'endless'
+      ? {
+          hp: endlessScale.hp,
+          damage: endlessScale.damage * difficultyScale.damage,
+          score: endlessScale.score,
+          exp: endlessScale.exp,
+        }
+      : difficultyScale;
+    const scaledConfig = this.scaleBossConfig(config, runScale);
 
     return this.applyDebugBossConfig(scaledConfig);
   }
@@ -3373,7 +3408,18 @@ export class PlayScene {
   }
 
   getHealPickupAmount() {
-    return Math.max(14, Math.round(this.gameState.playerMaxHp * 0.18));
+    const difficultyMultiplier = this.gameState.selectedDifficulty === 'expert'
+      ? 0.84
+      : this.gameState.selectedDifficulty === 'hard'
+        ? 0.92
+        : 1;
+    const modeMultiplier = this.gameState.selectedMode === 'zero'
+      ? 0.82
+      : this.gameState.selectedMode === 'endless' && this.gameState.elapsedTime >= 360
+        ? 0.88
+        : 1;
+
+    return Math.max(12, Math.round(this.gameState.playerMaxHp * 0.18 * difficultyMultiplier * modeMultiplier));
   }
 
   spawnPickupBurst(x, y, value = 1, type = 'exp') {

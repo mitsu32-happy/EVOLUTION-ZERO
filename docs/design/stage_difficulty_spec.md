@@ -760,3 +760,11 @@ MVP-A11 keeps NORMAL爽快感-focused and widens the pressure gap for higher dif
 - ZERO is intentionally heavier: enemy damage, late density, second boss pressure, final boss hazard damage, and final summons are stronger.
 
 The tuning target is not instant death. The goal is that late mistakes matter and clears feel earned.
+
+## MVP-A11 Late-Game Pressure Follow-Up
+
+- ENDLESS soft cap and overtime scaling are raised to reduce infinite survival loops.
+- ZERO soft cap, late spawn pressure, elite pressure, and boss damage multipliers are raised.
+- Boss hazard damage now follows boss damage scaling instead of relying only on base contact damage.
+- Heal pickups are slightly less generous in high-pressure contexts.
+- Early NORMAL pacing remains the baseline for accessibility.

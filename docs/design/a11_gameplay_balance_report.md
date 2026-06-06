@@ -115,3 +115,26 @@ The final verification for this MVP should include:
 - ENDLESS fast route if time permits
 - Runtime console error/warn check
 - `npm.cmd run build`
+
+## Late-Game Pressure Follow-Up
+
+Adjusted files:
+
+- `src/data/run_config.js`
+- `src/systems/spawn_system.js`
+- `src/scenes/play_scene.js`
+
+Changes:
+
+- ENDLESS phase 2+ and long-run scaling now gain more HP, damage, spawn rate, enemy cap, and elite pressure.
+- ZERO enemy damage, spawn rate, enemy cap, late pressure, and boss damage were raised.
+- Boss damage scaling now applies to explicit boss attack entries, including hazard damage and melee damage multipliers.
+- HARD/EXPERT enemy and boss damage multipliers were raised without changing early spawn composition.
+- Heal pickup amount is slightly reduced in HARD, EXPERT, ZERO, and ENDLESS late runs.
+
+Intent:
+
+- Keep early NORMAL clearable.
+- Preserve adaptation skill爽快感.
+- Make ENDLESS eventually collapse under escalating pressure.
+- Make ZERO less likely to be cleared on the first attempt, especially near the final boss.

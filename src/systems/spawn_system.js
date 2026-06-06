@@ -57,7 +57,7 @@ export class SpawnSystem {
     }
 
     this.spawnTimer = Math.max(
-      0.58,
+      this.getMinimumSpawnInterval(gameState),
       (this.spawnInterval - gameState.elapsedTime * 0.017) * difficulty.spawnIntervalMultiplier / modeScale.spawnRate,
     );
     onSpawn(new Enemy({
@@ -85,16 +85,16 @@ export class SpawnSystem {
   getModeScaling(gameState) {
     if (gameState?.selectedMode === 'zero') {
       const elapsed = gameState.elapsedTime ?? 0;
-      const midPressure = Math.min(0.34, Math.max(0, elapsed - 95) / 380);
-      const latePressure = Math.min(0.46, Math.max(0, elapsed - 190) / 440);
+      const midPressure = Math.min(0.4, Math.max(0, elapsed - 90) / 340);
+      const latePressure = Math.min(0.62, Math.max(0, elapsed - 175) / 360);
       const pressure = midPressure + latePressure;
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.48,
-        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 0.86,
-        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 14),
-        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.12,
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.64,
+        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 1.02,
+        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 18),
+        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.16,
         exp: 1.24,
         score: 1.35,
       };
@@ -105,7 +105,26 @@ export class SpawnSystem {
 
   getEndlessScaling(gameState) {
     if (gameState?.selectedMode !== 'endless') {
-      return { hp: 0.9, damage: 0.82, spawnRate: 1, maxEnemyBonus: 0, eliteBonus: 0, exp: 1, score: 1 };
+      const difficulty = getDifficultyConfig(gameState?.selectedDifficulty);
+      const elapsed = (gameState?.elapsedTime ?? 0) + (difficulty.timeAdvance ?? 0);
+      const latePressure = Math.min(0.34, Math.max(0, elapsed - 115) / 420);
+      const finalPressure = Math.min(0.22, Math.max(0, elapsed - 210) / 420);
+      const difficultyPressure = gameState?.selectedDifficulty === 'expert'
+        ? 1.16
+        : gameState?.selectedDifficulty === 'hard'
+          ? 0.92
+          : 0.48;
+      const pressure = (latePressure + finalPressure) * difficultyPressure;
+
+      return {
+        hp: 0.9 + pressure * 0.24,
+        damage: 0.82 + pressure * 0.62,
+        spawnRate: 1 + pressure * 0.22,
+        maxEnemyBonus: Math.floor(pressure * 7),
+        eliteBonus: pressure * 0.05,
+        exp: 1,
+        score: 1,
+      };
     }
 
     const elapsed = gameState.elapsedTime ?? 0;
@@ -118,17 +137,43 @@ export class SpawnSystem {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(0.62, overtime / 780);
+    const longRunBonus = Math.min(1.05, overtime / 620);
 
     return {
       hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.44,
-      spawnRate: phase.spawnRate + longRunBonus * 0.72,
-      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 10),
-      eliteBonus: phase.eliteBonus,
+      damage: phase.damage + longRunBonus * 0.62,
+      spawnRate: phase.spawnRate + longRunBonus * 0.9,
+      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 16),
+      eliteBonus: phase.eliteBonus + longRunBonus * 0.05,
       exp: 1 + Math.min(0.28, elapsed / 900),
       score: 1 + Math.min(0.5, elapsed / 720),
     };
+  }
+
+  getMinimumSpawnInterval(gameState) {
+    const elapsed = gameState?.elapsedTime ?? 0;
+
+    if (gameState?.selectedMode === 'zero') {
+      if (elapsed >= 250) {
+        return 0.44;
+      }
+
+      if (elapsed >= 165) {
+        return 0.5;
+      }
+    }
+
+    if (gameState?.selectedMode === 'endless') {
+      if (elapsed >= 600) {
+        return 0.46;
+      }
+
+      if (elapsed >= 360) {
+        return 0.52;
+      }
+    }
+
+    return 0.58;
   }
 
   pickEnemyType(gameState) {
