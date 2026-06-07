@@ -85,6 +85,6 @@ UI asset policy:
 ## MVP-A13c Contextual Timing
 
 - The initial Play tutorial no longer explains UI that is not yet visible.
-- Level Up, Ultimate READY, and warning-guide concepts are taught at their first real appearance.
+- Level Up, first-evolution ultimate, and warning-guide concepts are taught at their first real appearance.
 - Level Up receives a first-run card ordering hint so an adaptation skill card appears first when available.
 - Event tutorials pause play through the shared tutorial overlay and mark their own save flags on complete/skip.

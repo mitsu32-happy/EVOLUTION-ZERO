@@ -109,6 +109,6 @@ QA/debug routes:
 - Play-start tutorial is reduced to movement, EXP collection, HP, and level awareness.
 - Adaptation/evolution explanation appears on the first Level Up screen instead of at play start.
 - First Level Up prioritizes an adaptation skill card in the top slot when one is available.
-- Ultimate tutorial appears only when the ultimate gauge first becomes READY.
+- Ultimate tutorial appears after the first evolution, when the ultimate button is actually visible.
 - Warning guide tutorial appears only when a stage warning area is first shown.
 - `tutorialFlags.ultimate` and `tutorialFlags.warningGuide` prevent repeated event tutorials after the first display.

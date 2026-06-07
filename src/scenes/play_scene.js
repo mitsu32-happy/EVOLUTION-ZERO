@@ -269,7 +269,7 @@ export class PlayScene {
     this.tutorialUi = tutorialUi;
     this.isActive = true;
     this.isTutorialPaused = false;
-    this.wasUltimateReady = Boolean(this.gameState?.ultimateReady);
+    this.pendingUltimateTutorialAfterEvolution = false;
     this.view = new Container();
     this.world = new Container();
     this.backgroundLayer = new Container();
@@ -3682,25 +3682,14 @@ export class PlayScene {
       !this.gameState.selectedEvolution
       || this.ultimateSystem.isActive
     ) {
-      this.wasUltimateReady = Boolean(this.gameState.ultimateReady);
       return;
     }
 
     if (this.gameState.ultimateReady) {
-      if (!this.wasUltimateReady) {
-        this.showUltimateTutorialIfNeeded();
-      }
-      this.wasUltimateReady = true;
       return;
     }
 
     this.gameState.addUltimate(delta * 0.32);
-
-    if (this.gameState.ultimateReady && !this.wasUltimateReady) {
-      this.showUltimateTutorialIfNeeded();
-    }
-
-    this.wasUltimateReady = Boolean(this.gameState.ultimateReady);
   }
 
   queueLevelUps(levelsGained) {
@@ -3828,6 +3817,7 @@ export class PlayScene {
 
   startEvolutionPresentation(selectedEvolution, discoveryResult = { isNew: false, discovery: null }) {
     this.evolutionFeedbackTimer = this.evolutionSequence.duration;
+    this.pendingUltimateTutorialAfterEvolution = true;
     this.evolutionSequence.show(selectedEvolution, {
       isNewDiscovery: discoveryResult?.isNew === true,
       discovery: discoveryResult?.discovery ?? null,
@@ -3882,6 +3872,10 @@ export class PlayScene {
     if (this.evolutionFeedbackTimer <= 0) {
       this.evolutionSequence.hide();
       this.player.triggerEvolutionPulse(2.2);
+      if (this.pendingUltimateTutorialAfterEvolution) {
+        this.pendingUltimateTutorialAfterEvolution = false;
+        this.showUltimateTutorialIfNeeded();
+      }
     }
   }
 

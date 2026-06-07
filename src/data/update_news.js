@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'tutorial-ultimate-evolution-timing-2026-06-07',
+    date: '2026/06/07',
+    category: '修正',
+    title: 'チュートリアル表示タイミング調整について',
+    isImportant: false,
+    body: [
+      '今回の主な更新内容',
+      '・必殺技のチュートリアルを、初回進化後に表示するよう調整しました。',
+      '・プレイ中チュートリアルの表示タイミングを少し自然にしました。',
+    ],
+  },
+  {
     id: 'tutorial-highlight-update-2026-06-07',
     date: '2026/06/07',
     category: 'アップデート',
