@@ -278,3 +278,16 @@ MVP-075時点では新恐竜を本番データに追加しない。
 - The spinosaurus portrait source was cleaned because a detached top alpha fragment was visible in the small top-card icon.
 - The selector must not use sprite-sheet textures for top-card icons.
 - Spinosaurus locked state still uses `spinosaurus_locked_silhouette.png`; debug/research-unlocked state uses the cleaned portrait.
+# Dino Select UI Spec
+
+## MVP-A13 Sortie Tutorial Coverage
+
+- Dinosaur selection is explained as part of the sortie tutorial.
+- Copy should emphasize that each dinosaur has a different play style.
+- The tutorial must not block unlocked/locked display rules or existing selection behavior.
+
+## MVP-A13b Dino Select Highlight Tutorial
+
+- Dino Select now has its own tutorial group, stored as `tutorialFlags.dinoSelect`.
+- The tutorial spotlights the top dino cards, selected dino detail panel, and sortie start button.
+- In development builds, `debugTutorial=all` or a tutorial reset returns this flow to first-run behavior for QA.

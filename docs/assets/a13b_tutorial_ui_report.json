@@ -1,0 +1,51 @@
+{
+  "mvp": "A13b",
+  "purpose": "Highlight tutorial UI polish and QA routes",
+  "assetPolicy": "Reuse existing formal UI assets; no new raster game assets generated.",
+  "reusedAssets": [
+    {
+      "role": "tutorialPanel",
+      "path": "public/assets/ui/tutorial_text_panel_simple_a13b2.png",
+      "reason": "A13b.2 simple tutorial-specific text panel with only an outer frame and no text ornament."
+    },
+    {
+      "role": "tutorialButtons",
+      "path": "public/assets/ui/options/option_button_frame_v3.png",
+      "reason": "Compact option button frame matches the current settings UI."
+    },
+    {
+      "role": "stepChip",
+      "path": "public/assets/ui/home/news_badge_update_a07d.png",
+      "reason": "Small update badge works as a step counter chip without text baked into the image."
+    }
+  ],
+  "highlightImplementation": {
+    "overlay": "Four dark rectangles create a spotlight hole around the target rect.",
+    "highlight": "Cyan/gold/purple strokes frame the target.",
+    "tooltip": "Panel auto-places above or below the target and clamps to screen safe area.",
+    "fallback": "Centered panel is used when target bounds are unavailable."
+  },
+  "tutorialGroups": [
+    "home",
+    "sortie",
+    "dinoSelect",
+    "play",
+    "levelup"
+  ],
+  "debugRoutes": [
+    "debugTutorial=home",
+    "debugTutorial=sortie",
+    "debugTutorial=play",
+    "debugTutorial=levelup",
+    "debugTutorial=all",
+    "resetTutorial=1",
+    "debugTutorialReset=1",
+    "debugForceLevelup=1",
+    "debugLevelupTutorial=1"
+  ],
+  "qaNotes": [
+    "Options tutorial action resets tutorial flags and opens Home tutorial again.",
+    "Play tutorial pauses gameplay without showing the pause menu.",
+    "Level-up tutorial can be forced from URL for repeatable QA."
+  ]
+}

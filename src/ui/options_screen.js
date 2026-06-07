@@ -138,6 +138,7 @@ export class OptionsScreen {
     onCodex,
     onOptions,
     onAssetPreview = null,
+    onShowTutorial = null,
   }) {
     this.width = width;
     this.height = height;
@@ -149,6 +150,7 @@ export class OptionsScreen {
     this.onCodex = onCodex;
     this.onOptions = onOptions;
     this.onAssetPreview = onAssetPreview;
+    this.onShowTutorial = onShowTutorial;
     this.returnScreen = 'home';
     this.audioSettings = this.saveManager.getAudioSettings();
     this.gameplaySettings = this.saveManager.getOptionsSettings();
@@ -168,6 +170,7 @@ export class OptionsScreen {
     this.infoText = this.createText('', 10, '#d7fff2', 260);
     this.noticeText = this.createText('', 11, '#ffd36b', 300);
     this.muteRow = this.createMuteRow();
+    this.tutorialButton = this.createTutorialButton();
     this.assetPreviewButton = this.createDevButton();
     this.bottomNav = createBottomNav({
       width: this.width,
@@ -205,7 +208,7 @@ export class OptionsScreen {
     this.createSliders();
     this.view.addChild(this.muteRow.view);
     this.createSettingRows();
-    this.view.addChild(this.assetPreviewButton.view, this.noticeText, this.bottomNav.view);
+    this.view.addChild(this.tutorialButton.view, this.assetPreviewButton.view, this.noticeText, this.bottomNav.view);
 
     this.backButton.view.on('pointertap', () => this.onBack?.());
     this.muteRow.view.on('pointertap', (event) => this.handleMuteToggle(event));
@@ -215,6 +218,10 @@ export class OptionsScreen {
     this.assetPreviewButton.view.on('pointertap', () => {
       this.playUiClick();
       this.onAssetPreview?.();
+    });
+    this.tutorialButton.view.on('pointertap', () => {
+      this.playUiClick();
+      this.onShowTutorial?.();
     });
 
     this.drawStatic();
@@ -418,6 +425,21 @@ export class OptionsScreen {
     return row;
   }
 
+  createTutorialButton() {
+    const row = this.createRowShell();
+    row.label = this.createText('チュートリアルを再表示', 12, '#e7fff6', 190);
+    row.sub = this.createText('ホーム / 出撃 / プレイの基本を確認', 8, '#91aaa4', 210);
+
+    row.view.position.set(SAFE.rowX, 674);
+    row.view.eventMode = 'static';
+    row.view.cursor = 'pointer';
+    row.label.position.set(20, 8);
+    row.sub.position.set(20, 29);
+    row.view.addChild(row.label, row.sub);
+
+    return row;
+  }
+
   handleSliderInput(event, slider) {
     const local = this.getLocalPointer(event, slider.view);
     const startX = 132;
@@ -544,10 +566,13 @@ export class OptionsScreen {
   applyNavigationMode() {
     const isPlaySettings = this.isPlaySettings();
     const showAssetPreview = !isPlaySettings && isDebugMode();
+    const showTutorialButton = !isPlaySettings;
 
     this.backButton.view.visible = isPlaySettings;
     this.bottomNav.view.visible = !isPlaySettings;
     this.bottomNav.view.eventMode = isPlaySettings ? 'none' : 'auto';
+    this.tutorialButton.view.visible = showTutorialButton;
+    this.tutorialButton.view.eventMode = showTutorialButton ? 'static' : 'none';
     this.assetPreviewButton.view.visible = showAssetPreview;
     this.assetPreviewButton.view.eventMode = showAssetPreview ? 'static' : 'none';
   }
@@ -654,6 +679,7 @@ export class OptionsScreen {
     this.renderSliders();
     this.renderMuteRow();
     this.renderSettingRows();
+    this.renderTutorialButton();
     this.renderDevButton();
     this.noticeText.text = this.audioSettings.muted ? '全音声を停止中' : '';
   }
@@ -812,6 +838,10 @@ export class OptionsScreen {
 
   renderDevButton() {
     this.renderRowFrame(this.assetPreviewButton, SAFE.rowWidth, 46, this.assetTextures.devButtonV3 ?? this.assetTextures.devButtonV2 ?? this.assetTextures.optionButtonV3);
+  }
+
+  renderTutorialButton() {
+    this.renderRowFrame(this.tutorialButton, SAFE.rowWidth, 46, this.assetTextures.optionButtonV3 ?? this.assetTextures.optionButtonV2);
   }
 
   renderRowFrame(row, width, height, texture) {

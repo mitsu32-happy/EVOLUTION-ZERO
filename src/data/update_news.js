@@ -1,5 +1,19 @@
 export const UPDATE_NEWS = [
   {
+    id: 'tutorial-highlight-update-2026-06-07',
+    date: '2026/06/07',
+    category: 'アップデート',
+    title: 'チュートリアル改善について',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・ホーム、出撃、プレイのチュートリアルを追加しました。',
+      '・重要な画面をハイライト表示するようになりました。',
+      '・チュートリアルの可読性を改善しました。',
+      '・細かな表示不具合を修正しました。',
+    ],
+  },
+  {
     id: 'gameplay-evolution-visual-update-2026-06-06',
     date: '2026/06/06',
     category: 'アップデート',

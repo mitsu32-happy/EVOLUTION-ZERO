@@ -246,6 +246,53 @@ function getUpgradePreview(skill, currentLevel, nextLevel) {
   return skill.upgradeSummary ? `次: ${compactText(skill.upgradeSummary, 18)}` : skill.levelUpText ? `次: ${compactText(skill.levelUpText, 18)}` : '次: 基礎性能強化';
 }
 
+function formatRangeLabel(range) {
+  if (!Number.isFinite(range)) {
+    return '中';
+  }
+
+  if (range >= 360) return '広';
+  if (range >= 220) return '中';
+  return '近';
+}
+
+function formatSeconds(value) {
+  return Number.isFinite(value) ? `${value.toFixed(1)}秒` : '-';
+}
+
+function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag }) {
+  if (isFallbackReward) {
+    return {
+      type: '種別: 報酬',
+      description: `効果: ${option.levelUpText ?? option.upgradeSummary ?? '即時補助'}`,
+      tag: compactText(option.displayDescription ?? option.description ?? '戦闘を続けるための補助。', 28),
+      level: '補助',
+    };
+  }
+
+  if (isStatUpgrade) {
+    return {
+      type: '種別: 能力強化',
+      description: `効果: ${option.levelUpText ?? option.upgradeSummary ?? '基礎性能が上昇'}`,
+      tag: currentLevel > 0 ? `Lv${currentLevel} → ${nextLevel}` : '基礎ステータスを強化',
+      level: currentLevel >= option.maxLevel ? '最大' : currentLevel > 0 ? `強化 ${currentLevel}->${nextLevel}` : '新規',
+    };
+  }
+
+  const damageScale = Number.isFinite(option.scaling?.damage) ? option.scaling.damage : 0.22;
+  const power = Number.isFinite(option.damage)
+    ? Math.round(option.damage * (1 + Math.max(0, nextLevel - 1) * damageScale))
+    : null;
+  const range = formatRangeLabel(option.range ?? option.searchRange);
+
+  return {
+    type: `種別: 適応技 / ${getAdaptationLabel(primaryTag)}`,
+    description: `威力: ${power ?? '-'} / 範囲: ${range} / 再発動: ${formatSeconds(option.cooldown)}`,
+    tag: `Lv${nextLevel} / 進化条件に影響`,
+    level: currentLevel >= option.maxLevel ? '最大' : currentLevel > 0 ? `Lv ${currentLevel}->${nextLevel}` : '新規',
+  };
+}
+
 export class LevelUpUi {
   constructor({ width, height, onSelect, onReroll }) {
     this.width = width;
@@ -515,6 +562,7 @@ export class LevelUpUi {
       const badgeTexture = this.getBadgeTexture(badgeState);
       const safeLevelText = isFallbackReward ? '補助' : badgeState === 'owned' ? '解析済み' : badgeState === 'upgrade' ? `強化 ${currentLevel}->${nextLevel}` : '新規解析';
       const safePreviewText = isFallbackReward ? option.levelUpText : currentLevel >= option.maxLevel ? '最大強化済み' : getUpgradePreview(option, currentLevel, nextLevel);
+      const cardInfo = getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag });
 
       if (frameTexture) {
         card.frame.texture = frameTexture;
@@ -576,20 +624,20 @@ export class LevelUpUi {
       }
 
       card.name.text = compactText(copy.name, 12);
-      card.type.text = isStatUpgrade ? 'STATUS / 能力強化' : isTagless ? copy.type : getAdaptationLabel(primaryTag);
-      card.description.text = compactText(copy.description, 42);
-      card.tag.text = compactText(safePreviewText, 28);
-      card.level.text = safeLevelText;
+      card.type.text = cardInfo.type;
+      card.description.text = compactText(cardInfo.description, 44);
+      card.tag.text = compactText(cardInfo.tag || safePreviewText, 30);
+      card.level.text = cardInfo.level || safeLevelText;
       card.name.style.fill = isTagless ? '#f1fbff' : toCssColor(color);
       card.tag.style.fill = toCssColor(color);
 
       card.name.style.fontSize = isStatUpgrade ? 15 : isTagless ? 16 : 15;
       card.name.style.wordWrapWidth = isStatUpgrade ? 150 : isTagless ? 160 : 142;
-      card.type.style.fontSize = isStatUpgrade ? 9.5 : isTagless ? 11 : 10;
-      card.type.style.wordWrapWidth = isStatUpgrade ? 148 : 142;
-      card.description.style.fontSize = isTagless ? 10 : 9;
+      card.type.style.fontSize = isStatUpgrade ? 9 : isTagless ? 10 : 9;
+      card.type.style.wordWrapWidth = isStatUpgrade ? 170 : 210;
+      card.description.style.fontSize = isTagless ? 9.5 : 8.5;
       card.description.style.lineHeight = isTagless ? 12 : 11;
-      card.description.style.wordWrapWidth = isStatUpgrade ? 178 : 224;
+      card.description.style.wordWrapWidth = isStatUpgrade ? 188 : 230;
       card.tag.style.fontSize = 9;
       card.tag.style.wordWrapWidth = 212;
       card.level.style.fontSize = 9;

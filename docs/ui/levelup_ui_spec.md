@@ -1,5 +1,17 @@
 # Level Up / Evolution Presentation UI Spec
 
+## MVP-A13 Level-up Tutorial and Card Text
+
+- First level-up can show a short tutorial that explains card categories and evolution-condition adaptations.
+- Card categories are displayed in-card:
+  - `種別: 適応技`
+  - `種別: 能力強化`
+  - `種別: 報酬`
+- Adaptation skill cards show power, range, cooldown, and `進化条件に影響`.
+- Stat upgrade cards show a short effect line such as HP or attack increase.
+- Fallback reward cards show immediate reward values such as DNA or HP recovery.
+- The card copy prioritizes quick mobile readability over lore terms.
+
 ## MVP-A10 Evolution Unlock Presentation
 
 - Evolution unlock presentation now prefers A10 generated assets:
@@ -50,3 +62,10 @@
   - `levelup_stat_card_pickup_a10d1.png`
 - The embedded icon policy is unchanged; normal stat cards do not receive a separate code-side icon overlay.
 - The goal is to make stat upgrades read as one STATUS family and separate them from adaptation skill cards by hue/tone.
+
+## MVP-A13b Level-up Tutorial QA
+
+- Level-up tutorial can be forced in development builds with `debugTutorial=levelup`, `debugForceLevelup=1`, or `debugLevelupTutorial=1`.
+- The overlay spotlights the card area and then the adaptation-card area.
+- Card copy continues to distinguish `種別: 適応技`, `種別: 能力強化`, and `種別: 報酬`.
+- Adaptation cards show power, range, cooldown, and whether the card affects evolution conditions.

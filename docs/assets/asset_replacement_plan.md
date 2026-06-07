@@ -3540,3 +3540,39 @@ No new image/audio asset generation is required for this MVP.
   - `docs/assets/a11d2_ignicera_asset_content_audit.md`
   - `docs/assets/a11d2_ignicera_contact.png`
   - `docs/assets/a11d2_ignicera_report.json`
+
+## MVP-A13 Tutorial and Level-up Text
+
+- No new raster assets were generated for A13.
+- The tutorial modal uses code-rendered panels and text to keep copy flexible and readable.
+- Existing UI tone is reused: dark panel, cyan/gold accents, short Japanese runtime text.
+- Level-up cards were updated through runtime text layout rather than new card art.
+
+## MVP-A13b Tutorial UI Asset Reuse
+
+- A13b reuses formal UI assets instead of adding new raster files:
+  - `assets/ui/management/management_panel_outer_a12b.png`
+  - `assets/ui/options/option_button_frame_v3.png`
+  - `assets/ui/home/news_badge_update_a07d.png`
+- Graphics are used only for spotlight masking, highlight strokes, pointer lines, and fallback drawing.
+- QA artifacts:
+  - `docs/assets/a13b_tutorial_ui_contact.png`
+  - `docs/assets/a13b_tutorial_ui_report.json`
+
+## MVP-A13b.1 Tutorial UI Polish
+
+- No new raster assets were generated.
+- Existing A12b/A07d assets remain in use, with decoration kept secondary to readable runtime text.
+- The full-screen overlay now acts as a pointer blocker, while the spotlight and panel remain code-rendered.
+
+## MVP-A13b.2 Tutorial Text Panel
+
+- Added `public/assets/ui/tutorial_text_panel_simple_a13b2.png`.
+- The panel is a simple outer-frame-only tutorial text surface with a dark interior and no baked text.
+- It replaces the A12b management panel in the tutorial overlay because the previous right-top ornament could compete with copy.
+
+## MVP-A13b.3 Tutorial Release Prep
+
+- No additional tutorial art was generated.
+- The A13b.2 simple panel remains the runtime tutorial panel.
+- Public-facing update news and `VERSION 0.8.2` are part of the release push.

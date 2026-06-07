@@ -453,3 +453,17 @@ MVP-074で4枚単位のカード送り、ページドット、左右矢印の基
 - 通常導線、ZERO 3ルート、ruins ZERO LOCK表示は維持する。
 - 狭幅画面ではLOCK理由、難易度名、ステージ名が横にはみ出さないことを優先する。
 - UIフォントは同梱フォントスタックへ統一する。
+# Stage Select UI Spec
+
+## MVP-A13 Sortie Tutorial
+
+- The first sortie route explains stage choice, difficulty, ZERO/ENDLESS positioning, and dinosaur selection.
+- The tutorial is stored in `tutorialFlags.sortie`.
+- ZERO copy should clearly state that it is a high-difficulty challenge.
+- ENDLESS copy should frame it as a long-survival challenge mode.
+
+## MVP-A13b Highlight Tutorial
+
+- Stage select tutorial now uses spotlight targets for the stage cards, difficulty selector, and continue button.
+- In development builds, `debugTutorial=sortie` forces the sortie tutorial for repeated QA.
+- In development builds, `debugTutorial=all` and `resetTutorial=1` reset tutorial state before the flow starts.

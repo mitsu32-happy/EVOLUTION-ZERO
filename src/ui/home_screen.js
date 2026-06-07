@@ -565,6 +565,40 @@ export class HomeScreen {
     this.equippedTitleText.visible = true;
   }
 
+  getTutorialBounds(targetId) {
+    if (targetId !== 'home.title') {
+      return null;
+    }
+
+    const fallback = {
+      x: Math.round(this.width / 2 - 88),
+      y: 158,
+      width: 176,
+      height: 28,
+      radius: 8,
+    };
+    const bounds = this.equippedTitleText?.visible
+      ? this.equippedTitleText.getBounds()
+      : null;
+
+    if (!bounds || bounds.width <= 0 || bounds.height <= 0) {
+      return fallback;
+    }
+
+    const left = Math.min(bounds.x - 26, fallback.x);
+    const top = Math.min(bounds.y - 8, fallback.y);
+    const right = Math.max(bounds.x + bounds.width + 26, fallback.x + fallback.width);
+    const bottom = Math.max(bounds.y + bounds.height + 8, fallback.y + fallback.height);
+
+    return {
+      x: left,
+      y: top,
+      width: right - left,
+      height: bottom - top,
+      radius: 8,
+    };
+  }
+
   getFallbackOwnedTitle(ownedTitles = {}) {
     return Object.keys(ownedTitles)
       .filter((id) => ownedTitles[id]?.owned)

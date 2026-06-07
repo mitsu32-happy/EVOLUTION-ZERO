@@ -1,5 +1,12 @@
 # EVOLUTION ZERO Home UI Spec
 
+## MVP-A13 Home Tutorial
+
+- The first Home visit can show a short tutorial explaining Home structure, sortie, daily goals, research/codex/title/news/options roles.
+- The tutorial is skippable and stored in `tutorialFlags.home`.
+- Options can force the tutorial to show again for later review.
+- Copy should stay short and avoid blocking ordinary Home use after completion.
+
 ## MVP-A02 Home Information Tabs
 
 Purpose: reduce Home density for iPhone Safari and other narrow mobile browsers while keeping sortie as the primary action.
@@ -569,3 +576,9 @@ MVP-082 ではホーム画面の主要操作に短い押下フィードバック
 
 - News receives a new public-facing update entry for the management UI, evolution UI, Spinosaurus image cleanup, and title modal behavior polish.
 - Title settings now close by tapping outside the panel instead of using a visible close button.
+
+## MVP-A13b Highlight Tutorial
+
+- Home tutorial now spotlights the actual sortie button, daily panel, title area, news button, and bottom navigation targets.
+- The Options `チュートリアルを再表示` action resets tutorial flags and reopens the Home tutorial for QA and later review.
+- Tutorial panels reuse the A07d news panel direction so the overlay does not read as a temporary debug dialog.

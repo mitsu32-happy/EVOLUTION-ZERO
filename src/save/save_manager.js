@@ -69,6 +69,15 @@ const DEFAULT_SAVE = {
   currentHomeEvolutionId: null,
   dailyMissions: { dateKey: null, missions: [] },
   dailyMissionClaims: {},
+  tutorialFlags: {
+    home: false,
+    sortie: false,
+    dinoSelect: false,
+    play: false,
+    levelup: false,
+    evolution: false,
+    ultimate: false,
+  },
   audioSettings: {
     masterVolume: 0.8,
     bgmVolume: 0.45,
@@ -155,6 +164,7 @@ export class SaveManager {
       researchLevels: { ...this.data.researchLevels },
       dailyMissions: this.cloneDailyMissions(this.data.dailyMissions),
       dailyMissionClaims: { ...(this.data.dailyMissionClaims ?? {}) },
+      tutorialFlags: this.cloneTutorialFlags(this.data.tutorialFlags),
       audioSettings: { ...this.data.audioSettings },
       gameplaySettings: this.cloneGameplaySettings(this.data.gameplaySettings),
       discoveredEvolutions: normalizeDiscoveredEvolutions(this.data.discoveredEvolutions),
@@ -205,6 +215,32 @@ export class SaveManager {
 
   getOptionsSettings() {
     return this.cloneGameplaySettings(this.data.gameplaySettings);
+  }
+
+  getTutorialFlags() {
+    return this.cloneTutorialFlags(this.data.tutorialFlags);
+  }
+
+  isTutorialComplete(id) {
+    return Boolean(this.normalizeTutorialFlags(this.data.tutorialFlags)[id]);
+  }
+
+  markTutorialComplete(id) {
+    if (!id) {
+      return this.getData();
+    }
+
+    this.data.tutorialFlags = {
+      ...this.normalizeTutorialFlags(this.data.tutorialFlags),
+      [id]: true,
+    };
+
+    return this.save();
+  }
+
+  resetTutorialFlags() {
+    this.data.tutorialFlags = this.normalizeTutorialFlags({});
+    return this.save();
   }
 
   updateAudioSettings(settings) {
@@ -844,6 +880,7 @@ export class SaveManager {
       dailyMissionClaims: typeof value?.dailyMissionClaims === 'object' && value.dailyMissionClaims !== null
         ? { ...value.dailyMissionClaims }
         : {},
+      tutorialFlags: this.normalizeTutorialFlags(value?.tutorialFlags),
       audioSettings: {
         ...DEFAULT_SAVE.audioSettings,
         ...(value?.audioSettings ?? {}),
@@ -875,6 +912,18 @@ export class SaveManager {
       controls: { ...normalized.controls },
       display: { ...normalized.display },
     };
+  }
+
+  cloneTutorialFlags(flags) {
+    return { ...this.normalizeTutorialFlags(flags) };
+  }
+
+  normalizeTutorialFlags(flags = {}) {
+    const source = typeof flags === 'object' && flags !== null ? flags : {};
+    return Object.keys(DEFAULT_SAVE.tutorialFlags).reduce((result, key) => {
+      result[key] = Boolean(source[key]);
+      return result;
+    }, {});
   }
 
   normalizeGameplaySettings(settings = {}) {

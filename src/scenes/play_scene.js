@@ -103,6 +103,23 @@ function getDebugForceEvolutionTag() {
   return tag;
 }
 
+function shouldDebugForceLevelupTutorial() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  // Development-only QA route. Production builds ignore tutorial debug params.
+  if (!import.meta.env.DEV) {
+    return false;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get('debugForceLevelup') === '1'
+    || params.get('debugLevelupTutorial') === '1'
+    || params.get('debugTutorial') === 'levelup'
+    || params.get('debugTutorial') === 'all';
+}
+
 function getDebugEvolutionReadyTag() {
   if (typeof window === 'undefined') {
     return null;
@@ -234,6 +251,7 @@ export class PlayScene {
     saveManager = null,
     audioManager = null,
     assetLoader = null,
+    tutorialUi = null,
     onHome = null,
     onTitle = null,
     onOptions = null,
@@ -248,7 +266,9 @@ export class PlayScene {
     this.saveManager = saveManager;
     this.optionsSettings = this.saveManager?.getOptionsSettings?.() ?? null;
     this.assetLoader = assetLoader;
+    this.tutorialUi = tutorialUi;
     this.isActive = true;
+    this.isTutorialPaused = false;
     this.view = new Container();
     this.world = new Container();
     this.backgroundLayer = new Container();
@@ -587,7 +607,7 @@ export class PlayScene {
 
     this.gameState.update(delta);
 
-    if (!this.gameState.isPaused && !this.gameState.isGameOver) {
+    if (!this.gameState.isPaused && !this.isTutorialPaused && !this.gameState.isGameOver) {
       this.updateUltimateCharge(delta);
       this.player.setMoveInput(this.input);
       this.player.update(delta);
@@ -1138,7 +1158,45 @@ export class PlayScene {
         rerolls: 1,
         gameState: this.gameState,
       });
+      this.showLevelUpTutorialIfNeeded();
     }
+  }
+
+  showLevelUpTutorialIfNeeded() {
+    const forceTutorial = shouldDebugForceLevelupTutorial();
+    if (!this.tutorialUi || (!forceTutorial && this.saveManager?.isTutorialComplete?.('levelup'))) {
+      return;
+    }
+
+    this.tutorialUi.show({
+      id: 'levelup',
+      pages: [
+        {
+          title: 'レベルアップ',
+          body: 'カードを1枚選ぶと、技・能力・報酬のどれかを獲得します。数字と種別を見て選びましょう。',
+          target: 'カード選択',
+          targetId: 'levelup.cards',
+          tooltipPosition: 'top',
+        },
+        {
+          title: '適応と進化',
+          body: '適応技のLvは進化条件に影響します。狙う進化がある時は、同じ適応を伸ばすのが近道です。',
+          target: '適応技カード',
+          targetId: 'levelup.adaptation',
+          tooltipPosition: 'bottom',
+        },
+      ],
+      getTargetBounds: (targetId) => {
+        const width = this.width;
+        const bounds = {
+          'levelup.cards': { x: 28, y: 292, width: width - 56, height: 342, radius: 14 },
+          'levelup.adaptation': { x: 28, y: 292, width: width - 56, height: 112, radius: 14 },
+        };
+        return bounds[targetId] ?? null;
+      },
+      onComplete: (id) => this.saveManager?.markTutorialComplete?.(id),
+      onSkip: (id) => this.saveManager?.markTutorialComplete?.(id),
+    });
   }
 
   isEvolutionReadySequenceActive() {
@@ -4668,6 +4726,7 @@ export class PlayScene {
     this.applyDebugEvolutionReadyIfRequested();
     this.didPlayDebugEvolutionDemo = false;
     this.playDebugEvolutionDemoIfRequested();
+    this.applyDebugForceLevelupIfRequested();
 
     this.enemies.forEach((enemy) => enemy.view.destroy());
     this.enemies = [];
@@ -4695,6 +4754,16 @@ export class PlayScene {
     this.triggerZeroStartNotice();
     this.updateResultUi();
     this.updateRunInfoLabel();
+  }
+
+  applyDebugForceLevelupIfRequested() {
+    if (!shouldDebugForceLevelupTutorial()) {
+      return;
+    }
+
+    const levelsGained = this.gameState.addExp(this.gameState.expToNextLevel);
+    this.queueLevelUps(Math.max(1, levelsGained));
+    this.levelUpFreezeTimer = 0.05;
   }
 
   returnHome() {
