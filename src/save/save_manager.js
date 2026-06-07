@@ -77,6 +77,7 @@ const DEFAULT_SAVE = {
     levelup: false,
     evolution: false,
     ultimate: false,
+    warningGuide: false,
   },
   audioSettings: {
     masterVolume: 0.8,

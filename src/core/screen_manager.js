@@ -167,27 +167,6 @@ const TUTORIAL_PAGES = {
       targetId: 'play.hud',
       tooltipPosition: 'bottom',
     },
-    {
-      title: '適応と進化',
-      body: 'レベルアップ時に技や能力を選びます。\n適応Lvは進化条件にも関係します。',
-      target: 'レベルアップ',
-      targetId: 'play.levelupHint',
-      tooltipPosition: 'top',
-    },
-    {
-      title: '必殺技',
-      body: 'ゲージがたまると必殺技を使えます。\n危ない時や敵が多い時に使いましょう。',
-      target: '必殺ボタン',
-      targetId: 'play.ultimate',
-      tooltipPosition: 'top',
-    },
-    {
-      title: '警告ガイド',
-      body: '警告ガイドが出たら危険範囲です。\n攻撃が来る前に離れましょう。',
-      target: '警告表示',
-      targetId: 'play.warning',
-      tooltipPosition: 'bottom',
-    },
   ],
   levelup: [
     {

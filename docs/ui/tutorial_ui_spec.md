@@ -103,3 +103,12 @@ QA/debug routes:
 - The bounds are derived from the actual equipped title display / title text area instead of nearby hero art.
 - Debug tutorial URL parameters remain in code for development QA but are ignored in production builds.
 - Public update news and title VERSION are updated before main push.
+
+## MVP-A13c Contextual Play Tutorial Timing
+
+- Play-start tutorial is reduced to movement, EXP collection, HP, and level awareness.
+- Adaptation/evolution explanation appears on the first Level Up screen instead of at play start.
+- First Level Up prioritizes an adaptation skill card in the top slot when one is available.
+- Ultimate tutorial appears only when the ultimate gauge first becomes READY.
+- Warning guide tutorial appears only when a stage warning area is first shown.
+- `tutorialFlags.ultimate` and `tutorialFlags.warningGuide` prevent repeated event tutorials after the first display.

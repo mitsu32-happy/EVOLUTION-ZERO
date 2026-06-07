@@ -269,6 +269,7 @@ export class PlayScene {
     this.tutorialUi = tutorialUi;
     this.isActive = true;
     this.isTutorialPaused = false;
+    this.wasUltimateReady = Boolean(this.gameState?.ultimateReady);
     this.view = new Container();
     this.world = new Container();
     this.backgroundLayer = new Container();
@@ -1157,9 +1158,15 @@ export class PlayScene {
         toLevel: next.to,
         rerolls: 1,
         gameState: this.gameState,
+        preferAdaptationFirst: this.shouldPrioritizeFirstLevelUpAdaptation(),
       });
       this.showLevelUpTutorialIfNeeded();
     }
+  }
+
+  shouldPrioritizeFirstLevelUpAdaptation() {
+    return shouldDebugForceLevelupTutorial()
+      || !this.saveManager?.isTutorialComplete?.('levelup');
   }
 
   showLevelUpTutorialIfNeeded() {
@@ -1173,14 +1180,14 @@ export class PlayScene {
       pages: [
         {
           title: 'レベルアップ',
-          body: 'カードを1枚選ぶと、技・能力・報酬のどれかを獲得します。数字と種別を見て選びましょう。',
+          body: '適応技は戦闘で使うスキルです。\n威力・範囲・再発動を見て選びましょう。',
           target: 'カード選択',
           targetId: 'levelup.cards',
           tooltipPosition: 'top',
         },
         {
           title: '適応と進化',
-          body: '適応技のLvは進化条件に影響します。狙う進化がある時は、同じ適応を伸ばすのが近道です。',
+          body: '能力強化はHPや攻撃力を伸ばします。\n適応Lvは進化条件にも関係します。',
           target: '適応技カード',
           targetId: 'levelup.adaptation',
           tooltipPosition: 'bottom',
@@ -1197,6 +1204,62 @@ export class PlayScene {
       onComplete: (id) => this.saveManager?.markTutorialComplete?.(id),
       onSkip: (id) => this.saveManager?.markTutorialComplete?.(id),
     });
+  }
+
+  showPlayEventTutorialIfNeeded(id, pages, { force = false } = {}) {
+    if (
+      !this.tutorialUi
+      || this.tutorialUi.view?.visible
+      || (!force && this.saveManager?.isTutorialComplete?.(id))
+    ) {
+      return false;
+    }
+
+    this.isTutorialPaused = true;
+    const finish = (tutorialId) => {
+      this.isTutorialPaused = false;
+      this.saveManager?.markTutorialComplete?.(tutorialId);
+    };
+
+    this.tutorialUi.show({
+      id,
+      pages,
+      getTargetBounds: (targetId) => {
+        const bounds = {
+          'play.ultimate': { x: this.width - 116, y: Math.max(670, this.height - 154), width: 94, height: 94, radius: 18 },
+          'play.warning': { x: 42, y: 126, width: this.width - 84, height: 128, radius: 12 },
+        };
+        return bounds[targetId] ?? null;
+      },
+      onComplete: finish,
+      onSkip: finish,
+    });
+
+    return true;
+  }
+
+  showUltimateTutorialIfNeeded({ force = false } = {}) {
+    return this.showPlayEventTutorialIfNeeded('ultimate', [
+      {
+        title: '必殺技',
+        body: '必殺技が使用可能です。\nボタンを押すと強力な攻撃を発動できます。',
+        target: '必殺ボタン',
+        targetId: 'play.ultimate',
+        tooltipPosition: 'top',
+      },
+    ], { force });
+  }
+
+  showWarningGuideTutorialIfNeeded({ force = false } = {}) {
+    return this.showPlayEventTutorialIfNeeded('warningGuide', [
+      {
+        title: '警告ガイド',
+        body: '赤い範囲は危険です。\n敵やギミックの攻撃範囲なので、表示されたら離れましょう。',
+        target: '警告表示',
+        targetId: 'play.warning',
+        tooltipPosition: 'bottom',
+      },
+    ], { force });
   }
 
   isEvolutionReadySequenceActive() {
@@ -2951,6 +3014,9 @@ export class PlayScene {
         gimmick.warningSprite.alpha = Math.min(0.78, (0.22 + warningProgress * 0.36) * hazardBoost);
       }
       gimmick.sprite.visible = (isActive || (isWarning && !gimmick.warningAssetLoaded)) && gimmick.assetLoaded;
+      if (isWarning && (gimmick.warningSprite?.visible || gimmick.sprite.visible)) {
+        this.showWarningGuideTutorialIfNeeded();
+      }
       const hazardBoost = this.getVisibilityAssistConfig().hazardAlphaBoost;
       gimmick.sprite.alpha = isActive
         ? Math.min(0.95, (gimmick.alpha ?? 0.82) * (1 + (hazardBoost - 1) * 0.32))
@@ -3614,13 +3680,27 @@ export class PlayScene {
   updateUltimateCharge(delta) {
     if (
       !this.gameState.selectedEvolution
-      || this.gameState.ultimateReady
       || this.ultimateSystem.isActive
     ) {
+      this.wasUltimateReady = Boolean(this.gameState.ultimateReady);
+      return;
+    }
+
+    if (this.gameState.ultimateReady) {
+      if (!this.wasUltimateReady) {
+        this.showUltimateTutorialIfNeeded();
+      }
+      this.wasUltimateReady = true;
       return;
     }
 
     this.gameState.addUltimate(delta * 0.32);
+
+    if (this.gameState.ultimateReady && !this.wasUltimateReady) {
+      this.showUltimateTutorialIfNeeded();
+    }
+
+    this.wasUltimateReady = Boolean(this.gameState.ultimateReady);
   }
 
   queueLevelUps(levelsGained) {

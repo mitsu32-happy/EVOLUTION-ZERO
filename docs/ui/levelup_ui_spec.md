@@ -69,3 +69,10 @@
 - The overlay spotlights the card area and then the adaptation-card area.
 - Card copy continues to distinguish `種別: 適応技`, `種別: 能力強化`, and `種別: 報酬`.
 - Adaptation cards show power, range, cooldown, and whether the card affects evolution conditions.
+
+## MVP-A13c First Level-up Ordering
+
+- On the first Level Up tutorial route, an available adaptation skill card is moved to the top slot.
+- The ordering assist applies only to the first tutorial Level Up / debug-forced Level Up route.
+- Later Level Up rolls return to normal candidate ordering.
+- The tutorial copy now explains adaptation skills, stat upgrades, evolution conditions, power/range, and recast timing.

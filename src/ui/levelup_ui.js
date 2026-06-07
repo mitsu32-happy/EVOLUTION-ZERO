@@ -324,6 +324,7 @@ export class LevelUpUi {
     this.options = [];
     this.rerolls = 1;
     this.gameState = null;
+    this.preferAdaptationFirst = false;
     this.motionTime = 0;
     this.assetTextures = {};
     this.rerollPressed = false;
@@ -383,9 +384,10 @@ export class LevelUpUi {
     }
   }
 
-  show({ fromLevel, toLevel, rerolls, gameState }) {
+  show({ fromLevel, toLevel, rerolls, gameState, preferAdaptationFirst = false }) {
     this.rerolls = rerolls;
     this.gameState = gameState;
+    this.preferAdaptationFirst = Boolean(preferAdaptationFirst);
     this.options = this.rollOptions();
     this.levelText.text = `レベル ${fromLevel} → ${toLevel}`;
     this.hintText.text = this.getStableAnalysisText(gameState.adaptationProgress);
@@ -469,6 +471,23 @@ export class LevelUpUi {
         selected.push(option);
       }
     });
+
+    if (this.preferAdaptationFirst && adaptationCandidates.length > 0) {
+      const selectedAdaptationIndex = selected.findIndex((skill) => isAdaptation(skill));
+
+      if (selectedAdaptationIndex > 0) {
+        const [adaptation] = selected.splice(selectedAdaptationIndex, 1);
+        selected.unshift(adaptation);
+      } else if (selectedAdaptationIndex < 0 && selected.length > 0) {
+        const adaptation = this.shuffle(adaptationCandidates)
+          .find((skill) => !selected.some((item) => item.id === skill.id))
+          ?? this.shuffle(adaptationCandidates)[0];
+
+        selected[Math.min(selected.length - 1, 2)] = adaptation;
+        const [moved] = selected.splice(Math.min(selected.length - 1, 2), 1);
+        selected.unshift(moved);
+      }
+    }
 
     return selected;
   }
