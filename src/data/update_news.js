@@ -1,5 +1,20 @@
 export const UPDATE_NEWS = [
   {
+    id: 'gamepad-gameplay-support-2026-06-08',
+    date: '2026/06/08',
+    category: 'アップデート',
+    title: 'コントローラー対応について',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・プレイ中のコントローラー操作に対応しました。',
+      '・左スティックで移動、A/×ボタンで必殺技、START/Menuボタンでポーズできます。',
+      '・Xbox、PS5、Switch系コントローラーでの利用を想定しています。',
+      '・スマートフォンでもBluetoothコントローラーを利用できます。',
+      '・タッチ操作はこれまで通り利用できます。',
+    ],
+  },
+  {
     id: 'tutorial-ultimate-evolution-timing-2026-06-07',
     date: '2026/06/07',
     category: '修正',

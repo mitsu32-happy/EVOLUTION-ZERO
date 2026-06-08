@@ -3576,3 +3576,9 @@ No new image/audio asset generation is required for this MVP.
 - No additional tutorial art was generated.
 - The A13b.2 simple panel remains the runtime tutorial panel.
 - Public-facing update news and `VERSION 0.8.2` are part of the release push.
+
+## MVP-C01 Gamepad Support
+
+- No new raster UI assets were generated.
+- Gamepad connect/disconnect notices use code-rendered HUD graphics and runtime text.
+- Existing touch and HUD assets remain unchanged.

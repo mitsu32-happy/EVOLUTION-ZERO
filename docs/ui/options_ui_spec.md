@@ -123,3 +123,10 @@
 - Options screen decoration is reduced by lowering the background, outer panel, and row frame alpha.
 - Setting rows, labels, descriptions, and chips remain the primary visual focus.
 - No additional frames or decorative assets were added for A12c.
+
+## MVP-C01 Gamepad Scope
+
+- Gamepad support is gameplay-only and does not add menu navigation to Options.
+- Options continues to use touch/pointer controls.
+- The controller mapping is documented in `docs/design/control_scheme_spec.md`.
+- Touch Assist remains a touch-specific option; it does not alter Gamepad API dead zone or button mapping.

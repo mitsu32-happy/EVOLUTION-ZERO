@@ -26,6 +26,7 @@ const WORLD_ZOOM = 0.88;
 const TILE_WIDTH = 96;
 const TILE_HEIGHT = 56;
 const HUD_INPUT_HEIGHT = 150;
+const GAMEPAD_DEAD_ZONE = 0.2;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
 const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
@@ -500,6 +501,7 @@ export class PlayScene {
     };
     this.input = {
       active: false,
+      source: null,
       pointerId: null,
       startX: 0,
       startY: 0,
@@ -509,6 +511,30 @@ export class PlayScene {
       y: 0,
       power: 0,
     };
+    this.gamepadInput = {
+      index: null,
+      connected: false,
+      lastUltimatePressed: false,
+      lastPausePressed: false,
+    };
+    this.gamepadNoticeTimer = 0;
+    this.gamepadNoticeBg = new Graphics();
+    this.gamepadNoticeText = new Text({
+      text: '',
+      style: {
+        fill: '#e7fff6',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 13,
+        fontWeight: '700',
+        letterSpacing: 0,
+        align: 'center',
+        dropShadow: true,
+        dropShadowColor: '#02080c',
+        dropShadowBlur: 3,
+      },
+    });
+    this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
+    this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
     this.lastTileKey = '';
     this.stageBackgroundTexture = null;
     this.stageBackgroundKey = null;
@@ -554,6 +580,7 @@ export class PlayScene {
     this.createZeroPhaseLayer();
     this.createEvolutionWarningLayer();
     this.uiLayer.addChild(this.hud.view);
+    this.createGamepadNotice();
     this.bindInput();
     this.updateCamera(1);
     this.updateMap(true);
@@ -578,6 +605,8 @@ export class PlayScene {
     this.levelUpUi.update?.(delta);
     this.pauseUi.update?.(delta);
     this.resultUi.update?.(delta);
+    this.updateGamepadInput(delta);
+    this.updateGamepadNotice(delta);
     this.updateBossClearSequence(delta);
     this.updateZeroPhaseNotice(delta);
     this.ensureRunBgm();
@@ -1317,6 +1346,12 @@ export class PlayScene {
   }
 
   bindInput() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('gamepadconnected', this.handleGamepadConnected);
+      window.addEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
+      this.refreshConnectedGamepad();
+    }
+
     this.canvas.addEventListener('pointerdown', (event) => {
       if (!this.isActive) {
         return;
@@ -1335,6 +1370,7 @@ export class PlayScene {
       }
 
       this.input.active = true;
+      this.input.source = 'touch';
       this.input.pointerId = event.pointerId;
       this.input.startX = point.x;
       this.input.startY = point.y;
@@ -1369,6 +1405,7 @@ export class PlayScene {
       }
 
       this.input.active = false;
+      this.input.source = null;
       this.input.pointerId = null;
       this.input.x = 0;
       this.input.y = 0;
@@ -1391,6 +1428,7 @@ export class PlayScene {
 
   clearInput() {
     this.input.active = false;
+    this.input.source = null;
     this.input.pointerId = null;
     this.input.x = 0;
     this.input.y = 0;
@@ -1499,6 +1537,178 @@ export class PlayScene {
     const power = Math.min((distance - deadZone) / (maxDistance - deadZone), 1);
     this.input.x = dx / distance;
     this.input.y = dy / distance;
+    this.input.power = power;
+    this.input.source = 'touch';
+  }
+
+  createGamepadNotice() {
+    this.gamepadNoticeBg.visible = false;
+    this.gamepadNoticeText.visible = false;
+    this.gamepadNoticeText.anchor.set(0.5);
+    this.gamepadNoticeBg.eventMode = 'none';
+    this.gamepadNoticeText.eventMode = 'none';
+    this.uiLayer.addChild(this.gamepadNoticeBg, this.gamepadNoticeText);
+  }
+
+  showGamepadNotice(message) {
+    this.gamepadNoticeTimer = 2.6;
+    this.gamepadNoticeText.text = message;
+    this.gamepadNoticeBg.visible = true;
+    this.gamepadNoticeText.visible = true;
+    this.drawGamepadNotice(1);
+  }
+
+  updateGamepadNotice(delta) {
+    if (this.gamepadNoticeTimer <= 0) {
+      this.gamepadNoticeBg.visible = false;
+      this.gamepadNoticeText.visible = false;
+      return;
+    }
+
+    this.gamepadNoticeTimer = Math.max(0, this.gamepadNoticeTimer - delta);
+    const alpha = Math.min(1, this.gamepadNoticeTimer / 0.35, 0.7 + this.gamepadNoticeTimer * 0.25);
+    this.drawGamepadNotice(alpha);
+  }
+
+  drawGamepadNotice(alpha = 1) {
+    const width = 190;
+    const height = 34;
+    const x = (this.width - width) / 2;
+    const y = 110;
+
+    this.gamepadNoticeBg
+      .clear()
+      .roundRect(x, y, width, height, 10)
+      .fill({ color: 0x03121a, alpha: 0.78 * alpha })
+      .stroke({ color: 0x35d7ff, width: 1.3, alpha: 0.72 * alpha })
+      .roundRect(x + 5, y + 5, width - 10, height - 10, 7)
+      .stroke({ color: 0x8ff3ff, width: 0.7, alpha: 0.32 * alpha });
+    this.gamepadNoticeText.position.set(this.width / 2, y + height / 2);
+    this.gamepadNoticeText.alpha = alpha;
+  }
+
+  handleGamepadConnection(gamepad, connected) {
+    if (!gamepad) {
+      return;
+    }
+
+    if (connected) {
+      this.gamepadInput.index = gamepad.index;
+      this.gamepadInput.connected = true;
+      this.gamepadInput.lastUltimatePressed = false;
+      this.gamepadInput.lastPausePressed = false;
+      this.showGamepadNotice('コントローラー接続');
+      return;
+    }
+
+    if (this.gamepadInput.index === gamepad.index) {
+      this.gamepadInput.index = null;
+      this.gamepadInput.connected = false;
+      this.gamepadInput.lastUltimatePressed = false;
+      this.gamepadInput.lastPausePressed = false;
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      this.showGamepadNotice('コントローラー切断');
+    }
+  }
+
+  refreshConnectedGamepad() {
+    const gamepads = this.getGamepads();
+    const active = gamepads.find((gamepad) => gamepad?.connected);
+
+    if (!active) {
+      return null;
+    }
+
+    if (this.gamepadInput.index !== active.index || !this.gamepadInput.connected) {
+      this.gamepadInput.index = active.index;
+      this.gamepadInput.connected = true;
+    }
+
+    return active;
+  }
+
+  getActiveGamepad() {
+    const gamepads = this.getGamepads();
+    let gamepad = this.gamepadInput.index !== null ? gamepads[this.gamepadInput.index] : null;
+
+    if (!gamepad?.connected) {
+      gamepad = this.refreshConnectedGamepad();
+    }
+
+    return gamepad?.connected ? gamepad : null;
+  }
+
+  getGamepads() {
+    if (typeof navigator === 'undefined' || typeof navigator.getGamepads !== 'function') {
+      return [];
+    }
+
+    return Array.from(navigator.getGamepads()).filter(Boolean);
+  }
+
+  updateGamepadInput() {
+    if (!this.isActive) {
+      return;
+    }
+
+    const gamepad = this.getActiveGamepad();
+
+    if (!gamepad) {
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      return;
+    }
+
+    const pausePressed = Boolean(gamepad.buttons?.[9]?.pressed);
+    const ultimatePressed = Boolean(gamepad.buttons?.[0]?.pressed);
+
+    if (pausePressed && !this.gamepadInput.lastPausePressed && !this.isLevelUpSequenceActive() && !this.isEvolutionReadySequenceActive()) {
+      this.audioManager?.play('ui_click');
+      this.clearInput();
+      this.togglePause();
+    }
+
+    if (ultimatePressed && !this.gamepadInput.lastUltimatePressed && !this.gameState.isPaused) {
+      this.activateUltimate();
+    }
+
+    this.gamepadInput.lastPausePressed = pausePressed;
+    this.gamepadInput.lastUltimatePressed = ultimatePressed;
+
+    if (
+      this.gameState.isPaused
+      || this.gameState.isGameOver
+      || this.isTutorialPaused
+      || this.isLevelUpSequenceActive()
+      || this.isEvolutionReadySequenceActive()
+      || this.evolutionFeedbackTimer > 0
+    ) {
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      return;
+    }
+
+    const rawX = Number(gamepad.axes?.[0] ?? 0);
+    const rawY = Number(gamepad.axes?.[1] ?? 0);
+    const magnitude = Math.min(1, Math.hypot(rawX, rawY));
+
+    if (magnitude <= GAMEPAD_DEAD_ZONE) {
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      return;
+    }
+
+    const power = Math.min(1, (magnitude - GAMEPAD_DEAD_ZONE) / (1 - GAMEPAD_DEAD_ZONE));
+    this.input.active = true;
+    this.input.source = 'gamepad';
+    this.input.pointerId = null;
+    this.input.x = rawX / magnitude;
+    this.input.y = rawY / magnitude;
     this.input.power = power;
   }
 
