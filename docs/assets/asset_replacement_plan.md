@@ -3582,3 +3582,11 @@ No new image/audio asset generation is required for this MVP.
 - No new raster UI assets were generated.
 - Gamepad connect/disconnect notices use code-rendered HUD graphics and runtime text.
 - Existing touch and HUD assets remain unchanged.
+
+## MVP-C02 Gamepad Menu Support
+
+- No new raster assets were generated.
+- Controller connection notices, debug overlay, and the virtual mouse cursor are code-rendered.
+- Existing screen assets remain unchanged.
+- The overlay/cursor graphics use `eventMode = none` and do not block touch or mouse input.
+- Right-stick menu scrolling reuses existing wheel/scroll behavior; no scroll-specific raster asset was added.

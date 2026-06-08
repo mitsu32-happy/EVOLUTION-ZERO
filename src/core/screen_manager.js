@@ -1,6 +1,7 @@
-﻿import { Container } from 'pixi.js';
+﻿import { Container, Graphics, Text } from 'pixi.js';
 import { AudioManager } from '../audio/audio_manager.js';
 import { GameState } from './game_state.js';
+import { GamepadManager } from '../input/gamepad_manager.js';
 import { IntroOverlay } from '../intro/intro_overlay.js';
 import { SaveManager } from '../save/save_manager.js';
 import { PlayScene } from '../scenes/play_scene.js';
@@ -222,6 +223,19 @@ export class ScreenManager {
     this.applyDebugRunSelection();
     this.loadingUi = new LoadingUi({ width, height });
     this.tutorialUi = new TutorialUi({ width, height });
+    this.gamepadManager = new GamepadManager({
+      onConnectionChange: ({ connected }) => this.showGamepadNotice(connected ? 'コントローラー接続' : 'コントローラー切断'),
+    });
+    this.gamepadNoticeTimer = 0;
+    this.gamepadNoticeBg = new Graphics();
+    this.gamepadNoticeText = this.createGamepadText('', 13, '#e7fff6', 230);
+    this.gamepadDebugBg = new Graphics();
+    this.gamepadDebugText = this.createGamepadText('', 10, '#d7fff2', 260);
+    this.gamepadFocusRing = new Graphics();
+    this.gamepadCursor = new Graphics();
+    this.gamepadCursorPosition = { x: Math.round(width / 2), y: Math.round(height / 2) };
+    this.gamepadClickPulse = 0;
+    this.gamepadScrollAccumulator = 0;
 
     this.titleScreen = new TitleScreen({
       width,
@@ -249,7 +263,14 @@ export class ScreenManager {
       this.titleScreen.view,
       this.loadingUi.view,
       this.tutorialUi.view,
+      this.gamepadFocusRing,
+      this.gamepadCursor,
+      this.gamepadNoticeBg,
+      this.gamepadNoticeText,
+      this.gamepadDebugBg,
+      this.gamepadDebugText,
     );
+    this.setupGamepadOverlay();
     this.installTitleShortcuts();
     this.installTitleCueUnlock();
     this.installPwaUpdateListener();
@@ -428,6 +449,7 @@ export class ScreenManager {
       audioManager: this.audioManager,
       assetLoader: this.assetLoader,
       tutorialUi: this.tutorialUi,
+      gamepadManager: this.gamepadManager,
       onHome: () => this.showHome(),
       onTitle: () => this.showTitle(),
       onOptions: () => this.showOptions('play'),
@@ -460,9 +482,299 @@ export class ScreenManager {
   }
 
   update(delta) {
+    const actions = this.gamepadManager.update(delta);
+    this.handleGamepadActions(actions);
+    this.updateGamepadOverlay(delta);
+
     if (this.currentScreen === 'play' && this.playScene) {
       this.playScene.update(delta);
     }
+  }
+
+  handleGamepadActions(actions) {
+    if (!this.gamepadManager.connected) {
+      return;
+    }
+
+    if (this.tutorialUi.view?.visible) {
+      this.tutorialUi.handleGamepadAction?.(actions);
+      return;
+    }
+
+    if (this.currentScreen === 'play' && this.playScene) {
+      this.playScene.handleGamepadActions?.(actions, this.gamepadManager);
+      return;
+    }
+
+    if (this.handleGamepadVirtualMouse(actions, this.gamepadManager)) {
+      return;
+    }
+
+    if (actions.cancelPressed) {
+      this.handleDefaultGamepadCancel();
+    }
+  }
+
+  handleGamepadVirtualMouse(actions, gamepadManager) {
+    if (actions.cancelPressed) {
+      return false;
+    }
+
+    const cursor = this.gamepadCursorPosition;
+    const dpadX = actions.right ? 1 : actions.left ? -1 : 0;
+    const dpadY = actions.down ? 1 : actions.up ? -1 : 0;
+    const moveX = gamepadManager.moveX || dpadX;
+    const moveY = gamepadManager.moveY || dpadY;
+    const delta = Math.max(1 / 120, Math.min(1 / 20, gamepadManager.lastDelta ?? 1 / 60));
+    const speed = 520;
+
+    if (moveX || moveY) {
+      const dpadPower = dpadX || dpadY ? 0.75 : 0;
+      const power = Math.max(gamepadManager.movePower || 0, dpadPower, 0.45);
+      cursor.x = Math.max(8, Math.min(this.width - 8, cursor.x + moveX * speed * delta * power));
+      cursor.y = Math.max(8, Math.min(this.height - 8, cursor.y + moveY * speed * delta * power));
+    }
+
+    this.handleGamepadVirtualScroll(gamepadManager);
+
+    if (actions.confirmPressed) {
+      this.dispatchGamepadPointerClick(cursor.x, cursor.y);
+      this.gamepadClickPulse = 0.16;
+      return true;
+    }
+
+    return Boolean(moveX || moveY || Math.abs(gamepadManager.rightY ?? 0) > 0.25);
+  }
+
+  handleGamepadVirtualScroll(gamepadManager) {
+    const rightY = Number(gamepadManager.rightY ?? 0);
+    if (Math.abs(rightY) <= 0.25) {
+      this.gamepadScrollAccumulator = 0;
+      return;
+    }
+
+    const screen = this.screens[this.currentScreen];
+    if (screen?.handleGamepadScroll?.(rightY, gamepadManager)) {
+      return;
+    }
+
+    this.gamepadScrollAccumulator += rightY * 24;
+    if (Math.abs(this.gamepadScrollAccumulator) < 8) {
+      return;
+    }
+
+    const amount = this.gamepadScrollAccumulator;
+    this.gamepadScrollAccumulator = 0;
+    this.dispatchGamepadWheel(this.gamepadCursorPosition.x, this.gamepadCursorPosition.y, amount);
+  }
+
+  dispatchGamepadPointerClick(x, y) {
+    const point = this.toCanvasClientPoint(x, y);
+    if (!point || typeof PointerEvent === 'undefined') {
+      return;
+    }
+
+    const common = {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      pointerId: 77,
+      pointerType: 'mouse',
+      isPrimary: true,
+      button: 0,
+      buttons: 1,
+      clientX: point.x,
+      clientY: point.y,
+    };
+
+    this.canvas.dispatchEvent(new PointerEvent('pointerdown', common));
+    this.canvas.dispatchEvent(new PointerEvent('pointerup', { ...common, buttons: 0 }));
+  }
+
+  dispatchGamepadWheel(x, y, deltaY) {
+    const point = this.toCanvasClientPoint(x, y);
+    if (!point || typeof WheelEvent === 'undefined') {
+      return;
+    }
+
+    this.canvas.dispatchEvent(new WheelEvent('wheel', {
+      bubbles: true,
+      cancelable: true,
+      clientX: point.x,
+      clientY: point.y,
+      deltaY,
+      deltaMode: 0,
+    }));
+  }
+
+  toCanvasClientPoint(x, y) {
+    const rect = this.canvas?.getBoundingClientRect?.();
+    if (!rect || rect.width <= 0 || rect.height <= 0) {
+      return null;
+    }
+
+    return {
+      x: rect.left + (x / this.width) * rect.width,
+      y: rect.top + (y / this.height) * rect.height,
+    };
+  }
+
+  handleDefaultGamepadCancel() {
+    if (this.currentScreen === 'title' || this.currentScreen === 'home') {
+      return;
+    }
+
+    if (this.currentScreen === 'options') {
+      this.withUiClick(() => this.returnFromOptions());
+      return;
+    }
+
+    if (this.currentScreen === 'stageSelect') {
+      this.withUiClick(() => this.showHome());
+      return;
+    }
+
+    if (this.currentScreen === 'dinoSelect') {
+      this.withUiClick(() => this.showStageSelect());
+      return;
+    }
+
+    this.withUiClick(() => this.showHome());
+  }
+
+  setupGamepadOverlay() {
+    this.gamepadNoticeText.anchor.set(0.5);
+    this.gamepadFocusRing.eventMode = 'none';
+    this.gamepadFocusRing.interactiveChildren = false;
+    this.gamepadCursor.eventMode = 'none';
+    this.gamepadCursor.interactiveChildren = false;
+    this.gamepadNoticeBg.eventMode = 'none';
+    this.gamepadNoticeText.eventMode = 'none';
+    this.gamepadDebugBg.eventMode = 'none';
+    this.gamepadDebugText.eventMode = 'none';
+    this.gamepadNoticeBg.interactiveChildren = false;
+    this.gamepadNoticeText.interactiveChildren = false;
+    this.gamepadDebugBg.interactiveChildren = false;
+    this.gamepadDebugText.interactiveChildren = false;
+    this.gamepadDebugText.position.set(16, 46);
+    this.gamepadNoticeBg.visible = false;
+    this.gamepadNoticeText.visible = false;
+    this.gamepadDebugBg.visible = false;
+    this.gamepadDebugText.visible = false;
+  }
+
+  showGamepadNotice(message) {
+    this.gamepadNoticeTimer = 2.6;
+    this.gamepadNoticeText.text = message;
+    this.gamepadNoticeBg.visible = true;
+    this.gamepadNoticeText.visible = true;
+    this.drawGamepadNotice(1);
+  }
+
+  updateGamepadOverlay(delta) {
+    this.updateGamepadNotice(delta);
+    this.updateGamepadDebug();
+    this.updateGamepadFocusRing();
+    this.updateGamepadCursor(delta);
+  }
+
+  updateGamepadNotice(delta) {
+    if (this.gamepadNoticeTimer <= 0) {
+      this.gamepadNoticeBg.visible = false;
+      this.gamepadNoticeText.visible = false;
+      return;
+    }
+
+    this.gamepadNoticeTimer = Math.max(0, this.gamepadNoticeTimer - delta);
+    const alpha = Math.min(1, this.gamepadNoticeTimer / 0.35, 0.7 + this.gamepadNoticeTimer * 0.25);
+    this.drawGamepadNotice(alpha);
+  }
+
+  drawGamepadNotice(alpha = 1) {
+    const width = 190;
+    const height = 34;
+    const x = (this.width - width) / 2;
+    const y = 110;
+
+    this.gamepadNoticeBg
+      .clear()
+      .roundRect(x, y, width, height, 10)
+      .fill({ color: 0x03121a, alpha: 0.78 * alpha })
+      .stroke({ color: 0x35d7ff, width: 1.3, alpha: 0.72 * alpha })
+      .roundRect(x + 5, y + 5, width - 10, height - 10, 7)
+      .stroke({ color: 0x8ff3ff, width: 0.7, alpha: 0.32 * alpha });
+    this.gamepadNoticeText.position.set(this.width / 2, y + height / 2);
+    this.gamepadNoticeText.alpha = alpha;
+  }
+
+  updateGamepadDebug() {
+    if (!this.gamepadManager.debugEnabled) {
+      this.gamepadDebugBg.visible = false;
+      this.gamepadDebugText.visible = false;
+      return;
+    }
+
+    const snapshot = this.gamepadManager.getDebugSnapshot();
+    this.gamepadDebugText.text = [
+      `Gamepad: ${snapshot.connected ? 'detected' : 'none'}`,
+      snapshot.name ? `Name: ${snapshot.name}` : '',
+      `Buttons: ${snapshot.pressedButtons.join(', ') || '-'}`,
+      `Axes: ${snapshot.axes.join(', ')}`,
+      `Right: ${snapshot.right?.join(', ') ?? '-'} (${snapshot.rightSource ?? '-'})`,
+      `Action: ${snapshot.actions || '-'}`,
+      `Pause: ${snapshot.pauseDetected ? 'YES' : 'no'}`,
+    ].filter(Boolean).join('\n');
+    this.gamepadDebugBg
+      .clear()
+      .roundRect(10, 34, 286, 104, 8)
+      .fill({ color: 0x02080c, alpha: 0.76 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: 0.45 });
+    this.gamepadDebugBg.visible = true;
+    this.gamepadDebugText.visible = true;
+  }
+
+  updateGamepadFocusRing() {
+    this.gamepadFocusRing.clear();
+  }
+
+  updateGamepadCursor(delta) {
+    this.gamepadCursor.clear();
+    if (!this.gamepadManager.connected || this.currentScreen === 'play') {
+      return;
+    }
+
+    this.gamepadClickPulse = Math.max(0, this.gamepadClickPulse - delta);
+    const { x, y } = this.gamepadCursorPosition;
+    const pulse = this.gamepadClickPulse > 0 ? 1.5 : 1;
+    this.gamepadCursor
+      .circle(x, y, 10 * pulse)
+      .fill({ color: 0x061116, alpha: 0.62 })
+      .stroke({ color: 0xffd36b, width: 2.4, alpha: 0.95 })
+      .circle(x, y, 3.8 * pulse)
+      .fill({ color: 0x35d7ff, alpha: 0.92 })
+      .moveTo(x - 15, y)
+      .lineTo(x + 15, y)
+      .moveTo(x, y - 15)
+      .lineTo(x, y + 15)
+      .stroke({ color: 0xbfffee, width: 1.2, alpha: 0.64 });
+  }
+
+  createGamepadText(text, size, fill, wordWrapWidth = 260) {
+    return new Text({
+      text,
+      style: {
+        fill,
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: size,
+        fontWeight: '700',
+        letterSpacing: 0,
+        wordWrap: true,
+        wordWrapWidth,
+        dropShadow: true,
+        dropShadowColor: '#02080c',
+        dropShadowBlur: 3,
+      },
+    });
   }
 
   show(screenName) {
@@ -484,11 +796,28 @@ export class ScreenManager {
       }
     });
     this.currentScreen = screenName;
+    this.resetGamepadCursorForScreen(screenName);
     this.syncPwaUpdateNotice();
     this.updateBgmForScreen(screenName);
     if (screenName === 'title') {
       this.queueTitleCue();
     }
+  }
+
+  resetGamepadCursorForScreen(screenName) {
+    const presets = {
+      title: { x: this.width / 2, y: 652 },
+      home: { x: this.width / 2, y: 458 },
+      stageSelect: { x: this.width / 2, y: 626 },
+      dinoSelect: { x: this.width / 2, y: 724 },
+      result: { x: this.width / 2, y: 690 },
+      options: { x: this.width / 2, y: 402 },
+      research: { x: this.width / 2, y: 390 },
+      codex: { x: this.width / 2, y: 168 },
+    };
+    const target = presets[screenName] ?? { x: this.width / 2, y: this.height / 2 };
+    this.gamepadCursorPosition.x = Math.max(8, Math.min(this.width - 8, Math.round(target.x)));
+    this.gamepadCursorPosition.y = Math.max(8, Math.min(this.height - 8, Math.round(target.y)));
   }
 
   showTutorial(id, { force = false } = {}) {
@@ -583,10 +912,10 @@ export class ScreenManager {
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
     this.saveManager.applyToGameState(this.gameState);
     this.applyDebugRunSelection();
-    await this.loadAssetGroups(['home'], 'ホーム資源読み込み中');
     this.ensureHomeScreen();
     this.homeScreen.setSaveData(this.saveManager.getData(), this.gameState);
     this.show('home');
+    this.assetLoader.loadGroups(['home']).catch(() => {});
     this.showTutorial('home');
   }
 

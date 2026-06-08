@@ -130,3 +130,15 @@
 - Options continues to use touch/pointer controls.
 - The controller mapping is documented in `docs/design/control_scheme_spec.md`.
 - Touch Assist remains a touch-specific option; it does not alter Gamepad API dead zone or button mapping.
+
+## MVP-C02 Controller Operation Display
+
+- Options includes a short read-only controller operation guide:
+  - Move / cursor: left stick or D-pad moves the virtual mouse cursor in menus.
+  - Confirm: A / Cross style primary button.
+  - Back: B / Circle style secondary button.
+  - Scroll: right stick over scrollable panels.
+  - Gameplay ultimate: primary button.
+  - Pause: Menu / Start candidate buttons. Xbox browser mapping may report Start as button 11.
+- This is an informational display only. No controller remapping UI is added in C02.
+- Touch Assist remains touch-specific and does not alter Gamepad API dead zones.

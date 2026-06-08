@@ -164,6 +164,7 @@ export class ResultUi {
     this.hasFutureRewards = false;
     this.currentResultKind = 'result';
     this.resultPage = 'summary';
+    this.gamepadFocusIndex = 0;
     this.lastResultKey = '';
     this.summaryRows = [];
     this.rewardRows = [];
@@ -336,15 +337,18 @@ export class ResultUi {
       }
       this.motionTime = 0;
       this.resultPage = 'summary';
+    this.gamepadFocusIndex = 0;
       this.lastResultKey = resultKey;
     } else if (resultKey !== this.lastResultKey) {
       this.resultPage = 'summary';
+    this.gamepadFocusIndex = 0;
       this.lastResultKey = resultKey;
     }
 
     this.wasVisible = true;
     this.view.visible = true;
     this.render(gameState, saveInfo);
+    this.updateGamepadFocus();
   }
 
   hide() {
@@ -367,6 +371,44 @@ export class ResultUi {
     }
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (this.resultPage === 'summary') {
+      if (actions.confirmPressed || actions.rightPressed || actions.downPressed) {
+        this.showRewardPage();
+        return true;
+      }
+      return false;
+    }
+
+    if (actions.leftPressed || actions.rightPressed || actions.upPressed || actions.downPressed) {
+      this.gamepadFocusIndex = this.gamepadFocusIndex === 0 ? 1 : 0;
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      if (this.gamepadFocusIndex === 0) {
+        this.onRetry?.();
+      } else {
+        this.onHome?.();
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  updateGamepadFocus() {
+    const rewardPage = this.resultPage === 'reward';
+    this.retryButton.view.alpha = rewardPage && this.gamepadFocusIndex === 0 ? 1 : 0.86;
+    this.homeButton.view.alpha = rewardPage && this.gamepadFocusIndex === 1 ? 1 : 0.86;
+    this.retryButton.view.scale.set(rewardPage && this.gamepadFocusIndex === 0 ? 1.012 : 1);
+    this.homeButton.view.scale.set(rewardPage && this.gamepadFocusIndex === 1 ? 1.012 : 1);
+  }
   render(gameState, saveInfo = null) {
     this.latestGameState = gameState;
     const resultType = this.getResultType(gameState);
@@ -915,6 +957,7 @@ export class ResultUi {
   }
 
   showRewardPage() {
+    this.gamepadFocusIndex = 0;
     if (!this.view.visible || this.resultPage === 'reward') {
       return;
     }

@@ -111,6 +111,7 @@ export class PauseUi {
     this.skillPopup = this.createSkillPopup();
     this.notice = '';
     this.wasVisible = false;
+    this.gamepadFocusIndex = 0;
     this.assetTextures = {};
 
     this.view.visible = false;
@@ -269,11 +270,13 @@ export class PauseUi {
     this.wasVisible = true;
     this.view.visible = true;
     this.render(gameState);
+    this.updateGamepadFocus();
   }
 
   hide() {
     this.view.visible = false;
     this.wasVisible = false;
+    this.gamepadFocusIndex = 0;
     this.notice = '';
     this.noticeText.text = '';
     this.hideSkillPopup();
@@ -287,6 +290,41 @@ export class PauseUi {
     updateIntroMotion(this.panel, delta);
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.downPressed || actions.rightPressed) {
+      this.gamepadFocusIndex = Math.min(this.buttons.length - 1, this.gamepadFocusIndex + 1);
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.upPressed || actions.leftPressed) {
+      this.gamepadFocusIndex = Math.max(0, this.gamepadFocusIndex - 1);
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const config = BUTTONS[this.gamepadFocusIndex];
+      if (config) {
+        this.handleButton(config.action);
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  updateGamepadFocus() {
+    this.buttons.forEach((button, index) => {
+      const selected = index === this.gamepadFocusIndex;
+      button.view.alpha = selected ? 1 : 0.86;
+      button.view.scale.set(selected ? 1.015 : 1);
+    });
+  }
   handleButton(action) {
     if (action === 'resume') {
       this.onResume?.();
@@ -574,4 +612,3 @@ export class PauseUi {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 }
-

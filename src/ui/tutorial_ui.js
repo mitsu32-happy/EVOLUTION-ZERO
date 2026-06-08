@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
+﻿import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { drawButtonFrame, drawPanel, UI_COLORS } from './ui_theme.js';
 
 const PANEL = { width: 320, height: 252 };
@@ -178,6 +178,32 @@ export class TutorialUi {
     this.onComplete?.(id);
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.confirmPressed || actions.rightPressed || actions.downPressed) {
+      this.goNext();
+      return true;
+    }
+
+    if (actions.cancelPressed || actions.leftPressed || actions.upPressed) {
+      if (this.index > 0) {
+        this.goBack();
+      } else {
+        this.skip();
+      }
+      return true;
+    }
+
+    if (actions.pausePressed) {
+      this.skip();
+      return true;
+    }
+
+    return false;
+  }
   render() {
     const page = this.pages[this.index] ?? {};
     const targetRect = this.resolveTargetRect(page);

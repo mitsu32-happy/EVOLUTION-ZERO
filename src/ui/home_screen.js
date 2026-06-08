@@ -194,6 +194,9 @@ export class HomeScreen {
     this.onApplyUpdate = onApplyUpdate;
     this.textures = new Map();
     this.activeHomeInfoTab = 'daily';
+    this.gamepadFocusItems = ['deploy', 'title', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
+    this.gamepadFocusIndex = 0;
+    this.newsGamepadIndex = 0;
 
     this.view = new Container();
     this.background = new Graphics();
@@ -373,6 +376,191 @@ export class HomeScreen {
     this.view.visible = true;
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (this.titleSelectUi?.view?.visible) {
+      return this.titleSelectUi.handleGamepadAction?.(actions) ?? false;
+    }
+
+    if (this.newsModal?.view?.visible) {
+      return this.handleNewsGamepadAction(actions);
+    }
+
+    if (actions.cancelPressed) {
+      return false;
+    }
+
+    if (actions.nextPressed || actions.previousPressed) {
+      const current = this.getFocusedHomeItem();
+      if (['daily', 'record', 'unlock'].includes(current)) {
+        const tabs = ['daily', 'record', 'unlock'];
+        const index = tabs.indexOf(current);
+        const next = tabs[Math.max(0, Math.min(tabs.length - 1, index + (actions.nextPressed ? 1 : -1)))];
+        this.focusHomeItem(next);
+        this.handleHomeInfoTabTap(next);
+        return true;
+      }
+    }
+
+    if (actions.downPressed || actions.upPressed || actions.leftPressed || actions.rightPressed) {
+      this.moveGamepadFocus(actions);
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      this.activateGamepadFocusItem();
+      return true;
+    }
+
+    return false;
+  }
+
+  getFocusedHomeItem() {
+    const items = this.gamepadFocusItems ?? ['deploy'];
+    const index = Number.isInteger(this.gamepadFocusIndex) ? this.gamepadFocusIndex : 0;
+    return items[index] ?? 'deploy';
+  }
+
+  focusHomeItem(id) {
+    const index = (this.gamepadFocusItems ?? []).indexOf(id);
+    if (index >= 0) {
+      this.gamepadFocusIndex = index;
+    }
+  }
+
+  moveGamepadFocus(actions) {
+    const current = this.getFocusedHomeItem();
+    const rows = {
+      top: ['title', 'news'],
+      info: ['daily', 'record', 'unlock'],
+      nav: ['home', 'research', 'codex', 'options'],
+    };
+
+    if (actions.leftPressed || actions.rightPressed) {
+      const row = Object.values(rows).find((items) => items.includes(current));
+      if (row) {
+        const index = row.indexOf(current);
+        const delta = actions.rightPressed ? 1 : -1;
+        this.focusHomeItem(row[Math.max(0, Math.min(row.length - 1, index + delta))]);
+        return;
+      }
+
+      if (current === 'deploy') {
+        this.focusHomeItem(actions.rightPressed ? 'news' : 'title');
+      }
+      return;
+    }
+
+    if (actions.downPressed) {
+      const downMap = {
+        title: 'deploy',
+        news: 'deploy',
+        deploy: 'daily',
+        daily: 'home',
+        record: 'research',
+        unlock: 'codex',
+        home: 'home',
+        research: 'research',
+        codex: 'codex',
+        options: 'options',
+      };
+      this.focusHomeItem(downMap[current] ?? 'deploy');
+      return;
+    }
+
+    if (actions.upPressed) {
+      const upMap = {
+        title: 'title',
+        news: 'news',
+        deploy: 'title',
+        daily: 'deploy',
+        record: 'deploy',
+        unlock: 'deploy',
+        home: 'daily',
+        research: 'record',
+        codex: 'unlock',
+        options: 'unlock',
+      };
+      this.focusHomeItem(upMap[current] ?? 'deploy');
+    }
+  }
+
+  activateGamepadFocusItem() {
+    const id = this.getFocusedHomeItem();
+    if (id === 'deploy') {
+      this.handleDeployTap();
+    } else if (id === 'title') {
+      this.openTitleSelect();
+    } else if (id === 'news') {
+      this.openNewsModal();
+    } else if (['daily', 'record', 'unlock'].includes(id)) {
+      this.handleHomeInfoTabTap(id);
+    } else if (id === 'research') {
+      this.onResearch?.();
+    } else if (id === 'codex') {
+      this.onCodex?.();
+    } else if (id === 'options') {
+      this.onOptions?.();
+    }
+  }
+
+  handleNewsGamepadAction(actions) {
+    if (actions.cancelPressed || actions.pausePressed) {
+      if (this.newsModal.mode === 'detail') {
+        this.showNewsList();
+      } else {
+        this.closeNewsModal();
+      }
+      return true;
+    }
+
+    if (this.newsModal.mode !== 'detail' && (actions.downPressed || actions.upPressed)) {
+      const items = this.newsModal.listCards.filter((card) => card.view.visible);
+      const delta = actions.downPressed ? 1 : -1;
+      this.newsGamepadIndex = Math.max(0, Math.min(items.length - 1, this.newsGamepadIndex + delta));
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      if (this.newsModal.mode === 'detail') {
+        this.showNewsList();
+      } else {
+        const items = this.newsModal.listCards.filter((card) => card.view.visible);
+        const card = items[this.newsGamepadIndex] ?? items[0];
+        if (card?.item) {
+          this.showNewsDetail(card.item);
+        }
+      }
+      return true;
+    }
+
+    return true;
+  }
+
+  getGamepadFocusBounds() {
+    if (this.titleSelectUi?.view?.visible || this.newsModal?.view?.visible) {
+      return null;
+    }
+
+    const bottomNavY = Math.max(702, this.height - 94);
+    const item = this.getFocusedHomeItem();
+    const bounds = {
+      deploy: { x: 38, y: 418, width: 314, height: 76, radius: 14 },
+      daily: { x: 38, y: 520, width: 98, height: 44, radius: 12 },
+      record: { x: 146, y: 520, width: 98, height: 44, radius: 12 },
+      unlock: { x: 254, y: 520, width: 98, height: 44, radius: 12 },
+      title: { x: Math.round(this.width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
+      news: { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+      home: { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
+      research: { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
+      codex: { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
+      options: { x: 286, y: bottomNavY, width: 78, height: 72, radius: 12 },
+    };
+    return bounds[item] ?? bounds.deploy;
+  }
   setPwaUpdateInfo(updateInfo = null) {
     this.pwaUpdateInfo = updateInfo;
   }

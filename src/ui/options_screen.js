@@ -527,6 +527,103 @@ export class OptionsScreen {
     this.playUiClick();
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.cancelPressed) {
+      this.onBack?.();
+      return true;
+    }
+
+    const items = this.getGamepadItems();
+    if (actions.downPressed) {
+      this.gamepadFocusIndex = Math.min(items.length - 1, this.gamepadFocusIndex + 1);
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.upPressed) {
+      this.gamepadFocusIndex = Math.max(0, this.gamepadFocusIndex - 1);
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.leftPressed || actions.rightPressed) {
+      const item = items[this.gamepadFocusIndex];
+      if (item?.kind === 'slider') {
+        const delta = actions.rightPressed ? 0.05 : -0.05;
+        this.setAudioSetting(item.target.item.key, Math.max(0, Math.min(1, this.audioSettings[item.target.item.key] + delta)));
+        this.playUiClick();
+        return true;
+      }
+    }
+
+    if (actions.confirmPressed) {
+      const item = items[this.gamepadFocusIndex];
+      this.activateGamepadItem(item);
+      return true;
+    }
+
+    return false;
+  }
+
+  getGamepadItems() {
+    return [
+      ...this.sliders.map((target) => ({ kind: 'slider', target })),
+      { kind: 'mute', target: this.muteRow },
+      ...this.settingRows.map((target) => ({ kind: 'row', target })),
+      ...(this.tutorialButton.view.visible ? [{ kind: 'tutorial', target: this.tutorialButton }] : []),
+      ...(this.assetPreviewButton.view.visible ? [{ kind: 'asset', target: this.assetPreviewButton }] : []),
+    ];
+  }
+
+  activateGamepadItem(item) {
+    if (!item) {
+      return;
+    }
+
+    if (item.kind === 'mute') {
+      this.setAudioSetting('muted', !this.audioSettings.muted);
+      this.playUiClick();
+    } else if (item.kind === 'row') {
+      const chip = item.target.chips?.[0];
+      if (chip?.option) {
+        this.toggleGameplayOption(item.target.group.id, chip.option);
+        this.playUiClick();
+      }
+    } else if (item.kind === 'tutorial') {
+      this.playUiClick();
+      this.onShowTutorial?.();
+    } else if (item.kind === 'asset') {
+      this.playUiClick();
+      this.onAssetPreview?.();
+    }
+  }
+
+  updateGamepadFocus() {
+    const items = this.getGamepadItems();
+    this.gamepadFocusIndex = Math.max(0, Math.min(items.length - 1, this.gamepadFocusIndex));
+    items.forEach((item, index) => {
+      item.target.view.alpha = index === this.gamepadFocusIndex ? 1 : 0.86;
+    });
+  }
+
+  getGamepadFocusBounds() {
+    const item = this.getGamepadItems()[this.gamepadFocusIndex];
+    if (!item?.target?.view) {
+      return null;
+    }
+
+    return {
+      x: item.target.view.position.x,
+      y: item.target.view.position.y,
+      width: SAFE.rowWidth,
+      height: item.kind === 'row' ? SAFE.settingHeight : SAFE.sliderHeight,
+      radius: 10,
+    };
+  }
   setReturnScreen(returnScreen) {
     this.returnScreen = returnScreen ?? 'home';
     this.applyNavigationMode();

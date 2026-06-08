@@ -1,4 +1,4 @@
-﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+﻿import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { ASSET_KEYS } from '../data/asset_manifest.js';
 import { APP_VERSION_LABEL } from '../data/app_version.js';
 import { playPressFeedback } from './ui_feedback.js';
@@ -43,6 +43,7 @@ export class TitleScreen {
     this.starting = false;
     this.glowTimer = null;
     this.assetsReady = false;
+    this.gamepadFocusIndex = 0;
 
     this.view = new Container();
     this.background = new Graphics();
@@ -81,10 +82,21 @@ export class TitleScreen {
       this.loadingOverlay.view,
     );
 
-    this.startButton.view.on('pointerdown', () => this.setStartPressed(true));
-    this.startButton.view.on('pointerup', () => this.setStartPressed(false));
-    this.startButton.view.on('pointerupoutside', () => this.setStartPressed(false));
-    this.startButton.view.on('pointertap', () => this.handleStartTap());
+    this.startPointerActive = false;
+    this.startButton.hitProxy.on('pointerdown', () => {
+      this.startPointerActive = true;
+      this.setStartPressed(true);
+    });
+    this.startButton.hitProxy.on('pointerup', () => {
+      if (this.startPointerActive) {
+        this.handleStartTap();
+      }
+      this.startPointerActive = false;
+    });
+    this.startButton.hitProxy.on('pointerupoutside', () => {
+      this.startPointerActive = false;
+      this.setStartPressed(false);
+    });
     this.introButton.view.on('pointertap', () => this.handleIntroTap());
 
     this.drawStatic();
@@ -301,14 +313,22 @@ export class TitleScreen {
     const idle = new Sprite(Texture.EMPTY);
     const glow = new Sprite(Texture.EMPTY);
     const pressed = new Sprite(Texture.EMPTY);
+    const hitProxy = new Graphics();
 
     fallbackText.anchor.set(0.5);
     fallbackText.position.set(START_RECT.width / 2, START_RECT.height / 2 - 2);
     view.eventMode = 'static';
     view.cursor = 'pointer';
-    view.addChild(idle, glow, pressed, fallbackBg, fallbackText);
+    view.hitArea = new Rectangle(0, 0, START_RECT.width, START_RECT.height);
+    hitProxy
+      .rect(0, 0, START_RECT.width, START_RECT.height)
+      .fill({ color: 0x000000, alpha: 0.001 });
+    hitProxy.eventMode = 'static';
+    hitProxy.cursor = 'pointer';
+    hitProxy.hitArea = new Rectangle(0, 0, START_RECT.width, START_RECT.height);
+    view.addChild(idle, glow, pressed, fallbackBg, fallbackText, hitProxy);
 
-    return { view, idle, glow, pressed, fallbackBg, fallbackText };
+    return { view, idle, glow, pressed, fallbackBg, fallbackText, hitProxy };
   }
 
   renderFallbackStart() {
@@ -330,6 +350,7 @@ export class TitleScreen {
     text.position.set(INTRO_RECT.width / 2, INTRO_RECT.height / 2);
     view.eventMode = 'static';
     view.cursor = 'pointer';
+    view.hitArea = new Rectangle(0, 0, INTRO_RECT.width, INTRO_RECT.height);
     view.addChild(bg, text);
 
     return { view, bg, text };
@@ -415,6 +436,34 @@ export class TitleScreen {
     }
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible || !this.assetsReady || this.starting) {
+      return false;
+    }
+
+    if (actions.downPressed || actions.upPressed) {
+      this.gamepadFocusIndex = this.gamepadFocusIndex === 0 ? 1 : 0;
+      this.onUiFeedback?.('ui_select');
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      if (this.gamepadFocusIndex === 0) {
+        this.handleStartTap();
+      } else {
+        this.handleIntroTap();
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  getGamepadFocusBounds() {
+    return this.gamepadFocusIndex === 0
+      ? { ...START_RECT, radius: 14 }
+      : { ...INTRO_RECT, radius: 10 };
+  }
   createText(text, size, fill, wordWrapWidth = 280) {
     return new Text({
       text,

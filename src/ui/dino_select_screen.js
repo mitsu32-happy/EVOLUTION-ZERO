@@ -283,6 +283,72 @@ export class DinoSelectScreen {
     });
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.cancelPressed) {
+      this.onBack?.();
+      return true;
+    }
+
+    if (actions.nextPressed) {
+      this.changeDinoPage(1);
+      return true;
+    }
+
+    if (actions.previousPressed) {
+      this.changeDinoPage(-1);
+      return true;
+    }
+
+    if (actions.downPressed) {
+      this.gamepadFocusArea = 'start';
+      return true;
+    }
+
+    if (actions.upPressed) {
+      this.gamepadFocusArea = 'cards';
+      return true;
+    }
+
+    if (this.gamepadFocusArea === 'cards' && (actions.leftPressed || actions.rightPressed)) {
+      this.moveDinoSelection(actions.rightPressed ? 1 : -1);
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      if (this.gamepadFocusArea === 'start') {
+        const dino = this.getSelectedDino();
+        if (!this.isDinoLocked(dino)) {
+          this.gameState.selectedDino = this.selectedDino;
+          this.onStart?.();
+        }
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  moveDinoSelection(delta) {
+    const currentIndex = Math.max(0, this.dinos.findIndex((dino) => dino.id === this.selectedDino));
+    const nextIndex = Math.max(0, Math.min(this.dinos.length - 1, currentIndex + delta));
+    this.selectedDino = this.dinos[nextIndex].id;
+    this.ensureDinoPageForSelection();
+    this.renderSelection();
+  }
+
+  getGamepadFocusBounds() {
+    if (this.gamepadFocusArea === 'start') {
+      return { x: 34, y: Math.max(720, this.height - 108), width: this.width - 68, height: 76, radius: 12 };
+    }
+
+    const index = Math.max(0, this.dinos.findIndex((dino) => dino.id === this.selectedDino));
+    const slot = index % DINO_PAGE_SIZE;
+    return { x: 24 + slot * 118, y: CARD.y, width: CARD.width, height: CARD.height, radius: 12 };
+  }
   renderSelection() {
     const dino = this.getSelectedDino();
     const locked = this.isDinoLocked(dino);

@@ -134,6 +134,9 @@ export class ResearchScreen {
     this.cards = [];
     this.bodyScrollOffset = 0;
     this.bodyScrollDrag = null;
+    this.gamepadFocusArea = 'card';
+    this.gamepadFocusIndex = 0;
+    this.gamepadScrollAccumulator = 0;
 
     this.view.eventMode = 'static';
     this.view.hitArea = new Rectangle(0, 0, width, height);
@@ -506,6 +509,182 @@ export class ResearchScreen {
     if (id === 'options') {
       this.onOptions?.();
     }
+  }
+
+  handleGamepadAction(actions = {}, gamepadManager = null) {
+    if (this.confirmDialog.view.visible) {
+      return this.confirmDialog.handleGamepadAction?.(actions) ?? false;
+    }
+
+    if (this.handleGamepadScrollInput(gamepadManager)) {
+      return true;
+    }
+
+    if (actions.cancelPressed) {
+      this.onHome?.();
+      return true;
+    }
+
+    if (actions.previousPressed || actions.nextPressed) {
+      this.moveCategory(actions.nextPressed ? 1 : -1);
+      return true;
+    }
+
+    if (actions.leftPressed || actions.rightPressed) {
+      if (this.gamepadFocusArea === 'category') {
+        this.moveCategory(actions.rightPressed ? 1 : -1);
+        return true;
+      }
+      this.gamepadFocusArea = 'category';
+      return true;
+    }
+
+    if (actions.upPressed || actions.downPressed) {
+      if (this.gamepadFocusArea === 'category') {
+        this.gamepadFocusArea = 'card';
+        this.gamepadFocusIndex = 0;
+        return true;
+      }
+      this.moveCardFocus(actions.downPressed ? 1 : -1);
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      if (this.gamepadFocusArea === 'category') {
+        this.gamepadFocusArea = 'card';
+        this.gamepadFocusIndex = 0;
+        return true;
+      }
+      const card = this.getVisibleGamepadCards()[this.gamepadFocusIndex];
+      if (card) {
+        this.handleCardAction(card);
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  moveCategory(delta) {
+    const currentIndex = RESEARCH_CATEGORIES.findIndex((category) => category.id === this.selectedCategory);
+    const nextIndex = (currentIndex + delta + RESEARCH_CATEGORIES.length) % RESEARCH_CATEGORIES.length;
+    this.selectedCategory = RESEARCH_CATEGORIES[nextIndex].id;
+    this.bodyScrollOffset = 0;
+    this.gamepadFocusArea = 'card';
+    this.gamepadFocusIndex = 0;
+    this.noticeText.text = '';
+    this.render();
+  }
+
+  moveCardFocus(delta) {
+    const cards = this.getVisibleGamepadCards();
+    if (!cards.length) {
+      this.gamepadFocusIndex = 0;
+      return;
+    }
+
+    const nextIndex = Math.max(0, Math.min(cards.length - 1, this.gamepadFocusIndex + delta));
+    if (nextIndex === this.gamepadFocusIndex && this.scrollBodyByRows(delta)) {
+      const nextCards = this.getVisibleGamepadCards();
+      this.gamepadFocusIndex = delta > 0 ? Math.max(0, nextCards.length - 1) : 0;
+      return;
+    }
+
+    this.gamepadFocusIndex = nextIndex;
+    const card = cards[nextIndex];
+    if (card?.item?.category === RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+      this.ensureCardVisible(card);
+    }
+  }
+
+  handleGamepadScrollInput(gamepadManager = null) {
+    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+      return false;
+    }
+
+    const rightY = Number(gamepadManager?.rightY ?? 0);
+    if (Math.abs(rightY) <= 0.25) {
+      return false;
+    }
+
+    const before = this.bodyScrollOffset;
+    this.setBodyScrollOffset(this.bodyScrollOffset + rightY * (CARD.height + CARD.gap) * 0.35);
+    return this.bodyScrollOffset !== before;
+  }
+
+  handleGamepadScroll(rightY = 0) {
+    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+      return false;
+    }
+
+    if (Math.abs(rightY) <= 0.25) {
+      this.gamepadScrollAccumulator = 0;
+      return false;
+    }
+
+    this.gamepadScrollAccumulator += rightY;
+    if (Math.abs(this.gamepadScrollAccumulator) < 0.55) {
+      return true;
+    }
+
+    const direction = this.gamepadScrollAccumulator > 0 ? 1 : -1;
+    this.gamepadScrollAccumulator = 0;
+    return this.scrollBodyByRows(direction);
+  }
+
+  scrollBodyByRows(deltaRows) {
+    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+      return false;
+    }
+
+    const before = this.bodyScrollOffset;
+    this.setBodyScrollOffset(this.bodyScrollOffset + deltaRows * (CARD.height + CARD.gap));
+    return this.bodyScrollOffset !== before;
+  }
+
+  ensureCardVisible(card) {
+    const y = card.view.position.y;
+    if (y < BODY_SCROLL_VIEW.top) {
+      this.setBodyScrollOffset(this.bodyScrollOffset - (BODY_SCROLL_VIEW.top - y));
+      return;
+    }
+    const bottom = y + CARD.height;
+    if (bottom > BODY_SCROLL_VIEW.bottom) {
+      this.setBodyScrollOffset(this.bodyScrollOffset + (bottom - BODY_SCROLL_VIEW.bottom));
+    }
+  }
+
+  getVisibleGamepadCards() {
+    return this.cards.filter((card) => card.view.visible && (card.item || card.isConversion));
+  }
+
+  getGamepadFocusBounds() {
+    if (!this.view.visible || this.confirmDialog.view.visible) {
+      return null;
+    }
+
+    if (this.gamepadFocusArea === 'category') {
+      const categoryIndex = RESEARCH_CATEGORIES.findIndex((category) => category.id === this.selectedCategory);
+      const button = this.categoryButtons[categoryIndex];
+      if (!button) return null;
+      return {
+        x: button.view.position.x,
+        y: button.view.position.y,
+        width: CATEGORY_TAB.width,
+        height: CATEGORY_TAB.height,
+      };
+    }
+
+    const card = this.getVisibleGamepadCards()[this.gamepadFocusIndex];
+    if (!card) {
+      return null;
+    }
+    return {
+      x: card.view.position.x,
+      y: card.view.position.y,
+      width: card.layout?.width ?? CARD_LAYOUT.width,
+      height: CARD.height,
+    };
   }
 
   drawStatic() {

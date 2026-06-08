@@ -132,6 +132,7 @@ export class StageSelectScreen {
     this.stagePage = 0;
     this.thumbnailTextures = new Map();
     this.uiTextures = new Map();
+    this.gamepadFocusArea = 'stage';
 
     this.view = new Container();
     this.background = new Graphics();
@@ -359,6 +360,91 @@ export class StageSelectScreen {
     });
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.cancelPressed) {
+      this.onBack?.();
+      return true;
+    }
+
+    if (actions.nextPressed) {
+      this.changeStagePage(1);
+      return true;
+    }
+
+    if (actions.previousPressed) {
+      this.changeStagePage(-1);
+      return true;
+    }
+
+    if (actions.downPressed) {
+      this.gamepadFocusArea = this.gamepadFocusArea === 'stage' ? 'difficulty' : 'continue';
+      return true;
+    }
+
+    if (actions.upPressed) {
+      this.gamepadFocusArea = this.gamepadFocusArea === 'continue' ? 'difficulty' : 'stage';
+      return true;
+    }
+
+    if (actions.leftPressed || actions.rightPressed) {
+      const delta = actions.rightPressed ? 1 : -1;
+      if (this.gamepadFocusArea === 'stage') {
+        this.moveStageSelection(delta);
+      } else if (this.gamepadFocusArea === 'difficulty') {
+        this.moveDifficultySelection(delta);
+      }
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      if (this.gamepadFocusArea === 'continue') {
+        this.gameState.selectedStage = this.selectedStage;
+        this.gameState.selectedDifficulty = this.selectedDifficulty;
+        this.gameState.selectedMode = this.selectedMode;
+        this.onContinue?.();
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  moveStageSelection(delta) {
+    const currentIndex = Math.max(0, STAGES.findIndex((stage) => stage.id === this.selectedStage));
+    const nextIndex = Math.max(0, Math.min(STAGES.length - 1, currentIndex + delta));
+    this.selectedStage = STAGES[nextIndex].id;
+    this.ensureStagePageForSelection();
+    this.renderSelection();
+  }
+
+  moveDifficultySelection(delta) {
+    const selectable = DEPLOY_TYPES.filter((type) => !this.getDeployLockState(type).locked);
+    const selectedId = this.getSelectedDeployType().id;
+    const currentIndex = Math.max(0, selectable.findIndex((type) => type.id === selectedId));
+    const nextIndex = Math.max(0, Math.min(selectable.length - 1, currentIndex + delta));
+    const next = selectable[nextIndex];
+    this.selectedMode = next.mode;
+    this.selectedDifficulty = next.difficulty;
+    this.renderSelection();
+  }
+
+  getGamepadFocusBounds() {
+    if (this.gamepadFocusArea === 'difficulty') {
+      return { x: 24, y: DEPLOY_Y - 8, width: this.width - 48, height: 50, radius: 12 };
+    }
+
+    if (this.gamepadFocusArea === 'continue') {
+      return { x: 36, y: Math.max(728, this.height - 112), width: this.width - 72, height: 72, radius: 12 };
+    }
+
+    const index = Math.max(0, STAGES.findIndex((stage) => stage.id === this.selectedStage));
+    const slot = index % STAGE_PAGE_SIZE;
+    return { x: 22 + slot * 86, y: CARD.y, width: CARD.width, height: CARD.height, radius: 12 };
+  }
   renderSelection() {
     const selectedStage = STAGES.find((stage) => stage.id === this.selectedStage) ?? STAGES[0];
     const texture = this.thumbnailTextures.get(selectedStage.id) ?? null;

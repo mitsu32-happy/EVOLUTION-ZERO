@@ -1,6 +1,8 @@
 ﻿import { Assets } from 'pixi.js';
 import { flattenAssetManifest } from '../data/asset_manifest.js';
 
+const DEFAULT_LOAD_TIMEOUT_MS = 8000;
+
 export class AssetLoader {
   constructor(manifest = null) {
     this.items = flattenAssetManifest(manifest ?? undefined);
@@ -44,7 +46,10 @@ export class AssetLoader {
       return null;
     }
 
-    const task = Assets.load(this.toUrl(item.path, cacheBust ? this.reloadVersion : null))
+    const task = this.withTimeout(
+      Assets.load(this.toUrl(item.path, cacheBust ? this.reloadVersion : null)),
+      options.timeoutMs ?? DEFAULT_LOAD_TIMEOUT_MS,
+    )
       .then((texture) => {
         this.cache.set(key, texture);
         this.pending.delete(key);
@@ -60,6 +65,25 @@ export class AssetLoader {
 
     this.pending.set(key, task);
     return task;
+  }
+
+  withTimeout(promise, timeoutMs) {
+    if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || typeof window === 'undefined') {
+      return promise;
+    }
+
+    let timeoutId = null;
+    const timeout = new Promise((_, reject) => {
+      timeoutId = window.setTimeout(() => {
+        reject(new Error(`Asset load timed out after ${timeoutMs}ms`));
+      }, timeoutMs);
+    });
+
+    return Promise.race([promise, timeout]).finally(() => {
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    });
   }
 
   async reload(key) {

@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
 import { drawPanel, UI_COLORS, toCssColor } from './ui_theme.js';
 
 const EVOLUTION_COPY = {
@@ -70,6 +70,7 @@ export class EvolutionReadyUi {
     this.candidateImages = new Map();
     this.cardTexture = null;
     this.selectedCardTexture = null;
+    this.gamepadFocusIndex = 0;
     this.portraitFrameTexture = null;
     this.typeChipTexture = null;
     this.selectButtonTexture = null;
@@ -86,6 +87,7 @@ export class EvolutionReadyUi {
 
   show(candidates) {
     this.candidates = candidates.slice(0, 3);
+    this.gamepadFocusIndex = 0;
     this.view.visible = true;
     this.loadCandidateImages(this.candidates);
     this.renderCandidates();
@@ -95,6 +97,33 @@ export class EvolutionReadyUi {
     this.view.visible = false;
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.rightPressed || actions.downPressed) {
+      this.gamepadFocusIndex = Math.min(this.candidates.length - 1, this.gamepadFocusIndex + 1);
+      this.renderCandidates();
+      return true;
+    }
+
+    if (actions.leftPressed || actions.upPressed) {
+      this.gamepadFocusIndex = Math.max(0, this.gamepadFocusIndex - 1);
+      this.renderCandidates();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const candidate = this.candidates[this.gamepadFocusIndex];
+      if (candidate) {
+        this.onSelect(candidate);
+      }
+      return true;
+    }
+
+    return false;
+  }
   createCards() {
     for (let index = 0; index < 3; index += 1) {
       const card = {

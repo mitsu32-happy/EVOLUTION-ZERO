@@ -326,6 +326,7 @@ export class LevelUpUi {
     this.gameState = null;
     this.preferAdaptationFirst = false;
     this.motionTime = 0;
+    this.gamepadFocusIndex = 0;
     this.assetTextures = {};
     this.rerollPressed = false;
     this.title.text = 'レベルアップ！';
@@ -393,6 +394,7 @@ export class LevelUpUi {
     this.hintText.text = this.getStableAnalysisText(gameState.adaptationProgress);
     this.view.visible = true;
     this.motionTime = 0;
+    this.gamepadFocusIndex = 0;
     this.applyAssetLayout();
     resetIntroMotion(this.panel, { duration: 0.2, startScale: 0.985 });
     this.renderOptions();
@@ -492,6 +494,42 @@ export class LevelUpUi {
     return selected;
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    const visibleOptions = this.options.filter(Boolean);
+    if (actions.downPressed || actions.rightPressed) {
+      this.gamepadFocusIndex = Math.min(visibleOptions.length - 1, this.gamepadFocusIndex + 1);
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.upPressed || actions.leftPressed) {
+      this.gamepadFocusIndex = Math.max(0, this.gamepadFocusIndex - 1);
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const option = this.options[this.gamepadFocusIndex];
+      if (option) {
+        this.onSelect(option);
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  updateGamepadFocus() {
+    this.cards.forEach((card, index) => {
+      const selected = index === this.gamepadFocusIndex && Boolean(this.options[index]);
+      card.view.alpha = selected ? 1 : 0.86;
+      card.view.scale.set(selected ? 1.012 : 1);
+    });
+  }
   createCards() {
     for (let index = 0; index < 3; index += 1) {
       const card = {

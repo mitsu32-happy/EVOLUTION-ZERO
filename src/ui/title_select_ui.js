@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
+﻿import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import {
   ENDLESS_TITLES,
   STAGE_CLEAR_TITLES,
@@ -62,6 +62,7 @@ export class TitleSelectUi {
     this.lastEquipAt = 0;
     this.lastEquipKey = '';
     this.textures = new Map();
+    this.gamepadRowIndex = 0;
 
     this.view = new Container();
     this.view.visible = false;
@@ -236,6 +237,54 @@ export class TitleSelectUi {
     this.render();
   }
 
+  handleGamepadAction(actions) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.cancelPressed || actions.pausePressed) {
+      this.close();
+      return true;
+    }
+
+    if (actions.nextPressed || actions.previousPressed) {
+      this.changePage(actions.nextPressed ? 1 : -1);
+      return true;
+    }
+
+    if (actions.leftPressed || actions.rightPressed) {
+      this.switchTab(actions.rightPressed ? 'frames' : 'titles');
+      return true;
+    }
+
+    const visibleRows = this.rows.filter((row) => row.view.visible && row.item);
+    if (actions.downPressed || actions.upPressed) {
+      const delta = actions.downPressed ? 1 : -1;
+      this.gamepadRowIndex = Math.max(0, Math.min(visibleRows.length - 1, this.gamepadRowIndex + delta));
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const row = visibleRows[this.gamepadRowIndex] ?? visibleRows[0];
+      if (row?.item) {
+        this.triggerEquip(row.item);
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  updateGamepadFocus() {
+    const visibleRows = this.rows.filter((row) => row.view.visible && row.item);
+    this.gamepadRowIndex = Math.max(0, Math.min(visibleRows.length - 1, this.gamepadRowIndex));
+    this.rows.forEach((row) => {
+      const selected = visibleRows[this.gamepadRowIndex] === row;
+      row.view.alpha = selected ? 1 : 0.86;
+      row.view.scale.set(selected ? 1.01 : 1);
+    });
+  }
   render() {
     const items = this.getItems();
     const pageSize = this.getPageSize();
@@ -263,6 +312,7 @@ export class TitleSelectUi {
         this.drawRow(row, item);
       }
     });
+    this.updateGamepadFocus();
   }
 
   getItems() {

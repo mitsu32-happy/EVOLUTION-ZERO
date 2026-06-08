@@ -27,6 +27,7 @@ export class ConfirmDialog {
     this.textures = new Map();
     this.onConfirm = null;
     this.onCancel = null;
+    this.gamepadFocusType = 'yes';
 
     this.view = new Container();
     this.view.visible = false;
@@ -105,6 +106,8 @@ export class ConfirmDialog {
     this.noButton.label.text = cancelLabel;
     this.onConfirm = onConfirm;
     this.onCancel = onCancel;
+    this.gamepadFocusType = 'yes';
+    this.updateGamepadFocus();
     this.view.visible = true;
   }
 
@@ -155,6 +158,43 @@ export class ConfirmDialog {
     const callback = this.onCancel;
     this.hide();
     callback?.();
+  }
+
+  handleGamepadAction(actions = {}) {
+    if (!this.view.visible) {
+      return false;
+    }
+
+    if (actions.leftPressed || actions.rightPressed || actions.upPressed || actions.downPressed) {
+      this.gamepadFocusType = this.gamepadFocusType === 'yes' ? 'no' : 'yes';
+      this.updateGamepadFocus();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const button = this.gamepadFocusType === 'yes' ? this.yesButton : this.noButton;
+      this.handleButton(button.type, button.view);
+      return true;
+    }
+
+    if (actions.cancelPressed || actions.pausePressed) {
+      this.handleButton('no', this.noButton.view);
+      return true;
+    }
+
+    return false;
+  }
+
+  updateGamepadFocus() {
+    if (!this.yesButton || !this.noButton) {
+      return;
+    }
+
+    [this.yesButton, this.noButton].forEach((button) => {
+      const focused = button.type === this.gamepadFocusType;
+      button.view.alpha = focused ? 1 : 0.78;
+      button.view.scale.set(focused ? 1.02 : 1);
+    });
   }
 
   async loadAssets() {

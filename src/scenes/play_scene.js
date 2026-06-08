@@ -253,6 +253,7 @@ export class PlayScene {
     audioManager = null,
     assetLoader = null,
     tutorialUi = null,
+    gamepadManager = null,
     onHome = null,
     onTitle = null,
     onOptions = null,
@@ -268,6 +269,7 @@ export class PlayScene {
     this.optionsSettings = this.saveManager?.getOptionsSettings?.() ?? null;
     this.assetLoader = assetLoader;
     this.tutorialUi = tutorialUi;
+    this.gamepadManager = gamepadManager;
     this.isActive = true;
     this.isTutorialPaused = false;
     this.pendingUltimateTutorialAfterEvolution = false;
@@ -1648,7 +1650,96 @@ export class PlayScene {
     return Array.from(navigator.getGamepads()).filter(Boolean);
   }
 
+  handleGamepadActions(actions) {
+    if (!this.isActive || !this.gamepadManager?.connected) {
+      return false;
+    }
+
+    if (this.gameState.isPaused) {
+      if (actions.pausePressed || actions.cancelPressed) {
+        this.audioManager?.play('ui_click');
+        this.resumePause();
+        return true;
+      }
+      if (this.pauseUi.handleGamepadAction?.(actions)) {
+        return true;
+      }
+      return false;
+    }
+
+    if (this.gameState.isGameOver && this.resultUi.handleGamepadAction?.(actions)) {
+      return true;
+    }
+
+    if (this.isLevelUpSequenceActive() && this.levelUpUi.handleGamepadAction?.(actions)) {
+      return true;
+    }
+
+    if (this.isEvolutionReadySequenceActive() && this.evolutionReadyUi.handleGamepadAction?.(actions)) {
+      return true;
+    }
+
+    if (actions.pausePressed && !this.isLevelUpSequenceActive() && !this.isEvolutionReadySequenceActive()) {
+      this.audioManager?.play('ui_click');
+      this.clearInput();
+      this.togglePause();
+      return true;
+    }
+
+    if (actions.specialPressed && !this.gameState.isPaused) {
+      this.activateUltimate();
+      return true;
+    }
+
+    return false;
+  }
   updateGamepadInput() {
+    if (!this.isActive) {
+      return;
+    }
+
+    if (!this.gamepadManager) {
+      this.updateLegacyGamepadInput();
+      return;
+    }
+
+    if (!this.gamepadManager.connected) {
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      return;
+    }
+
+    if (
+      this.gameState.isPaused
+      || this.gameState.isGameOver
+      || this.isTutorialPaused
+      || this.isLevelUpSequenceActive()
+      || this.isEvolutionReadySequenceActive()
+      || this.evolutionFeedbackTimer > 0
+    ) {
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      return;
+    }
+
+    if (this.gamepadManager.movePower <= 0) {
+      if (this.input.source === 'gamepad') {
+        this.clearInput();
+      }
+      return;
+    }
+
+    this.input.active = true;
+    this.input.source = 'gamepad';
+    this.input.pointerId = null;
+    this.input.x = this.gamepadManager.moveX;
+    this.input.y = this.gamepadManager.moveY;
+    this.input.power = this.gamepadManager.movePower;
+  }
+
+  updateLegacyGamepadInput() {
     if (!this.isActive) {
       return;
     }
@@ -1662,7 +1753,7 @@ export class PlayScene {
       return;
     }
 
-    const pausePressed = Boolean(gamepad.buttons?.[9]?.pressed);
+    const pausePressed = Boolean(gamepad.buttons?.[9]?.pressed || gamepad.buttons?.[8]?.pressed);
     const ultimatePressed = Boolean(gamepad.buttons?.[0]?.pressed);
 
     if (pausePressed && !this.gamepadInput.lastPausePressed && !this.isLevelUpSequenceActive() && !this.isEvolutionReadySequenceActive()) {

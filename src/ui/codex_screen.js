@@ -413,6 +413,7 @@ export class CodexScreen {
     this.onOptions = onOptions;
     this.view = new Container();
     this.selectedDinoId = CODEX_DINOS[0].id;
+    this.gamepadFocusIndex = 0;
     this.assetTextures = {};
 
     this.background = new Graphics();
@@ -541,6 +542,66 @@ export class CodexScreen {
 
   hide() {
     this.view.visible = false;
+  }
+
+  handleGamepadAction(actions = {}) {
+    if (actions.cancelPressed) {
+      this.onHome?.();
+      return true;
+    }
+
+    if (actions.previousPressed || actions.nextPressed || actions.leftPressed || actions.rightPressed) {
+      const delta = (actions.nextPressed || actions.rightPressed) ? 1 : -1;
+      this.moveDinoFocus(delta);
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      this.render();
+      return true;
+    }
+
+    return false;
+  }
+
+  moveDinoFocus(delta) {
+    const currentIndex = CODEX_DINOS.findIndex((dino) => dino.id === this.selectedDinoId);
+    const nextIndex = (currentIndex + delta + CODEX_DINOS.length) % CODEX_DINOS.length;
+    this.gamepadFocusIndex = nextIndex;
+    this.selectedDinoId = CODEX_DINOS[nextIndex].id;
+    this.ensureSelectorVisible(nextIndex);
+    this.render();
+  }
+
+  ensureSelectorVisible(index) {
+    const itemX = index * SELECTOR.gap;
+    const left = itemX + this.dinoSelectorScrollX;
+    const right = left + SELECTOR.width;
+    if (left < 0) {
+      this.setDinoSelectorScroll(-itemX);
+      return;
+    }
+    if (right > SELECTOR.viewportWidth) {
+      this.setDinoSelectorScroll(SELECTOR.viewportWidth - itemX - SELECTOR.width);
+    }
+  }
+
+  getGamepadFocusBounds() {
+    if (!this.view.visible) {
+      return null;
+    }
+
+    const index = CODEX_DINOS.findIndex((dino) => dino.id === this.selectedDinoId);
+    if (index < 0) {
+      return null;
+    }
+
+    return {
+      x: SELECTOR.x + index * SELECTOR.gap + this.dinoSelectorScrollX,
+      y: SELECTOR.y,
+      width: SELECTOR.width,
+      height: SELECTOR.height,
+    };
   }
 
   createDinoSelectors() {
