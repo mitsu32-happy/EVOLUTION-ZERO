@@ -1,5 +1,14 @@
 ﻿# EVOLUTION ZERO Stage And Difficulty Spec
 
+## MVP-A14.1 Difficulty Scaling Addendum
+
+- NORMAL opening pressure remains the readability baseline.
+- HARD and EXPERT now gain substantially more enemy density after mid game through elapsed cap pressure and shorter late spawn intervals.
+- ZERO uses a higher enemy level baseline, stronger enemy cap growth, and a much larger final-phase density ramp.
+- ENDLESS soft cap and late phases were raised so 5-minute and 10-minute equivalent checks do not flatten out.
+- Bosses gain stronger HP/damage scaling plus wider/faster warning attacks on high difficulties.
+- EXP growth is slowed after the opening so the increased enemy count does not create runaway level gain.
+
 ## Purpose
 
 This document fixes the stage, difficulty, clear condition, unlock, reward, and boss expansion direction before stage implementation work.

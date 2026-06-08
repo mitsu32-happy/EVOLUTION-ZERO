@@ -1,5 +1,16 @@
 ﻿# Combat Balance Spec
 
+## MVP-A14.1 Late-Game Difficulty Reinforcement
+
+- Enemy level is now driven by elapsed time, difficulty, and mode instead of only the enemy reward class.
+- Higher enemy levels increase HP, contact/special damage, and movement speed.
+- HARD starts close to the previous opening pace, then ramps harder after mid game.
+- EXPERT adds earlier high-level enemies and much stronger late-game pressure.
+- ZERO starts with a higher level baseline and ramps toward Lv10+ enemies near the final phase.
+- ENDLESS adds long-run level and density growth so indefinite survival is less likely.
+- Level-up EXP requirements remain close to previous values early, then gain extra requirements from Lv6, Lv11, and Lv17 onward.
+- Boss scaling was raised for HP, damage, attack radius, line width, line length, and cooldown pressure while preserving warning-guide readability.
+
 ## MVP-161 Playfeel Polish
 
 ### Adaptation Skills

@@ -3605,3 +3605,13 @@ No new image/audio asset generation is required for this MVP.
 - QA/report artifacts:
   - `docs/assets/a14_boss_death_contact.png`
   - `docs/assets/a14_boss_death_report.json`
+
+## MVP-A14.1 Difficulty Reinforcement
+
+- No new raster assets were generated.
+- A14.1 is a gameplay-number pass only.
+- Existing A14 boss finish effect assets remain in use:
+  - `public/assets/effects/boss/boss_death_explosion_a14.png`
+  - `public/assets/effects/boss/boss_death_shockwave_a14.png`
+  - `public/assets/effects/boss/zero_boss_death_core_a14.png`
+- Enemy level, spawn density, EXP requirement, and boss scaling changes are documented in the design specs.

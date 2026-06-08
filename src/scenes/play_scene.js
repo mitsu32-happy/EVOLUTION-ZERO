@@ -2568,9 +2568,18 @@ export class PlayScene {
 
   spawnBossSummons(boss, count) {
     const spawnCount = Math.min(Math.max(0, count), 4);
+    const summonDifficulty = getDifficultyConfig(this.gameState.selectedDifficulty);
+    const summonModeScale = this.spawnSystem.getModeScaling(this.gameState);
+    const summonLevel = this.spawnSystem.getEnemyLevel(this.gameState);
+    const summonLevelScale = this.spawnSystem.getEnemyLevelScale(summonLevel);
+    const summonCap = this.gameState.selectedMode === 'zero'
+      ? ZERO_SCALING_CONFIG.softEnemyCap
+      : this.gameState.selectedMode === 'endless'
+        ? ENDLESS_SCALING_CONFIG.softEnemyCap
+        : 92;
 
     for (let index = 0; index < spawnCount; index += 1) {
-      if (this.enemies.length >= 72) {
+      if (this.enemies.length >= summonCap) {
         return;
       }
 
@@ -2581,6 +2590,12 @@ export class PlayScene {
         y: this.clamp(boss.position.y + Math.sin(angle) * distance, STAGE_BOUNDS.top, STAGE_BOUNDS.bottom),
         enemyType: boss.config?.attacks?.summon?.enemyType ?? 'swarm',
         assetLoader: this.assetLoader,
+        hpMultiplier: summonModeScale.hp * (summonDifficulty.enemyHpMultiplier ?? 1) * summonLevelScale.hp,
+        damageMultiplier: summonModeScale.damage * (summonDifficulty.enemyDamageMultiplier ?? 1) * summonLevelScale.damage,
+        speedMultiplier: summonLevelScale.speed,
+        enemyLevel: summonLevel,
+        expMultiplier: summonModeScale.exp,
+        scoreMultiplier: summonModeScale.score,
       });
 
       this.enemies.push(enemy);
@@ -2669,13 +2684,13 @@ export class PlayScene {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(1.05, overtime / 620);
+    const longRunBonus = Math.min(1.8, overtime / 460);
 
     return {
-      hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.7,
+      hp: phase.hp + longRunBonus * 1.25,
+      damage: phase.damage + longRunBonus * 0.9,
       score: 1 + Math.min(0.55, elapsed / 700),
-      exp: 1 + Math.min(0.25, elapsed / 900),
+      exp: 1 + Math.min(0.12, elapsed / 1400),
     };
   }
 
@@ -2726,19 +2741,19 @@ export class PlayScene {
           ? Math.max(1, Math.round(attack.damage * damageScale))
           : attack.damage,
         damageMultiplier: typeof attack.damageMultiplier === 'number'
-          ? Number((attack.damageMultiplier * (1 + (damageScale - 1) * 0.55)).toFixed(3))
+          ? Number((attack.damageMultiplier * (1 + (damageScale - 1) * 0.68)).toFixed(3))
           : attack.damageMultiplier,
         cooldown: typeof attack.cooldown === 'number'
-          ? Number((attack.cooldown * Math.max(0.72, 1 - (damageScale - 1) * 0.12)).toFixed(2))
+          ? Number((attack.cooldown * Math.max(0.58, 1 - (damageScale - 1) * 0.18)).toFixed(2))
           : attack.cooldown,
         radius: typeof attack.radius === 'number'
-          ? Math.round(attack.radius * (1 + (damageScale - 1) * 0.14))
+          ? Math.round(attack.radius * (1 + (damageScale - 1) * 0.24))
           : attack.radius,
         lineLength: typeof attack.lineLength === 'number'
-          ? Math.round(attack.lineLength * (1 + (damageScale - 1) * 0.08))
+          ? Math.round(attack.lineLength * (1 + (damageScale - 1) * 0.14))
           : attack.lineLength,
         lineWidth: typeof attack.lineWidth === 'number'
-          ? Math.round(attack.lineWidth * (1 + (damageScale - 1) * 0.12))
+          ? Math.round(attack.lineWidth * (1 + (damageScale - 1) * 0.22))
           : attack.lineWidth,
       }];
     }));

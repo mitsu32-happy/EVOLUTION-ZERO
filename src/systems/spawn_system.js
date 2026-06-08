@@ -37,13 +37,14 @@ export class SpawnSystem {
     const modeScale = this.getModeScaling(gameState);
     const modeBonus = ['endless', 'zero'].includes(gameState.selectedMode) ? modeScale.maxEnemyBonus : 0;
     const elapsedPressureBonus = this.getElapsedEnemyPressureBonus(gameState);
+    const lateCapBonus = this.getLateEnemyCapBonus(gameState);
     const maxEnemies = Math.min(
       gameState.selectedMode === 'endless'
         ? ENDLESS_SCALING_CONFIG.softEnemyCap
         : gameState.selectedMode === 'zero'
           ? ZERO_SCALING_CONFIG.softEnemyCap
-          : this.maxEnemies + difficulty.maxEnemyBonus + modeBonus,
-      10 + difficulty.maxEnemyBonus + modeBonus + elapsedPressureBonus,
+          : this.maxEnemies + difficulty.maxEnemyBonus + modeBonus + lateCapBonus,
+      10 + difficulty.maxEnemyBonus + modeBonus + elapsedPressureBonus + lateCapBonus,
     );
 
     if (enemies.length >= maxEnemies) {
@@ -56,16 +57,20 @@ export class SpawnSystem {
       return;
     }
 
+    const level = this.getEnemyLevel(gameState);
+    const levelScale = this.getEnemyLevelScale(level);
     this.spawnTimer = Math.max(
       this.getMinimumSpawnInterval(gameState),
-      (this.spawnInterval - gameState.elapsedTime * 0.017) * difficulty.spawnIntervalMultiplier / modeScale.spawnRate,
+      (this.spawnInterval - gameState.elapsedTime * 0.026) * difficulty.spawnIntervalMultiplier / modeScale.spawnRate,
     );
     onSpawn(new Enemy({
       ...this.getSpawnPoint(camera, player),
       enemyType: this.pickEnemyType(gameState),
       assetLoader: this.assetLoader,
-      hpMultiplier: modeScale.hp * (difficulty.enemyHpMultiplier ?? 1),
-      damageMultiplier: modeScale.damage * (difficulty.enemyDamageMultiplier ?? 1),
+      hpMultiplier: modeScale.hp * (difficulty.enemyHpMultiplier ?? 1) * levelScale.hp,
+      damageMultiplier: modeScale.damage * (difficulty.enemyDamageMultiplier ?? 1) * levelScale.damage,
+      speedMultiplier: levelScale.speed,
+      enemyLevel: level,
       expMultiplier: modeScale.exp,
       scoreMultiplier: modeScale.score,
     }));
@@ -77,41 +82,115 @@ export class SpawnSystem {
 
     if (isEndgameMode) {
       const zeroBonus = gameState.selectedMode === 'zero'
-        ? Math.floor(Math.max(0, elapsed - 180) / 6) + Math.floor(Math.max(0, elapsed - 270) / 5)
+        ? Math.floor(Math.max(0, elapsed - 120) / 3.5) + Math.floor(Math.max(0, elapsed - 220) / 2.6) + Math.floor(Math.max(0, elapsed - 320) / 2.1)
+        : 0;
+      const endlessBonus = gameState.selectedMode === 'endless'
+        ? Math.floor(Math.max(0, elapsed - 240) / 4.5) + Math.floor(Math.max(0, elapsed - 480) / 2.8) + Math.floor(Math.max(0, elapsed - 720) / 2.2)
         : 0;
 
-      return Math.floor(elapsed / 8) + Math.floor(Math.max(0, elapsed - 170) / 8) + Math.floor(Math.max(0, elapsed - 300) / 6) + zeroBonus;
+      return Math.floor(elapsed / 5.5) + Math.floor(Math.max(0, elapsed - 120) / 4.2) + Math.floor(Math.max(0, elapsed - 240) / 3.1) + zeroBonus + endlessBonus;
     }
 
     const difficulty = gameState?.selectedDifficulty ?? 'normal';
-    const base = Math.floor(elapsed / 14) + Math.floor(Math.max(0, elapsed - 80) / 13) + Math.floor(Math.max(0, elapsed - 140) / 10);
+    const base = Math.floor(elapsed / 14) + Math.floor(Math.max(0, elapsed - 80) / 10) + Math.floor(Math.max(0, elapsed - 140) / 6);
 
     if (difficulty === 'expert') {
-      return base + Math.floor(Math.max(0, elapsed - 90) / 9) + Math.floor(Math.max(0, elapsed - 145) / 7);
+      return base + Math.floor(Math.max(0, elapsed - 75) / 5) + Math.floor(Math.max(0, elapsed - 135) / 3.4) + Math.floor(Math.max(0, elapsed - 210) / 2.8);
     }
 
     if (difficulty === 'hard') {
-      return base + Math.floor(Math.max(0, elapsed - 100) / 12) + Math.floor(Math.max(0, elapsed - 160) / 10);
+      return base + Math.floor(Math.max(0, elapsed - 90) / 7) + Math.floor(Math.max(0, elapsed - 155) / 5.2);
     }
 
     return base;
+  }
+
+  getLateEnemyCapBonus(gameState) {
+    const elapsed = gameState?.elapsedTime ?? 0;
+
+    if (gameState?.selectedMode === 'zero') {
+      return Math.floor(Math.max(0, elapsed - 90) / 4) + Math.floor(Math.max(0, elapsed - 210) / 2.8);
+    }
+
+    if (gameState?.selectedMode === 'endless') {
+      return Math.floor(Math.max(0, elapsed - 180) / 5) + Math.floor(Math.max(0, elapsed - 420) / 3.1) + Math.floor(Math.max(0, elapsed - 720) / 2.4);
+    }
+
+    if (gameState?.selectedDifficulty === 'expert') {
+      return Math.floor(Math.max(0, elapsed - 95) / 6) + Math.floor(Math.max(0, elapsed - 170) / 4.2);
+    }
+
+    if (gameState?.selectedDifficulty === 'hard') {
+      return Math.floor(Math.max(0, elapsed - 115) / 8) + Math.floor(Math.max(0, elapsed - 190) / 6.5);
+    }
+
+    return 0;
+  }
+
+  getEnemyLevel(gameState) {
+    const elapsed = gameState?.elapsedTime ?? 0;
+    const difficulty = gameState?.selectedDifficulty ?? 'normal';
+
+    let level = 1;
+
+    if (elapsed >= 65) level += 1;
+    if (elapsed >= 125) level += 1;
+    if (elapsed >= 190) level += 1;
+
+    if (difficulty === 'hard') {
+      if (elapsed >= 105) level += 1;
+      if (elapsed >= 175) level += 1;
+      if (elapsed >= 245) level += 1;
+    } else if (difficulty === 'expert') {
+      if (elapsed >= 85) level += 1;
+      if (elapsed >= 135) level += 1;
+      if (elapsed >= 190) level += 1;
+      if (elapsed >= 250) level += 1;
+    }
+
+    if (gameState?.selectedMode === 'zero') {
+      level += 2;
+      if (elapsed >= 105) level += 1;
+      if (elapsed >= 170) level += 1;
+      if (elapsed >= 235) level += 1;
+      if (elapsed >= 315) level += 2;
+    } else if (gameState?.selectedMode === 'endless') {
+      if (elapsed >= 180) level += 1;
+      if (elapsed >= 300) level += 1;
+      if (elapsed >= 450) level += 1;
+      if (elapsed >= 600) level += 2;
+      if (elapsed >= 780) level += 2;
+    }
+
+    return Math.max(1, Math.min(12, level));
+  }
+
+  getEnemyLevelScale(level = 1) {
+    const bonusLevel = Math.max(0, level - 1);
+    const lateBonus = Math.max(0, level - 5);
+
+    return {
+      hp: 1 + bonusLevel * 0.13 + lateBonus * 0.055,
+      damage: 1 + bonusLevel * 0.12 + lateBonus * 0.065,
+      speed: 1 + Math.min(0.52, bonusLevel * 0.035 + lateBonus * 0.018),
+    };
   }
 
   getModeScaling(gameState) {
     if (gameState?.selectedMode === 'zero') {
       const elapsed = gameState.elapsedTime ?? 0;
       const midPressure = Math.min(0.48, Math.max(0, elapsed - 95) / 310);
-      const latePressure = Math.min(0.82, Math.max(0, elapsed - 185) / 320);
-      const finalPressure = Math.min(0.36, Math.max(0, elapsed - 285) / 240);
+      const latePressure = Math.min(1.15, Math.max(0, elapsed - 170) / 230);
+      const finalPressure = Math.min(0.78, Math.max(0, elapsed - 265) / 170);
       const pressure = midPressure + latePressure + finalPressure;
 
       return {
-        hp: ZERO_SCALING_CONFIG.enemyHp + pressure,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.72,
-        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 1.16,
-        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 24),
-        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.16,
-        exp: 1.24,
+        hp: ZERO_SCALING_CONFIG.enemyHp + pressure * 1.12,
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.96,
+        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 1.95,
+        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 42),
+        eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.22,
+        exp: 1.06,
         score: 1.35,
       };
     }
@@ -123,20 +202,20 @@ export class SpawnSystem {
     if (gameState?.selectedMode !== 'endless') {
       const difficulty = getDifficultyConfig(gameState?.selectedDifficulty);
       const elapsed = (gameState?.elapsedTime ?? 0) + (difficulty.timeAdvance ?? 0);
-      const latePressure = Math.min(0.34, Math.max(0, elapsed - 115) / 420);
-      const finalPressure = Math.min(0.22, Math.max(0, elapsed - 210) / 420);
+      const latePressure = Math.min(0.72, Math.max(0, elapsed - 105) / 260);
+      const finalPressure = Math.min(0.58, Math.max(0, elapsed - 190) / 240);
       const difficultyPressure = gameState?.selectedDifficulty === 'expert'
-        ? 1.42
+        ? 2.35
         : gameState?.selectedDifficulty === 'hard'
-          ? 1.1
+          ? 1.72
           : 0.48;
       const pressure = (latePressure + finalPressure) * difficultyPressure;
 
       return {
-        hp: 0.9 + pressure * 0.24,
-        damage: 0.82 + pressure * 0.62,
-        spawnRate: 1 + pressure * 0.34,
-        maxEnemyBonus: Math.floor(pressure * 10),
+        hp: 0.9 + pressure * 0.34,
+        damage: 0.82 + pressure * 0.78,
+        spawnRate: 1 + pressure * 0.78,
+        maxEnemyBonus: Math.floor(pressure * 22),
         eliteBonus: pressure * 0.05,
         exp: 1,
         score: 1,
@@ -153,15 +232,15 @@ export class SpawnSystem {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(1.28, overtime / 560);
+    const longRunBonus = Math.min(2.15, overtime / 420);
 
     return {
-      hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.72,
-      spawnRate: phase.spawnRate + longRunBonus * 1.05,
-      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 22),
+      hp: phase.hp + longRunBonus * 1.15,
+      damage: phase.damage + longRunBonus * 0.95,
+      spawnRate: phase.spawnRate + longRunBonus * 1.85,
+      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 44),
       eliteBonus: phase.eliteBonus + longRunBonus * 0.05,
-      exp: 1 + Math.min(0.28, elapsed / 900),
+      exp: 0.98 + Math.min(0.12, elapsed / 1400),
       score: 1 + Math.min(0.5, elapsed / 720),
     };
   }
@@ -170,23 +249,39 @@ export class SpawnSystem {
     const elapsed = gameState?.elapsedTime ?? 0;
 
     if (gameState?.selectedMode === 'zero') {
+      if (elapsed >= 320) {
+        return 0.26;
+      }
+
       if (elapsed >= 250) {
-        return 0.44;
+        return 0.32;
       }
 
       if (elapsed >= 165) {
-        return 0.5;
+        return 0.38;
       }
     }
 
     if (gameState?.selectedMode === 'endless') {
+      if (elapsed >= 720) {
+        return 0.24;
+      }
+
       if (elapsed >= 600) {
-        return 0.46;
+        return 0.3;
       }
 
       if (elapsed >= 360) {
-        return 0.52;
+        return 0.36;
       }
+    }
+
+    if (gameState?.selectedDifficulty === 'expert' && elapsed >= 180) {
+      return 0.34;
+    }
+
+    if (gameState?.selectedDifficulty === 'hard' && elapsed >= 200) {
+      return 0.42;
     }
 
     return 0.58;

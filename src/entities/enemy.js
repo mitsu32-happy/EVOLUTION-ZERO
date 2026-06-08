@@ -197,18 +197,26 @@ const ENEMY_TYPES = {
   },
 };
 
-function getEnemyStrengthDisplay(expReward = 1) {
-  const level = Math.max(1, Math.min(4, Math.round(expReward)));
+function getEnemyStrengthDisplay(enemyLevel = 1) {
+  const level = Math.max(1, Math.min(12, Math.round(enemyLevel)));
   const colors = {
     1: 0xa9ff55,
     2: 0x35d7ff,
     3: 0xffc94d,
     4: 0xff6f4d,
+    5: 0xff5a6f,
+    6: 0xff38b8,
+    7: 0xd86cff,
+    8: 0xb9f8ff,
+    9: 0xffffff,
+    10: 0xffffff,
+    11: 0xffffff,
+    12: 0xffffff,
   };
 
   return {
     label: `Lv${level}`,
-    color: colors[level] ?? colors[1],
+    color: colors[level] ?? colors[12],
   };
 }
 
@@ -221,8 +229,10 @@ export class Enemy {
     assetKey = null,
     hpMultiplier = 1,
     damageMultiplier = 1,
+    speedMultiplier = 1,
     expMultiplier = 1,
     scoreMultiplier = 1,
+    enemyLevel = 1,
   }) {
     const type = ENEMY_TYPES[enemyType] ?? ENEMY_TYPES.swarm;
 
@@ -247,12 +257,13 @@ export class Enemy {
     this.velocity = { x: 0, y: 0 };
     this.enemyType = enemyType;
     this.radius = type.radius;
-    this.speed = type.speed;
+    this.enemyLevel = Math.max(1, Math.min(12, Math.round(enemyLevel)));
+    this.speed = Math.round(type.speed * speedMultiplier);
     this.maxHp = Math.max(1, Math.round(type.maxHp * hpMultiplier));
     this.hp = this.maxHp;
     this.damage = Math.max(1, Math.round(type.damage * damageMultiplier));
     this.expReward = Math.max(1, Math.round(type.expReward * expMultiplier));
-    this.strengthDisplay = getEnemyStrengthDisplay(this.expReward);
+    this.strengthDisplay = getEnemyStrengthDisplay(this.enemyLevel);
     this.displayLabel = this.strengthDisplay.label;
     this.labelColor = this.strengthDisplay.color;
     this.scoreReward = Math.max(1, Math.round(type.scoreReward * scoreMultiplier));
@@ -262,19 +273,19 @@ export class Enemy {
     this.headColor = type.headColor;
     this.accentColor = type.accentColor;
     this.eyeColor = type.eyeColor;
-    this.explosionDamage = type.explosionDamage ?? 0;
+    this.explosionDamage = type.explosionDamage ? Math.max(1, Math.round(type.explosionDamage * damageMultiplier)) : 0;
     this.explosionRadius = type.explosionRadius ?? 0;
-    this.poisonPoolDamage = type.poisonPoolDamage ?? 0;
+    this.poisonPoolDamage = type.poisonPoolDamage ? Math.max(1, Math.round(type.poisonPoolDamage * damageMultiplier)) : 0;
     this.poisonPoolRadius = type.poisonPoolRadius ?? 0;
     this.poisonPoolDuration = type.poisonPoolDuration ?? 0;
     this.poisonSlowMultiplier = type.poisonSlowMultiplier ?? 1;
     this.contactSlowMultiplier = type.contactSlowMultiplier ?? 1;
-    this.projectileDamage = type.projectileDamage ?? 0;
+    this.projectileDamage = type.projectileDamage ? Math.max(1, Math.round(type.projectileDamage * damageMultiplier)) : 0;
     this.projectileSpeed = type.projectileSpeed ?? 0;
     this.projectileRange = type.projectileRange ?? 0;
     this.projectileCooldown = type.projectileCooldown ?? 0;
     this.projectileTimer = this.projectileCooldown > 0 ? Math.random() * this.projectileCooldown : 0;
-    this.electroDamage = type.electroDamage ?? 0;
+    this.electroDamage = type.electroDamage ? Math.max(1, Math.round(type.electroDamage * damageMultiplier)) : 0;
     this.electroRadius = type.electroRadius ?? 0;
     this.electroCooldown = type.electroCooldown ?? 0;
     this.electroSlowMultiplier = type.electroSlowMultiplier ?? 1;

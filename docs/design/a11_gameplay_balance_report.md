@@ -1,5 +1,14 @@
 # MVP-A11 Gameplay Balance Report
 
+## MVP-A14.1 Follow-Up
+
+- A14.1 further raises late-game pressure because A11/A14 remained easier than intended in manual checks.
+- Enemy level now rises with elapsed time, difficulty, ZERO, and ENDLESS state.
+- Enemy level directly boosts HP, damage, and movement speed while leaving early NORMAL close to the previous feel.
+- Spawn rate and enemy cap growth were increased heavily for HARD, EXPERT, ZERO, and ENDLESS late phases.
+- EXP requirements now increase more after early levels so the larger enemy count does not over-accelerate player growth.
+- Boss HP, damage, attack range, line size, and cooldown pressure were strengthened, especially for ZERO and ENDLESS.
+
 Date: 2026-06-04
 
 ## Enemy Count And Pressure

@@ -345,7 +345,12 @@ export class GameState {
   }
 
   get expToNextLevel() {
-    return BASE_EXP_TO_LEVEL + (this.playerLevel - 1) * 4;
+    const levelIndex = Math.max(0, this.playerLevel - 1);
+    const midGameTax = Math.max(0, this.playerLevel - 5) * 2;
+    const lateGameTax = Math.max(0, this.playerLevel - 10) * 4;
+    const endgameTax = Math.max(0, this.playerLevel - 16) * 6;
+
+    return BASE_EXP_TO_LEVEL + levelIndex * 4 + midGameTax + lateGameTax + endgameTax;
   }
 
   get expProgress() {
