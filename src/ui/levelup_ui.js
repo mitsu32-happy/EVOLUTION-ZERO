@@ -499,9 +499,15 @@ export class LevelUpUi {
       return false;
     }
 
-    const visibleOptions = this.options.filter(Boolean);
+    const targets = this.getGamepadTargets();
+    if (targets.length === 0) {
+      return false;
+    }
+
+    this.gamepadFocusIndex = Math.max(0, Math.min(targets.length - 1, this.gamepadFocusIndex));
+
     if (actions.downPressed || actions.rightPressed) {
-      this.gamepadFocusIndex = Math.min(visibleOptions.length - 1, this.gamepadFocusIndex + 1);
+      this.gamepadFocusIndex = Math.min(targets.length - 1, this.gamepadFocusIndex + 1);
       this.updateGamepadFocus();
       return true;
     }
@@ -513,9 +519,11 @@ export class LevelUpUi {
     }
 
     if (actions.confirmPressed) {
-      const option = this.options[this.gamepadFocusIndex];
-      if (option) {
-        this.onSelect(option);
+      const target = targets[this.gamepadFocusIndex];
+      if (target?.type === 'reroll') {
+        this.reroll();
+      } else if (target?.option) {
+        this.onSelect(target.option);
       }
       return true;
     }
@@ -523,12 +531,30 @@ export class LevelUpUi {
     return false;
   }
 
+  getGamepadTargets() {
+    const optionTargets = this.options
+      .map((option, index) => (option ? { type: 'option', option, index } : null))
+      .filter(Boolean);
+
+    return [
+      ...optionTargets,
+      { type: 'reroll', index: 'reroll', disabled: this.rerolls <= 0 },
+    ];
+  }
+
   updateGamepadFocus() {
+    const targets = this.getGamepadTargets();
+    const focused = targets[Math.max(0, Math.min(targets.length - 1, this.gamepadFocusIndex))];
+
     this.cards.forEach((card, index) => {
-      const selected = index === this.gamepadFocusIndex && Boolean(this.options[index]);
+      const selected = focused?.type === 'option' && focused.index === index && Boolean(this.options[index]);
       card.view.alpha = selected ? 1 : 0.86;
       card.view.scale.set(selected ? 1.012 : 1);
     });
+
+    const rerollFocused = focused?.type === 'reroll';
+    this.rerollButton.alpha = rerollFocused ? 1 : (this.rerolls > 0 ? 0.88 : 0.46);
+    this.rerollButton.scale.set(rerollFocused ? 1.04 : 1);
   }
   createCards() {
     for (let index = 0; index < 3; index += 1) {

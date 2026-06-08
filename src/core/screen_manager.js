@@ -912,10 +912,10 @@ export class ScreenManager {
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
     this.saveManager.applyToGameState(this.gameState);
     this.applyDebugRunSelection();
+    await this.loadAssetGroups(['home'], 'ホームUI読み込み中', 'ロード中');
     this.ensureHomeScreen();
     this.homeScreen.setSaveData(this.saveManager.getData(), this.gameState);
     this.show('home');
-    this.assetLoader.loadGroups(['home']).catch(() => {});
     this.showTutorial('home');
   }
 

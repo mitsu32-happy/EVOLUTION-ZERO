@@ -76,24 +76,40 @@ export class SpawnSystem {
     const isEndgameMode = ['endless', 'zero'].includes(gameState.selectedMode);
 
     if (isEndgameMode) {
-      return Math.floor(elapsed / 9) + Math.floor(Math.max(0, elapsed - 180) / 10) + Math.floor(Math.max(0, elapsed - 300) / 8);
+      const zeroBonus = gameState.selectedMode === 'zero'
+        ? Math.floor(Math.max(0, elapsed - 180) / 6) + Math.floor(Math.max(0, elapsed - 270) / 5)
+        : 0;
+
+      return Math.floor(elapsed / 8) + Math.floor(Math.max(0, elapsed - 170) / 8) + Math.floor(Math.max(0, elapsed - 300) / 6) + zeroBonus;
     }
 
-    return Math.floor(elapsed / 14) + Math.floor(Math.max(0, elapsed - 80) / 13) + Math.floor(Math.max(0, elapsed - 140) / 10);
+    const difficulty = gameState?.selectedDifficulty ?? 'normal';
+    const base = Math.floor(elapsed / 14) + Math.floor(Math.max(0, elapsed - 80) / 13) + Math.floor(Math.max(0, elapsed - 140) / 10);
+
+    if (difficulty === 'expert') {
+      return base + Math.floor(Math.max(0, elapsed - 90) / 9) + Math.floor(Math.max(0, elapsed - 145) / 7);
+    }
+
+    if (difficulty === 'hard') {
+      return base + Math.floor(Math.max(0, elapsed - 100) / 12) + Math.floor(Math.max(0, elapsed - 160) / 10);
+    }
+
+    return base;
   }
 
   getModeScaling(gameState) {
     if (gameState?.selectedMode === 'zero') {
       const elapsed = gameState.elapsedTime ?? 0;
-      const midPressure = Math.min(0.4, Math.max(0, elapsed - 90) / 340);
-      const latePressure = Math.min(0.62, Math.max(0, elapsed - 175) / 360);
-      const pressure = midPressure + latePressure;
+      const midPressure = Math.min(0.48, Math.max(0, elapsed - 95) / 310);
+      const latePressure = Math.min(0.82, Math.max(0, elapsed - 185) / 320);
+      const finalPressure = Math.min(0.36, Math.max(0, elapsed - 285) / 240);
+      const pressure = midPressure + latePressure + finalPressure;
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.64,
-        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 1.02,
-        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 18),
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.72,
+        spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 1.16,
+        maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 24),
         eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.16,
         exp: 1.24,
         score: 1.35,
@@ -110,17 +126,17 @@ export class SpawnSystem {
       const latePressure = Math.min(0.34, Math.max(0, elapsed - 115) / 420);
       const finalPressure = Math.min(0.22, Math.max(0, elapsed - 210) / 420);
       const difficultyPressure = gameState?.selectedDifficulty === 'expert'
-        ? 1.16
+        ? 1.42
         : gameState?.selectedDifficulty === 'hard'
-          ? 0.92
+          ? 1.1
           : 0.48;
       const pressure = (latePressure + finalPressure) * difficultyPressure;
 
       return {
         hp: 0.9 + pressure * 0.24,
         damage: 0.82 + pressure * 0.62,
-        spawnRate: 1 + pressure * 0.22,
-        maxEnemyBonus: Math.floor(pressure * 7),
+        spawnRate: 1 + pressure * 0.34,
+        maxEnemyBonus: Math.floor(pressure * 10),
         eliteBonus: pressure * 0.05,
         exp: 1,
         score: 1,
@@ -137,13 +153,13 @@ export class SpawnSystem {
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(1.05, overtime / 620);
+    const longRunBonus = Math.min(1.28, overtime / 560);
 
     return {
       hp: phase.hp + longRunBonus,
-      damage: phase.damage + longRunBonus * 0.62,
-      spawnRate: phase.spawnRate + longRunBonus * 0.9,
-      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 16),
+      damage: phase.damage + longRunBonus * 0.72,
+      spawnRate: phase.spawnRate + longRunBonus * 1.05,
+      maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 22),
       eliteBonus: phase.eliteBonus + longRunBonus * 0.05,
       exp: 1 + Math.min(0.28, elapsed / 900),
       score: 1 + Math.min(0.5, elapsed / 720),

@@ -195,6 +195,9 @@ export const ASSET_KEYS = {
     volcanoZeroFinalWarningSheet: 'bossEffects.volcanoZeroFinalWarningSheet',
     volcanoZeroFinalAttack: 'bossEffects.volcanoZeroFinalAttack',
     volcanoZeroFinalAttackSheet: 'bossEffects.volcanoZeroFinalAttackSheet',
+    bossDeathExplosionA14: 'bossEffects.bossDeathExplosionA14',
+    bossDeathShockwaveA14: 'bossEffects.bossDeathShockwaveA14',
+    zeroBossDeathCoreA14: 'bossEffects.zeroBossDeathCoreA14',
   },
   pickups: {
     expSmall: 'pickups.expSmall',
@@ -2266,6 +2269,18 @@ export const ASSET_MANIFEST = {
     jungleChargeWarning: {
       path: 'assets/effects/boss/jungle_boss_charge_warning.png',
       note: 'MVP-138e rebuilt clean jungle boss charge telegraph static fallback.',
+    },
+    bossDeathExplosionA14: {
+      path: 'assets/effects/boss/boss_death_explosion_a14.png',
+      note: 'MVP-A14 generated reusable boss death explosion VFX. Effect only; no boss body is included.',
+    },
+    bossDeathShockwaveA14: {
+      path: 'assets/effects/boss/boss_death_shockwave_a14.png',
+      note: 'MVP-A14 generated reusable boss death shockwave VFX. Effect only; no boss body is included.',
+    },
+    zeroBossDeathCoreA14: {
+      path: 'assets/effects/boss/zero_boss_death_core_a14.png',
+      note: 'MVP-A14 generated ZERO final boss death core VFX. ZERO finish effect only; no boss body is included.',
     },
     jungleChargeWarningSheet: {
       path: 'assets/effects/boss/jungle_boss_charge_warning_sheet.png',

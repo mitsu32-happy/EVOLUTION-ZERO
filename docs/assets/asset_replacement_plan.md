@@ -3590,3 +3590,18 @@ No new image/audio asset generation is required for this MVP.
 - Existing screen assets remain unchanged.
 - The overlay/cursor graphics use `eventMode = none` and do not block touch or mouse input.
 - Right-stick menu scrolling reuses existing wheel/scroll behavior; no scroll-specific raster asset was added.
+
+## MVP-A14 Boss Finish Effects
+
+- A14 adds generated effect-only boss finish assets:
+  - `public/assets/effects/boss/boss_death_explosion_a14.png`
+  - `public/assets/effects/boss/boss_death_shockwave_a14.png`
+  - `public/assets/effects/boss/zero_boss_death_core_a14.png`
+- These assets intentionally do not include a boss body, silhouette, or species-specific form.
+- The standard boss finish uses the explosion and shockwave assets.
+- ZERO final finish adds the ZERO core asset for a stronger climax.
+- Flash, shake, SE, and small runtime particles support the generated effect layer without becoming the main visual.
+- A first generated explosion candidate that included a boss-like body was rejected so the final assets stay reusable across all bosses.
+- QA/report artifacts:
+  - `docs/assets/a14_boss_death_contact.png`
+  - `docs/assets/a14_boss_death_report.json`

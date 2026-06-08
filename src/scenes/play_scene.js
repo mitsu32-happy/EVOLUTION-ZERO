@@ -287,6 +287,11 @@ export class PlayScene {
     this.vignette = new Graphics();
     this.damageFlash = new Graphics();
     this.bossDefeatFxLayer = new Graphics();
+    this.bossDefeatAssetLayer = new Container();
+    this.bossDeathExplosionSprite = new Sprite(Texture.EMPTY);
+    this.bossDeathShockwaveSprite = new Sprite(Texture.EMPTY);
+    this.zeroBossDeathCoreSprite = new Sprite(Texture.EMPTY);
+    this.bossDeathTextures = new Map();
     this.levelUpUi = new LevelUpUi({
       width,
       height,
@@ -548,6 +553,7 @@ export class PlayScene {
       this.vignette,
       this.damageFlash,
       this.bossDefeatFxLayer,
+      this.bossDefeatAssetLayer,
       this.uiLayer,
       this.resultUi.view,
       this.pauseUi.view,
@@ -580,6 +586,7 @@ export class PlayScene {
     this.createStageGimmicks();
     this.createBossWarningLayer();
     this.createZeroPhaseLayer();
+    this.createBossDeathEffectLayer();
     this.createEvolutionWarningLayer();
     this.uiLayer.addChild(this.hud.view);
     this.createGamepadNotice();
@@ -612,6 +619,19 @@ export class PlayScene {
     this.updateBossClearSequence(delta);
     this.updateZeroPhaseNotice(delta);
     this.ensureRunBgm();
+
+    if (this.bossClearSequence) {
+      this.player.setMoveInput({ x: 0, y: 0, power: 0 });
+      this.player.updateVisuals(delta * 0.28);
+      this.updatePickupBursts(delta);
+      this.updateDamageFlash(delta);
+      this.updateBossWarning(delta);
+      this.updateCamera(delta * 0.28);
+      this.updateMap(false);
+      this.updateJoystick();
+      this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+      return;
+    }
 
     if (this.isLevelUpSequenceActive()) {
       this.updateLevelUpSequence(delta);
@@ -2245,8 +2265,8 @@ export class PlayScene {
       && gimmick.age < (gimmick.warningDuration + gimmick.activeDuration)
     )).length;
     const overlapLimit = this.gameState.selectedMode === 'zero'
-      ? (boss.bossPhase === 'final' ? 2 : 1)
-      : 1;
+      ? ((boss.zeroPhase ?? 1) >= 3 ? 3 : 2)
+      : this.gameState.selectedDifficulty === 'expert' ? 2 : 1;
 
     if (activeBossHazardCount >= overlapLimit) {
       return;
@@ -2268,14 +2288,22 @@ export class PlayScene {
         continue;
       }
 
-      const count = Math.min(3, Math.max(1, config.count ?? 1));
+      const countLimit = this.gameState.selectedMode === 'zero'
+        ? ((boss.zeroPhase ?? 1) >= 3 ? 4 : 3)
+        : this.gameState.selectedDifficulty === 'expert' ? 3 : 2;
+      const count = Math.min(countLimit, Math.max(1, config.count ?? 1));
 
       for (let index = 0; index < count; index += 1) {
         this.spawnBossHazard(boss, attackKey, config, index);
       }
 
-      boss.bossHazardTimers[attackKey] = config.cooldown ?? 8;
-      boss.bossHazardRecoveryTimer = this.gameState.selectedMode === 'zero' ? 0.55 : 0.75;
+      const cooldownPressure = this.gameState.selectedMode === 'zero'
+        ? ((boss.zeroPhase ?? 1) >= 3 ? 0.78 : 0.86)
+        : this.gameState.selectedDifficulty === 'expert' ? 0.9 : 1;
+      boss.bossHazardTimers[attackKey] = (config.cooldown ?? 8) * cooldownPressure;
+      boss.bossHazardRecoveryTimer = this.gameState.selectedMode === 'zero'
+        ? ((boss.zeroPhase ?? 1) >= 3 ? 0.38 : 0.46)
+        : this.gameState.selectedDifficulty === 'expert' ? 0.58 : 0.75;
       break;
     }
   }
@@ -2595,11 +2623,27 @@ export class PlayScene {
       return ENDLESS_SCALING_CONFIG.bossInterval;
     }
 
+    if (this.gameState.selectedDifficulty === 'expert') {
+      return 86;
+    }
+
+    if (this.gameState.selectedDifficulty === 'hard') {
+      return 74;
+    }
+
     return 60;
   }
 
   getBossSpawnInterval() {
     if (this.gameState.selectedMode !== 'endless') {
+      if (this.gameState.selectedDifficulty === 'expert') {
+        return 122;
+      }
+
+      if (this.gameState.selectedDifficulty === 'hard') {
+        return 106;
+      }
+
       return 90;
     }
 
@@ -2684,6 +2728,18 @@ export class PlayScene {
         damageMultiplier: typeof attack.damageMultiplier === 'number'
           ? Number((attack.damageMultiplier * (1 + (damageScale - 1) * 0.55)).toFixed(3))
           : attack.damageMultiplier,
+        cooldown: typeof attack.cooldown === 'number'
+          ? Number((attack.cooldown * Math.max(0.72, 1 - (damageScale - 1) * 0.12)).toFixed(2))
+          : attack.cooldown,
+        radius: typeof attack.radius === 'number'
+          ? Math.round(attack.radius * (1 + (damageScale - 1) * 0.14))
+          : attack.radius,
+        lineLength: typeof attack.lineLength === 'number'
+          ? Math.round(attack.lineLength * (1 + (damageScale - 1) * 0.08))
+          : attack.lineLength,
+        lineWidth: typeof attack.lineWidth === 'number'
+          ? Math.round(attack.lineWidth * (1 + (damageScale - 1) * 0.12))
+          : attack.lineWidth,
       }];
     }));
   }
@@ -3154,17 +3210,21 @@ export class PlayScene {
       return;
     }
 
+    this.loadBossDeathEffectAssets();
+    this.hideBossDeathSprites();
     this.clearInput();
     this.bossClearSequence = {
       age: 0,
-      duration: zeroFinal ? 0.72 : 0.48,
+      duration: zeroFinal ? 3.1 : 2.25,
       bossX: boss.position.x,
       bossY: boss.position.y,
-      radius: Math.max(72, (boss.radius ?? 54) * (zeroFinal ? 2.1 : 1.65)),
+      radius: Math.max(88, (boss.radius ?? 54) * (zeroFinal ? 2.8 : 2.05)),
       zeroFinal,
       completed: false,
+      burstPulse: 0,
     };
-    this.triggerScreenShake(zeroFinal ? 9.2 : 6.4);
+    this.damageFlashTimer = Math.max(this.damageFlashTimer, zeroFinal ? 0.42 : 0.28);
+    this.triggerScreenShake(zeroFinal ? 11.4 : 7.2);
   }
 
   updateBossClearSequence(delta) {
@@ -3172,6 +3232,7 @@ export class PlayScene {
       if (this.bossDefeatFxLayer) {
         this.bossDefeatFxLayer.clear();
       }
+      this.hideBossDeathSprites();
       return;
     }
 
@@ -3179,24 +3240,67 @@ export class PlayScene {
     sequence.age += delta;
     const progress = Math.min(1, sequence.age / sequence.duration);
     const fade = 1 - progress;
+    const pulse = Math.sin(progress * Math.PI * (sequence.zeroFinal ? 7 : 5));
+    const corePulse = 0.72 + Math.max(0, pulse) * 0.34;
     const screenPoint = this.worldToScreenPoint(sequence.bossX, sequence.bossY);
     const radius = sequence.radius * (0.55 + progress * (sequence.zeroFinal ? 1.45 : 1.05));
-    const flashAlpha = (sequence.zeroFinal ? 0.26 : 0.18) * fade;
+    const flashAlpha = (sequence.zeroFinal ? 0.32 : 0.22) * fade;
+    const fragmentCount = sequence.zeroFinal ? 9 : 6;
+
+    const explosionTexture = this.bossDeathTextures.get('explosion');
+    const shockwaveTexture = this.bossDeathTextures.get('shockwave');
+    const zeroCoreTexture = this.bossDeathTextures.get('zeroCore');
+    const shockwaveScale = this.getBossDeathTextureScale(shockwaveTexture, radius * (1.15 + progress * 1.05));
+    const explosionPulse = 0.82 + Math.sin(progress * Math.PI) * 0.28;
+    const explosionScale = this.getBossDeathTextureScale(explosionTexture, radius * (sequence.zeroFinal ? 1.46 : 1.32) * explosionPulse);
+    const coreScale = this.getBossDeathTextureScale(zeroCoreTexture, radius * 0.92 * corePulse);
+
+    this.applyBossDeathSprite(this.bossDeathShockwaveSprite, shockwaveTexture, screenPoint, {
+      scale: shockwaveScale,
+      alpha: (sequence.zeroFinal ? 0.88 : 0.76) * fade,
+      rotation: progress * (sequence.zeroFinal ? 0.28 : 0.18),
+    });
+    this.applyBossDeathSprite(this.bossDeathExplosionSprite, explosionTexture, screenPoint, {
+      scale: explosionScale,
+      alpha: Math.min(1, (sequence.zeroFinal ? 0.9 : 0.82) * Math.min(1, fade + 0.24)),
+      rotation: -progress * 0.18,
+    });
+    this.applyBossDeathSprite(this.zeroBossDeathCoreSprite, sequence.zeroFinal ? zeroCoreTexture : null, screenPoint, {
+      scale: coreScale,
+      alpha: sequence.zeroFinal ? 0.86 * fade : 0,
+      rotation: progress * 0.42,
+    });
+
+    this.bossDefeatFxLayer.clear()
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: sequence.zeroFinal ? 0xb9f8ff : 0xfff0b0, alpha: flashAlpha });
+
+    for (let index = 0; index < fragmentCount; index += 1) {
+      const angle = (Math.PI * 2 * index) / fragmentCount + progress * (sequence.zeroFinal ? 1.6 : 0.9);
+      const distance = radius * (0.18 + progress * (sequence.zeroFinal ? 0.72 : 0.54));
+      const x = screenPoint.x + Math.cos(angle) * distance;
+      const y = screenPoint.y + Math.sin(angle) * distance;
+      const size = Math.max(2, (sequence.zeroFinal ? 8 : 6) * fade);
+
+      this.bossDefeatFxLayer
+        .circle(x, y, size)
+        .fill({ color: sequence.zeroFinal ? 0xd7fbff : 0xffd36b, alpha: 0.62 * fade });
+    }
 
     this.bossDefeatFxLayer
-      .clear()
-      .rect(0, 0, this.width, this.height)
-      .fill({ color: sequence.zeroFinal ? 0xb9f8ff : 0xfff0b0, alpha: flashAlpha })
       .circle(screenPoint.x, screenPoint.y, radius)
-      .stroke({ color: sequence.zeroFinal ? 0x9df6ff : 0xffd36b, width: sequence.zeroFinal ? 7 : 5, alpha: 0.84 * fade })
+      .stroke({ color: sequence.zeroFinal ? 0x9df6ff : 0xffd36b, width: sequence.zeroFinal ? 9 : 6, alpha: 0.9 * fade })
       .circle(screenPoint.x, screenPoint.y, radius * 0.58)
-      .stroke({ color: 0xffffff, width: sequence.zeroFinal ? 3.4 : 2.4, alpha: 0.68 * fade })
-      .circle(screenPoint.x, screenPoint.y, Math.max(18, radius * 0.2))
-      .fill({ color: sequence.zeroFinal ? 0x143d54 : 0x4c1f0a, alpha: 0.28 * fade });
+      .stroke({ color: 0xffffff, width: sequence.zeroFinal ? 4.4 : 3.1, alpha: 0.72 * fade })
+      .circle(screenPoint.x, screenPoint.y, Math.max(22, radius * 0.22 * corePulse))
+      .fill({ color: sequence.zeroFinal ? 0x143d54 : 0x4c1f0a, alpha: 0.36 * fade })
+      .circle(screenPoint.x, screenPoint.y, Math.max(10, radius * 0.09 * corePulse))
+      .fill({ color: sequence.zeroFinal ? 0xe8fbff : 0xfff0b0, alpha: 0.56 * fade });
 
     if (progress >= 1 && !sequence.completed) {
       sequence.completed = true;
       this.bossDefeatFxLayer.clear();
+      this.hideBossDeathSprites();
       this.bossClearSequence = null;
       if (sequence.zeroFinal) {
         this.completeZeroRun();
@@ -3823,7 +3927,7 @@ export class PlayScene {
     }
 
     const missingRatio = 1 - (this.gameState.playerHp / Math.max(1, this.gameState.playerMaxHp));
-    const chance = Math.min(0.12, 0.035 + missingRatio * 0.08);
+    const chance = Math.min(0.16, 0.045 + missingRatio * 0.105);
 
     if (Math.random() > chance) {
       return;
@@ -3834,17 +3938,17 @@ export class PlayScene {
 
   getHealPickupAmount() {
     const difficultyMultiplier = this.gameState.selectedDifficulty === 'expert'
-      ? 0.84
+      ? 0.94
       : this.gameState.selectedDifficulty === 'hard'
-        ? 0.92
+        ? 0.98
         : 1;
     const modeMultiplier = this.gameState.selectedMode === 'zero'
-      ? 0.82
+      ? 0.92
       : this.gameState.selectedMode === 'endless' && this.gameState.elapsedTime >= 360
-        ? 0.88
+        ? 0.94
         : 1;
 
-    return Math.max(12, Math.round(this.gameState.playerMaxHp * 0.18 * difficultyMultiplier * modeMultiplier));
+    return Math.max(14, Math.round(this.gameState.playerMaxHp * 0.22 * difficultyMultiplier * modeMultiplier));
   }
 
   spawnPickupBurst(x, y, value = 1, type = 'exp') {
@@ -4373,6 +4477,82 @@ export class PlayScene {
         .circle(x + 47, y + 30, 1.6)
         .fill({ color: 0xd8ff7d, alpha: 0.38 });
     }
+  }
+
+  createBossDeathEffectLayer() {
+    this.bossDefeatAssetLayer.eventMode = 'none';
+    [
+      this.bossDeathShockwaveSprite,
+      this.bossDeathExplosionSprite,
+      this.zeroBossDeathCoreSprite,
+    ].forEach((sprite) => {
+      sprite.anchor.set(0.5);
+      sprite.visible = false;
+      sprite.alpha = 0;
+      sprite.eventMode = 'none';
+      this.bossDefeatAssetLayer.addChild(sprite);
+    });
+
+    this.loadBossDeathEffectAssets();
+  }
+
+  loadBossDeathEffectAssets() {
+    [
+      ['explosion', ASSET_KEYS.bossEffects?.bossDeathExplosionA14],
+      ['shockwave', ASSET_KEYS.bossEffects?.bossDeathShockwaveA14],
+      ['zeroCore', ASSET_KEYS.bossEffects?.zeroBossDeathCoreA14],
+    ].forEach(([name, key]) => {
+      if (!key || this.bossDeathTextures.has(name)) {
+        return;
+      }
+
+      this.assetLoader?.load(key).then((texture) => {
+        if (texture && !texture.destroyed) {
+          this.bossDeathTextures.set(name, texture);
+        }
+      }).catch(() => {});
+    });
+  }
+
+  getBossDeathTextureScale(texture, targetSize) {
+    if (!texture || texture === Texture.EMPTY) {
+      return 1;
+    }
+
+    const maxDimension = Math.max(1, texture.width ?? 1, texture.height ?? 1);
+    return Math.max(0.08, targetSize / maxDimension);
+  }
+
+  applyBossDeathSprite(sprite, texture, position, { scale = 1, alpha = 1, rotation = 0 } = {}) {
+    if (!sprite) {
+      return;
+    }
+
+    if (!texture || texture === Texture.EMPTY || alpha <= 0) {
+      sprite.visible = false;
+      sprite.alpha = 0;
+      return;
+    }
+
+    sprite.texture = texture;
+    sprite.position.set(position.x, position.y);
+    sprite.scale.set(scale);
+    sprite.rotation = rotation;
+    sprite.alpha = Math.max(0, Math.min(1, alpha));
+    sprite.visible = true;
+  }
+
+  hideBossDeathSprites() {
+    [
+      this.bossDeathShockwaveSprite,
+      this.bossDeathExplosionSprite,
+      this.zeroBossDeathCoreSprite,
+    ].forEach((sprite) => {
+      if (sprite) {
+        sprite.visible = false;
+        sprite.alpha = 0;
+      }
+    });
   }
 
   createJoystick() {
@@ -5071,6 +5251,7 @@ export class PlayScene {
     this.resultSoundPlayed = false;
     this.bossClearSequence = null;
     this.bossDefeatFxLayer?.clear();
+    this.hideBossDeathSprites();
     this.pickupModifiers = {
       magnetRadiusMultiplier: 1,
       pullMultiplier: 1,

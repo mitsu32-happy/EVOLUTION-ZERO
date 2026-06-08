@@ -1,0 +1,51 @@
+{
+  "mvp": "A14",
+  "createdAt": "2026-06-08",
+  "scope": "Boss defeat presentation and gameplay feel improvements",
+  "assetPolicy": "Generated raster assets are effect-only. No boss body, silhouette, or species-specific form is included so the same assets can be reused across all bosses.",
+  "newRasterAssets": [
+    {
+      "name": "boss_death_explosion_a14",
+      "path": "public/assets/effects/boss/boss_death_explosion_a14.png",
+      "usage": "Primary standard/zero boss finish explosion layer",
+      "adopted": true
+    },
+    {
+      "name": "boss_death_shockwave_a14",
+      "path": "public/assets/effects/boss/boss_death_shockwave_a14.png",
+      "usage": "Expanding shockwave layer for all boss finishes",
+      "adopted": true
+    },
+    {
+      "name": "zero_boss_death_core_a14",
+      "path": "public/assets/effects/boss/zero_boss_death_core_a14.png",
+      "usage": "ZERO final finish core pulse layer",
+      "adopted": true
+    }
+  ],
+  "rejectedAssets": [
+    {
+      "name": "initial_boss_death_explosion_candidate",
+      "reason": "Contained a boss-like body shape, so it was rejected to keep the effect reusable for every boss."
+    }
+  ],
+  "runtimeEffects": [
+    {
+      "name": "standardBossFinish",
+      "durationSeconds": 2.25,
+      "features": ["boss_defeat_se", "generated_explosion", "generated_shockwave", "screen_flash", "screen_shake", "energy_fragments"]
+    },
+    {
+      "name": "zeroFinalBossFinish",
+      "durationSeconds": 3.1,
+      "features": ["boss_defeat_se", "generated_explosion", "generated_shockwave", "generated_zero_core", "stronger_screen_flash", "stronger_screen_shake", "energy_fragments"]
+    }
+  ],
+  "qaTargets": [
+    "normal_clear_boss",
+    "hard_boss_pressure",
+    "expert_boss_pressure",
+    "zero_final_clear",
+    "result_transition_after_finish"
+  ]
+}

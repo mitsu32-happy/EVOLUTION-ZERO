@@ -768,3 +768,11 @@ The tuning target is not instant death. The goal is that late mistakes matter an
 - Boss hazard damage now follows boss damage scaling instead of relying only on base contact damage.
 - Heal pickups are slightly less generous in high-pressure contexts.
 - Early NORMAL pacing remains the baseline for accessibility.
+## MVP-A14 Difficulty Pressure
+
+- NORMAL remains the baseline and is not changed by A14.
+- HARD boss appearance is slightly delayed, then late enemy pressure ramps more strongly after the middle of a run.
+- EXPERT boss appearance is delayed further and late pressure rises more sharply than HARD.
+- ENDLESS raises late and overtime enemy caps/spawn pressure to reduce indefinite survival.
+- ZERO boss phases appear later in normal runs, but ZERO mid/late pressure, boss damage, and hazard overlap are stronger.
+- Boss hazards continue to use warning guide -> windup -> attack; A14 does not add unavoidable instant hits.

@@ -152,3 +152,12 @@ See:
 - ZERO enemy damage, late spawn pressure, enemy cap, and boss scaling are increased, with most extra pressure arriving after the opening.
 - Boss damage scaling now also affects explicit boss attack entries such as hazard damage and melee multipliers.
 - Heal pickup value is slightly reduced in HARD, EXPERT, ZERO, and ENDLESS late runs while NORMAL early recovery remains close to the previous value.
+## MVP-A14 Gameplay Feel Follow-Up
+
+- NORMAL remains unchanged.
+- HARD and EXPERT keep early爽快感 but add stronger late enemy caps, late spawn pressure, and boss damage.
+- Boss spawn timing is later on HARD/EXPERT so players have more growth time before the fight.
+- Boss hazard scaling now also tightens cooldowns and grows radius/line dimensions when damage scaling is high.
+- ZERO boss timing is later, but ZERO mid/late enemy pressure, enemy caps, and boss scaling are stronger.
+- Heal pickup amount and drop chance are partially restored to offset stronger pressure.
+- Boss defeat now has a longer finish sequence before result transition: about 2.25s for standard clear and 3.1s for ZERO final.
