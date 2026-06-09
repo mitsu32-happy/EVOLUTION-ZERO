@@ -1744,6 +1744,10 @@ export class PlayScene {
   }
 
   updateAdaptationSynergyHud() {
+    if (!this.adaptationSynergyHudText || !this.adaptationSynergyHudBg) {
+      return;
+    }
+
     const text = getAdaptationSynergyHudText(this.gameState?.adaptationSynergy);
     this.adaptationSynergyHudText.text = text;
     const visible = Boolean(text);

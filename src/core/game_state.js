@@ -189,6 +189,18 @@ export class GameState {
   }
 
   detectAdaptationSynergies(tags = ADAPTATION_SYNERGY_TAGS) {
+    if (!this.adaptationSynergy) {
+      this.adaptationSynergy = {
+        speed: 0,
+        hunting: 0,
+        attack: 0,
+      };
+    }
+
+    if (!this.adaptationSynergyQueue) {
+      this.adaptationSynergyQueue = [];
+    }
+
     tags.forEach((tag) => {
       if (!ADAPTATION_SYNERGY_TAGS.includes(tag)) {
         return;

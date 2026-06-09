@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'hotfix-play-launch-a15-1-2026-06-09',
+    date: '2026/06/09',
+    category: '修正',
+    title: '出撃開始できない不具合を修正しました',
+    isImportant: true,
+    body: [
+      '今回の修正内容',
+      '・出撃開始時にプレイ画面へ進めない場合がある不具合を修正しました。',
+      '・適応シナジー表示の初期化処理を調整しました。',
+      '・既存セーブでも安全に出撃できるよう補完処理を追加しました。',
+    ],
+  },
+  {
     id: 'adaptation-synergy-a15-2026-06-09',
     date: '2026/06/09',
     category: '新機能',
