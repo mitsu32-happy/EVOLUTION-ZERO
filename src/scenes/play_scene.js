@@ -7,7 +7,7 @@ import {
   getAdaptationSynergyHudText,
   getAdaptationSynergyNoticeText,
 } from '../data/adaptation_synergy.js';
-import { getBodyResearchBonuses } from '../data/research.js';
+import { getAdaptationResearchBonuses, getBodyResearchBonuses, getStatUpgradeTheoryValue } from '../data/research.js';
 import { ENDLESS_SCALING_CONFIG, ZERO_SCALING_CONFIG, getDifficultyConfig, getDinoConfig, getStageBossConfig, getStageConfig, getStageGimmickConfig } from '../data/run_config.js';
 import { getEvolutionCandidate, getSkillById } from '../data/skills.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
@@ -896,6 +896,7 @@ export class PlayScene {
     this.refreshRunConfig();
     const research = this.saveManager?.getData().researchLevels ?? {};
     const bodyResearch = getBodyResearchBonuses(research);
+    const adaptationResearch = getAdaptationResearchBonuses(research);
 
     this.gameState.researchLevels = { ...research };
     this.gameState.playerMaxHp = this.dinoConfig.maxHp + bodyResearch.maxHpBonus;
@@ -913,6 +914,7 @@ export class PlayScene {
     this.combatSystem.applyResearchBonuses({
       attackDamageBonus: bodyResearch.legacyAttackDamageBonus,
       attackIntervalMultiplier: bodyResearch.attackIntervalMultiplier,
+      adaptationDamageMultiplier: adaptationResearch.adaptationSkillDamageMultiplier,
     });
     this.combatSystem.damage = Math.max(1, Math.round(this.combatSystem.damage * (bodyResearch.attackDamageMultiplier ?? 1)));
   }
@@ -1761,8 +1763,9 @@ export class PlayScene {
 
     const width = Math.max(92, Math.min(210, this.adaptationSynergyHudText.width + 24));
     const height = 28;
-    const x = 16;
-    const y = 126;
+    const branchActive = Boolean(this.gameState?.selectedEvolution);
+    const x = branchActive ? Math.max(16, this.width - width - 18) : 16;
+    const y = branchActive ? 132 : 126;
     this.adaptationSynergyHudBg
       .clear()
       .roundRect(x, y, width, height, 8)
@@ -3032,6 +3035,7 @@ export class PlayScene {
       }, scale);
 
       finalConfig.name = stageFinal.name;
+      finalConfig.maxHp = Math.max(1, Math.round(finalConfig.maxHp * 0.86));
       return this.applyDebugBossConfig(finalConfig);
     }
 
@@ -3167,6 +3171,7 @@ export class PlayScene {
           },
         }, scale);
 
+        secondConfig.maxHp = Math.max(1, Math.round(secondConfig.maxHp * 0.88));
         return this.applyDebugBossConfig(secondConfig);
       }
     }
@@ -4308,8 +4313,10 @@ export class PlayScene {
       return;
     }
 
+    const statUpgradeTheoryLevel = getAdaptationResearchBonuses(this.gameState.researchLevels).statUpgradeTheoryLevel;
+
     this.player.applyUpgrade(option.id, acquiredSkill.level);
-    this.combatSystem.applyUpgrade(option.id, acquiredSkill.level);
+    this.combatSystem.applyUpgrade(option.id, acquiredSkill.level, { statUpgradeTheoryLevel });
     this.combatSystem.applyAdaptationSkill?.(option, acquiredSkill.level);
     this.applyUtilitySkill(option.id, acquiredSkill.level);
     this.applyAdaptationSynergyState();
@@ -4352,19 +4359,25 @@ export class PlayScene {
 
   applyUtilitySkill(skillId, level) {
     if (skillId === 'hard_skin') {
-      const hpGain = 12 + level * 3;
+      const hpGain = getStatUpgradeTheoryValue(skillId, level, this.gameState.researchLevels).hpGain ?? 12 + level * 3;
 
       this.gameState.playerMaxHp += hpGain;
       this.gameState.playerHp = Math.min(this.gameState.playerMaxHp, this.gameState.playerHp + hpGain);
     }
 
+    if (skillId === 'move_speed_up') {
+      const extraMoveSpeedGain = getStatUpgradeTheoryValue(skillId, level, this.gameState.researchLevels).extraMoveSpeedGain ?? 0;
+      this.player.moveSpeed += extraMoveSpeedGain;
+    }
+
     if (skillId === 'exp_sense') {
       const baseMagnet = this.researchPickupModifiers?.magnetRadiusMultiplier ?? 1;
       const basePull = this.researchPickupModifiers?.pullMultiplier ?? 1;
+      const theoryValue = getStatUpgradeTheoryValue(skillId, level, this.gameState.researchLevels);
 
       this.pickupModifiers = {
-        magnetRadiusMultiplier: Math.max(this.pickupModifiers.magnetRadiusMultiplier, baseMagnet + level * 0.12),
-        pullMultiplier: Math.max(this.pickupModifiers.pullMultiplier, basePull + level * 0.08),
+        magnetRadiusMultiplier: Math.max(this.pickupModifiers.magnetRadiusMultiplier, baseMagnet + (theoryValue.magnetBonus ?? level * 0.12)),
+        pullMultiplier: Math.max(this.pickupModifiers.pullMultiplier, basePull + (theoryValue.pullBonus ?? level * 0.08)),
       };
     }
   }

@@ -3621,3 +3621,10 @@ No new image/audio asset generation is required for this MVP.
 - Synergy activation uses a runtime HUD notice with layered glow/stroke drawing and the existing `evolution_ready` SE.
 - The persistent synergy HUD uses compact runtime text (`高速Ⅱ`, `狩猟Ⅰ`, `攻撃Ⅱ`) so localization remains code-side.
 - Future art replacement candidate: a dedicated synergy notice panel and small synergy chips if the HUD needs stronger visual identity.
+
+## MVP-A15.2 Adaptation Research / Critical Feedback
+
+- No new raster assets were generated.
+- Synergy HUD overlap with BRANCH is handled by runtime positioning.
+- `CRITICAL` feedback is code-rendered in the existing damage number layer for adaptation-skill critical hits.
+- Adaptation Analysis and Adaptation Enhancement Theory use existing research card/icon assets.

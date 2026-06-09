@@ -206,15 +206,16 @@ export class GameState {
         return;
       }
 
-      const count = this.adaptationProgress[tag] ?? 0;
+      const count = this.getUniqueAdaptationSkillCount(tag);
       const nextTier = getAdaptationSynergyTier(count);
       const currentTier = this.adaptationSynergy[tag] ?? 0;
+
+      this.adaptationSynergy[tag] = nextTier;
 
       if (nextTier <= currentTier) {
         return;
       }
 
-      this.adaptationSynergy[tag] = nextTier;
       this.adaptationSynergyQueue.push({
         tag,
         tier: nextTier,
@@ -222,6 +223,24 @@ export class GameState {
         triggeredAt: this.elapsedTime,
       });
     });
+  }
+
+  getUniqueAdaptationSkillCount(tag) {
+    const uniqueIds = new Set();
+
+    Object.values(this.skills ?? {}).forEach((skill) => {
+      if (!skill || skill.level <= 0 || skill.countsAsAdaptation === false) {
+        return;
+      }
+
+      if (!skill.adaptationTags?.includes(tag)) {
+        return;
+      }
+
+      uniqueIds.add(skill.id);
+    });
+
+    return uniqueIds.size;
   }
 
   syncAdaptationSynergies() {

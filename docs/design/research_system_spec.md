@@ -261,3 +261,24 @@ MVP-086の反映対象:
 
 - ????????????Pt 420?????A01b????????
 - A01d????????????????unlockedDinos.spinosaurus???????????????????
+
+## MVP-A15.2 Adaptation Research
+
+- Added Adaptation Analysis I-V in the Adaptation Ability category.
+- Each completed Adaptation Analysis tier adds +5% adaptation-skill damage; the final tier total is +25%.
+- Added Adaptation Enhancement Theory I-III in the Adaptation Ability category.
+- Enhancement Theory raises stat upgrade card values for HP increase, attack power increase, move speed increase, and pickup range increase.
+- These research bonuses apply only to adaptation skills or level-up stat cards as described; normal attacks and ultimate attacks are not affected by Adaptation Analysis.
+- New research IDs are included in default research levels so existing saves receive safe default values.
+
+## MVP-A15.2 Research Category Correction
+
+- Adaptation Analysis I-V and Adaptation Enhancement Theory I-III are permanent upgrade research, so they live in Body Enhancement rather than Adaptation Ability unlocks.
+- These cards use the same DNA-only cost presentation as other Body Enhancement cards.
+- Runtime effect labels are intentionally short, such as `適応技 +15%` and `能力強化 +2`, to avoid text clipping in the card effect row.
+
+## MVP-A15.2 Research Card Consolidation
+
+- Adaptation Analysis is consolidated into one Body Enhancement card with max level 5.
+- Adaptation Enhancement Theory is consolidated into one Body Enhancement card with max level 3.
+- Both use the same `強化段階 current / max` presentation as other body upgrades.

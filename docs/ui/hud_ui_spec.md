@@ -349,3 +349,10 @@
 - The upper-left HUD remains fixed to the base dinosaur after evolution.
 - BRANCH remains responsible for evolved portrait/name display.
 - Player sprite sheet switching now includes triceratops ZERO and hides stale sheet art while the new sheet resolves, preventing the pre-evolution body from lingering during the branch transition.
+
+## MVP-A15.2 Adaptation Synergy HUD
+
+- The persistent adaptation synergy tag is lower priority than BRANCH, boss/ZERO notices, and boss HP.
+- When a BRANCH evolution is active, the synergy tag moves to the upper-right play area so it does not overlap the BRANCH card.
+- The tag remains compact runtime text; no new HUD raster asset is required for this pass.
+- Hunting synergy critical hits display `CRITICAL` through the adaptation-skill damage number layer.

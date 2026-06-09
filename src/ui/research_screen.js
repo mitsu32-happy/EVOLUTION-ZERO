@@ -52,7 +52,7 @@ const CATEGORY_Y = 218;
 const CATEGORY_TAB = { width: 68, height: 58, gap: 3 };
 const SUMMARY_PANEL = { x: 20, y: 286, width: 350, height: 62 };
 const CARD = { y: 350, height: 82, gap: 5 };
-const CARD_POOL_SIZE = 8;
+const CARD_POOL_SIZE = 18;
 const BODY_SCROLL_VIEW = { top: 350, bottom: 700 };
 const NOTICE_Y = 728;
 

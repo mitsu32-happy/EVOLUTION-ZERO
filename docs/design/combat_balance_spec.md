@@ -180,3 +180,11 @@ See:
 - Hunting synergy adds adaptation-skill critical hits: tier I critical rate 10%, tier II critical rate 20% with stronger critical damage.
 - Attack synergy affects adaptation skills only: tier I range x1.10, tier II range x1.20 and damage x1.15.
 - Normal attacks and ultimate attacks intentionally do not receive the adaptation-synergy damage/range/cooldown bonuses.
+
+## MVP-A15.2 Adaptation Synergy / ZERO Boss Tuning
+
+- Synergy tiers are now based on the number of different same-type adaptation skill IDs owned, not the total level or acquisition count.
+- Two different skills of the same type trigger tier I; three different skills trigger tier II. Leveling two skills repeatedly must not trigger tier II.
+- Hunting synergy critical hits now show `CRITICAL` in adaptation-skill damage numbers. Normal attacks and ultimate attacks remain outside this display path.
+- Research can raise adaptation-skill damage through Adaptation Analysis I-V, up to +25%.
+- ZERO phase 2 boss HP is reduced to 88% of the previous A14.1 value, and ZERO final boss HP is reduced to 86%; attack patterns, ranges, and damage pressure are unchanged.

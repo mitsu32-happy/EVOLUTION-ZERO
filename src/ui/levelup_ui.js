@@ -1,6 +1,7 @@
 ﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
 import { isAdaptationSkillUnlocked } from '../data/adaptation_skills.js';
 import { getAdaptationSynergyCardProgress } from '../data/adaptation_synergy.js';
+import { getStatUpgradeTheoryValue } from '../data/research.js';
 import { SKILLS } from '../data/skills.js';
 import { drawButtonFrame, drawPanel, UI_COLORS, toCssColor } from './ui_theme.js';
 import { resetIntroMotion, updateIntroMotion } from './ui_motion.js';
@@ -223,6 +224,29 @@ function getAdaptationHint(progress = {}) {
   return '選択可能な適応を表示中です';
 }
 
+function getUniqueAdaptationSkillCount(gameState, tag) {
+  if (!tag || tag === 'none') {
+    return 0;
+  }
+
+  if (typeof gameState?.getUniqueAdaptationSkillCount === 'function') {
+    return gameState.getUniqueAdaptationSkillCount(tag);
+  }
+
+  const uniqueIds = new Set();
+  Object.values(gameState?.skills ?? {}).forEach((skill) => {
+    if (!skill || skill.level <= 0 || skill.countsAsAdaptation === false) {
+      return;
+    }
+
+    if (skill.adaptationTags?.includes(tag)) {
+      uniqueIds.add(skill.id);
+    }
+  });
+
+  return uniqueIds.size;
+}
+
 function getUpgradePreview(skill, currentLevel, nextLevel) {
   const safePreviews = {
     afterimage_claw: nextLevel >= 4 ? '次: 斬撃数+1 / 範囲拡大' : nextLevel >= 2 ? '次: 斬撃数+1' : '次: 追加火力',
@@ -261,7 +285,7 @@ function formatSeconds(value) {
   return Number.isFinite(value) ? `${value.toFixed(1)}秒` : '-';
 }
 
-function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag, adaptationProgress }) {
+function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag, gameState }) {
   if (isFallbackReward) {
     return {
       type: '種別: 報酬',
@@ -272,10 +296,14 @@ function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStat
   }
 
   if (isStatUpgrade) {
+    const theoryValue = getStatUpgradeTheoryValue(option.id, nextLevel, gameState?.researchLevels);
+    const effectText = theoryValue.label ?? option.levelUpText ?? option.upgradeSummary ?? '基礎性能が上昇';
+    const theoryText = theoryValue.theoryLevel > 0 ? `研究補正 +${theoryValue.theoryLevel}` : '基礎ステータスを強化';
+
     return {
       type: '種別: 能力強化',
-      description: `効果: ${option.levelUpText ?? option.upgradeSummary ?? '基礎性能が上昇'}`,
-      tag: currentLevel > 0 ? `Lv${currentLevel} → ${nextLevel}` : '基礎ステータスを強化',
+      description: `効果: ${effectText}`,
+      tag: currentLevel > 0 ? `Lv${currentLevel} → ${nextLevel} / ${theoryText}` : theoryText,
       level: currentLevel >= option.maxLevel ? '最大' : currentLevel > 0 ? `強化 ${currentLevel}->${nextLevel}` : '新規',
     };
   }
@@ -285,7 +313,7 @@ function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStat
     ? Math.round(option.damage * (1 + Math.max(0, nextLevel - 1) * damageScale))
     : null;
   const range = formatRangeLabel(option.range ?? option.searchRange);
-  const count = adaptationProgress?.[primaryTag] ?? 0;
+  const count = getUniqueAdaptationSkillCount(gameState, primaryTag);
   const synergyProgress = getAdaptationSynergyCardProgress(primaryTag, count);
 
   return {
@@ -654,7 +682,7 @@ export class LevelUpUi {
         isFallbackReward,
         isStatUpgrade,
         primaryTag,
-        adaptationProgress: this.gameState?.adaptationProgress,
+        gameState: this.gameState,
       });
 
       if (frameTexture) {

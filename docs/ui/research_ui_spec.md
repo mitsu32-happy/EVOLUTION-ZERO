@@ -33,3 +33,21 @@ See also `docs/ui/dna_research_ui_spec.md` for the broader DNA research layout r
 - Research card descriptions are shortened to player-facing one-line explanations.
 - Development terms such as MVP notes and implementation-target hints must not appear in runtime research cards.
 - Unlock hints use short public-facing labels such as `今後解放予定`, `研究後に候補へ追加`, and `条件を満たすと表示`.
+## MVP-A15.2 Adaptation Research Cards
+
+- The Adaptation Ability tab includes Adaptation Analysis I-V and Adaptation Enhancement Theory I-III.
+- Card copy must stay short: Adaptation Analysis raises adaptation-skill damage, and Enhancement Theory raises stat upgrade cards.
+- Cards display DNA and ResearchPt costs through the existing research card UI and must support `研究済み`, `Pt不足`, and `研究する` states.
+- Runtime text must not expose internal IDs such as `adaptation_analysis_1` or `adaptation_theory_1`.
+
+## MVP-A15.2 Research Category Correction
+
+- Adaptation Analysis and Adaptation Enhancement Theory are displayed in the Body Enhancement list.
+- They use the same DNA icon + amount layout as existing body upgrade cards.
+- Effect text uses short labels (`適応技 +xx%`, `能力強化 +x`) so the card row does not clip.
+
+## MVP-A15.2 Research Card Consolidation
+
+- Adaptation Analysis appears as one Body Enhancement card with `強化段階 0 / 5` style progress.
+- Adaptation Enhancement Theory appears as one Body Enhancement card with `強化段階 0 / 3` style progress.
+- These cards use the existing DNA cost icon and number layout used by other body upgrades.
