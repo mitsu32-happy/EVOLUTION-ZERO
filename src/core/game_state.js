@@ -4,6 +4,10 @@
   getSkillById,
 } from '../data/skills.js';
 import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
+import {
+  ADAPTATION_SYNERGY_TAGS,
+  getAdaptationSynergyTier,
+} from '../data/adaptation_synergy.js';
 
 const BASE_EXP_TO_LEVEL = 6;
 const MAX_OWNED_SKILLS = 3;
@@ -75,6 +79,12 @@ export class GameState {
       hunting: 0,
       attack: 0,
     };
+    this.adaptationSynergy = {
+      speed: 0,
+      hunting: 0,
+      attack: 0,
+    };
+    this.adaptationSynergyQueue = [];
     this.evolutionCandidateDetected = false;
     this.evolutionCandidates = {};
     this.latestEvolutionCandidate = null;
@@ -170,11 +180,47 @@ export class GameState {
       skill.adaptationTags.forEach((tag) => {
         this.adaptationProgress[tag] = (this.adaptationProgress[tag] ?? 0) + 1;
       });
+      this.detectAdaptationSynergies(skill.adaptationTags);
       this.detectEvolutionCandidates(skill.adaptationTags);
       this.detectZeroEvolutionCandidate();
     }
 
     return this.skills[skillId];
+  }
+
+  detectAdaptationSynergies(tags = ADAPTATION_SYNERGY_TAGS) {
+    tags.forEach((tag) => {
+      if (!ADAPTATION_SYNERGY_TAGS.includes(tag)) {
+        return;
+      }
+
+      const count = this.adaptationProgress[tag] ?? 0;
+      const nextTier = getAdaptationSynergyTier(count);
+      const currentTier = this.adaptationSynergy[tag] ?? 0;
+
+      if (nextTier <= currentTier) {
+        return;
+      }
+
+      this.adaptationSynergy[tag] = nextTier;
+      this.adaptationSynergyQueue.push({
+        tag,
+        tier: nextTier,
+        count,
+        triggeredAt: this.elapsedTime,
+      });
+    });
+  }
+
+  syncAdaptationSynergies() {
+    this.detectAdaptationSynergies(ADAPTATION_SYNERGY_TAGS);
+  }
+
+  consumeAdaptationSynergyDetections() {
+    const detections = [...this.adaptationSynergyQueue];
+    this.adaptationSynergyQueue = [];
+
+    return detections;
   }
 
   detectEvolutionCandidates(tags) {

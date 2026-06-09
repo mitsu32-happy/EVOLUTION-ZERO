@@ -1,6 +1,7 @@
 import { Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { CollisionSystem } from './collision_system.js';
 import { getNormalAttackById, getNormalAttackForDino, NORMAL_ATTACK_HIT_SHAPES } from '../data/normal_attacks.js';
+import { getAdaptationSynergyEffects } from '../data/adaptation_synergy.js';
 
 export class CombatSystem {
   constructor({ assetLoader = null } = {}) {
@@ -28,8 +29,23 @@ export class CombatSystem {
     this.evolutionNormalAttackEffectKey = null;
     this.evolutionNormalAttackEffectId = null;
     this.adaptationDamageMultiplier = 1;
+    this.adaptationSynergy = {
+      speed: 0,
+      hunting: 0,
+      attack: 0,
+    };
+    this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
     this.adaptationSkillStates = new Map();
     this.projectiles = [];
+  }
+
+  setAdaptationSynergy(synergy = {}) {
+    this.adaptationSynergy = {
+      speed: synergy.speed ?? 0,
+      hunting: synergy.hunting ?? 0,
+      attack: synergy.attack ?? 0,
+    };
+    this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
   }
 
   applyUpgrade(upgradeId, level) {
@@ -130,6 +146,7 @@ export class CombatSystem {
     this.evolutionNormalAttackEffectKey = null;
     this.evolutionNormalAttackEffectId = null;
     this.adaptationDamageMultiplier = 1;
+    this.setAdaptationSynergy();
     this.adaptationSkillStates.clear();
     this.currentEnemies = null;
     this.effects.forEach((effect) => effect.view.destroy());
@@ -382,7 +399,12 @@ export class CombatSystem {
 
       if (result?.casted || result?.targets?.length > 0) {
         results.push(result);
-        state.timer = Math.max(0.26, (state.skill.cooldown ?? 3) * (1 - Math.max(0, state.level - 1) * 0.075));
+        state.timer = Math.max(
+          0.18,
+          (state.skill.cooldown ?? 3)
+            * (1 - Math.max(0, state.level - 1) * 0.075)
+            * this.getAdaptationCooldownMultiplier(),
+        );
       } else {
         state.timer = 0.6;
       }
@@ -393,6 +415,14 @@ export class CombatSystem {
     }
 
     return results.reduce((merged, result) => this.mergeCombatResults(result, merged), null);
+  }
+
+  getAdaptationCooldownMultiplier() {
+    return this.adaptationSynergyEffects?.cooldownMultiplier ?? 1;
+  }
+
+  getAdaptationRangeMultiplier() {
+    return this.adaptationSynergyEffects?.rangeMultiplier ?? 1;
   }
 
   performAdaptationSkill(state, player, enemies, effectLayer) {
@@ -439,10 +469,11 @@ export class CombatSystem {
     const facing = this.getPlayerForwardFacing(player);
     const visualTarget = this.createFacingTarget(player, facing, 150);
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const slashCount = level >= 5 ? 5 : level >= 3 ? 4 : level >= 2 ? 2 : 1;
     const attack = {
       attackType: NORMAL_ATTACK_HIT_SHAPES.ARC,
-      range: 132 + level * 18,
+      range: (132 + level * 18) * rangeMultiplier,
       angle: level >= 4 ? 112 : 88,
       maxTargets: 3 + slashCount + Math.floor(level / 2),
       originOffset: { x: 22, y: 0 },
@@ -459,8 +490,8 @@ export class CombatSystem {
       this.spawnAdaptationSpriteEffect(state, player, visualTarget, effectLayer, {
         facing,
         distanceRatio: 0.44 + index * 0.08,
-        width: 132 + level * 9,
-        height: 96 + level * 4,
+        width: (132 + level * 9) * rangeMultiplier,
+        height: (96 + level * 4) * rangeMultiplier,
         duration: 0.2 + index * 0.035,
         sideOffset: (index - (slashCount - 1) / 2) * 24,
         color: 0x35d7ff,
@@ -473,6 +504,7 @@ export class CombatSystem {
   performGaleBlade(state, player, enemies, effectLayer) {
     const facing = this.getPlayerForwardFacing(player);
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const bladeCount = level >= 5 ? 6 : level >= 3 ? 5 : level >= 2 ? 3 : 2;
     const directions = this.getSpreadDirections(facing, bladeCount, Math.PI * 0.74);
     const hitSet = new Set();
@@ -482,8 +514,8 @@ export class CombatSystem {
     directions.forEach((direction, bladeIndex) => {
       const attack = {
         attackType: NORMAL_ATTACK_HIT_SHAPES.RECTANGLE,
-        range: (state.skill.range ?? 190) + level * 16,
-        width: 46 + level * 8,
+        range: ((state.skill.range ?? 190) + level * 16) * rangeMultiplier,
+        width: (46 + level * 8) * rangeMultiplier,
         maxTargets: 2 + Math.floor(level / 2),
         originOffset: { x: 16, y: 0 },
       };
@@ -504,8 +536,8 @@ export class CombatSystem {
       this.spawnAdaptationSpriteEffect(state, player, visualTarget, effectLayer, {
         facing: direction,
         distanceRatio: 0.5,
-        width: 138 + level * 10,
-        height: 70 + level * 4,
+        width: (138 + level * 10) * rangeMultiplier,
+        height: (70 + level * 4) * rangeMultiplier,
         duration: 0.18 + bladeIndex * 0.025,
         color: 0x52e4ff,
       });
@@ -516,8 +548,9 @@ export class CombatSystem {
 
   performHomingFang(state, player, enemies, effectLayer) {
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const limit = level >= 5 ? 5 : level >= 3 ? 4 : level >= 2 ? 2 : 1;
-    const targets = this.findTargetsInRange(player, enemies, (state.skill.searchRange ?? 390) + level * 22, limit);
+    const targets = this.findTargetsInRange(player, enemies, ((state.skill.searchRange ?? 390) + level * 22) * rangeMultiplier, limit);
 
     if (targets.length === 0) {
       return null;
@@ -544,9 +577,10 @@ export class CombatSystem {
 
   performSenseSpike(state, player, enemies, effectLayer) {
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const trapCount = level >= 5 ? 10 : level >= 3 ? 7 : 4;
-    const trapRadius = 56 + level * 9;
-    const ringRadius = 112 + level * 15;
+    const trapRadius = (56 + level * 9) * rangeMultiplier;
+    const ringRadius = (112 + level * 15) * rangeMultiplier;
 
     for (let index = 0; index < trapCount; index += 1) {
       const angle = (Math.PI * 2 * index) / trapCount + this.effects.length * 0.17;
@@ -566,9 +600,10 @@ export class CombatSystem {
     const facing = this.getPlayerForwardFacing(player);
     const visualTarget = this.createFacingTarget(player, facing, 190);
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const attack = {
       attackType: NORMAL_ATTACK_HIT_SHAPES.CONE,
-      range: 186 + level * 23,
+      range: (186 + level * 23) * rangeMultiplier,
       angle: 78 + level * 7,
       maxTargets: 6 + Math.min(6, Math.floor(level * 0.9)),
       originOffset: { x: 26, y: 0 },
@@ -584,8 +619,8 @@ export class CombatSystem {
     this.spawnAdaptationSpriteEffect(state, player, visualTarget, effectLayer, {
       facing,
       distanceRatio: 0.54,
-      width: 156 + level * 12,
-      height: 110 + level * 7,
+      width: (156 + level * 12) * rangeMultiplier,
+      height: (110 + level * 7) * rangeMultiplier,
       duration: 0.3,
       color: 0xff6a3a,
     });
@@ -596,6 +631,7 @@ export class CombatSystem {
   performBurstFang(state, player, enemies, effectLayer) {
     const facing = this.getPlayerForwardFacing(player);
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const mineCount = level >= 5 ? 6 : level >= 3 ? 4 : 2;
 
     for (let index = 0; index < mineCount; index += 1) {
@@ -605,7 +641,7 @@ export class CombatSystem {
         x: player.position.x + facing.x * distance + -facing.y * side * 46,
         y: player.position.y + facing.y * distance + facing.x * side * 46,
         delay: 0.58 + index * 0.08,
-        radius: 70 + level * 11,
+        radius: (70 + level * 11) * rangeMultiplier,
       });
     }
 
@@ -614,7 +650,8 @@ export class CombatSystem {
 
   performAcceleratedBlades(state, player, enemies, effectLayer) {
     const level = state.level ?? 1;
-    const radius = (state.skill.range ?? 158) + level * 22;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
+    const radius = ((state.skill.range ?? 158) + level * 22) * rangeMultiplier;
     const limit = 6 + Math.min(6, level);
     const targets = this.findTargetsInRange(player, enemies, radius, limit);
 
@@ -625,8 +662,8 @@ export class CombatSystem {
     });
 
     this.spawnAdaptationAreaEffect(state, player, effectLayer, {
-      width: 206 + level * 12,
-      height: 206 + level * 12,
+      width: (206 + level * 12) * rangeMultiplier,
+      height: (206 + level * 12) * rangeMultiplier,
       duration: 0.5 + level * 0.07,
       color: 0x52e4ff,
       rotation: this.effects.length * 0.7,
@@ -637,8 +674,9 @@ export class CombatSystem {
 
   performPredatorMarking(state, player, enemies, effectLayer) {
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const limit = level >= 5 ? 5 : level >= 3 ? 4 : level >= 2 ? 2 : 1;
-    const targets = this.findTargetsInRange(player, enemies, (state.skill.searchRange ?? 390) + level * 18, limit);
+    const targets = this.findTargetsInRange(player, enemies, ((state.skill.searchRange ?? 390) + level * 18) * rangeMultiplier, limit);
 
     if (targets.length === 0) {
       return null;
@@ -649,8 +687,8 @@ export class CombatSystem {
       enemy.takeDamage(damage, { from: player.position, strength: 12 });
       this.spawnDamageNumber(effectLayer, enemy, damage, 0xffd36b, index * 8);
       this.spawnAdaptationSpriteEffect(state, player, enemy, effectLayer, {
-        width: 126 + level * 5,
-        height: 126 + level * 5,
+        width: (126 + level * 5) * rangeMultiplier,
+        height: (126 + level * 5) * rangeMultiplier,
         duration: 0.34,
         color: 0xffc94d,
       });
@@ -663,9 +701,10 @@ export class CombatSystem {
     const facing = this.getPlayerForwardFacing(player);
     const visualTarget = this.createFacingTarget(player, facing, 220);
     const level = state.level ?? 1;
+    const rangeMultiplier = this.getAdaptationRangeMultiplier();
     const attack = {
       attackType: NORMAL_ATTACK_HIT_SHAPES.CONE,
-      range: (state.skill.range ?? 255) + level * 24,
+      range: ((state.skill.range ?? 255) + level * 24) * rangeMultiplier,
       angle: 64 + level * 6,
       maxTargets: 7 + Math.min(6, level),
       originOffset: { x: 36, y: 0 },
@@ -681,8 +720,8 @@ export class CombatSystem {
     this.spawnAdaptationSpriteEffect(state, player, visualTarget, effectLayer, {
       facing,
       distanceRatio: 0.5,
-      width: 230 + level * 20,
-      height: 138 + level * 12,
+      width: (230 + level * 20) * rangeMultiplier,
+      height: (138 + level * 12) * rangeMultiplier,
       duration: 0.44 + level * 0.055,
       color: 0xff6f42,
     });
@@ -694,8 +733,18 @@ export class CombatSystem {
     const base = state.skill.damage ?? 12;
     const level = state.level ?? 1;
     const scaling = state.skill.scaling?.damage ?? 0.12;
+    const synergy = this.adaptationSynergyEffects ?? {};
+    const damage = base
+      * multiplier
+      * (1 + (level - 1) * (scaling + 0.035))
+      * this.adaptationDamageMultiplier
+      * (synergy.damageMultiplier ?? 1);
+    const critRate = synergy.critRate ?? 0;
+    const critMultiplier = critRate > 0 && Math.random() < critRate
+      ? synergy.critDamageMultiplier ?? 1.5
+      : 1;
 
-    return Math.max(1, Math.round(base * multiplier * (1 + (level - 1) * (scaling + 0.035)) * this.adaptationDamageMultiplier));
+    return Math.max(1, Math.round(damage * critMultiplier));
   }
 
   performNormalAttack(player, target, enemies, effectLayer) {
@@ -1185,7 +1234,7 @@ export class CombatSystem {
       speed: 145 + level * 16,
       damage,
       color: 0xffd36b,
-      hitRadius: 18 + level * 2,
+      hitRadius: (18 + level * 2) * this.getAdaptationRangeMultiplier(),
     });
   }
 

@@ -3615,3 +3615,9 @@ No new image/audio asset generation is required for this MVP.
   - `public/assets/effects/boss/boss_death_shockwave_a14.png`
   - `public/assets/effects/boss/zero_boss_death_core_a14.png`
 - Enemy level, spawn density, EXP requirement, and boss scaling changes are documented in the design specs.
+## MVP-A15 Adaptation Synergy
+
+- No new raster art was required for A15.
+- Synergy activation uses a runtime HUD notice with layered glow/stroke drawing and the existing `evolution_ready` SE.
+- The persistent synergy HUD uses compact runtime text (`高速Ⅱ`, `狩猟Ⅰ`, `攻撃Ⅱ`) so localization remains code-side.
+- Future art replacement candidate: a dedicated synergy notice panel and small synergy chips if the HUD needs stronger visual identity.

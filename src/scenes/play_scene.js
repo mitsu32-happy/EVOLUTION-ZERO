@@ -2,6 +2,11 @@
 import { GameState } from '../core/game_state.js';
 import { ASSET_KEYS } from '../data/asset_manifest.js';
 import { ADAPTATION_RESEARCH_IDS, ADAPTATION_SKILLS } from '../data/adaptation_skills.js';
+import {
+  getAdaptationSynergyEffects,
+  getAdaptationSynergyHudText,
+  getAdaptationSynergyNoticeText,
+} from '../data/adaptation_synergy.js';
 import { getBodyResearchBonuses } from '../data/research.js';
 import { ENDLESS_SCALING_CONFIG, ZERO_SCALING_CONFIG, getDifficultyConfig, getDinoConfig, getStageBossConfig, getStageConfig, getStageGimmickConfig } from '../data/run_config.js';
 import { getEvolutionCandidate, getSkillById } from '../data/skills.js';
@@ -466,6 +471,8 @@ export class PlayScene {
     this.applyDebugAdaptationAllLevelIfRequested();
     this.applyDebugEvolutionIfRequested();
     this.applyDebugSpecialReadyIfRequested();
+    this.applyAdaptationSynergyState();
+    this.gameState.consumeAdaptationSynergyDetections?.();
     this.pickups = this.createPickups();
     this.enemies = [];
     this.enemyProjectiles = [];
@@ -540,6 +547,40 @@ export class PlayScene {
         dropShadowBlur: 3,
       },
     });
+    this.synergyMoveSpeedBonus = 0;
+    this.adaptationSynergyNoticeTimer = 0;
+    this.adaptationSynergyNoticeBg = new Graphics();
+    this.adaptationSynergyNoticeText = new Text({
+      text: '',
+      style: {
+        fill: '#f7fbff',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 16,
+        fontWeight: '900',
+        letterSpacing: 0,
+        align: 'center',
+        wordWrap: true,
+        wordWrapWidth: 292,
+        dropShadow: true,
+        dropShadowColor: '#020006',
+        dropShadowBlur: 5,
+      },
+    });
+    this.adaptationSynergyHudBg = new Graphics();
+    this.adaptationSynergyHudText = new Text({
+      text: '',
+      style: {
+        fill: '#c9fbff',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 11,
+        fontWeight: '800',
+        letterSpacing: 0,
+        align: 'left',
+        dropShadow: true,
+        dropShadowColor: '#01070a',
+        dropShadowBlur: 3,
+      },
+    });
     this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
     this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
     this.lastTileKey = '';
@@ -590,6 +631,7 @@ export class PlayScene {
     this.createEvolutionWarningLayer();
     this.uiLayer.addChild(this.hud.view);
     this.createGamepadNotice();
+    this.createAdaptationSynergyHud();
     this.bindInput();
     this.updateCamera(1);
     this.updateMap(true);
@@ -616,6 +658,7 @@ export class PlayScene {
     this.resultUi.update?.(delta);
     this.updateGamepadInput(delta);
     this.updateGamepadNotice(delta);
+    this.updateAdaptationSynergyNotice(delta);
     this.updateBossClearSequence(delta);
     this.updateZeroPhaseNotice(delta);
     this.ensureRunBgm();
@@ -1187,6 +1230,28 @@ export class PlayScene {
     };
   }
 
+  applyAdaptationSynergyState() {
+    this.gameState.syncAdaptationSynergies?.();
+    this.combatSystem.setAdaptationSynergy?.(this.gameState.adaptationSynergy);
+
+    if (!this.player) {
+      return;
+    }
+
+    const previousBonus = this.synergyMoveSpeedBonus ?? 0;
+    const baseMoveSpeed = Math.max(0, this.player.moveSpeed - previousBonus);
+    const effects = getAdaptationSynergyEffects(this.gameState.adaptationSynergy);
+    const nextBonus = Math.max(0, baseMoveSpeed * ((effects.moveSpeedMultiplier ?? 1) - 1));
+    this.synergyMoveSpeedBonus = nextBonus;
+    this.player.moveSpeed = baseMoveSpeed + nextBonus;
+    this.updateAdaptationSynergyHud();
+  }
+
+  consumeAdaptationSynergyNotices() {
+    const detections = this.gameState.consumeAdaptationSynergyDetections?.() ?? [];
+    detections.forEach((detection) => this.showAdaptationSynergyNotice(detection));
+  }
+
   isLevelUpSequenceActive() {
     return this.levelUpFreezeTimer > 0 || this.isLevelUpUiOpen || this.pendingLevelUps.length > 0;
   }
@@ -1239,6 +1304,13 @@ export class PlayScene {
         {
           title: '適応と進化',
           body: '能力強化はHPや攻撃力を伸ばします。\n適応Lvは進化条件にも関係します。',
+          target: '適応技カード',
+          targetId: 'levelup.adaptation',
+          tooltipPosition: 'bottom',
+        },
+        {
+          title: '適応シナジー',
+          body: '同じタイプの適応を集めるとシナジーが発生します。\n2個でⅠ、3個でⅡ。組み合わせも重要です。',
           target: '適応技カード',
           targetId: 'levelup.adaptation',
           tooltipPosition: 'bottom',
@@ -1607,6 +1679,92 @@ export class PlayScene {
       .stroke({ color: 0x8ff3ff, width: 0.7, alpha: 0.32 * alpha });
     this.gamepadNoticeText.position.set(this.width / 2, y + height / 2);
     this.gamepadNoticeText.alpha = alpha;
+  }
+
+  createAdaptationSynergyHud() {
+    this.adaptationSynergyNoticeBg.visible = false;
+    this.adaptationSynergyNoticeText.visible = false;
+    this.adaptationSynergyNoticeText.anchor.set(0.5);
+    this.adaptationSynergyHudBg.visible = false;
+    this.adaptationSynergyHudText.visible = false;
+    this.adaptationSynergyHudBg.eventMode = 'none';
+    this.adaptationSynergyHudText.eventMode = 'none';
+    this.adaptationSynergyNoticeBg.eventMode = 'none';
+    this.adaptationSynergyNoticeText.eventMode = 'none';
+    this.uiLayer.addChild(
+      this.adaptationSynergyHudBg,
+      this.adaptationSynergyHudText,
+      this.adaptationSynergyNoticeBg,
+      this.adaptationSynergyNoticeText,
+    );
+    this.updateAdaptationSynergyHud();
+  }
+
+  showAdaptationSynergyNotice(detection) {
+    this.adaptationSynergyNoticeTimer = 2.7;
+    this.adaptationSynergyNoticeText.text = getAdaptationSynergyNoticeText(detection.tag, detection.tier);
+    this.adaptationSynergyNoticeBg.visible = true;
+    this.adaptationSynergyNoticeText.visible = true;
+    this.audioManager?.play('evolution_ready', { volume: 0.58 });
+    this.drawAdaptationSynergyNotice(1);
+    this.updateAdaptationSynergyHud();
+  }
+
+  updateAdaptationSynergyNotice(delta) {
+    if (this.adaptationSynergyNoticeTimer <= 0) {
+      this.adaptationSynergyNoticeBg.visible = false;
+      this.adaptationSynergyNoticeText.visible = false;
+      return;
+    }
+
+    this.adaptationSynergyNoticeTimer = Math.max(0, this.adaptationSynergyNoticeTimer - delta);
+    const alpha = Math.min(1, this.adaptationSynergyNoticeTimer / 0.4, 0.68 + this.adaptationSynergyNoticeTimer * 0.18);
+    this.drawAdaptationSynergyNotice(alpha);
+  }
+
+  drawAdaptationSynergyNotice(alpha = 1) {
+    const width = Math.min(328, this.width - 42);
+    const height = 54;
+    const x = (this.width - width) / 2;
+    const y = 150;
+    const pulse = 0.42 + Math.sin(this.adaptationSynergyNoticeTimer * 8) * 0.08;
+
+    this.adaptationSynergyNoticeBg
+      .clear()
+      .roundRect(x, y, width, height, 13)
+      .fill({ color: 0x020a14, alpha: 0.82 * alpha })
+      .stroke({ color: 0x8f5cff, width: 2.2, alpha: pulse * alpha })
+      .roundRect(x + 7, y + 7, width - 14, height - 14, 9)
+      .stroke({ color: 0x52e4ff, width: 1, alpha: 0.34 * alpha })
+      .moveTo(x + 18, y + height - 9)
+      .lineTo(x + width - 18, y + height - 9)
+      .stroke({ color: 0xb94dff, width: 1.5, alpha: 0.26 * alpha });
+    this.adaptationSynergyNoticeText.position.set(this.width / 2, y + height / 2);
+    this.adaptationSynergyNoticeText.alpha = alpha;
+  }
+
+  updateAdaptationSynergyHud() {
+    const text = getAdaptationSynergyHudText(this.gameState?.adaptationSynergy);
+    this.adaptationSynergyHudText.text = text;
+    const visible = Boolean(text);
+    this.adaptationSynergyHudBg.visible = visible;
+    this.adaptationSynergyHudText.visible = visible;
+
+    if (!visible) {
+      this.adaptationSynergyHudBg.clear();
+      return;
+    }
+
+    const width = Math.max(92, Math.min(210, this.adaptationSynergyHudText.width + 24));
+    const height = 28;
+    const x = 16;
+    const y = 126;
+    this.adaptationSynergyHudBg
+      .clear()
+      .roundRect(x, y, width, height, 8)
+      .fill({ color: 0x031018, alpha: 0.72 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: 0.48 });
+    this.adaptationSynergyHudText.position.set(x + 12, y + 7);
   }
 
   handleGamepadConnection(gamepad, connected) {
@@ -4150,6 +4308,8 @@ export class PlayScene {
     this.combatSystem.applyUpgrade(option.id, acquiredSkill.level);
     this.combatSystem.applyAdaptationSkill?.(option, acquiredSkill.level);
     this.applyUtilitySkill(option.id, acquiredSkill.level);
+    this.applyAdaptationSynergyState();
+    this.consumeAdaptationSynergyNotices();
     this.gameState.consumeEvolutionDetections().forEach((candidate) => {
       this.triggerEvolutionWarning(candidate);
     });
@@ -4255,6 +4415,7 @@ export class PlayScene {
     }
 
     this.combatSystem.applyEvolution(selectedEvolution);
+    this.applyAdaptationSynergyState();
 
     if (selectedEvolution.tag === 'hunting') {
       const baseMagnet = this.researchPickupModifiers?.magnetRadiusMultiplier ?? 1;
@@ -5273,6 +5434,10 @@ export class PlayScene {
     };
     this.screenShakeTimer = 0;
     this.screenShakeIntensity = 0;
+    this.synergyMoveSpeedBonus = 0;
+    this.adaptationSynergyNoticeTimer = 0;
+    this.adaptationSynergyNoticeBg.visible = false;
+    this.adaptationSynergyNoticeText.visible = false;
     this.player.position.x = 0;
     this.player.position.y = 0;
     this.player.velocity.x = 0;
@@ -5295,6 +5460,8 @@ export class PlayScene {
     this.applyDebugEvolutionIfRequested();
     this.applyDebugSpecialReadyIfRequested();
     this.applyDebugEvolutionReadyIfRequested();
+    this.applyAdaptationSynergyState();
+    this.gameState.consumeAdaptationSynergyDetections?.();
     this.didPlayDebugEvolutionDemo = false;
     this.playDebugEvolutionDemoIfRequested();
     this.applyDebugForceLevelupIfRequested();

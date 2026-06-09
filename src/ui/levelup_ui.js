@@ -1,5 +1,6 @@
 ﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
 import { isAdaptationSkillUnlocked } from '../data/adaptation_skills.js';
+import { getAdaptationSynergyCardProgress } from '../data/adaptation_synergy.js';
 import { SKILLS } from '../data/skills.js';
 import { drawButtonFrame, drawPanel, UI_COLORS, toCssColor } from './ui_theme.js';
 import { resetIntroMotion, updateIntroMotion } from './ui_motion.js';
@@ -260,7 +261,7 @@ function formatSeconds(value) {
   return Number.isFinite(value) ? `${value.toFixed(1)}秒` : '-';
 }
 
-function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag }) {
+function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag, adaptationProgress }) {
   if (isFallbackReward) {
     return {
       type: '種別: 報酬',
@@ -284,11 +285,13 @@ function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStat
     ? Math.round(option.damage * (1 + Math.max(0, nextLevel - 1) * damageScale))
     : null;
   const range = formatRangeLabel(option.range ?? option.searchRange);
+  const count = adaptationProgress?.[primaryTag] ?? 0;
+  const synergyProgress = getAdaptationSynergyCardProgress(primaryTag, count);
 
   return {
-    type: `種別: 適応技 / ${getAdaptationLabel(primaryTag)}`,
+    type: `種別: 適応技 / ${synergyProgress.typeText}`,
     description: `威力: ${power ?? '-'} / 範囲: ${range} / 再発動: ${formatSeconds(option.cooldown)}`,
-    tag: `Lv${nextLevel} / 進化条件に影響`,
+    tag: synergyProgress.hintText,
     level: currentLevel >= option.maxLevel ? '最大' : currentLevel > 0 ? `Lv ${currentLevel}->${nextLevel}` : '新規',
   };
 }
@@ -645,7 +648,14 @@ export class LevelUpUi {
       const badgeTexture = this.getBadgeTexture(badgeState);
       const safeLevelText = isFallbackReward ? '補助' : badgeState === 'owned' ? '解析済み' : badgeState === 'upgrade' ? `強化 ${currentLevel}->${nextLevel}` : '新規解析';
       const safePreviewText = isFallbackReward ? option.levelUpText : currentLevel >= option.maxLevel ? '最大強化済み' : getUpgradePreview(option, currentLevel, nextLevel);
-      const cardInfo = getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStatUpgrade, primaryTag });
+      const cardInfo = getCardInfo(option, {
+        currentLevel,
+        nextLevel,
+        isFallbackReward,
+        isStatUpgrade,
+        primaryTag,
+        adaptationProgress: this.gameState?.adaptationProgress,
+      });
 
       if (frameTexture) {
         card.frame.texture = frameTexture;

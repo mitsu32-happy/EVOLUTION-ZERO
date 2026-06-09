@@ -172,3 +172,11 @@ See:
 - ZERO boss timing is later, but ZERO mid/late enemy pressure, enemy caps, and boss scaling are stronger.
 - Heal pickup amount and drop chance are partially restored to offset stronger pressure.
 - Boss defeat now has a longer finish sequence before result transition: about 2.25s for standard clear and 3.1s for ZERO final.
+
+## MVP-A15 Adaptation Synergy
+
+- Same-type adaptation pickups now unlock synergy tiers: 2 pickups = tier I, 3 pickups = tier II.
+- Speed synergy affects adaptation-skill recast only: tier I cooldown x0.90, tier II cooldown x0.75 and player move speed x1.10.
+- Hunting synergy adds adaptation-skill critical hits: tier I critical rate 10%, tier II critical rate 20% with stronger critical damage.
+- Attack synergy affects adaptation skills only: tier I range x1.10, tier II range x1.20 and damage x1.15.
+- Normal attacks and ultimate attacks intentionally do not receive the adaptation-synergy damage/range/cooldown bonuses.

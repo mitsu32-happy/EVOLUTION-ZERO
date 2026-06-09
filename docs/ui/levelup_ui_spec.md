@@ -76,3 +76,10 @@
 - The ordering assist applies only to the first tutorial Level Up / debug-forced Level Up route.
 - Later Level Up rolls return to normal candidate ordering.
 - The tutorial copy now explains adaptation skills, stat upgrades, evolution conditions, power/range, and recast timing.
+
+## MVP-A15 Adaptation Synergy Card Copy
+
+- Adaptation skill cards show the same-type synergy progress in the type line, such as `高速タイプ 1/2`.
+- The bottom hint line explains the next threshold, such as `あと1つで高速シナジーⅠ`.
+- At 2 same-type pickups the card switches to tier II guidance; at 3 pickups it shows the tier II active state.
+- Power/range/recast text remains visible so synergy guidance does not replace the immediate skill comparison.

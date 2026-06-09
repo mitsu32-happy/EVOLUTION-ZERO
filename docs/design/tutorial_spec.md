@@ -88,3 +88,9 @@ UI asset policy:
 - Level Up, first-evolution ultimate, and warning-guide concepts are taught at their first real appearance.
 - Level Up receives a first-run card ordering hint so an adaptation skill card appears first when available.
 - Event tutorials pause play through the shared tutorial overlay and mark their own save flags on complete/skip.
+
+## MVP-A15 Adaptation Synergy Tutorial Copy
+
+- The Level Up tutorial now introduces adaptation synergy after the base adaptation/evolution explanation.
+- Copy explains that collecting the same adaptation type creates synergy: 2 pickups for tier I, 3 pickups for tier II.
+- The guidance emphasizes that adaptation combinations matter alongside evolution conditions.

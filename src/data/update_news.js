@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'adaptation-synergy-a15-2026-06-09',
+    date: '2026/06/09',
+    category: '新機能',
+    title: '適応シナジーを追加しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・同じタイプの適応を集めるとシナジーが発動するようになりました。',
+      '・高速、狩猟、攻撃の3タイプにシナジー効果を追加しました。',
+      '・レベルアップ時の選択がより重要になりました。',
+    ],
+  },
+  {
     id: 'late-game-scaling-a14-1-2026-06-08',
     date: '2026/06/08',
     category: 'バランス調整',
