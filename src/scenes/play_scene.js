@@ -32,6 +32,11 @@ const TILE_WIDTH = 96;
 const TILE_HEIGHT = 56;
 const HUD_INPUT_HEIGHT = 150;
 const GAMEPAD_DEAD_ZONE = 0.2;
+const MAX_ENEMY_PROJECTILES = 56;
+const MAX_STAGE_GIMMICKS = 34;
+const MAX_PICKUP_BURSTS = 48;
+const MAX_PICKUP_POPUPS = 40;
+const MAX_WORLD_PICKUPS = 180;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
 const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
@@ -502,6 +507,7 @@ export class PlayScene {
     this.bossClearSequence = null;
     this.pickupBursts = [];
     this.pickupPopups = [];
+    this.debugStatsTimer = 0;
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
     this.screenShakeTimer = 0;
@@ -733,6 +739,7 @@ export class PlayScene {
 
       this.cleanupDefeatedEnemies();
       this.cleanupDefeatedBosses();
+      this.enforceRuntimeObjectCaps();
     } else {
       this.player.setMoveInput({ x: 0, y: 0, power: 0 });
       if (this.gameState.isGameOver) {
@@ -759,6 +766,88 @@ export class PlayScene {
     this.updateResultUi();
     this.updateEvolutionWarning(delta);
     this.queueEvolutionReadyIfNeeded();
+    this.publishDebugRuntimeStats(delta);
+  }
+
+  enforceRuntimeObjectCaps() {
+    this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES);
+    this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS, { children: true });
+    this.trimRuntimeList(this.pickupBursts, MAX_PICKUP_BURSTS);
+    this.trimRuntimeList(this.pickupPopups, MAX_PICKUP_POPUPS);
+
+    while (this.pickups.length > MAX_WORLD_PICKUPS) {
+      const pickup = this.pickups.shift();
+      pickup?.view?.destroy?.();
+    }
+  }
+
+  trimRuntimeList(list, maxCount, { children = false } = {}) {
+    while (list.length > maxCount) {
+      const entry = list.shift();
+      entry?.view?.destroy?.(children ? { children: true } : undefined);
+    }
+  }
+
+  publishDebugRuntimeStats(delta = 0) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const hasDebugParam = [...params.keys()].some((key) => key.startsWith('debug') || key.startsWith('qa'));
+
+    if (!hasDebugParam) {
+      return;
+    }
+
+    this.debugStatsTimer = (this.debugStatsTimer ?? 0) - delta;
+
+    if (this.debugStatsTimer > 0) {
+      return;
+    }
+
+    this.debugStatsTimer = 0.5;
+
+    const activeBoss = this.getActiveBoss();
+    const stats = {
+      stage: this.gameState.selectedStage,
+      difficulty: this.gameState.selectedDifficulty,
+      mode: this.gameState.selectedMode,
+      elapsedTime: Number((this.gameState.elapsedTime ?? 0).toFixed(1)),
+      zeroBossesDefeated: this.gameState.zeroBossesDefeated ?? this.zeroBossesDefeated ?? 0,
+      activeBoss: activeBoss ? {
+        id: activeBoss.config?.id ?? null,
+        phase: activeBoss.zeroPhase ?? null,
+        hp: Math.max(0, Math.round(activeBoss.hp ?? 0)),
+        maxHp: Math.round(activeBoss.maxHp ?? 0),
+      } : null,
+      enemies: this.enemies.length,
+      enemyProjectiles: this.enemyProjectiles.length,
+      stageGimmicks: this.stageGimmicks.length,
+      combatProjectiles: this.combatSystem?.projectiles?.length ?? 0,
+      combatEffects: this.combatSystem?.effects?.length ?? 0,
+      damageNumbers: this.combatSystem?.damageNumbers?.length ?? 0,
+      pickupBursts: this.pickupBursts.length,
+      pickupPopups: this.pickupPopups.length,
+      pickups: this.pickups.length,
+      effectChildren: this.effectLayer.children.length,
+      gimmickChildren: this.gimmickLayer.children.length,
+      depthChildren: this.depthLayer.children.length,
+      audioInstances: this.audioManager?.activeAudios?.size ?? null,
+      timestamp: Date.now(),
+    };
+
+    try {
+      window.__EVOLUTION_ZERO_RUN_DEBUG_STATS__ = stats;
+    } catch {
+      // Debug inspection state is optional.
+    }
+
+    try {
+      document.querySelector('#app').__EVOLUTION_ZERO_RUN_DEBUG_STATS__ = stats;
+    } catch {
+      // Debug inspection state is optional.
+    }
   }
 
   getHudLayoutOptions() {
@@ -2274,6 +2363,7 @@ export class PlayScene {
       .stroke({ color: 0xa46cff, width: 2, alpha: 0.7 });
     view.rotation = Math.atan2(dy, dx);
     view.position.set(enemy.position.x, enemy.position.y - 8);
+    this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES - 1);
     this.effectLayer.addChild(view);
     this.enemyProjectiles.push({
       type: 'ruinsShot',
@@ -2300,6 +2390,7 @@ export class PlayScene {
       .circle(0, 0, radius * 0.44)
       .stroke({ color: 0xe8fbff, width: 2, alpha: 0.48 });
     view.position.set(enemy.position.x, enemy.position.y);
+    this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES - 1);
     this.effectLayer.addChild(view);
     this.enemyProjectiles.push({
       type: 'ruinsElectroPulse',
@@ -2566,6 +2657,7 @@ export class PlayScene {
       this.loadBossHazardWarningAsset(gimmick, config.warningAssetKey);
     }
 
+    this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS - 1, { children: true });
     this.stageGimmicks.push(gimmick);
   }
 
@@ -2738,10 +2830,11 @@ export class PlayScene {
     const summonModeScale = this.spawnSystem.getModeScaling(this.gameState);
     const summonLevel = this.spawnSystem.getEnemyLevel(this.gameState);
     const summonLevelScale = this.spawnSystem.getEnemyLevelScale(summonLevel);
+    const phaseEnemyCap = this.spawnSystem.getProgressionPhaseLimits(this.gameState).enemyCountCap;
     const summonCap = this.gameState.selectedMode === 'zero'
-      ? ZERO_SCALING_CONFIG.softEnemyCap
+      ? Math.min(ZERO_SCALING_CONFIG.softEnemyCap, phaseEnemyCap)
       : this.gameState.selectedMode === 'endless'
-        ? ENDLESS_SCALING_CONFIG.softEnemyCap
+        ? Math.min(ENDLESS_SCALING_CONFIG.softEnemyCap, phaseEnemyCap)
         : 92;
 
     for (let index = 0; index < spawnCount; index += 1) {
@@ -3329,6 +3422,7 @@ export class PlayScene {
     gimmick.view.addChild(gimmick.sprite);
     this.gimmickLayer.addChild(gimmick.view);
     this.loadStageGimmickAsset(gimmick, gimmick.assetKey, gimmick);
+    this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS - 1, { children: true });
     this.stageGimmicks.push(gimmick);
   }
 
@@ -3678,6 +3772,7 @@ export class PlayScene {
 
     this.loadStageGimmickAsset(gimmick, definition.assetKey, definition);
 
+    this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS - 1, { children: true });
     this.stageGimmicks.push(gimmick);
   }
 
@@ -4145,6 +4240,7 @@ export class PlayScene {
     };
 
     burst.view.position.set(x, y);
+    this.trimRuntimeList(this.pickupBursts, MAX_PICKUP_BURSTS - 1);
     this.effectLayer.addChild(burst.view);
     this.pickupBursts.push(burst);
   }
@@ -4168,6 +4264,7 @@ export class PlayScene {
 
     text.anchor.set(0.5);
     text.position.set(x, y);
+    this.trimRuntimeList(this.pickupPopups, MAX_PICKUP_POPUPS - 1);
     this.effectLayer.addChild(text);
     this.pickupPopups.push({
       age: 0,

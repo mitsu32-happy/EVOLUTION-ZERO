@@ -3,6 +3,11 @@ import { CollisionSystem } from './collision_system.js';
 import { getNormalAttackById, getNormalAttackForDino, NORMAL_ATTACK_HIT_SHAPES } from '../data/normal_attacks.js';
 import { getAdaptationSynergyEffects } from '../data/adaptation_synergy.js';
 
+const MAX_COMBAT_EFFECTS = 96;
+const MAX_COMBAT_PROJECTILES = 52;
+const MAX_DAMAGE_NUMBERS = 86;
+const MAX_CRITICAL_DAMAGE_NUMBERS = 24;
+
 export class CombatSystem {
   constructor({ assetLoader = null } = {}) {
     this.assetLoader = assetLoader;
@@ -37,6 +42,24 @@ export class CombatSystem {
     this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
     this.adaptationSkillStates = new Map();
     this.projectiles = [];
+  }
+
+  trimRuntimeList(list, maxCount) {
+    while (list.length > maxCount) {
+      const entry = list.shift();
+      entry?.view?.destroy?.();
+    }
+  }
+
+  trimFirstMatching(list, predicate) {
+    const index = list.findIndex(predicate);
+
+    if (index < 0) {
+      return;
+    }
+
+    const [entry] = list.splice(index, 1);
+    entry?.view?.destroy?.();
   }
 
   setAdaptationSynergy(synergy = {}) {
@@ -1235,6 +1258,7 @@ export class CombatSystem {
 
     view.position.set(startX, startY);
     view.rotation = angle;
+    this.trimRuntimeList(this.projectiles, MAX_COMBAT_PROJECTILES - 1);
     effectLayer.addChild(view);
     this.projectiles.push({
       style: state.id,
@@ -1267,6 +1291,7 @@ export class CombatSystem {
     }
 
     view.position.set(options.x, options.y);
+    this.trimRuntimeList(this.projectiles, MAX_COMBAT_PROJECTILES - 1);
     effectLayer.addChild(view);
     this.projectiles.push({
       kind: 'delayedBurst',
@@ -1302,6 +1327,7 @@ export class CombatSystem {
     }
 
     view.position.set(options.x, options.y);
+    this.trimRuntimeList(this.projectiles, MAX_COMBAT_PROJECTILES - 1);
     effectLayer.addChild(view);
     this.projectiles.push({
       kind: 'senseSpikeTrap',
@@ -1559,6 +1585,7 @@ export class CombatSystem {
       sprite.width = effect.baseWidth;
       sprite.height = effect.baseHeight;
       sprite.alpha = 0;
+      this.trimRuntimeList(this.effects, MAX_COMBAT_EFFECTS - 1);
       effectLayer.addChild(sprite);
       this.effects.push(effect);
       return;
@@ -1578,6 +1605,7 @@ export class CombatSystem {
     };
 
     effect.view.position.set(player.position.x, player.position.y);
+    this.trimRuntimeList(this.effects, MAX_COMBAT_EFFECTS - 1);
     effectLayer.addChild(effect.view);
     this.effects.push(effect);
   }
@@ -1633,6 +1661,13 @@ export class CombatSystem {
     }
 
     const critical = options.critical === true;
+
+    if (critical && this.damageNumbers.filter((number) => number.critical).length >= MAX_CRITICAL_DAMAGE_NUMBERS) {
+      this.trimFirstMatching(this.damageNumbers, (number) => number.critical);
+    }
+
+    this.trimRuntimeList(this.damageNumbers, MAX_DAMAGE_NUMBERS - 1);
+
     const text = new Text({
       text: critical ? `CRITICAL ${amount}` : `${amount}`,
       style: {

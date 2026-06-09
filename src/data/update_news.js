@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'hotfix-zero-whiteout-a15-3-2026-06-09',
+    date: '2026/06/09',
+    category: 'HOTFIX',
+    title: 'プレイ中停止する不具合を修正しました',
+    isImportant: true,
+    body: [
+      '今回の修正内容',
+      '・ZERO第2ボス以降で画面が停止する場合がある問題を修正しました。',
+      '・敵や攻撃演出が増えた際の安定性を改善しました。',
+    ],
+  },
+  {
     id: 'difficulty-balance-a15-3-2026-06-09',
     date: '2026/06/09',
     category: 'バランス調整',

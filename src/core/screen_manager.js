@@ -47,6 +47,7 @@ function isTutorialDebugEnabled() {
 
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
 const DEBUG_DIFFICULTY_IDS = new Set(['normal', 'hard', 'expert']);
+const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 
 const TUTORIAL_PAGES = {
   home: [
@@ -279,6 +280,12 @@ export class ScreenManager {
     } else {
       this.show('title');
     }
+
+    if (getDebugParams().get('debugAutoPlay') === '1') {
+      window.setTimeout(() => {
+        this.showPlay();
+      }, 0);
+    }
   }
 
   registerScreen(name, screen) {
@@ -482,12 +489,28 @@ export class ScreenManager {
   }
 
   update(delta) {
-    const actions = this.gamepadManager.update(delta);
+    const safeDelta = Math.max(0, Math.min(delta, 1 / 20));
+    const actions = this.gamepadManager.update(safeDelta);
     this.handleGamepadActions(actions);
-    this.updateGamepadOverlay(delta);
+    this.updateGamepadOverlay(safeDelta);
 
     if (this.currentScreen === 'play' && this.playScene) {
-      this.playScene.update(delta);
+      try {
+        this.playScene.update(safeDelta);
+      } catch (error) {
+        this.playScene.gameState.isPaused = true;
+        this.gameState = this.playScene.gameState;
+        try {
+          window.__EVOLUTION_ZERO_LAST_RUNTIME_ERROR__ = {
+            message: error?.message ?? String(error),
+            stack: error?.stack ?? null,
+            timestamp: Date.now(),
+          };
+        } catch {
+          // Debug crash state is optional.
+        }
+        console.error('[EVOLUTION ZERO] play update failed', error);
+      }
     }
   }
 
@@ -1230,9 +1253,14 @@ export class ScreenManager {
     const params = getDebugParams();
     const stageId = params.get('debugStage');
     const difficultyId = params.get('debugDifficulty');
+    const dinoId = params.get('debugDino');
 
     if (DEBUG_STAGE_IDS.has(stageId)) {
       this.gameState.selectedStage = stageId;
+    }
+
+    if (DEBUG_DINO_IDS.has(dinoId)) {
+      this.gameState.selectedDino = dinoId;
     }
 
     if (DEBUG_DIFFICULTY_IDS.has(difficultyId)) {
