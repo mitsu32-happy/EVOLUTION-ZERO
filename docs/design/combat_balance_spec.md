@@ -200,3 +200,10 @@ See:
 - This prevents drawn-out boss fights from also unlocking unlimited trash pressure before the boss is defeated.
 - Low-level enemy damage is slightly softened, while mid/high-level enemies remain dangerous. The target is being overwhelmed by groups rather than losing a run to one early contact.
 - ZERO phase 2 boss HP is reduced from the A15.2 value to 80%, and ZERO final boss HP is reduced to 78%; attack behavior and warning readability are unchanged.
+
+## HOTFIX-A15.4 ZERO Enemy Contact Damage
+
+- ZERO late enemy pressure remains based on enemy count, enemy level, movement speed, and boss-phase unlocks.
+- Trash enemy contact damage is reduced in the high-level / ZERO late-game range so a single hit is less likely to decide a run.
+- Low-level enemy damage remains effectively unchanged, and mid-level damage stays close to the previous value.
+- Boss damage, boss hazard tuning, enemy count caps, enemy speed scaling, and enemy level caps are intentionally unchanged.

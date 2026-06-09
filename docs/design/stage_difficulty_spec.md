@@ -793,3 +793,9 @@ The tuning target is not instant death. The goal is that late mistakes matter an
 - ZERO uses three pressure phases: opening, after ZERO boss 1, and after ZERO boss 2. FINAL-phase pressure is only available after the second ZERO boss is cleared.
 - ENDLESS pressure phases are tied to defeated boss count so long runs continue escalating without letting pre-boss time alone unlock the highest caps.
 - ZERO second/final boss durability is slightly reduced to avoid long fights becoming tedious; attack threat is maintained.
+
+## HOTFIX-A15.4 ZERO Damage Readability
+
+- ZERO late trash enemy damage is softened to avoid one-hit-feeling deaths.
+- The intended failure pattern is being surrounded by fast/high-level enemies, not losing most of the run to one contact.
+- Enemy count, movement speed, level progression, and boss threat are unchanged.

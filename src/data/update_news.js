@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'hotfix-zero-enemy-damage-a15-4-2026-06-09',
+    date: '2026/06/09',
+    category: 'HOTFIX',
+    title: 'ZERO終盤の敵ダメージを調整しました',
+    isImportant: true,
+    body: [
+      '今回の修正内容',
+      '・ZERO終盤の雑魚敵ダメージを調整しました。',
+      '・敵数や速度の圧は維持しつつ、1発の被弾が重すぎる状態を緩和しました。',
+    ],
+  },
+  {
     id: 'hotfix-zero-whiteout-a15-3-2026-06-09',
     date: '2026/06/09',
     category: 'HOTFIX',
