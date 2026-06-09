@@ -785,3 +785,11 @@ The tuning target is not instant death. The goal is that late mistakes matter an
 - ENDLESS raises late and overtime enemy caps/spawn pressure to reduce indefinite survival.
 - ZERO boss phases appear later in normal runs, but ZERO mid/late pressure, boss damage, and hazard overlap are stronger.
 - Boss hazards continue to use warning guide -> windup -> attack; A14 does not add unavoidable instant hits.
+
+## MVP-A15.3 Progression-Gated Pressure
+
+- Time still increases pressure inside the current phase, but enemy level and enemy count ceilings are unlocked by boss defeats.
+- HARD/EXPERT keep stronger late pressure than NORMAL, but pre-boss caps stop elapsed time from making boss fights spiral indefinitely.
+- ZERO uses three pressure phases: opening, after ZERO boss 1, and after ZERO boss 2. FINAL-phase pressure is only available after the second ZERO boss is cleared.
+- ENDLESS pressure phases are tied to defeated boss count so long runs continue escalating without letting pre-boss time alone unlock the highest caps.
+- ZERO second/final boss durability is slightly reduced to avoid long fights becoming tedious; attack threat is maintained.

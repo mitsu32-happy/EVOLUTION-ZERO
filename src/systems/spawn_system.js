@@ -38,7 +38,9 @@ export class SpawnSystem {
     const modeBonus = ['endless', 'zero'].includes(gameState.selectedMode) ? modeScale.maxEnemyBonus : 0;
     const elapsedPressureBonus = this.getElapsedEnemyPressureBonus(gameState);
     const lateCapBonus = this.getLateEnemyCapBonus(gameState);
+    const phaseLimits = this.getProgressionPhaseLimits(gameState);
     const maxEnemies = Math.min(
+      phaseLimits.enemyCountCap,
       gameState.selectedMode === 'endless'
         ? ENDLESS_SCALING_CONFIG.softEnemyCap
         : gameState.selectedMode === 'zero'
@@ -79,6 +81,8 @@ export class SpawnSystem {
   getElapsedEnemyPressureBonus(gameState) {
     const elapsed = gameState.elapsedTime ?? 0;
     const isEndgameMode = ['endless', 'zero'].includes(gameState.selectedMode);
+    const limits = this.getProgressionPhaseLimits(gameState);
+    let bonus = 0;
 
     if (isEndgameMode) {
       const zeroBonus = gameState.selectedMode === 'zero'
@@ -88,40 +92,49 @@ export class SpawnSystem {
         ? Math.floor(Math.max(0, elapsed - 240) / 4.5) + Math.floor(Math.max(0, elapsed - 480) / 2.8) + Math.floor(Math.max(0, elapsed - 720) / 2.2)
         : 0;
 
-      return Math.floor(elapsed / 5.5) + Math.floor(Math.max(0, elapsed - 120) / 4.2) + Math.floor(Math.max(0, elapsed - 240) / 3.1) + zeroBonus + endlessBonus;
+      bonus = Math.floor(elapsed / 5.5) + Math.floor(Math.max(0, elapsed - 120) / 4.2) + Math.floor(Math.max(0, elapsed - 240) / 3.1) + zeroBonus + endlessBonus;
+      return Math.min(limits.elapsedPressureCap, bonus);
     }
 
     const difficulty = gameState?.selectedDifficulty ?? 'normal';
     const base = Math.floor(elapsed / 14) + Math.floor(Math.max(0, elapsed - 80) / 10) + Math.floor(Math.max(0, elapsed - 140) / 6);
 
     if (difficulty === 'expert') {
-      return base + Math.floor(Math.max(0, elapsed - 75) / 5) + Math.floor(Math.max(0, elapsed - 135) / 3.4) + Math.floor(Math.max(0, elapsed - 210) / 2.8);
+      bonus = base + Math.floor(Math.max(0, elapsed - 75) / 5) + Math.floor(Math.max(0, elapsed - 135) / 3.4) + Math.floor(Math.max(0, elapsed - 210) / 2.8);
+      return Math.min(limits.elapsedPressureCap, bonus);
     }
 
     if (difficulty === 'hard') {
-      return base + Math.floor(Math.max(0, elapsed - 90) / 7) + Math.floor(Math.max(0, elapsed - 155) / 5.2);
+      bonus = base + Math.floor(Math.max(0, elapsed - 90) / 7) + Math.floor(Math.max(0, elapsed - 155) / 5.2);
+      return Math.min(limits.elapsedPressureCap, bonus);
     }
 
-    return base;
+    return Math.min(limits.elapsedPressureCap, base);
   }
 
   getLateEnemyCapBonus(gameState) {
     const elapsed = gameState?.elapsedTime ?? 0;
+    const limits = this.getProgressionPhaseLimits(gameState);
+    let bonus = 0;
 
     if (gameState?.selectedMode === 'zero') {
-      return Math.floor(Math.max(0, elapsed - 90) / 4) + Math.floor(Math.max(0, elapsed - 210) / 2.8);
+      bonus = Math.floor(Math.max(0, elapsed - 90) / 4) + Math.floor(Math.max(0, elapsed - 210) / 2.8);
+      return Math.min(limits.lateCapBonusCap, bonus);
     }
 
     if (gameState?.selectedMode === 'endless') {
-      return Math.floor(Math.max(0, elapsed - 180) / 5) + Math.floor(Math.max(0, elapsed - 420) / 3.1) + Math.floor(Math.max(0, elapsed - 720) / 2.4);
+      bonus = Math.floor(Math.max(0, elapsed - 180) / 5) + Math.floor(Math.max(0, elapsed - 420) / 3.1) + Math.floor(Math.max(0, elapsed - 720) / 2.4);
+      return Math.min(limits.lateCapBonusCap, bonus);
     }
 
     if (gameState?.selectedDifficulty === 'expert') {
-      return Math.floor(Math.max(0, elapsed - 95) / 6) + Math.floor(Math.max(0, elapsed - 170) / 4.2);
+      bonus = Math.floor(Math.max(0, elapsed - 95) / 6) + Math.floor(Math.max(0, elapsed - 170) / 4.2);
+      return Math.min(limits.lateCapBonusCap, bonus);
     }
 
     if (gameState?.selectedDifficulty === 'hard') {
-      return Math.floor(Math.max(0, elapsed - 115) / 8) + Math.floor(Math.max(0, elapsed - 190) / 6.5);
+      bonus = Math.floor(Math.max(0, elapsed - 115) / 8) + Math.floor(Math.max(0, elapsed - 190) / 6.5);
+      return Math.min(limits.lateCapBonusCap, bonus);
     }
 
     return 0;
@@ -162,16 +175,17 @@ export class SpawnSystem {
       if (elapsed >= 780) level += 2;
     }
 
-    return Math.max(1, Math.min(12, level));
+    return Math.max(1, Math.min(12, this.getProgressionPhaseLimits(gameState).enemyLevelCap, level));
   }
 
   getEnemyLevelScale(level = 1) {
     const bonusLevel = Math.max(0, level - 1);
     const lateBonus = Math.max(0, level - 5);
+    const earlyDamageBase = level <= 3 ? 0.9 : 1;
 
     return {
       hp: 1 + bonusLevel * 0.13 + lateBonus * 0.055,
-      damage: 1 + bonusLevel * 0.12 + lateBonus * 0.065,
+      damage: earlyDamageBase + bonusLevel * 0.085 + lateBonus * 0.075,
       speed: 1 + Math.min(0.52, bonusLevel * 0.035 + lateBonus * 0.018),
     };
   }
@@ -179,10 +193,11 @@ export class SpawnSystem {
   getModeScaling(gameState) {
     if (gameState?.selectedMode === 'zero') {
       const elapsed = gameState.elapsedTime ?? 0;
+      const limits = this.getProgressionPhaseLimits(gameState);
       const midPressure = Math.min(0.48, Math.max(0, elapsed - 95) / 310);
       const latePressure = Math.min(1.15, Math.max(0, elapsed - 170) / 230);
       const finalPressure = Math.min(0.78, Math.max(0, elapsed - 265) / 170);
-      const pressure = midPressure + latePressure + finalPressure;
+      const pressure = Math.min(limits.modePressureCap, midPressure + latePressure + finalPressure);
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure * 1.12,
@@ -202,6 +217,7 @@ export class SpawnSystem {
     if (gameState?.selectedMode !== 'endless') {
       const difficulty = getDifficultyConfig(gameState?.selectedDifficulty);
       const elapsed = (gameState?.elapsedTime ?? 0) + (difficulty.timeAdvance ?? 0);
+      const limits = this.getProgressionPhaseLimits(gameState);
       const latePressure = Math.min(0.72, Math.max(0, elapsed - 105) / 260);
       const finalPressure = Math.min(0.58, Math.max(0, elapsed - 190) / 240);
       const difficultyPressure = gameState?.selectedDifficulty === 'expert'
@@ -209,7 +225,7 @@ export class SpawnSystem {
         : gameState?.selectedDifficulty === 'hard'
           ? 1.72
           : 0.48;
-      const pressure = (latePressure + finalPressure) * difficultyPressure;
+      const pressure = Math.min(limits.modePressureCap, (latePressure + finalPressure) * difficultyPressure);
 
       return {
         hp: 0.9 + pressure * 0.34,
@@ -224,15 +240,19 @@ export class SpawnSystem {
 
     const elapsed = gameState.elapsedTime ?? 0;
     let phase = ENDLESS_SCALING_CONFIG.phases[0];
+    const unlockedPhaseIndex = Math.min(
+      ENDLESS_SCALING_CONFIG.phases.length - 1,
+      Math.max(0, gameState?.defeatedBosses ?? 0),
+    );
 
-    ENDLESS_SCALING_CONFIG.phases.forEach((entry) => {
-      if (elapsed >= entry.time) {
+    ENDLESS_SCALING_CONFIG.phases.forEach((entry, index) => {
+      if (index <= unlockedPhaseIndex && elapsed >= entry.time) {
         phase = entry;
       }
     });
 
     const overtime = Math.max(0, elapsed - 600);
-    const longRunBonus = Math.min(2.15, overtime / 420);
+    const longRunBonus = unlockedPhaseIndex >= 3 ? Math.min(2.15, overtime / 420) : 0;
 
     return {
       hp: phase.hp + longRunBonus * 1.15,
@@ -247,44 +267,104 @@ export class SpawnSystem {
 
   getMinimumSpawnInterval(gameState) {
     const elapsed = gameState?.elapsedTime ?? 0;
+    const limits = this.getProgressionPhaseLimits(gameState);
+    let interval = 0.58;
 
     if (gameState?.selectedMode === 'zero') {
       if (elapsed >= 320) {
-        return 0.26;
+        interval = 0.26;
+        return Math.max(interval, limits.minimumSpawnInterval);
       }
 
       if (elapsed >= 250) {
-        return 0.32;
+        interval = 0.32;
+        return Math.max(interval, limits.minimumSpawnInterval);
       }
 
       if (elapsed >= 165) {
-        return 0.38;
+        interval = 0.38;
+        return Math.max(interval, limits.minimumSpawnInterval);
       }
     }
 
     if (gameState?.selectedMode === 'endless') {
       if (elapsed >= 720) {
-        return 0.24;
+        interval = 0.24;
+        return Math.max(interval, limits.minimumSpawnInterval);
       }
 
       if (elapsed >= 600) {
-        return 0.3;
+        interval = 0.3;
+        return Math.max(interval, limits.minimumSpawnInterval);
       }
 
       if (elapsed >= 360) {
-        return 0.36;
+        interval = 0.36;
+        return Math.max(interval, limits.minimumSpawnInterval);
       }
     }
 
     if (gameState?.selectedDifficulty === 'expert' && elapsed >= 180) {
-      return 0.34;
+      interval = 0.34;
+      return Math.max(interval, limits.minimumSpawnInterval);
     }
 
     if (gameState?.selectedDifficulty === 'hard' && elapsed >= 200) {
-      return 0.42;
+      interval = 0.42;
+      return Math.max(interval, limits.minimumSpawnInterval);
     }
 
-    return 0.58;
+    return Math.max(interval, limits.minimumSpawnInterval);
+  }
+
+  getProgressionPhase(gameState) {
+    if (gameState?.selectedMode === 'zero') {
+      return Math.max(0, Math.min(2, gameState.zeroBossesDefeated ?? gameState.defeatedBosses ?? 0));
+    }
+
+    if (gameState?.selectedMode === 'endless') {
+      return Math.max(0, Math.min(3, gameState.defeatedBosses ?? 0));
+    }
+
+    return Math.max(0, Math.min(1, gameState?.defeatedBosses ?? 0));
+  }
+
+  getProgressionPhaseLimits(gameState) {
+    const phase = this.getProgressionPhase(gameState);
+    const difficulty = gameState?.selectedDifficulty ?? 'normal';
+
+    if (gameState?.selectedMode === 'zero') {
+      return [
+        { enemyLevelCap: 6, enemyCountCap: 104, elapsedPressureCap: 42, lateCapBonusCap: 24, modePressureCap: 0.72, minimumSpawnInterval: 0.42 },
+        { enemyLevelCap: 9, enemyCountCap: 154, elapsedPressureCap: 70, lateCapBonusCap: 48, modePressureCap: 1.35, minimumSpawnInterval: 0.34 },
+        { enemyLevelCap: 12, enemyCountCap: 220, elapsedPressureCap: 112, lateCapBonusCap: 80, modePressureCap: 2.41, minimumSpawnInterval: 0.26 },
+      ][phase];
+    }
+
+    if (gameState?.selectedMode === 'endless') {
+      return [
+        { enemyLevelCap: 5, enemyCountCap: 112, elapsedPressureCap: 46, lateCapBonusCap: 20, modePressureCap: 0.7, minimumSpawnInterval: 0.44 },
+        { enemyLevelCap: 7, enemyCountCap: 150, elapsedPressureCap: 72, lateCapBonusCap: 42, modePressureCap: 1.25, minimumSpawnInterval: 0.36 },
+        { enemyLevelCap: 10, enemyCountCap: 190, elapsedPressureCap: 108, lateCapBonusCap: 72, modePressureCap: 1.9, minimumSpawnInterval: 0.3 },
+        { enemyLevelCap: 12, enemyCountCap: 230, elapsedPressureCap: 150, lateCapBonusCap: 110, modePressureCap: 2.7, minimumSpawnInterval: 0.24 },
+      ][phase];
+    }
+
+    if (difficulty === 'expert') {
+      return phase >= 1
+        ? { enemyLevelCap: 9, enemyCountCap: 150, elapsedPressureCap: 58, lateCapBonusCap: 38, modePressureCap: 2.0, minimumSpawnInterval: 0.34 }
+        : { enemyLevelCap: 6, enemyCountCap: 112, elapsedPressureCap: 34, lateCapBonusCap: 18, modePressureCap: 1.05, minimumSpawnInterval: 0.42 };
+    }
+
+    if (difficulty === 'hard') {
+      return phase >= 1
+        ? { enemyLevelCap: 8, enemyCountCap: 130, elapsedPressureCap: 44, lateCapBonusCap: 28, modePressureCap: 1.45, minimumSpawnInterval: 0.42 }
+        : { enemyLevelCap: 5, enemyCountCap: 96, elapsedPressureCap: 26, lateCapBonusCap: 12, modePressureCap: 0.82, minimumSpawnInterval: 0.5 };
+    }
+
+    return phase >= 1
+      ? { enemyLevelCap: 6, enemyCountCap: 104, elapsedPressureCap: 28, lateCapBonusCap: 10, modePressureCap: 0.65, minimumSpawnInterval: 0.5 }
+      : { enemyLevelCap: 4, enemyCountCap: 78, elapsedPressureCap: 18, lateCapBonusCap: 0, modePressureCap: 0.38, minimumSpawnInterval: 0.58 };
   }
 
   pickEnemyType(gameState) {

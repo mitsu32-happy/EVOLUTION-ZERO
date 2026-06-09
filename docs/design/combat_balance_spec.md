@@ -188,3 +188,15 @@ See:
 - Hunting synergy critical hits now show `CRITICAL` in adaptation-skill damage numbers. Normal attacks and ultimate attacks remain outside this display path.
 - Research can raise adaptation-skill damage through Adaptation Analysis I-V, up to +25%.
 - ZERO phase 2 boss HP is reduced to 88% of the previous A14.1 value, and ZERO final boss HP is reduced to 86%; attack patterns, ranges, and damage pressure are unchanged.
+
+## MVP-A15.3 Boss-Gated Enemy Pressure
+
+- Late-game enemy pressure is no longer allowed to grow only from elapsed time.
+- Spawn density, enemy level caps, late cap bonuses, mode pressure, and minimum spawn interval are capped by a progression phase.
+- Progression phase unlocks after boss defeats:
+  - Standard modes: pre-boss phase, then post-boss phase.
+  - ZERO: phase 1, phase 2 after the first ZERO boss, phase 3 after the second ZERO boss.
+  - ENDLESS: up to four phases based on defeated boss count.
+- This prevents drawn-out boss fights from also unlocking unlimited trash pressure before the boss is defeated.
+- Low-level enemy damage is slightly softened, while mid/high-level enemies remain dangerous. The target is being overwhelmed by groups rather than losing a run to one early contact.
+- ZERO phase 2 boss HP is reduced from the A15.2 value to 80%, and ZERO final boss HP is reduced to 78%; attack behavior and warning readability are unchanged.

@@ -3628,3 +3628,9 @@ No new image/audio asset generation is required for this MVP.
 - Synergy HUD overlap with BRANCH is handled by runtime positioning.
 - `CRITICAL` feedback is code-rendered in the existing damage number layer for adaptation-skill critical hits.
 - Adaptation Analysis and Adaptation Enhancement Theory use existing research card/icon assets.
+
+## MVP-A15.3 Difficulty Balance
+
+- No new raster assets were generated.
+- A15.3 changes enemy scaling and ZERO boss durability only.
+- Existing boss finish effect assets and UI assets remain unchanged.

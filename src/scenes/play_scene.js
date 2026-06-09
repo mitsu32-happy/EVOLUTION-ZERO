@@ -2654,6 +2654,7 @@ export class PlayScene {
     this.zeroBossesDefeated = 0;
     this.zeroNextBossPhase = this.getInitialZeroBossPhase();
     this.zeroNextBossTime = this.getZeroBossTime(this.zeroNextBossPhase);
+    this.gameState.zeroBossesDefeated = Math.max(0, this.zeroNextBossPhase - 1);
   }
 
   getInitialZeroBossPhase() {
@@ -3035,7 +3036,7 @@ export class PlayScene {
       }, scale);
 
       finalConfig.name = stageFinal.name;
-      finalConfig.maxHp = Math.max(1, Math.round(finalConfig.maxHp * 0.86));
+      finalConfig.maxHp = Math.max(1, Math.round(finalConfig.maxHp * 0.78));
       return this.applyDebugBossConfig(finalConfig);
     }
 
@@ -3171,7 +3172,7 @@ export class PlayScene {
           },
         }, scale);
 
-        secondConfig.maxHp = Math.max(1, Math.round(secondConfig.maxHp * 0.88));
+        secondConfig.maxHp = Math.max(1, Math.round(secondConfig.maxHp * 0.8));
         return this.applyDebugBossConfig(secondConfig);
       }
     }
@@ -3363,6 +3364,7 @@ export class PlayScene {
 
   handleZeroBossDefeat(boss) {
     this.zeroBossesDefeated = Math.max(this.zeroBossesDefeated ?? 0, boss.zeroPhase ?? 1);
+    this.gameState.zeroBossesDefeated = this.zeroBossesDefeated;
 
     if ((boss.zeroPhase ?? 1) >= 3) {
       this.queueBossClearSequence(boss, { zeroFinal: true });

@@ -1,5 +1,19 @@
 export const UPDATE_NEWS = [
   {
+    id: 'difficulty-balance-a15-3-2026-06-09',
+    date: '2026/06/09',
+    category: 'バランス調整',
+    title: '難易度バランスを調整しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・敵の強化タイミングを見直しました。',
+      '・ボス戦中の雑魚圧を調整しました。',
+      '・ZEROボスの耐久を調整しました。',
+      '・敵攻撃力を見直しました。',
+    ],
+  },
+  {
     id: 'adaptation-research-critical-a15-2-2026-06-09',
     date: '2026/06/09',
     category: 'アップデート',
