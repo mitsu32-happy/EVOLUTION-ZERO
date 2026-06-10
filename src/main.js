@@ -1,6 +1,11 @@
 ﻿import { Application } from 'pixi.js';
 import { ScreenManager } from './core/screen_manager.js';
 import { APP_BUILD, APP_VERSION } from './data/app_version.js';
+import {
+  installCrashDiagnostics,
+  markCrashDiagnosticsHeartbeat,
+  showCrashDiagnostics,
+} from './diagnostics/crash_diagnostics.js';
 import './style.css';
 
 const DESIGN_WIDTH = 390;
@@ -12,6 +17,12 @@ const app = new Application();
 let screenManager;
 let pendingServiceWorker = null;
 let hasReloadedForServiceWorker = false;
+
+installCrashDiagnostics({
+  getContext: (reason) => screenManager?.getCrashDiagnosticsContext?.(reason) ?? {
+    currentScreen: screenManager?.currentScreen ?? 'boot',
+  },
+});
 
 function registerServiceWorker() {
   installPwaUpdateBridge();
@@ -233,7 +244,18 @@ async function boot() {
   }
 
   app.stage.addChild(screenManager.view);
-  app.ticker.add((ticker) => screenManager.update(ticker.deltaMS / 1000));
+  app.ticker.add((ticker) => {
+    markCrashDiagnosticsHeartbeat({
+      currentScreen: screenManager?.currentScreen ?? 'unknown',
+    });
+
+    try {
+      screenManager.update(ticker.deltaMS / 1000);
+    } catch (error) {
+      app.ticker.stop();
+      showCrashDiagnostics('ticker-exception', { error }, (reason) => screenManager?.getCrashDiagnosticsContext?.(reason));
+    }
+  });
 
   layout();
   app.renderer.on('resize', layout);
@@ -241,6 +263,9 @@ async function boot() {
 
 boot().catch((error) => {
   console.error('[EVOLUTION ZERO] boot failed', error);
+  showCrashDiagnostics('boot-failed', { error }, {
+    currentScreen: 'boot',
+  });
 });
 
 registerServiceWorker();

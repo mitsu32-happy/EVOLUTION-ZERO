@@ -20,6 +20,7 @@ import { CombatSystem } from '../systems/combat_system.js';
 import { CollisionSystem } from '../systems/collision_system.js';
 import { SpawnSystem } from '../systems/spawn_system.js';
 import { UltimateSystem } from '../systems/ultimate_system.js';
+import { showCrashDiagnostics, updateCrashDiagnosticsContext } from '../diagnostics/crash_diagnostics.js';
 import { EvolutionReadyUi } from '../ui/evolution_ready_ui.js';
 import { Hud } from '../ui/hud.js';
 import { LevelUpUi } from '../ui/levelup_ui.js';
@@ -1139,6 +1140,9 @@ export class PlayScene {
           this.performanceDiagnostics.tickerStalls += 1;
           this.showPerformanceDomFallback('Game loop stalled. Performance snapshot saved.');
           this.dumpPerformanceSnapshots('ticker-stalled', { stallMs: Math.round(stallMs) });
+          showCrashDiagnostics('ticker-stall', {
+            message: `Game loop stalled for ${Math.round(stallMs)}ms`,
+          }, () => this.getCrashDiagnosticsContext('ticker-stall'));
         }
       }, 1000);
     }
@@ -1151,18 +1155,24 @@ export class PlayScene {
         lineno: event?.lineno ?? null,
         colno: event?.colno ?? null,
       });
+      showCrashDiagnostics('runtime-error', event, () => this.getCrashDiagnosticsContext('runtime-error'));
     };
     this.handleUnhandledRejection = (event) => {
       this.performanceDiagnostics.unhandledRejections += 1;
       this.dumpPerformanceSnapshots('unhandled-rejection', {
         reason: String(event?.reason?.message ?? event?.reason ?? ''),
       });
+      showCrashDiagnostics('unhandled-rejection', event, () => this.getCrashDiagnosticsContext('unhandled-rejection'));
     };
     this.handleContextLost = (event) => {
       this.performanceDiagnostics.contextLost += 1;
       event?.preventDefault?.();
       this.showPerformanceDomFallback('WebGL context lost. Reload the page if the screen does not recover.');
       this.dumpPerformanceSnapshots('webgl-context-lost');
+      showCrashDiagnostics('webgl-context-lost', {
+        message: 'WebGL context lost',
+        webglContextLost: true,
+      }, () => this.getCrashDiagnosticsContext('webgl-context-lost'));
     };
     this.handleContextRestored = () => {
       this.performanceDiagnostics.contextRestored += 1;
@@ -1306,6 +1316,16 @@ export class PlayScene {
     } catch {
       // Performance diagnostics must never affect gameplay.
     }
+
+    updateCrashDiagnosticsContext({
+      screen: 'play',
+      stage: this.gameState?.selectedStage ?? '-',
+      mode: this.gameState?.selectedMode ?? '-',
+      difficulty: this.gameState?.selectedDifficulty ?? '-',
+      elapsedTime: snapshot.elapsedTime,
+      webglContextLost: (snapshot.diagnostics?.contextLost ?? 0) > 0,
+      latestSnapshot: snapshot,
+    });
   }
 
   dumpPerformanceSnapshots(reason = 'manual', extra = null) {
@@ -1328,6 +1348,21 @@ export class PlayScene {
     }
 
     return dump;
+  }
+
+  getCrashDiagnosticsContext(reason = 'manual') {
+    const snapshot = this.buildPerformanceSnapshot(reason);
+    this.recordPerformanceSnapshot(snapshot);
+
+    return {
+      screen: 'play',
+      stage: this.gameState?.selectedStage ?? '-',
+      mode: this.gameState?.selectedMode ?? '-',
+      difficulty: this.gameState?.selectedDifficulty ?? '-',
+      elapsedTime: Number((this.gameState?.elapsedTime ?? 0).toFixed(2)),
+      webglContextLost: (this.performanceDiagnostics?.contextLost ?? 0) > 0,
+      latestSnapshot: snapshot,
+    };
   }
 
   publishDebugRuntimeStats(delta = 0) {

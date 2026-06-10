@@ -827,6 +827,16 @@ export class ScreenManager {
     }
   }
 
+  getCrashDiagnosticsContext(reason = 'manual') {
+    const playContext = this.playScene?.getCrashDiagnosticsContext?.(reason) ?? {};
+
+    return {
+      currentScreen: this.currentScreen,
+      screen: this.currentScreen,
+      ...playContext,
+    };
+  }
+
   resetGamepadCursorForScreen(screenName) {
     const presets = {
       title: { x: this.width / 2, y: 652 },
