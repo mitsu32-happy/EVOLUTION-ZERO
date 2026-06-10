@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'dense-zero-stability-s02-2026-06-10',
+    date: '2026/06/10',
+    category: '改善',
+    title: '高密度戦闘時の安定性を改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・ZERO終盤など、敵や演出が多い場面で停止する場合がある問題への対策を追加しました。',
+      '・弾、警告表示、演出、敵出現の処理を見直しました。',
+      '・高難易度でも安定してプレイしやすくなるよう調整しました。',
+    ],
+  },
+  {
     id: 'performance-stability-s01-2026-06-10',
     date: '2026/06/10',
     category: '改善',

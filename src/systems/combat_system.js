@@ -8,6 +8,8 @@ const MAX_COMBAT_PROJECTILES = 52;
 const MAX_DAMAGE_NUMBERS = 86;
 const MAX_CRITICAL_DAMAGE_NUMBERS = 24;
 const MAX_DAMAGE_NUMBER_POOL = 64;
+const MAX_GRAPHICS_POOL = 80;
+const MAX_SPRITE_POOL = 64;
 
 export class CombatSystem {
   constructor({ assetLoader = null } = {}) {
@@ -24,6 +26,8 @@ export class CombatSystem {
     this.effectWeight = 1;
     this.lastImpactShake = 0;
     this.effects = [];
+    this.graphicsPool = [];
+    this.spritePool = [];
     this.damageNumbers = [];
     this.damageNumberPool = [];
     this.damageNumbersEnabled = true;
@@ -44,12 +48,13 @@ export class CombatSystem {
     this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
     this.adaptationSkillStates = new Map();
     this.projectiles = [];
+    this.performancePressureLevel = 0;
   }
 
   trimRuntimeList(list, maxCount) {
     while (list.length > maxCount) {
       const entry = list.shift();
-      entry?.view?.destroy?.();
+      this.releasePooledView(entry?.view);
     }
   }
 
@@ -61,7 +66,7 @@ export class CombatSystem {
     }
 
     const [entry] = list.splice(index, 1);
-    entry?.view?.destroy?.();
+    this.releasePooledView(entry?.view);
   }
 
   getPerformanceStats() {
@@ -70,14 +75,80 @@ export class CombatSystem {
       combatEffects: this.effects.length,
       damageNumbers: this.damageNumbers.length,
       damageNumberPoolFree: this.damageNumberPool.length,
+      graphicsPoolFree: this.graphicsPool.length,
+      spritePoolFree: this.spritePool.length,
       caps: {
         combatProjectiles: MAX_COMBAT_PROJECTILES,
         combatEffects: MAX_COMBAT_EFFECTS,
         damageNumbers: MAX_DAMAGE_NUMBERS,
         criticalDamageNumbers: MAX_CRITICAL_DAMAGE_NUMBERS,
         damageNumberPool: MAX_DAMAGE_NUMBER_POOL,
+        graphicsPool: MAX_GRAPHICS_POOL,
+        spritePool: MAX_SPRITE_POOL,
       },
     };
+  }
+
+  setPerformancePressure(level = 0) {
+    this.performancePressureLevel = Math.max(0, Math.min(2, Math.floor(level)));
+  }
+
+  acquirePooledView(texture = null) {
+    if (texture) {
+      const sprite = this.spritePool.pop() ?? new Sprite(texture);
+      sprite.texture = texture;
+      sprite.visible = true;
+      sprite.alpha = 1;
+      sprite.rotation = 0;
+      sprite.scale.set(1);
+      sprite.anchor.set(0.5);
+      return sprite;
+    }
+
+    const graphics = this.graphicsPool.pop() ?? new Graphics();
+    graphics.clear();
+    graphics.visible = true;
+    graphics.alpha = 1;
+    graphics.rotation = 0;
+    graphics.scale.set(1);
+    return graphics;
+  }
+
+  releasePooledView(view) {
+    if (!view || view.destroyed) {
+      return;
+    }
+
+    view.parent?.removeChild(view);
+    view.visible = false;
+    view.alpha = 0;
+    view.rotation = 0;
+    view.scale?.set?.(1);
+
+    if (view instanceof Graphics) {
+      view.clear();
+      if (this.graphicsPool.length < MAX_GRAPHICS_POOL) {
+        this.graphicsPool.push(view);
+        return;
+      }
+    } else if (view instanceof Sprite) {
+      view.texture = Texture.EMPTY;
+      if (this.spritePool.length < MAX_SPRITE_POOL) {
+        this.spritePool.push(view);
+        return;
+      }
+    }
+
+    view.destroy();
+  }
+
+  shouldShedSmallEffect() {
+    if (this.performancePressureLevel <= 0) {
+      return false;
+    }
+
+    const pressureSkip = this.performancePressureLevel >= 2 ? 0.45 : 0.22;
+    return this.effects.length >= MAX_COMBAT_EFFECTS * 0.72 && Math.random() < pressureSkip;
   }
 
   setAdaptationSynergy(synergy = {}) {
@@ -191,9 +262,9 @@ export class CombatSystem {
     this.setAdaptationSynergy();
     this.adaptationSkillStates.clear();
     this.currentEnemies = null;
-    this.effects.forEach((effect) => effect.view.destroy());
+    this.effects.forEach((effect) => this.releasePooledView(effect.view));
     this.effects = [];
-    this.projectiles.forEach((projectile) => projectile.view.destroy());
+    this.projectiles.forEach((projectile) => this.releasePooledView(projectile.view));
     this.projectiles = [];
     this.damageNumbers.forEach((number) => number.view.destroy());
     this.damageNumbers = [];
@@ -1120,6 +1191,10 @@ export class CombatSystem {
   }
 
   spawnSlashEffect(player, target, effectLayer, options = {}) {
+    if (this.shouldShedSmallEffect()) {
+      return;
+    }
+
     const duration = options.duration ?? 0.22;
     const scale = options.scale ?? 1;
     const texture = options.texture ?? null;
@@ -1133,7 +1208,7 @@ export class CombatSystem {
       sprite: Boolean(texture),
       baseWidth: size.width,
       baseHeight: size.height,
-      view: texture ? new Sprite(texture) : new Graphics(),
+      view: this.acquirePooledView(texture),
     };
     const x = player.position.x + (target.position.x - player.position.x) * 0.62;
     const y = player.position.y + (target.position.y - player.position.y) * 0.62;
@@ -1166,7 +1241,7 @@ export class CombatSystem {
       : (attack.effectSize ?? { width: 112, height: 92 });
 
     if (texture) {
-      const sprite = new Sprite(texture);
+      const sprite = this.acquirePooledView(texture);
       const effect = {
         age: 0,
         duration: this.simpleEffects ? Math.min(duration, 0.18) : duration,
@@ -1205,6 +1280,10 @@ export class CombatSystem {
   }
 
   spawnAdaptationSpriteEffect(state, player, target, effectLayer, options = {}) {
+    if (this.shouldShedSmallEffect()) {
+      return;
+    }
+
     const facing = options.facing ?? this.getAttackFacing(player, target);
     const distanceRatio = options.distanceRatio ?? 0.55;
     const sideOffset = options.sideOffset ?? 0;
@@ -1215,7 +1294,7 @@ export class CombatSystem {
 
     const texture = options.texture ?? this.getAdaptationTexture(state);
     if (texture) {
-      const sprite = new Sprite(texture);
+      const sprite = this.acquirePooledView(texture);
       const effect = {
         age: 0,
         duration: this.simpleEffects ? Math.min(duration, 0.18) : duration,
@@ -1267,7 +1346,7 @@ export class CombatSystem {
     const startY = player.position.y + Math.sin(angle) * 22 + Math.sin(angle + Math.PI / 2) * side * 22;
     const damageResult = this.getAdaptationDamageResult(state, 1);
     const texture = state.texture ?? null;
-    const view = texture ? new Sprite(texture) : new Graphics();
+    const view = this.acquirePooledView(texture);
 
     if (texture) {
       view.anchor.set(0.5);
@@ -1300,7 +1379,7 @@ export class CombatSystem {
   spawnDelayedBurstProjectile(state, player, effectLayer, options = {}) {
     const level = state.level ?? 1;
     const texture = this.getAdaptationTexture(state);
-    const view = texture ? new Sprite(texture) : new Graphics();
+    const view = this.acquirePooledView(texture);
     const damageResult = this.getAdaptationDamageResult(state, 1.08);
 
     if (texture) {
@@ -1336,7 +1415,7 @@ export class CombatSystem {
   spawnSenseSpikeTrap(state, effectLayer, options = {}) {
     const level = state.level ?? 1;
     const texture = this.getAdaptationTexture(state);
-    const view = texture ? new Sprite(texture) : new Graphics();
+    const view = this.acquirePooledView(texture);
     const damageResult = this.getAdaptationDamageResult(state, 0.92);
 
     if (texture) {
@@ -1376,6 +1455,10 @@ export class CombatSystem {
     }
 
     this.projectiles = this.projectiles.filter((projectile) => {
+      if (!this.isProjectileUsable(projectile)) {
+        return false;
+      }
+
       projectile.age += delta;
 
       if (projectile.kind === 'senseSpikeTrap') {
@@ -1418,7 +1501,7 @@ export class CombatSystem {
           duration: 0.24,
           color: projectile.color,
         });
-        projectile.view.destroy();
+        this.releasePooledView(projectile.view);
         this.lastImpactShake = Math.max(this.lastImpactShake, targets.length > 0 ? 0.45 : 0);
         return false;
       }
@@ -1458,13 +1541,13 @@ export class CombatSystem {
           duration: 0.24,
           color: projectile.color,
         });
-        projectile.view.destroy();
+        this.releasePooledView(projectile.view);
         this.lastImpactShake = Math.max(this.lastImpactShake, hitTargets.length > 0 ? 1.1 : 0);
         return false;
       }
 
       if (projectile.age >= projectile.duration || projectile.target?.isDead) {
-        projectile.view.destroy();
+        this.releasePooledView(projectile.view);
         return false;
       }
 
@@ -1510,12 +1593,29 @@ export class CombatSystem {
           duration: 0.16,
           color: projectile.color,
         });
-        projectile.view.destroy();
+        this.releasePooledView(projectile.view);
         return false;
       }
 
       return true;
     });
+  }
+
+  isProjectileUsable(projectile) {
+    const usable = Boolean(projectile)
+      && projectile.view
+      && !projectile.view.destroyed
+      && Number.isFinite(projectile.age ?? 0)
+      && Number.isFinite(projectile.duration ?? 0)
+      && Number.isFinite(projectile.view.position?.x ?? 0)
+      && Number.isFinite(projectile.view.position?.y ?? 0);
+
+    if (usable) {
+      return true;
+    }
+
+    this.releasePooledView(projectile?.view);
+    return false;
   }
 
   damageEnemiesInCircle(effectLayer, center, radius, damage, options = {}) {
@@ -1582,11 +1682,15 @@ export class CombatSystem {
   }
 
   spawnAdaptationAreaEffect(state, player, effectLayer, options = {}) {
+    if (this.shouldShedSmallEffect()) {
+      return;
+    }
+
     const duration = options.duration ?? 0.36;
     const texture = options.texture ?? this.getAdaptationTexture(state);
 
     if (texture) {
-      const sprite = new Sprite(texture);
+      const sprite = this.acquirePooledView(texture);
       const effect = {
         age: 0,
         duration: this.simpleEffects ? Math.min(duration, 0.2) : duration,
@@ -1621,7 +1725,7 @@ export class CombatSystem {
       color: options.color ?? 0x52e4ff,
       baseWidth: options.width ?? 160,
       baseHeight: options.height ?? 160,
-      view: new Graphics(),
+      view: this.acquirePooledView(),
     };
 
     effect.view.position.set(player.position.x, player.position.y);
@@ -1643,7 +1747,7 @@ export class CombatSystem {
       const progress = effect.age / effect.duration;
 
       if (progress >= 1) {
-        effect.view.destroy();
+        this.releasePooledView(effect.view);
         return false;
       }
 
@@ -1681,6 +1785,14 @@ export class CombatSystem {
     }
 
     const critical = options.critical === true;
+
+    if (this.performancePressureLevel >= 2 && !critical && this.damageNumbers.length >= MAX_DAMAGE_NUMBERS * 0.45) {
+      return;
+    }
+
+    if (this.performancePressureLevel >= 2 && critical && this.damageNumbers.length >= MAX_DAMAGE_NUMBERS * 0.72 && Math.random() < 0.35) {
+      return;
+    }
 
     if (critical && this.damageNumbers.filter((number) => number.critical).length >= MAX_CRITICAL_DAMAGE_NUMBERS) {
       this.releaseFirstDamageNumber((number) => number.critical);

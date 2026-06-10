@@ -35,6 +35,11 @@ export class AudioManager {
     this.lastBgmEnsureAt = 0;
     this.pageBlurSuspendTimer = null;
     this.audioResumeRetryTimer = null;
+    this.performanceLoadSheddingLevel = 0;
+  }
+
+  setPerformanceLoadSheddingLevel(level = 0) {
+    this.performanceLoadSheddingLevel = Math.max(0, Math.min(2, Math.floor(level)));
   }
 
   setVolume(volume) {
@@ -359,7 +364,8 @@ export class AudioManager {
     }
 
     const now = (typeof performance !== 'undefined' ? performance.now() : Date.now()) / 1000;
-    const cooldown = options.cooldown ?? AUDIO_COOLDOWNS[id] ?? 0;
+    const baseCooldown = options.cooldown ?? AUDIO_COOLDOWNS[id] ?? 0;
+    const cooldown = this.getLoadAdjustedCooldown(id, baseCooldown);
 
     if (now - (this.lastPlayedAt[id] ?? -999) < cooldown) {
       return;
@@ -367,7 +373,7 @@ export class AudioManager {
 
     this.lastPlayedAt[id] = now;
 
-    if (!this.canPlayInstance(id, options.maxInstances)) {
+    if (!this.canPlayInstance(id, this.getLoadAdjustedMaxInstances(id, options.maxInstances))) {
       return;
     }
 
@@ -403,6 +409,30 @@ export class AudioManager {
 
   playOptional(id, options = {}) {
     this.play(id, { ...options, optional: true });
+  }
+
+  getLoadAdjustedCooldown(id, cooldown) {
+    if (this.performanceLoadSheddingLevel <= 0) {
+      return cooldown;
+    }
+
+    if (['enemy_hit', 'attack', 'pickup_exp', 'raptor_attack_se', 'spinosaurus_water_attack_se'].includes(id)) {
+      return Math.max(cooldown, this.performanceLoadSheddingLevel >= 2 ? 0.22 : 0.14);
+    }
+
+    return cooldown;
+  }
+
+  getLoadAdjustedMaxInstances(id, maxInstances = AUDIO_MAX_INSTANCES[id] ?? 4) {
+    if (this.performanceLoadSheddingLevel <= 0) {
+      return maxInstances;
+    }
+
+    if (['enemy_hit', 'attack', 'pickup_exp', 'raptor_attack_se', 'spinosaurus_water_attack_se'].includes(id)) {
+      return Math.min(maxInstances, this.performanceLoadSheddingLevel >= 2 ? 1 : 2);
+    }
+
+    return maxInstances;
   }
 
   preload(ids = Object.keys(AUDIO_PATHS)) {

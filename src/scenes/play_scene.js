@@ -37,6 +37,10 @@ const MAX_STAGE_GIMMICKS = 34;
 const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
 const MAX_WORLD_PICKUPS = 180;
+const LOAD_SHEDDING_SOFT_CHILDREN = 680;
+const LOAD_SHEDDING_HARD_CHILDREN = 980;
+const LOAD_SHEDDING_SOFT_OBJECTS = 520;
+const LOAD_SHEDDING_HARD_OBJECTS = 760;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
 const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
@@ -510,10 +514,13 @@ export class PlayScene {
     this.resultSoundPlayed = false;
     this.bossClearSequence = null;
     this.pickupBursts = [];
+    this.pickupBurstPool = [];
     this.pickupPopups = [];
+    this.pickupPopupPool = [];
     this.debugStatsTimer = 0;
     this.debugFpsEstimate = 0;
     this.debugPerformanceEnabled = isDebugPerformanceEnabled();
+    this.performanceLoadSheddingLevel = 0;
     this.runtimeInvalidCounts = {};
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
@@ -740,6 +747,7 @@ export class PlayScene {
       this.updateEnemies(delta);
       this.updateEnemyProjectiles(delta);
       this.updateBosses(delta);
+      this.updatePerformanceLoadShedding(delta);
       const combatResult = this.combatSystem.update(delta, this.player, this.getAttackTargets(), this.effectLayer);
 
       if (combatResult?.targets?.length > 0) {
@@ -793,9 +801,10 @@ export class PlayScene {
   enforceRuntimeObjectCaps() {
     this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES);
     this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS, { children: true });
-    this.trimRuntimeList(this.pickupBursts, MAX_PICKUP_BURSTS);
-    this.trimRuntimeList(this.pickupPopups, MAX_PICKUP_POPUPS);
+    this.trimPickupBursts(MAX_PICKUP_BURSTS);
+    this.trimPickupPopups(MAX_PICKUP_POPUPS);
     this.trimWorldPickups();
+    this.pruneStaleRuntimeChildren();
   }
 
   trimRuntimeList(list, maxCount, { children = false } = {}) {
@@ -821,6 +830,121 @@ export class PlayScene {
     }
   }
 
+  trimPickupBursts(maxCount) {
+    while (this.pickupBursts.length > maxCount) {
+      const burst = this.pickupBursts.shift();
+      this.releasePickupBurstView(burst?.view);
+    }
+  }
+
+  trimPickupPopups(maxCount) {
+    while (this.pickupPopups.length > maxCount) {
+      const popup = this.pickupPopups.shift();
+      this.releasePickupPopupText(popup?.view);
+    }
+  }
+
+  pruneStaleRuntimeChildren() {
+    const activeViews = this.collectActiveRuntimeViews();
+
+    this.pruneStaleChildren(this.effectLayer, activeViews, 'effectLayer');
+    this.pruneStaleChildren(this.gimmickLayer, activeViews, 'gimmickLayer');
+    this.pruneStaleChildren(this.depthLayer, activeViews, 'depthLayer');
+  }
+
+  collectActiveRuntimeViews() {
+    const views = new Set([
+      this.player?.view,
+      this.ultimateSystem?.overlay,
+      this.hud?.view,
+      this.gimmickWarningGraphics,
+    ]);
+
+    this.enemies.forEach((enemy) => views.add(enemy.view));
+    this.bosses.forEach((boss) => views.add(boss.view));
+    this.enemyProjectiles.forEach((projectile) => views.add(projectile.view));
+    this.stageGimmicks.forEach((gimmick) => views.add(gimmick.view));
+    this.pickups.forEach((pickup) => views.add(pickup.view));
+    this.pickupBursts.forEach((burst) => views.add(burst.view));
+    this.pickupPopups.forEach((popup) => views.add(popup.view));
+    this.combatSystem?.effects?.forEach((effect) => views.add(effect.view));
+    this.combatSystem?.projectiles?.forEach((projectile) => views.add(projectile.view));
+    this.combatSystem?.damageNumbers?.forEach((number) => views.add(number.view));
+    this.ultimateSystem?.effects?.forEach((effect) => views.add(effect.view));
+
+    return views;
+  }
+
+  pruneStaleChildren(container, activeViews, label) {
+    const stale = container.children.filter((child) => !activeViews.has(child));
+
+    stale.forEach((child) => {
+      container.removeChild(child);
+      if (!child.destroyed) {
+        child.destroy({ children: true });
+      }
+    });
+
+    if (stale.length > 0) {
+      this.runtimeInvalidCounts[`${label}StaleChild`] = (this.runtimeInvalidCounts[`${label}StaleChild`] ?? 0) + stale.length;
+    }
+  }
+
+  getRuntimeContainerChildren() {
+    return {
+      effect: this.effectLayer.children.length,
+      gimmick: this.gimmickLayer.children.length,
+      depth: this.depthLayer.children.length,
+      ui: this.uiLayer.children.length,
+      total: this.effectLayer.children.length
+        + this.gimmickLayer.children.length
+        + this.depthLayer.children.length
+        + this.uiLayer.children.length,
+    };
+  }
+
+  getRuntimeObjectPressureCount() {
+    return this.enemies.length
+      + this.enemyProjectiles.length
+      + this.stageGimmicks.length
+      + (this.combatSystem?.projectiles?.length ?? 0)
+      + (this.combatSystem?.effects?.length ?? 0)
+      + (this.combatSystem?.damageNumbers?.length ?? 0)
+      + this.pickups.length
+      + this.pickupBursts.length
+      + this.pickupPopups.length
+      + (this.ultimateSystem?.effects?.length ?? 0);
+  }
+
+  updatePerformanceLoadShedding(delta = 0) {
+    const instantFps = delta > 0 ? 1 / Math.max(delta, 1 / 120) : 0;
+    this.debugFpsEstimate = this.debugFpsEstimate > 0
+      ? this.debugFpsEstimate * 0.9 + instantFps * 0.1
+      : instantFps;
+
+    const childTotal = this.getRuntimeContainerChildren().total;
+    const objectPressure = this.getRuntimeObjectPressureCount();
+    let level = 0;
+
+    if (this.debugFpsEstimate > 0 && this.debugFpsEstimate < 34) {
+      level = 1;
+    }
+
+    if (childTotal >= LOAD_SHEDDING_SOFT_CHILDREN || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS) {
+      level = Math.max(level, 1);
+    }
+
+    if ((this.debugFpsEstimate > 0 && this.debugFpsEstimate < 24)
+      || childTotal >= LOAD_SHEDDING_HARD_CHILDREN
+      || objectPressure >= LOAD_SHEDDING_HARD_OBJECTS) {
+      level = 2;
+    }
+
+    this.performanceLoadSheddingLevel = level;
+    this.combatSystem?.setPerformancePressure?.(level);
+    this.audioManager?.setPerformanceLoadSheddingLevel?.(level);
+  }
+
   createPerformanceDebugOverlay() {
     this.performanceDebugBg.visible = false;
     this.performanceDebugText.visible = false;
@@ -837,6 +961,8 @@ export class PlayScene {
 
     const lines = [
       `FPS ${stats.fps}`,
+      `shed ${stats.loadSheddingLevel} children ${stats.containerChildrenTotal}`,
+      `spawn ${stats.spawn?.spawnBudget ?? '-'}/${stats.spawn?.maxSpawnBudget ?? '-'}`,
       `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'}`,
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
@@ -849,7 +975,7 @@ export class PlayScene {
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 202, 118, 8)
+      .roundRect(8, 80, 212, 134, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -882,6 +1008,8 @@ export class PlayScene {
       ? this.debugFpsEstimate * 0.82 + instantFps * 0.18
       : instantFps;
     const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
+    const containerChildren = this.getRuntimeContainerChildren();
+    const spawnStats = this.spawnSystem?.getPerformanceStats?.(this.gameState) ?? {};
     const stats = {
       stage: this.gameState.selectedStage,
       difficulty: this.gameState.selectedDifficulty,
@@ -907,8 +1035,13 @@ export class PlayScene {
       effectChildren: this.effectLayer.children.length,
       gimmickChildren: this.gimmickLayer.children.length,
       depthChildren: this.depthLayer.children.length,
+      uiChildren: this.uiLayer.children.length,
+      containerChildrenTotal: containerChildren.total,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
+      audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
+      loadSheddingLevel: this.performanceLoadSheddingLevel ?? 0,
+      spawn: spawnStats,
       invalidRemoved: { ...(this.runtimeInvalidCounts ?? {}) },
       caps: {
         enemies: this.spawnSystem?.getEnemyCap?.(this.gameState) ?? null,
@@ -2618,8 +2751,13 @@ export class PlayScene {
     const overlapLimit = this.gameState.selectedMode === 'zero'
       ? ((boss.zeroPhase ?? 1) >= 3 ? 3 : 2)
       : this.gameState.selectedDifficulty === 'expert' ? 2 : 1;
+    const loadAdjustedOverlapLimit = this.performanceLoadSheddingLevel >= 2
+      ? 1
+      : this.performanceLoadSheddingLevel >= 1
+        ? Math.min(overlapLimit, 2)
+        : overlapLimit;
 
-    if (activeBossHazardCount >= overlapLimit) {
+    if (activeBossHazardCount >= loadAdjustedOverlapLimit) {
       return;
     }
 
@@ -4330,16 +4468,20 @@ export class PlayScene {
   }
 
   spawnPickupBurst(x, y, value = 1, type = 'exp') {
+    if (this.performanceLoadSheddingLevel >= 1 && type === 'exp') {
+      return;
+    }
+
     const burst = {
       age: 0,
       duration: 0.32,
       value,
       type,
-      view: new Graphics(),
+      view: this.acquirePickupBurstView(),
     };
 
     burst.view.position.set(x, y);
-    this.trimRuntimeList(this.pickupBursts, MAX_PICKUP_BURSTS - 1);
+    this.trimPickupBursts(MAX_PICKUP_BURSTS - 1);
     this.effectLayer.addChild(burst.view);
     this.pickupBursts.push(burst);
   }
@@ -4349,21 +4491,17 @@ export class PlayScene {
       return;
     }
 
-    const text = new Text({
-      text: label,
-      style: {
-        fill: `#${color.toString(16).padStart(6, '0')}`,
-        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
-        fontSize: 12,
-        fontWeight: '800',
-        stroke: { color: '#020607', width: 3 },
-        letterSpacing: 0,
-      },
-    });
+    if (this.performanceLoadSheddingLevel >= 2 || (this.performanceLoadSheddingLevel >= 1 && label.startsWith('EXP'))) {
+      return;
+    }
 
+    const text = this.acquirePickupPopupText();
+
+    text.text = label;
+    text.style.fill = `#${color.toString(16).padStart(6, '0')}`;
     text.anchor.set(0.5);
     text.position.set(x, y);
-    this.trimRuntimeList(this.pickupPopups, MAX_PICKUP_POPUPS - 1);
+    this.trimPickupPopups(MAX_PICKUP_POPUPS - 1);
     this.effectLayer.addChild(text);
     this.pickupPopups.push({
       age: 0,
@@ -4373,13 +4511,77 @@ export class PlayScene {
     });
   }
 
+  acquirePickupBurstView() {
+    const view = this.pickupBurstPool.pop() ?? new Graphics();
+    view.clear();
+    view.visible = true;
+    view.alpha = 1;
+    view.scale.set(1);
+    return view;
+  }
+
+  releasePickupBurstView(view) {
+    if (!view || view.destroyed) {
+      return;
+    }
+
+    view.parent?.removeChild(view);
+    view.clear();
+    view.visible = false;
+    view.alpha = 0;
+
+    if (this.pickupBurstPool.length < MAX_PICKUP_BURSTS) {
+      this.pickupBurstPool.push(view);
+      return;
+    }
+
+    view.destroy();
+  }
+
+  acquirePickupPopupText() {
+    const text = this.pickupPopupPool.pop() ?? new Text({
+      text: '',
+      style: {
+        fill: '#d7fff2',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 12,
+        fontWeight: '800',
+        stroke: { color: '#020607', width: 3 },
+        letterSpacing: 0,
+      },
+    });
+
+    text.visible = true;
+    text.alpha = 1;
+    text.scale.set(1);
+    return text;
+  }
+
+  releasePickupPopupText(text) {
+    if (!text || text.destroyed) {
+      return;
+    }
+
+    text.parent?.removeChild(text);
+    text.visible = false;
+    text.alpha = 0;
+    text.scale.set(1);
+
+    if (this.pickupPopupPool.length < MAX_PICKUP_POPUPS) {
+      this.pickupPopupPool.push(text);
+      return;
+    }
+
+    text.destroy();
+  }
+
   updatePickupBursts(delta) {
     this.pickupBursts = this.pickupBursts.filter((burst) => {
       burst.age += delta;
       const progress = burst.age / burst.duration;
 
       if (progress >= 1) {
-        burst.view.destroy();
+        this.releasePickupBurstView(burst.view);
         return false;
       }
 
@@ -4405,7 +4607,7 @@ export class PlayScene {
       const progress = popup.age / popup.duration;
 
       if (progress >= 1) {
-        popup.view.destroy();
+        this.releasePickupPopupText(popup.view);
         return false;
       }
 
@@ -5735,9 +5937,9 @@ export class PlayScene {
     this.enemyProjectiles = [];
     this.bosses.forEach((boss) => boss.view.destroy());
     this.bosses = [];
-    this.pickupBursts.forEach((burst) => burst.view?.destroy());
+    this.pickupBursts.forEach((burst) => this.releasePickupBurstView(burst.view));
     this.pickupBursts = [];
-    this.pickupPopups.forEach((popup) => popup.view?.destroy());
+    this.pickupPopups.forEach((popup) => this.releasePickupPopupText(popup.view));
     this.pickupPopups = [];
 
     this.pickups.forEach((pickup) => pickup.view.destroy());

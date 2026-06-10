@@ -26,10 +26,22 @@ export class SpawnSystem {
     this.spawnTimer = 0;
     this.spawnInterval = 2.55;
     this.maxEnemies = 32;
+    this.spawnBudget = 0;
+    this.maxSpawnBudget = 8;
   }
 
   reset() {
     this.spawnTimer = 0;
+    this.spawnBudget = 0;
+  }
+
+  getPerformanceStats(gameState = null) {
+    return {
+      spawnTimer: Number((this.spawnTimer ?? 0).toFixed(2)),
+      spawnBudget: Number((this.spawnBudget ?? 0).toFixed(2)),
+      maxSpawnBudget: this.maxSpawnBudget,
+      phaseLimits: gameState ? this.getProgressionPhaseLimits(gameState) : null,
+    };
   }
 
   update(delta, gameState, camera, player, enemies, onSpawn) {
@@ -53,9 +65,16 @@ export class SpawnSystem {
       return;
     }
 
+    this.recoverSpawnBudget(delta, gameState);
+
     this.spawnTimer -= delta;
 
     if (this.spawnTimer > 0) {
+      return;
+    }
+
+    if (this.spawnBudget < 1) {
+      this.spawnTimer = 0.08;
       return;
     }
 
@@ -76,6 +95,19 @@ export class SpawnSystem {
       expMultiplier: modeScale.exp,
       scoreMultiplier: modeScale.score,
     }));
+    this.spawnBudget -= 1;
+  }
+
+  recoverSpawnBudget(delta, gameState) {
+    const phaseLimits = this.getProgressionPhaseLimits(gameState);
+    const modeRate = gameState?.selectedMode === 'zero'
+      ? 7.5
+      : gameState?.selectedMode === 'endless'
+        ? 8.5
+        : gameState?.selectedDifficulty === 'expert' ? 6.5 : 5.5;
+    const cap = Math.max(4, Math.min(this.maxSpawnBudget, Math.ceil((phaseLimits.enemyCountCap ?? 80) / 28)));
+
+    this.spawnBudget = Math.min(cap, this.spawnBudget + delta * modeRate);
   }
 
   getElapsedEnemyPressureBonus(gameState) {

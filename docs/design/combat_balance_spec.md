@@ -215,3 +215,11 @@ See:
 - EXP pickup display load is capped while merged value is preserved when possible.
 - Invalid enemy, boss, projectile, or hazard entries are removed before update so one bad runtime object cannot stop the scene.
 - `debugPerformance=1` exposes current combat counts and caps for future high-difficulty QA.
+
+## MVP-S02 Dense Combat Stability
+
+- S02 does not change enemy HP, damage, speed, boss HP, or boss damage values.
+- Adaptation projectile/effect views and pickup visual feedback are pooled or load-shed under pressure.
+- Enemy spawn budget smooths creation pressure without changing enemy cap targets.
+- Boss hazard overlap can be temporarily reduced only when emergency load shedding is active.
+- The goal is preserving ZERO/endless pressure while preventing visual/audio overload from deciding the run.

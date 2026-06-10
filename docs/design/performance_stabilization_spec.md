@@ -42,13 +42,15 @@ Lifecycle:
 Pool target:
 
 - damage / CRITICAL text
+- adaptation projectile views
+- small combat effect views
+- pickup burst views
+- pickup popup text
 
 Deferred pool candidates:
 
-- small sprite effects
-- adaptation projectiles
 - warning guides
-- pickup bursts
+- full boss hazard containers
 
 ## Game Loop Guards
 
@@ -82,9 +84,34 @@ The overlay shows:
 - damage text count and pool free count
 - pickup count
 - audio instance count
+- load shedding level
+- total container children
+- spawn budget
+- audio buffer instance count
 
 Runtime stats are also exposed through `window.__EVOLUTION_ZERO_RUN_DEBUG_STATS__` and `#app.__EVOLUTION_ZERO_RUN_DEBUG_STATS__` for browser automation.
 
 ## Audio Stability
 
 Existing high-frequency hit and attack SE calls are throttled in play code and passed with small `maxInstances` values. Future high-density effects should use cooldown/max-instance options and avoid per-hit unique SE when multi-hit skills are active.
+
+## MVP-S02 Emergency Load Shedding
+
+S02 adds load shedding based on FPS estimate, runtime object count, and container children count.
+
+When pressure rises:
+
+- non-critical damage display can be thinned
+- CRITICAL display can be lightly thinned only at the highest pressure
+- EXP popup / pickup burst visuals can be skipped
+- small combat effects can be skipped
+- boss hazard overlap is temporarily reduced
+- low-priority SE cooldowns and instance limits become stricter
+
+Damage, EXP, boss state, and progression are not removed by load shedding.
+
+## MVP-S02 Spawn Budget
+
+Enemy spawning now uses a small budget bucket. This keeps current pacing effectively intact during normal play while preventing future dense content from spawning too many enemies within one short update window.
+
+The budget is visible through `debugPerformance=1`.

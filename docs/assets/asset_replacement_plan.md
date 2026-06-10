@@ -3641,3 +3641,9 @@ No new image/audio asset generation is required for this MVP.
 - S01 is a runtime stability pass for heavy combat scenes.
 - Damage / CRITICAL text pooling, object caps, and `debugPerformance=1` are code-side improvements.
 - Existing A14 boss finish effect assets remain unchanged.
+
+## MVP-S02 Dense Combat Stability
+
+- No new raster assets were generated.
+- S02 adds code-side pooling and emergency load shedding for high-density combat scenes.
+- Existing projectile, warning, pickup, and boss effect assets remain unchanged.
