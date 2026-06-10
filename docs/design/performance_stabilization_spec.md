@@ -115,3 +115,42 @@ Damage, EXP, boss state, and progression are not removed by load shedding.
 Enemy spawning now uses a small budget bucket. This keeps current pacing effectively intact during normal play while preventing future dense content from spawning too many enemies within one short update window.
 
 The budget is visible through `debugPerformance=1`.
+
+## MVP-S03 Final Phase Hardening
+
+S03 targets the remaining whiteout risk reported around the ZERO final phase.
+
+Additional diagnostics:
+
+- rolling performance snapshots are kept for recent combat state
+- the latest snapshot and dump are saved to localStorage
+- manual dump is available with F10 or `window.__EVOLUTION_ZERO_DUMP_PERF__()`
+- `debugPerfTimeScale` can accelerate combat time only when `debugPerformance=1`
+- `debugInvincible` and `debugMaxSpawn` can force a maximum-pressure soak route without changing normal play
+- `debugMaxSpawn` disables outgoing player damage and pickup collection so stress tests preserve enemy pressure
+- `debugStressKill` re-enables non-boss enemy damage after the enemy count reaches a threshold, while bosses remain invulnerable to prevent result flow from interrupting the test
+- runtime error, unhandled rejection, WebGL context lost/restored, and ticker-stall suspicion are recorded
+
+Snapshot keys:
+
+- `EVOLUTION_ZERO_LAST_PERF_SNAPSHOT`
+- `EVOLUTION_ZERO_PERF_SNAPSHOTS`
+- `EVOLUTION_ZERO_PERF_DUMP`
+
+New / strengthened caps and reuse:
+
+- enemy projectile Graphics are pooled and capped
+- UltimateSystem Graphics / Sprite effect views are pooled and capped
+- UltimateSystem skips non-core visuals first when load shedding reaches the hard level
+- ZERO final phase raises load shedding earlier than normal play
+- boss hazard overlap is reduced sooner during ZERO final phase pressure
+- warning guide drawing is capped under load while boss warnings are prioritized
+
+The intent is to preserve damage, enemy behavior, rewards, and difficulty while reducing high-frequency drawing and allocation pressure.
+
+If a future whiteout occurs, QA should record:
+
+- URL and route
+- `EVOLUTION_ZERO_PERF_DUMP`
+- browser console error / warning count
+- whether `diagnostics.contextLost`, `diagnostics.runtimeErrors`, or `diagnostics.tickerStalls` changed

@@ -2,6 +2,24 @@
 import { ASSET_KEYS, ENTITY_VISUAL_RULES } from '../data/asset_manifest.js';
 import { getEnemyDisplayProfile } from '../data/enemy_display.js';
 
+function isDebugOutgoingDamageDisabled() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get('debugNoPlayerDamage') === '1'
+    || (params.get('debugMaxSpawn') === '1' && window.__EVOLUTION_ZERO_STRESS_KILL_ENABLED__ !== true);
+}
+
+function getDebugOutgoingDamage(amount, maxHp) {
+  if (typeof window !== 'undefined' && window.__EVOLUTION_ZERO_STRESS_KILL_ENABLED__ === true) {
+    return Math.max(amount, maxHp);
+  }
+
+  return amount;
+}
+
 const ENEMY_TYPES = {
   swarm: {
     radius: 14,
@@ -541,9 +559,15 @@ export class Enemy {
       return false;
     }
 
-    this.hp = Math.max(0, this.hp - amount);
+    if (isDebugOutgoingDamageDisabled()) {
+      return false;
+    }
+
+    const appliedAmount = getDebugOutgoingDamage(amount, this.maxHp);
+
+    this.hp = Math.max(0, this.hp - appliedAmount);
     this.hitFlashTime = impact?.strength > 30 ? 0.18 : 0.13;
-    this.hitImpact = Math.min(1, Math.max(this.hitImpact, amount / 32));
+    this.hitImpact = Math.min(1, Math.max(this.hitImpact, appliedAmount / 32));
 
     if (impact?.strength > 0) {
       const dx = this.position.x - impact.from.x;
@@ -588,6 +612,9 @@ export class Enemy {
 
       if ((type === 'poison' || type === 'bleed') && effect.tickTimer <= 0) {
         effect.tickTimer = type === 'poison' ? 0.55 : 0.38;
+        if (isDebugOutgoingDamageDisabled()) {
+          return;
+        }
         const damage = type === 'poison' ? 3 * effect.power : 4 * effect.power;
 
         this.hp = Math.max(0, this.hp - damage);

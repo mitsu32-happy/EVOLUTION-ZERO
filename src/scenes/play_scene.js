@@ -33,6 +33,7 @@ const TILE_HEIGHT = 56;
 const HUD_INPUT_HEIGHT = 150;
 const GAMEPAD_DEAD_ZONE = 0.2;
 const MAX_ENEMY_PROJECTILES = 56;
+const MAX_ENEMY_PROJECTILE_POOL = 64;
 const MAX_STAGE_GIMMICKS = 34;
 const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
@@ -41,6 +42,7 @@ const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
 const LOAD_SHEDDING_SOFT_OBJECTS = 520;
 const LOAD_SHEDDING_HARD_OBJECTS = 760;
+const PERFORMANCE_SNAPSHOT_LIMIT = 90;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
 const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
@@ -219,6 +221,20 @@ function getDebugFlag(name) {
 
 function isDebugPerformanceEnabled() {
   return getDebugFlag('debugPerformance');
+}
+
+function getDebugPerformanceTimeScale() {
+  if (!isDebugPerformanceEnabled() || typeof window === 'undefined') {
+    return 1;
+  }
+
+  const value = Number(new URLSearchParams(window.location.search).get('debugPerfTimeScale'));
+
+  if (!Number.isFinite(value) || value <= 1) {
+    return 1;
+  }
+
+  return Math.min(24, value);
 }
 
 function getDebugSkillLevel() {
@@ -489,6 +505,7 @@ export class PlayScene {
     this.pickups = this.createPickups();
     this.enemies = [];
     this.enemyProjectiles = [];
+    this.enemyProjectilePool = [];
     this.bosses = [];
     this.nextBossTime = this.getInitialBossTime();
     this.bossSpawnInterval = this.getBossSpawnInterval();
@@ -521,6 +538,21 @@ export class PlayScene {
     this.debugFpsEstimate = 0;
     this.debugPerformanceEnabled = isDebugPerformanceEnabled();
     this.performanceLoadSheddingLevel = 0;
+    this.frameCount = 0;
+    this.lastUpdateTimestamp = 0;
+    this.performanceSnapshots = [];
+    this.lastPerformanceStorageWrite = 0;
+    this.lastPerformanceSnapshotStorageWrite = 0;
+    this.debugStressKillEnabled = false;
+    this.debugStressKillThreshold = null;
+    this.performanceDiagnostics = {
+      contextLost: 0,
+      contextRestored: 0,
+      runtimeErrors: 0,
+      unhandledRejections: 0,
+      tickerStalls: 0,
+      lastReason: null,
+    };
     this.runtimeInvalidCounts = {};
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
@@ -666,6 +698,7 @@ export class PlayScene {
     this.createGamepadNotice();
     this.createAdaptationSynergyHud();
     this.createPerformanceDebugOverlay();
+    this.bindPerformanceDiagnostics();
     this.bindInput();
     this.updateCamera(1);
     this.updateMap(true);
@@ -687,6 +720,17 @@ export class PlayScene {
   }
 
   update(delta) {
+    const rawDelta = delta;
+    this.debugPerformanceTimeScale = getDebugPerformanceTimeScale();
+    if (this.debugPerformanceTimeScale > 1) {
+      delta = Math.min(0.35, delta * this.debugPerformanceTimeScale);
+    }
+
+    this.frameCount += 1;
+    this.lastTickerDelta = delta;
+    this.lastRawTickerDelta = rawDelta;
+    this.lastUpdateTimestamp = typeof performance !== 'undefined' ? performance.now() : Date.now();
+
     this.levelUpUi.update?.(delta);
     this.pauseUi.update?.(delta);
     this.resultUi.update?.(delta);
@@ -743,11 +787,13 @@ export class PlayScene {
       this.applyPlayerStatusMovement();
       this.player.clampToBounds(STAGE_BOUNDS);
       this.applyStageGimmicks(delta);
+      this.updateDebugStressKillState();
       this.updatePickups(delta);
       this.updateEnemies(delta);
+      this.updateDebugStressKillState();
       this.updateEnemyProjectiles(delta);
       this.updateBosses(delta);
-      this.updatePerformanceLoadShedding(delta);
+      this.updatePerformanceLoadShedding(rawDelta);
       const combatResult = this.combatSystem.update(delta, this.player, this.getAttackTargets(), this.effectLayer);
 
       if (combatResult?.targets?.length > 0) {
@@ -795,11 +841,11 @@ export class PlayScene {
     this.updateResultUi();
     this.updateEvolutionWarning(delta);
     this.queueEvolutionReadyIfNeeded();
-    this.publishDebugRuntimeStats(delta);
+    this.publishDebugRuntimeStats(rawDelta);
   }
 
   enforceRuntimeObjectCaps() {
-    this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES);
+    this.trimEnemyProjectiles(MAX_ENEMY_PROJECTILES);
     this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS, { children: true });
     this.trimPickupBursts(MAX_PICKUP_BURSTS);
     this.trimPickupPopups(MAX_PICKUP_POPUPS);
@@ -811,6 +857,13 @@ export class PlayScene {
     while (list.length > maxCount) {
       const entry = list.shift();
       entry?.view?.destroy?.(children ? { children: true } : undefined);
+    }
+  }
+
+  trimEnemyProjectiles(maxCount) {
+    while (this.enemyProjectiles.length > maxCount) {
+      const projectile = this.enemyProjectiles.shift();
+      this.releaseEnemyProjectileView(projectile?.view);
     }
   }
 
@@ -842,6 +895,37 @@ export class PlayScene {
       const popup = this.pickupPopups.shift();
       this.releasePickupPopupText(popup?.view);
     }
+  }
+
+  acquireEnemyProjectileView() {
+    const view = this.enemyProjectilePool.pop() ?? new Graphics();
+
+    view.clear();
+    view.visible = true;
+    view.alpha = 1;
+    view.rotation = 0;
+    view.scale.set(1);
+    return view;
+  }
+
+  releaseEnemyProjectileView(view) {
+    if (!view || view.destroyed) {
+      return;
+    }
+
+    view.removeFromParent?.();
+    view.clear();
+    view.visible = false;
+    view.alpha = 1;
+    view.rotation = 0;
+    view.scale.set(1);
+
+    if (this.enemyProjectilePool.length < MAX_ENEMY_PROJECTILE_POOL) {
+      this.enemyProjectilePool.push(view);
+      return;
+    }
+
+    view.destroy();
   }
 
   pruneStaleRuntimeChildren() {
@@ -916,6 +1000,34 @@ export class PlayScene {
       + (this.ultimateSystem?.effects?.length ?? 0);
   }
 
+  updateDebugStressKillState() {
+    if (!getDebugFlag('debugStressKill')) {
+      return;
+    }
+
+    const phaseLimits = this.spawnSystem?.getProgressionPhaseLimits?.(this.gameState);
+    const cap = phaseLimits?.enemyCountCap ?? this.spawnSystem?.getDebugMaxEnemyCap?.(this.gameState) ?? 120;
+    const thresholdParam = Number(new URLSearchParams(window.location.search).get('debugStressKillThreshold'));
+    const threshold = Number.isFinite(thresholdParam) && thresholdParam > 0
+      ? thresholdParam
+      : Math.max(24, Math.floor(cap * 0.82));
+
+    this.debugStressKillThreshold = threshold;
+
+    if (this.debugStressKillEnabled || this.enemies.length < threshold) {
+      return;
+    }
+
+    this.debugStressKillEnabled = true;
+
+    try {
+      window.__EVOLUTION_ZERO_STRESS_KILL_ENABLED__ = true;
+      document?.body?.setAttribute?.('data-ez-stress-kill', '1');
+    } catch {
+      // Debug instrumentation only.
+    }
+  }
+
   updatePerformanceLoadShedding(delta = 0) {
     const instantFps = delta > 0 ? 1 / Math.max(delta, 1 / 120) : 0;
     this.debugFpsEstimate = this.debugFpsEstimate > 0
@@ -940,8 +1052,25 @@ export class PlayScene {
       level = 2;
     }
 
+    const activeBoss = this.getActiveBoss?.();
+    const isZeroFinalPressure = this.gameState.selectedMode === 'zero' && (activeBoss?.zeroPhase ?? 0) >= 3;
+
+    if (isZeroFinalPressure) {
+      if (childTotal >= LOAD_SHEDDING_SOFT_CHILDREN * 0.78
+        || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.78) {
+        level = Math.max(level, 1);
+      }
+
+      if (childTotal >= LOAD_SHEDDING_SOFT_CHILDREN * 0.96
+        || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.96
+        || (this.debugFpsEstimate > 0 && this.debugFpsEstimate < 30)) {
+        level = Math.max(level, 2);
+      }
+    }
+
     this.performanceLoadSheddingLevel = level;
     this.combatSystem?.setPerformancePressure?.(level);
+    this.ultimateSystem?.setPerformancePressure?.(level);
     this.audioManager?.setPerformanceLoadSheddingLevel?.(level);
   }
 
@@ -966,20 +1095,239 @@ export class PlayScene {
       `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'}`,
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
-      `fx ${stats.combatEffects}/${stats.caps.combatEffects}`,
+      `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
       `dmg ${stats.damageNumbers}/${stats.caps.damageNumbers} pool ${stats.damageNumberPoolFree}/${stats.caps.damageNumberPool}`,
       `pickup ${stats.pickups}/${stats.caps.pickups}`,
+      `pool ep ${stats.enemyProjectilePoolFree}/${stats.caps.enemyProjectilePool}`,
       `audio ${stats.audioInstances ?? '-'}`,
     ];
 
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 212, 134, 8)
+      .roundRect(8, 80, 234, 150, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
     this.performanceDebugText.visible = true;
+  }
+
+  bindPerformanceDiagnostics() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (this.debugPerformanceEnabled) {
+      window.__EVOLUTION_ZERO_DUMP_PERF__ = () => this.dumpPerformanceSnapshots('manual');
+      this.handlePerformanceDumpKey = (event) => {
+        if (event.key === 'F10') {
+          this.dumpPerformanceSnapshots('manual-key');
+        }
+      };
+      window.addEventListener('keydown', this.handlePerformanceDumpKey);
+
+      this.performanceHeartbeatTimer = window.setInterval(() => {
+        if (!this.isActive) {
+          return;
+        }
+
+        const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+        const last = this.lastUpdateTimestamp || now;
+        const stallMs = now - last;
+
+        if (stallMs > 2500) {
+          this.performanceDiagnostics.tickerStalls += 1;
+          this.showPerformanceDomFallback('Game loop stalled. Performance snapshot saved.');
+          this.dumpPerformanceSnapshots('ticker-stalled', { stallMs: Math.round(stallMs) });
+        }
+      }, 1000);
+    }
+
+    this.handleRuntimeError = (event) => {
+      this.performanceDiagnostics.runtimeErrors += 1;
+      this.dumpPerformanceSnapshots('runtime-error', {
+        message: event?.message ?? null,
+        filename: event?.filename ?? null,
+        lineno: event?.lineno ?? null,
+        colno: event?.colno ?? null,
+      });
+    };
+    this.handleUnhandledRejection = (event) => {
+      this.performanceDiagnostics.unhandledRejections += 1;
+      this.dumpPerformanceSnapshots('unhandled-rejection', {
+        reason: String(event?.reason?.message ?? event?.reason ?? ''),
+      });
+    };
+    this.handleContextLost = (event) => {
+      this.performanceDiagnostics.contextLost += 1;
+      event?.preventDefault?.();
+      this.showPerformanceDomFallback('WebGL context lost. Reload the page if the screen does not recover.');
+      this.dumpPerformanceSnapshots('webgl-context-lost');
+    };
+    this.handleContextRestored = () => {
+      this.performanceDiagnostics.contextRestored += 1;
+      this.dumpPerformanceSnapshots('webgl-context-restored');
+    };
+
+    window.addEventListener('error', this.handleRuntimeError);
+    window.addEventListener('unhandledrejection', this.handleUnhandledRejection);
+    this.canvas?.addEventListener?.('webglcontextlost', this.handleContextLost, false);
+    this.canvas?.addEventListener?.('webglcontextrestored', this.handleContextRestored, false);
+  }
+
+  showPerformanceDomFallback(message) {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const id = 'evolution-zero-performance-fallback';
+    let panel = document.getElementById(id);
+
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = id;
+      panel.style.position = 'fixed';
+      panel.style.left = '12px';
+      panel.style.right = '12px';
+      panel.style.bottom = '16px';
+      panel.style.zIndex = '99999';
+      panel.style.padding = '12px 14px';
+      panel.style.background = 'rgba(2, 7, 13, 0.88)';
+      panel.style.border = '1px solid rgba(53, 215, 255, 0.6)';
+      panel.style.borderRadius = '8px';
+      panel.style.color = '#c9fbff';
+      panel.style.font = '700 12px sans-serif';
+      document.body.appendChild(panel);
+    }
+
+    panel.textContent = message;
+  }
+
+  buildPerformanceSnapshot(reason = 'sample') {
+    const activeBoss = this.getActiveBoss?.();
+    const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
+    const containerChildren = this.getRuntimeContainerChildren();
+    const spawnStats = this.spawnSystem?.getPerformanceStats?.(this.gameState) ?? {};
+    const criticalTextCount = this.combatSystem?.damageNumbers?.filter?.((number) => number.critical)?.length ?? 0;
+    const hazardCount = this.stageGimmicks.filter((gimmick) => gimmick.type?.startsWith?.('boss_')).length;
+    const warningGuideCount = this.stageGimmicks.filter((gimmick) => {
+      const activeStart = gimmick.warningDuration ?? 0;
+      return gimmick.age < activeStart;
+    }).length;
+
+    return {
+      reason,
+      frameCount: this.frameCount,
+      elapsedTime: Number((this.gameState.elapsedTime ?? 0).toFixed(2)),
+      tickerDelta: Number((this.lastTickerDelta ?? 0).toFixed(4)),
+      rawTickerDelta: Number((this.lastRawTickerDelta ?? 0).toFixed(4)),
+      debugTimeScale: this.debugPerformanceTimeScale ?? 1,
+      debugStressKillEnabled: this.debugStressKillEnabled,
+      debugStressKillThreshold: this.debugStressKillThreshold,
+      fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
+      enemyCount: this.enemies.length,
+      projectileCount: (combatStats.combatProjectiles ?? 0) + this.enemyProjectiles.length,
+      bossProjectileCount: this.enemyProjectiles.filter((projectile) => projectile.type?.startsWith?.('boss')).length,
+      hazardCount,
+      warningGuideCount,
+      effectCount: combatStats.combatEffects ?? 0,
+      ultimateEffectCount: this.ultimateSystem?.effects?.length ?? 0,
+      damageTextCount: combatStats.damageNumbers ?? 0,
+      criticalTextCount,
+      pickupCount: this.pickups.length,
+      containerChildren,
+      containerChildrenTotal: containerChildren.total,
+      loadSheddingLevel: this.performanceLoadSheddingLevel,
+      spawnBudget: spawnStats.spawnBudget ?? null,
+      activeAudioCount: this.audioManager?.activeAudios?.size ?? null,
+      activeAudioBufferCount: this.audioManager?.activeBufferRecords?.size ?? null,
+      pools: {
+        damageTextFree: combatStats.damageNumberPoolFree ?? 0,
+        graphicsFree: combatStats.graphicsPoolFree ?? 0,
+        spriteFree: combatStats.spritePoolFree ?? 0,
+        enemyProjectileFree: this.enemyProjectilePool.length,
+        pickupBurstFree: this.pickupBurstPool.length,
+        pickupPopupFree: this.pickupPopupPool.length,
+        ultimateGraphicsFree: this.ultimateSystem?.graphicsPool?.length ?? 0,
+        ultimateSpriteFree: this.ultimateSystem?.spritePool?.length ?? 0,
+      },
+      staleCleanupCount: Object.entries(this.runtimeInvalidCounts)
+        .filter(([key]) => key.includes('StaleChild'))
+        .reduce((total, [, value]) => total + value, 0),
+      invalidCleanupCount: Object.entries(this.runtimeInvalidCounts)
+        .filter(([key]) => !key.includes('StaleChild'))
+        .reduce((total, [, value]) => total + value, 0),
+      invalidRemoved: { ...this.runtimeInvalidCounts },
+      diagnostics: { ...this.performanceDiagnostics },
+      activeBoss: activeBoss ? {
+        id: activeBoss.config?.id ?? null,
+        phase: activeBoss.zeroPhase ?? null,
+        hp: Math.max(0, Math.round(activeBoss.hp ?? 0)),
+        maxHp: Math.round(activeBoss.maxHp ?? 0),
+      } : null,
+      timestamp: Date.now(),
+    };
+  }
+
+  recordPerformanceSnapshot(snapshot) {
+    this.performanceSnapshots.push(snapshot);
+
+    while (this.performanceSnapshots.length > PERFORMANCE_SNAPSHOT_LIMIT) {
+      this.performanceSnapshots.shift();
+    }
+
+    try {
+      const now = snapshot.timestamp ?? Date.now();
+      const snapshotJson = JSON.stringify(snapshot);
+
+      window.__EVOLUTION_ZERO_PERF_SNAPSHOTS__ = this.performanceSnapshots;
+      window.__EVOLUTION_ZERO_LAST_PERF_SNAPSHOT__ = snapshot;
+      document?.body?.setAttribute?.('data-ez-perf-latest', snapshotJson);
+      document?.body?.setAttribute?.('data-ez-perf-summary', [
+        `t=${snapshot.elapsedTime}`,
+        `enemy=${snapshot.enemyCount}`,
+        `pickup=${snapshot.pickupCount}`,
+        `children=${snapshot.containerChildrenTotal}`,
+        `shed=${snapshot.loadSheddingLevel}`,
+        `stress=${snapshot.debugStressKillEnabled ? 1 : 0}`,
+        `ctx=${snapshot.diagnostics?.contextLost ?? 0}`,
+        `err=${snapshot.diagnostics?.runtimeErrors ?? 0}`,
+      ].join(' '));
+
+      if (now - this.lastPerformanceSnapshotStorageWrite > 1000) {
+        localStorage.setItem('EVOLUTION_ZERO_LAST_PERF_SNAPSHOT', snapshotJson);
+        this.lastPerformanceSnapshotStorageWrite = now;
+      }
+
+      if (now - this.lastPerformanceStorageWrite > 5000) {
+        localStorage.setItem('EVOLUTION_ZERO_PERF_SNAPSHOTS', JSON.stringify(this.performanceSnapshots));
+        this.lastPerformanceStorageWrite = now;
+      }
+    } catch {
+      // Performance diagnostics must never affect gameplay.
+    }
+  }
+
+  dumpPerformanceSnapshots(reason = 'manual', extra = null) {
+    const snapshot = this.buildPerformanceSnapshot(reason);
+    const dump = {
+      reason,
+      extra,
+      latest: snapshot,
+      snapshots: this.performanceSnapshots.slice(-PERFORMANCE_SNAPSHOT_LIMIT),
+    };
+
+    this.performanceDiagnostics.lastReason = reason;
+    this.recordPerformanceSnapshot(snapshot);
+
+    try {
+      localStorage.setItem('EVOLUTION_ZERO_PERF_DUMP', JSON.stringify(dump));
+      window.__EVOLUTION_ZERO_PERF_DUMP__ = dump;
+    } catch {
+      // Optional debug dump.
+    }
+
+    return dump;
   }
 
   publishDebugRuntimeStats(delta = 0) {
@@ -1008,8 +1356,11 @@ export class PlayScene {
       ? this.debugFpsEstimate * 0.82 + instantFps * 0.18
       : instantFps;
     const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
+    const ultimateStats = this.ultimateSystem?.getPerformanceStats?.() ?? {};
     const containerChildren = this.getRuntimeContainerChildren();
     const spawnStats = this.spawnSystem?.getPerformanceStats?.(this.gameState) ?? {};
+    const snapshot = this.buildPerformanceSnapshot('sample');
+    this.recordPerformanceSnapshot(snapshot);
     const stats = {
       stage: this.gameState.selectedStage,
       difficulty: this.gameState.selectedDifficulty,
@@ -1029,6 +1380,10 @@ export class PlayScene {
       combatEffects: combatStats.combatEffects ?? this.combatSystem?.effects?.length ?? 0,
       damageNumbers: combatStats.damageNumbers ?? this.combatSystem?.damageNumbers?.length ?? 0,
       damageNumberPoolFree: combatStats.damageNumberPoolFree ?? 0,
+      ultimateEffects: ultimateStats.ultimateEffects ?? this.ultimateSystem?.effects?.length ?? 0,
+      ultimateGraphicsPoolFree: ultimateStats.ultimateGraphicsPoolFree ?? 0,
+      ultimateSpritePoolFree: ultimateStats.ultimateSpritePoolFree ?? 0,
+      enemyProjectilePoolFree: this.enemyProjectilePool.length,
       pickupBursts: this.pickupBursts.length,
       pickupPopups: this.pickupPopups.length,
       pickups: this.pickups.length,
@@ -1046,12 +1401,15 @@ export class PlayScene {
       caps: {
         enemies: this.spawnSystem?.getEnemyCap?.(this.gameState) ?? null,
         enemyProjectiles: MAX_ENEMY_PROJECTILES,
+        enemyProjectilePool: MAX_ENEMY_PROJECTILE_POOL,
         stageGimmicks: MAX_STAGE_GIMMICKS,
         pickupBursts: MAX_PICKUP_BURSTS,
         pickupPopups: MAX_PICKUP_POPUPS,
         pickups: MAX_WORLD_PICKUPS,
         ...(combatStats.caps ?? {}),
+        ...(ultimateStats.caps ?? {}),
       },
+      snapshot,
       timestamp: Date.now(),
     };
 
@@ -1211,6 +1569,9 @@ export class PlayScene {
     this.gameState.playerMaxHp = this.dinoConfig.maxHp + bodyResearch.maxHpBonus;
     this.gameState.playerHp = this.gameState.playerMaxHp;
     this.gameState.playerDamageMultiplier = (this.dinoConfig.damageTakenMultiplier ?? 1) * (bodyResearch.damageTakenMultiplier ?? 1);
+    if (getDebugFlag('debugInvincible')) {
+      this.gameState.playerDamageMultiplier = 0;
+    }
     this.gameState.expGainMultiplier = bodyResearch.expMultiplier ?? 1;
     this.player.applyDinoConfig(this.dinoConfig);
     this.player.moveSpeed += bodyResearch.moveSpeedBonus;
@@ -2462,9 +2823,16 @@ export class PlayScene {
 
   updatePickups(delta) {
     const playerCollider = this.player.getCollider();
+    const suppressPickupCollection = getDebugFlag('debugNoPickupCollect')
+      || (getDebugFlag('debugMaxSpawn') && !this.debugStressKillEnabled);
 
     this.pickups.forEach((pickup) => {
       pickup.update(delta, this.player, this.pickupModifiers);
+
+      if (suppressPickupCollection) {
+        pickup.view.zIndex = pickup.position.y;
+        return;
+      }
 
       if (!pickup.isCollected && CollisionSystem.circlesOverlap(playerCollider, pickup.getCollider())) {
         pickup.collect();
@@ -2573,7 +2941,7 @@ export class PlayScene {
     const dy = this.player.position.y - enemy.position.y;
     const distance = Math.max(1, Math.hypot(dx, dy));
     const speed = enemy.projectileSpeed || 220;
-    const view = new Graphics();
+    const view = this.acquireEnemyProjectileView();
 
     view
       .circle(0, 0, 8)
@@ -2585,7 +2953,7 @@ export class PlayScene {
       .stroke({ color: 0xa46cff, width: 2, alpha: 0.7 });
     view.rotation = Math.atan2(dy, dx);
     view.position.set(enemy.position.x, enemy.position.y - 8);
-    this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES - 1);
+    this.trimEnemyProjectiles(MAX_ENEMY_PROJECTILES - 1);
     this.effectLayer.addChild(view);
     this.enemyProjectiles.push({
       type: 'ruinsShot',
@@ -2601,7 +2969,7 @@ export class PlayScene {
   }
 
   spawnEnemyElectroPulse(enemy) {
-    const view = new Graphics();
+    const view = this.acquireEnemyProjectileView();
     const radius = enemy.electroRadius || 84;
 
     view
@@ -2612,7 +2980,7 @@ export class PlayScene {
       .circle(0, 0, radius * 0.44)
       .stroke({ color: 0xe8fbff, width: 2, alpha: 0.48 });
     view.position.set(enemy.position.x, enemy.position.y);
-    this.trimRuntimeList(this.enemyProjectiles, MAX_ENEMY_PROJECTILES - 1);
+    this.trimEnemyProjectiles(MAX_ENEMY_PROJECTILES - 1);
     this.effectLayer.addChild(view);
     this.enemyProjectiles.push({
       type: 'ruinsElectroPulse',
@@ -2690,7 +3058,7 @@ export class PlayScene {
       }
 
       if (projectile.ttl <= 0) {
-        projectile.view?.destroy();
+        this.releaseEnemyProjectileView(projectile.view);
         return false;
       }
 
@@ -2751,7 +3119,9 @@ export class PlayScene {
     const overlapLimit = this.gameState.selectedMode === 'zero'
       ? ((boss.zeroPhase ?? 1) >= 3 ? 3 : 2)
       : this.gameState.selectedDifficulty === 'expert' ? 2 : 1;
-    const loadAdjustedOverlapLimit = this.performanceLoadSheddingLevel >= 2
+    const isZeroFinalPressure = this.gameState.selectedMode === 'zero' && (boss.zeroPhase ?? 1) >= 3;
+    const loadAdjustedOverlapLimit = (this.performanceLoadSheddingLevel >= 2
+      || (isZeroFinalPressure && this.performanceLoadSheddingLevel >= 1))
       ? 1
       : this.performanceLoadSheddingLevel >= 1
         ? Math.min(overlapLimit, 2)
@@ -2778,7 +3148,7 @@ export class PlayScene {
       }
 
       const countLimit = this.gameState.selectedMode === 'zero'
-        ? ((boss.zeroPhase ?? 1) >= 3 ? 4 : 3)
+        ? ((boss.zeroPhase ?? 1) >= 3 ? (this.performanceLoadSheddingLevel >= 1 ? 2 : 4) : 3)
         : this.gameState.selectedDifficulty === 'expert' ? 3 : 2;
       const count = Math.min(countLimit, Math.max(1, config.count ?? 1));
 
@@ -4264,8 +4634,19 @@ export class PlayScene {
     const simpleEffects = this.optionsSettings?.effects?.simpleEffects === true;
     const visibilityConfig = this.getVisibilityAssistConfig();
     const baseAlpha = (simpleEffects ? 0.42 : 0.58) * visibilityConfig.hazardAlphaBoost;
+    const maxWarningDraws = this.performanceLoadSheddingLevel >= 2 ? 14
+      : this.performanceLoadSheddingLevel >= 1 ? 24
+        : Infinity;
+    let warningDraws = 0;
+    const gimmicks = this.performanceLoadSheddingLevel > 0
+      ? [...this.stageGimmicks].sort((a, b) => {
+        const aBoss = a.type?.startsWith?.('boss_') ? 1 : 0;
+        const bBoss = b.type?.startsWith?.('boss_') ? 1 : 0;
+        return bBoss - aBoss;
+      })
+      : this.stageGimmicks;
 
-    this.stageGimmicks.forEach((gimmick) => {
+    gimmicks.forEach((gimmick) => {
       const activeStart = gimmick.warningDuration;
       const activeEnd = gimmick.warningDuration + gimmick.activeDuration;
 
@@ -4279,6 +4660,12 @@ export class PlayScene {
       if (!isWarning && gimmick.assetLoaded) {
         return;
       }
+
+      const isBossWarning = gimmick.type?.startsWith?.('boss_') === true;
+      if (warningDraws >= maxWarningDraws && !isBossWarning) {
+        return;
+      }
+      warningDraws += 1;
 
       const alpha = isWarning ? baseAlpha * (0.45 + warningProgress * 0.55) : baseAlpha * 0.28;
 
@@ -5135,7 +5522,7 @@ export class PlayScene {
     }
 
     this.runtimeInvalidCounts[label] = (this.runtimeInvalidCounts[label] ?? 0) + 1;
-    projectile?.view?.destroy?.();
+    this.releaseEnemyProjectileView(projectile?.view);
     return false;
   }
 
@@ -5933,7 +6320,7 @@ export class PlayScene {
 
     this.enemies.forEach((enemy) => enemy.view.destroy());
     this.enemies = [];
-    this.enemyProjectiles.forEach((projectile) => projectile.view?.destroy());
+    this.enemyProjectiles.forEach((projectile) => this.releaseEnemyProjectileView(projectile.view));
     this.enemyProjectiles = [];
     this.bosses.forEach((boss) => boss.view.destroy());
     this.bosses = [];

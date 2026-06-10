@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'final-phase-stability-s03-2026-06-10',
+    date: '2026/06/10',
+    category: '改善',
+    title: '高密度戦闘時の安定性をさらに改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・ZERO終盤など高密度戦闘で停止する場合がある問題への対策を追加しました。',
+      '・高負荷時の演出表示やSE再生を最適化しました。',
+      '・最終盤の安定性を改善しました。',
+    ],
+  },
+  {
     id: 'dense-zero-stability-s02-2026-06-10',
     date: '2026/06/10',
     category: '改善',

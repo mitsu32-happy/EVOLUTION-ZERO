@@ -240,6 +240,10 @@ const ULTIMATES = {
   },
 };
 
+const MAX_ULTIMATE_EFFECTS = 42;
+const MAX_ULTIMATE_GRAPHICS_POOL = 36;
+const MAX_ULTIMATE_SPRITE_POOL = 28;
+
 export class UltimateSystem {
   constructor({ width, height, assetLoader = null }) {
     this.width = width;
@@ -247,6 +251,9 @@ export class UltimateSystem {
     this.assetLoader = assetLoader;
     this.overlay = new Graphics();
     this.effects = [];
+    this.graphicsPool = [];
+    this.spritePool = [];
+    this.performancePressureLevel = 0;
     this.effectTextures = {
       speed: null,
       hunting: null,
@@ -431,8 +438,28 @@ export class UltimateSystem {
     this.pulseIndex = 0;
     this.key = 'speed';
     this.overlay.clear();
-    this.effects.forEach((effect) => effect.view.destroy());
+    this.effects.forEach((effect) => this.releaseEffectView(effect?.view));
     this.effects = [];
+  }
+
+  setPerformancePressure(level = 0) {
+    this.performancePressureLevel = Math.max(0, Math.min(2, Math.round(level)));
+    if (this.performancePressureLevel >= 2) {
+      this.trimEffects(Math.floor(MAX_ULTIMATE_EFFECTS * 0.64));
+    }
+  }
+
+  getPerformanceStats() {
+    return {
+      ultimateEffects: this.effects.length,
+      ultimateGraphicsPoolFree: this.graphicsPool.length,
+      ultimateSpritePoolFree: this.spritePool.length,
+      caps: {
+        ultimateEffects: MAX_ULTIMATE_EFFECTS,
+        ultimateGraphicsPool: MAX_ULTIMATE_GRAPHICS_POOL,
+        ultimateSpritePool: MAX_ULTIMATE_SPRITE_POOL,
+      },
+    };
   }
 
   update(delta, player, enemies, effectLayer) {
@@ -997,15 +1024,13 @@ export class UltimateSystem {
       to,
     });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnRingEffect(effectLayer, position, radius) {
     const effect = this.createEffect('ring', 0.38, position, { radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnHuntingEffect(effectLayer, from, to, options = {}) {
@@ -1014,95 +1039,155 @@ export class UltimateSystem {
       to,
     });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnShockEffect(effectLayer, position, facing, range) {
     const effect = this.createEffect('shock', 0.46, position, { facing: { ...facing }, range });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnChargeEffect(effectLayer, position, facing, range) {
     const effect = this.createEffect('charge', 0.42, position, { facing: { ...facing }, range });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnBastionField(effectLayer, position, radius) {
     const effect = this.createEffect('bastionField', 0.72, position, { radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnBastionEffect(effectLayer, from, to, radius) {
     const effect = this.createEffect('bastion', 0.34, from, { to, radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnQuakeEffect(effectLayer, position, radius) {
     const effect = this.createEffect('quake', 0.56, position, { radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnOmegaEffect(effectLayer, position, radius, style = 'omegaBurst') {
     const effect = this.createEffect(style, style === 'omegaCore' ? 0.46 : 0.62, position, { radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnOmegaBeamEffect(effectLayer, position, facing, range, style = 'omegaBeam') {
     const effect = this.createEffect(style, 0.46, position, { facing: { ...facing }, range });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnAbyssEffect(effectLayer, position, radius, style = 'abyssSlash') {
     const effect = this.createEffect(style, style === 'abyssCore' ? 0.38 : 0.52, position, { radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnAbyssDashEffect(effectLayer, from, to, facing) {
     const effect = this.createEffect('abyssDash', 0.34, from, { to, facing: { ...facing } });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnIgnisEffect(effectLayer, position, radius, style = 'ignisImpact') {
     const effect = this.createEffect(style, style === 'ignisCore' ? 0.42 : 0.62, position, { radius });
 
-    effectLayer.addChild(effect.view);
-    this.effects.push(effect);
+    this.addEffect(effect, effectLayer);
   }
 
   spawnIgnisChargeEffect(effectLayer, position, facing, range) {
     const effect = this.createEffect('ignisCharge', 0.44, position, { facing: { ...facing }, range });
 
+    this.addEffect(effect, effectLayer);
+  }
+
+  addEffect(effect, effectLayer) {
+    if (!effect?.view || !effectLayer) {
+      return;
+    }
+
+    if (this.performancePressureLevel >= 2
+      && this.effects.length >= Math.floor(MAX_ULTIMATE_EFFECTS * 0.62)
+      && effect.style !== 'omegaCore'
+      && effect.style !== 'ignisCore'
+      && effect.style !== 'spinoCore') {
+      this.releaseEffectView(effect.view);
+      return;
+    }
+
+    this.trimEffects(MAX_ULTIMATE_EFFECTS - 1);
     effectLayer.addChild(effect.view);
     this.effects.push(effect);
+  }
+
+  trimEffects(maxCount) {
+    while (this.effects.length > maxCount) {
+      const effect = this.effects.shift();
+      this.releaseEffectView(effect?.view);
+    }
+  }
+
+  acquireEffectView(texture) {
+    const view = texture
+      ? (this.spritePool.pop() ?? new Sprite(texture))
+      : (this.graphicsPool.pop() ?? new Graphics());
+
+    if (texture) {
+      view.texture = texture;
+      view.anchor?.set?.(0.5);
+    } else {
+      view.clear?.();
+    }
+
+    view.visible = true;
+    view.alpha = 1;
+    view.rotation = 0;
+    view.scale.set(1);
+    view.tint = 0xffffff;
+    return view;
+  }
+
+  releaseEffectView(view) {
+    if (!view || view.destroyed) {
+      return;
+    }
+
+    view.removeFromParent?.();
+    view.visible = false;
+    view.alpha = 1;
+    view.rotation = 0;
+    view.scale.set(1);
+
+    if (view instanceof Sprite) {
+      view.texture = Texture.EMPTY;
+      if (this.spritePool.length < MAX_ULTIMATE_SPRITE_POOL) {
+        this.spritePool.push(view);
+        return;
+      }
+      view.destroy();
+      return;
+    }
+
+    view.clear?.();
+    if (this.graphicsPool.length < MAX_ULTIMATE_GRAPHICS_POOL) {
+      this.graphicsPool.push(view);
+      return;
+    }
+
+    view.destroy();
   }
 
   createEffect(style, duration, position, options) {
     const animation = this.getEffectAnimation(style);
     const texture = animation?.textures?.[0] ?? this.getEffectTexture(style);
-    const view = texture ? new Sprite(texture) : new Graphics();
-
-    if (texture) {
-      view.anchor.set(0.5);
-    }
+    const view = this.acquireEffectView(texture);
 
     const effect = {
       style,
@@ -1152,11 +1237,16 @@ export class UltimateSystem {
 
   updateEffects(delta) {
     this.effects = this.effects.filter((effect) => {
+      if (!effect?.view || effect.view.destroyed || !Number.isFinite(effect.age) || !Number.isFinite(effect.duration)) {
+        this.releaseEffectView(effect?.view);
+        return false;
+      }
+
       effect.age += delta;
       const progress = effect.age / effect.duration;
 
       if (progress >= 1) {
-        effect.view.destroy();
+        this.releaseEffectView(effect.view);
         return false;
       }
 

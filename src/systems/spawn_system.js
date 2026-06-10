@@ -9,6 +9,10 @@ function hasDebugFlag(name) {
   return new URLSearchParams(window.location.search).has(name);
 }
 
+function isDebugMaxSpawn() {
+  return hasDebugFlag('debugMaxSpawn') || hasDebugFlag('debugSpawnMax');
+}
+
 function getDebugParam(name) {
   if (typeof window === 'undefined') {
     return null;
@@ -51,7 +55,7 @@ export class SpawnSystem {
     const elapsedPressureBonus = this.getElapsedEnemyPressureBonus(gameState);
     const lateCapBonus = this.getLateEnemyCapBonus(gameState);
     const phaseLimits = this.getProgressionPhaseLimits(gameState);
-    const maxEnemies = Math.min(
+    const maxEnemies = isDebugMaxSpawn() ? Math.min(phaseLimits.enemyCountCap, this.getDebugMaxEnemyCap(gameState)) : Math.min(
       phaseLimits.enemyCountCap,
       gameState.selectedMode === 'endless'
         ? ENDLESS_SCALING_CONFIG.softEnemyCap
@@ -99,6 +103,12 @@ export class SpawnSystem {
   }
 
   recoverSpawnBudget(delta, gameState) {
+    if (isDebugMaxSpawn()) {
+      this.maxSpawnBudget = Math.max(this.maxSpawnBudget, 24);
+      this.spawnBudget = this.maxSpawnBudget;
+      return;
+    }
+
     const phaseLimits = this.getProgressionPhaseLimits(gameState);
     const modeRate = gameState?.selectedMode === 'zero'
       ? 7.5
@@ -170,6 +180,18 @@ export class SpawnSystem {
     }
 
     return 0;
+  }
+
+  getDebugMaxEnemyCap(gameState) {
+    if (gameState?.selectedMode === 'zero') {
+      return ZERO_SCALING_CONFIG.softEnemyCap;
+    }
+
+    if (gameState?.selectedMode === 'endless') {
+      return ENDLESS_SCALING_CONFIG.softEnemyCap;
+    }
+
+    return 180;
   }
 
   getEnemyLevel(gameState) {

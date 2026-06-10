@@ -2,6 +2,15 @@
 import { ASSET_KEYS, ENTITY_VISUAL_RULES } from '../data/asset_manifest.js';
 import { getEnemyDisplayProfile } from '../data/enemy_display.js';
 
+function isDebugOutgoingDamageDisabled() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get('debugNoPlayerDamage') === '1' || params.get('debugMaxSpawn') === '1';
+}
+
 export class Boss {
   constructor({ x, y, assetLoader = null, assetKey = ASSET_KEYS.bosses.mutantPredator, config = null }) {
     this.view = new Container();
@@ -588,6 +597,10 @@ export class Boss {
       return false;
     }
 
+    if (isDebugOutgoingDamageDisabled()) {
+      return false;
+    }
+
     this.hp = Math.max(0, this.hp - amount);
     this.hitFlashTime = impact?.strength > 40 ? 0.22 : 0.15;
     this.hitImpact = Math.min(1.2, Math.max(this.hitImpact, amount / 95));
@@ -635,6 +648,9 @@ export class Boss {
 
       if ((type === 'poison' || type === 'bleed') && effect.tickTimer <= 0) {
         effect.tickTimer = type === 'poison' ? 0.6 : 0.42;
+        if (isDebugOutgoingDamageDisabled()) {
+          return;
+        }
         const damage = type === 'poison' ? 2.4 * effect.power : 3.2 * effect.power;
 
         this.hp = Math.max(0, this.hp - damage);
