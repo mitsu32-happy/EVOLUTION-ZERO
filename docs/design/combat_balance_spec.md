@@ -207,3 +207,11 @@ See:
 - Trash enemy contact damage is reduced in the high-level / ZERO late-game range so a single hit is less likely to decide a run.
 - Low-level enemy damage remains effectively unchanged, and mid-level damage stays close to the previous value.
 - Boss damage, boss hazard tuning, enemy count caps, enemy speed scaling, and enemy level caps are intentionally unchanged.
+
+## MVP-S01 Heavy Combat Stabilization
+
+- S01 does not change combat difficulty numbers.
+- Heavy ZERO boss scenes now rely on stricter runtime object caps and damage-text pooling to prevent whiteout / full-stop failures during high-density combat.
+- EXP pickup display load is capped while merged value is preserved when possible.
+- Invalid enemy, boss, projectile, or hazard entries are removed before update so one bad runtime object cannot stop the scene.
+- `debugPerformance=1` exposes current combat counts and caps for future high-difficulty QA.

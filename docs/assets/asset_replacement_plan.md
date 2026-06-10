@@ -3634,3 +3634,10 @@ No new image/audio asset generation is required for this MVP.
 - No new raster assets were generated.
 - A15.3 changes enemy scaling and ZERO boss durability only.
 - Existing boss finish effect assets and UI assets remain unchanged.
+
+## MVP-S01 Performance Stabilization
+
+- No new raster assets were generated.
+- S01 is a runtime stability pass for heavy combat scenes.
+- Damage / CRITICAL text pooling, object caps, and `debugPerformance=1` are code-side improvements.
+- Existing A14 boss finish effect assets remain unchanged.

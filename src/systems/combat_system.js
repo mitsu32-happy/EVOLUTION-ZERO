@@ -7,6 +7,7 @@ const MAX_COMBAT_EFFECTS = 96;
 const MAX_COMBAT_PROJECTILES = 52;
 const MAX_DAMAGE_NUMBERS = 86;
 const MAX_CRITICAL_DAMAGE_NUMBERS = 24;
+const MAX_DAMAGE_NUMBER_POOL = 64;
 
 export class CombatSystem {
   constructor({ assetLoader = null } = {}) {
@@ -24,6 +25,7 @@ export class CombatSystem {
     this.lastImpactShake = 0;
     this.effects = [];
     this.damageNumbers = [];
+    this.damageNumberPool = [];
     this.damageNumbersEnabled = true;
     this.simpleEffects = false;
     this.statusOnHit = {};
@@ -60,6 +62,22 @@ export class CombatSystem {
 
     const [entry] = list.splice(index, 1);
     entry?.view?.destroy?.();
+  }
+
+  getPerformanceStats() {
+    return {
+      combatProjectiles: this.projectiles.length,
+      combatEffects: this.effects.length,
+      damageNumbers: this.damageNumbers.length,
+      damageNumberPoolFree: this.damageNumberPool.length,
+      caps: {
+        combatProjectiles: MAX_COMBAT_PROJECTILES,
+        combatEffects: MAX_COMBAT_EFFECTS,
+        damageNumbers: MAX_DAMAGE_NUMBERS,
+        criticalDamageNumbers: MAX_CRITICAL_DAMAGE_NUMBERS,
+        damageNumberPool: MAX_DAMAGE_NUMBER_POOL,
+      },
+    };
   }
 
   setAdaptationSynergy(synergy = {}) {
@@ -179,6 +197,8 @@ export class CombatSystem {
     this.projectiles = [];
     this.damageNumbers.forEach((number) => number.view.destroy());
     this.damageNumbers = [];
+    this.damageNumberPool.forEach((view) => view.destroy());
+    this.damageNumberPool = [];
   }
 
   applyDinoConfig(config) {
@@ -1663,21 +1683,17 @@ export class CombatSystem {
     const critical = options.critical === true;
 
     if (critical && this.damageNumbers.filter((number) => number.critical).length >= MAX_CRITICAL_DAMAGE_NUMBERS) {
-      this.trimFirstMatching(this.damageNumbers, (number) => number.critical);
+      this.releaseFirstDamageNumber((number) => number.critical);
     }
 
-    this.trimRuntimeList(this.damageNumbers, MAX_DAMAGE_NUMBERS - 1);
+    this.trimDamageNumbers(null, MAX_DAMAGE_NUMBERS - 1);
 
-    const text = new Text({
-      text: critical ? `CRITICAL ${amount}` : `${amount}`,
-      style: {
-        fill: critical ? '#fff36f' : `#${color.toString(16).padStart(6, '0')}`,
-        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
-        fontSize: critical ? (target.isBoss ? 20 : 15) : (target.isBoss ? 18 : 13),
-        fontWeight: critical ? '900' : '800',
-        stroke: { color: critical ? '#4a0b1b' : '#140708', width: critical ? 4 : 3 },
-        letterSpacing: 0,
-      },
+    const text = this.acquireDamageNumberText();
+    this.configureDamageNumberText(text, {
+      amount,
+      color,
+      critical,
+      isBoss: target.isBoss,
     });
     const number = {
       age: 0,
@@ -1689,9 +1705,81 @@ export class CombatSystem {
     };
 
     text.anchor.set(0.5);
+    text.visible = true;
     text.position.set(target.position.x + number.driftX, number.startY);
     effectLayer.addChild(text);
     this.damageNumbers.push(number);
+  }
+
+  acquireDamageNumberText() {
+    const text = this.damageNumberPool.pop() ?? new Text({
+      text: '',
+      style: {
+        fill: '#fff0b0',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 13,
+        fontWeight: '800',
+        stroke: { color: '#140708', width: 3 },
+        letterSpacing: 0,
+      },
+    });
+
+    text.alpha = 1;
+    text.scale.set(1);
+    text.rotation = 0;
+    return text;
+  }
+
+  configureDamageNumberText(text, { amount, color, critical, isBoss }) {
+    text.text = critical ? `CRITICAL ${amount}` : `${amount}`;
+    text.style.fill = critical ? '#fff36f' : `#${color.toString(16).padStart(6, '0')}`;
+    text.style.fontSize = critical ? (isBoss ? 20 : 15) : (isBoss ? 18 : 13);
+    text.style.fontWeight = critical ? '900' : '800';
+    text.style.stroke = { color: critical ? '#4a0b1b' : '#140708', width: critical ? 4 : 3 };
+  }
+
+  releaseDamageNumber(number) {
+    const text = number?.view;
+
+    if (!text || text.destroyed) {
+      return;
+    }
+
+    text.parent?.removeChild(text);
+    text.visible = false;
+    text.alpha = 0;
+    text.scale.set(1);
+
+    if (this.damageNumberPool.length < MAX_DAMAGE_NUMBER_POOL) {
+      this.damageNumberPool.push(text);
+      return;
+    }
+
+    text.destroy();
+  }
+
+  trimDamageNumbers(predicate = null, maxCount = this.damageNumbers.length) {
+    while (this.damageNumbers.length > maxCount) {
+      const index = predicate ? this.damageNumbers.findIndex(predicate) : 0;
+
+      if (index < 0) {
+        return;
+      }
+
+      const [number] = this.damageNumbers.splice(index, 1);
+      this.releaseDamageNumber(number);
+    }
+  }
+
+  releaseFirstDamageNumber(predicate) {
+    const index = this.damageNumbers.findIndex(predicate);
+
+    if (index < 0) {
+      return;
+    }
+
+    const [number] = this.damageNumbers.splice(index, 1);
+    this.releaseDamageNumber(number);
   }
 
   updateDamageNumbers(delta) {
@@ -1700,7 +1788,7 @@ export class CombatSystem {
       const progress = number.age / number.duration;
 
       if (progress >= 1) {
-        number.view.destroy();
+        this.releaseDamageNumber(number);
         return false;
       }
 

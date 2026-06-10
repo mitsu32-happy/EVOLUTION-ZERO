@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'performance-stability-s01-2026-06-10',
+    date: '2026/06/10',
+    category: '改善',
+    title: 'プレイ中の安定性を改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・ZERO終盤など、敵や演出が多い場面で停止する場合がある問題に対応しました。',
+      '・ダメージ表示や演出が大量に出る場面の処理を改善しました。',
+      '・高難易度コンテンツに向けて、プレイ中の安定性を高めました。',
+    ],
+  },
+  {
     id: 'hotfix-zero-enemy-damage-a15-4-2026-06-09',
     date: '2026/06/09',
     category: 'HOTFIX',

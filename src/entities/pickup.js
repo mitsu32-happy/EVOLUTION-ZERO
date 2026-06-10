@@ -89,6 +89,25 @@ export class Pickup {
     this.view.visible = false;
   }
 
+  setValue(value) {
+    if (this.type !== 'exp') {
+      return;
+    }
+
+    this.value = Math.max(1, Math.round(value));
+    this.sizeScale = Math.min(1.58, 0.78 + this.value * 0.16);
+    this.radius = 11 + this.value * 3;
+    this.assetKey = this.getAssetKeyForValue(this.value);
+    this.visualRule = this.getVisualRuleForValue(this.value);
+    this.valueLabel.text = this.value >= 4 ? 'BIG' : this.value >= 2 ? 'EXP+' : '';
+    this.valueLabel.position.set(0, this.visualRule.labelY);
+    this.assetSprite.anchor.set(this.visualRule.anchor.x, this.visualRule.anchor.y);
+    this.glow.clear();
+    this.crystal.clear();
+    this.draw();
+    this.loadAsset();
+  }
+
   getCollider() {
     return {
       x: this.position.x,

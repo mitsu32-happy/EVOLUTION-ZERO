@@ -213,6 +213,10 @@ function getDebugFlag(name) {
   return new URLSearchParams(window.location.search).get(name) === '1';
 }
 
+function isDebugPerformanceEnabled() {
+  return getDebugFlag('debugPerformance');
+}
+
 function getDebugSkillLevel() {
   if (typeof window === 'undefined') {
     return 1;
@@ -508,6 +512,9 @@ export class PlayScene {
     this.pickupBursts = [];
     this.pickupPopups = [];
     this.debugStatsTimer = 0;
+    this.debugFpsEstimate = 0;
+    this.debugPerformanceEnabled = isDebugPerformanceEnabled();
+    this.runtimeInvalidCounts = {};
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
     this.screenShakeTimer = 0;
@@ -587,6 +594,19 @@ export class PlayScene {
         dropShadowBlur: 3,
       },
     });
+    this.performanceDebugBg = new Graphics();
+    this.performanceDebugText = new Text({
+      text: '',
+      style: {
+        fill: '#c9fbff',
+        fontFamily: 'Oxanium, Zen Kaku Gothic New, Noto Sans JP, sans-serif',
+        fontSize: 10,
+        fontWeight: '700',
+        letterSpacing: 0,
+        lineHeight: 13,
+        stroke: { color: '#02070b', width: 2 },
+      },
+    });
     this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
     this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
     this.lastTileKey = '';
@@ -638,6 +658,7 @@ export class PlayScene {
     this.uiLayer.addChild(this.hud.view);
     this.createGamepadNotice();
     this.createAdaptationSynergyHud();
+    this.createPerformanceDebugOverlay();
     this.bindInput();
     this.updateCamera(1);
     this.updateMap(true);
@@ -774,11 +795,7 @@ export class PlayScene {
     this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS, { children: true });
     this.trimRuntimeList(this.pickupBursts, MAX_PICKUP_BURSTS);
     this.trimRuntimeList(this.pickupPopups, MAX_PICKUP_POPUPS);
-
-    while (this.pickups.length > MAX_WORLD_PICKUPS) {
-      const pickup = this.pickups.shift();
-      pickup?.view?.destroy?.();
-    }
+    this.trimWorldPickups();
   }
 
   trimRuntimeList(list, maxCount, { children = false } = {}) {
@@ -786,6 +803,57 @@ export class PlayScene {
       const entry = list.shift();
       entry?.view?.destroy?.(children ? { children: true } : undefined);
     }
+  }
+
+  trimWorldPickups() {
+    while (this.pickups.length > MAX_WORLD_PICKUPS) {
+      const pickup = this.pickups.shift();
+
+      if (pickup?.type === 'exp' && !pickup.isCollected) {
+        const receiver = this.pickups.find((candidate) => candidate?.type === 'exp' && !candidate.isCollected);
+
+        if (receiver) {
+          receiver.setValue?.((receiver.value ?? 1) + (pickup.value ?? 1));
+        }
+      }
+
+      pickup?.view?.destroy?.();
+    }
+  }
+
+  createPerformanceDebugOverlay() {
+    this.performanceDebugBg.visible = false;
+    this.performanceDebugText.visible = false;
+    this.performanceDebugText.position.set(12, 86);
+    this.uiLayer.addChild(this.performanceDebugBg, this.performanceDebugText);
+  }
+
+  updatePerformanceDebugOverlay(stats) {
+    if (!this.debugPerformanceEnabled) {
+      this.performanceDebugBg.visible = false;
+      this.performanceDebugText.visible = false;
+      return;
+    }
+
+    const lines = [
+      `FPS ${stats.fps}`,
+      `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'}`,
+      `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
+      `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
+      `fx ${stats.combatEffects}/${stats.caps.combatEffects}`,
+      `dmg ${stats.damageNumbers}/${stats.caps.damageNumbers} pool ${stats.damageNumberPoolFree}/${stats.caps.damageNumberPool}`,
+      `pickup ${stats.pickups}/${stats.caps.pickups}`,
+      `audio ${stats.audioInstances ?? '-'}`,
+    ];
+
+    this.performanceDebugText.text = lines.join('\n');
+    this.performanceDebugBg
+      .clear()
+      .roundRect(8, 80, 202, 118, 8)
+      .fill({ color: 0x02070d, alpha: 0.76 })
+      .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
+    this.performanceDebugBg.visible = true;
+    this.performanceDebugText.visible = true;
   }
 
   publishDebugRuntimeStats(delta = 0) {
@@ -809,6 +877,11 @@ export class PlayScene {
     this.debugStatsTimer = 0.5;
 
     const activeBoss = this.getActiveBoss();
+    const instantFps = delta > 0 ? 1 / Math.max(delta, 1 / 120) : 0;
+    this.debugFpsEstimate = this.debugFpsEstimate > 0
+      ? this.debugFpsEstimate * 0.82 + instantFps * 0.18
+      : instantFps;
+    const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
     const stats = {
       stage: this.gameState.selectedStage,
       difficulty: this.gameState.selectedDifficulty,
@@ -824,9 +897,10 @@ export class PlayScene {
       enemies: this.enemies.length,
       enemyProjectiles: this.enemyProjectiles.length,
       stageGimmicks: this.stageGimmicks.length,
-      combatProjectiles: this.combatSystem?.projectiles?.length ?? 0,
-      combatEffects: this.combatSystem?.effects?.length ?? 0,
-      damageNumbers: this.combatSystem?.damageNumbers?.length ?? 0,
+      combatProjectiles: combatStats.combatProjectiles ?? this.combatSystem?.projectiles?.length ?? 0,
+      combatEffects: combatStats.combatEffects ?? this.combatSystem?.effects?.length ?? 0,
+      damageNumbers: combatStats.damageNumbers ?? this.combatSystem?.damageNumbers?.length ?? 0,
+      damageNumberPoolFree: combatStats.damageNumberPoolFree ?? 0,
       pickupBursts: this.pickupBursts.length,
       pickupPopups: this.pickupPopups.length,
       pickups: this.pickups.length,
@@ -834,6 +908,17 @@ export class PlayScene {
       gimmickChildren: this.gimmickLayer.children.length,
       depthChildren: this.depthLayer.children.length,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
+      fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
+      invalidRemoved: { ...(this.runtimeInvalidCounts ?? {}) },
+      caps: {
+        enemies: this.spawnSystem?.getEnemyCap?.(this.gameState) ?? null,
+        enemyProjectiles: MAX_ENEMY_PROJECTILES,
+        stageGimmicks: MAX_STAGE_GIMMICKS,
+        pickupBursts: MAX_PICKUP_BURSTS,
+        pickupPopups: MAX_PICKUP_POPUPS,
+        pickups: MAX_WORLD_PICKUPS,
+        ...(combatStats.caps ?? {}),
+      },
       timestamp: Date.now(),
     };
 
@@ -848,6 +933,8 @@ export class PlayScene {
     } catch {
       // Debug inspection state is optional.
     }
+
+    this.updatePerformanceDebugOverlay(stats);
   }
 
   getHudLayoutOptions() {
@@ -2288,6 +2375,8 @@ export class PlayScene {
 
     const playerCollider = this.player.getCollider();
 
+    this.enemies = this.enemies.filter((enemy) => this.isRuntimeEntityUsable(enemy, 'enemy'));
+
     this.enemies.forEach((enemy) => {
       enemy.update(delta, this.player);
       this.updateRuinsEnemyAbility(delta, enemy);
@@ -2428,6 +2517,10 @@ export class PlayScene {
 
   updateEnemyProjectiles(delta) {
     this.enemyProjectiles = this.enemyProjectiles.filter((projectile) => {
+      if (!this.isRuntimeProjectileUsable(projectile, 'enemyProjectile')) {
+        return false;
+      }
+
       projectile.ttl -= delta;
       projectile.age = (projectile.age ?? 0) + delta;
       projectile.x += projectile.vx * delta;
@@ -2475,6 +2568,8 @@ export class PlayScene {
   updateBosses(delta) {
     this.spawnBossIfNeeded();
     const playerCollider = this.player.getCollider();
+
+    this.bosses = this.bosses.filter((boss) => this.isRuntimeEntityUsable(boss, 'boss'));
 
     this.bosses.forEach((boss) => {
       boss.update(delta, this.player);
@@ -3666,6 +3761,10 @@ export class PlayScene {
     }
 
     this.stageGimmicks = this.stageGimmicks.filter((gimmick) => {
+      if (!this.isRuntimeGimmickUsable(gimmick)) {
+        return false;
+      }
+
       gimmick.age += delta;
       const activeStart = gimmick.warningDuration;
       const activeEnd = gimmick.warningDuration + gimmick.activeDuration;
@@ -4804,6 +4903,54 @@ export class PlayScene {
         }
       }).catch(() => {});
     });
+  }
+
+  isRuntimeEntityUsable(entity, label = 'entity') {
+    const position = entity?.position;
+    const hasFinitePosition = !position || (Number.isFinite(position.x) && Number.isFinite(position.y));
+    const hasValidView = !entity?.view || !entity.view.destroyed;
+
+    if (entity && hasFinitePosition && hasValidView) {
+      return true;
+    }
+
+    this.runtimeInvalidCounts[label] = (this.runtimeInvalidCounts[label] ?? 0) + 1;
+    entity?.view?.destroy?.({ children: true });
+    return false;
+  }
+
+  isRuntimeProjectileUsable(projectile, label = 'projectile') {
+    const usable = Boolean(projectile)
+      && Number.isFinite(projectile.x)
+      && Number.isFinite(projectile.y)
+      && Number.isFinite(projectile.vx ?? 0)
+      && Number.isFinite(projectile.vy ?? 0)
+      && Number.isFinite(projectile.ttl ?? 0)
+      && !projectile.view?.destroyed;
+
+    if (usable) {
+      return true;
+    }
+
+    this.runtimeInvalidCounts[label] = (this.runtimeInvalidCounts[label] ?? 0) + 1;
+    projectile?.view?.destroy?.();
+    return false;
+  }
+
+  isRuntimeGimmickUsable(gimmick) {
+    const usable = Boolean(gimmick)
+      && Number.isFinite(gimmick.age ?? 0)
+      && Number.isFinite(gimmick.warningDuration ?? 0)
+      && Number.isFinite(gimmick.activeDuration ?? 0)
+      && !gimmick.view?.destroyed;
+
+    if (usable) {
+      return true;
+    }
+
+    this.runtimeInvalidCounts.stageGimmick = (this.runtimeInvalidCounts.stageGimmick ?? 0) + 1;
+    gimmick?.view?.destroy?.({ children: true });
+    return false;
   }
 
   getBossDeathTextureScale(texture, targetSize) {
