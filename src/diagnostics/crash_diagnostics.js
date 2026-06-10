@@ -8,6 +8,7 @@ let installed = false;
 let crashVisible = false;
 let contextProvider = null;
 let lastHeartbeatAt = Date.now();
+let hasHeartbeat = false;
 let lastContext = {};
 
 function safeNowIso() {
@@ -185,18 +186,58 @@ function storeCrashReport(report) {
 }
 
 function createStyles(node) {
+  const rect = getGameViewportRect();
+
   Object.assign(node.style, {
     position: 'fixed',
-    inset: '0',
+    left: `${rect.left}px`,
+    top: `${rect.top}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`,
     zIndex: '2147483647',
-    overflow: 'auto',
+    overflow: 'hidden',
     boxSizing: 'border-box',
-    padding: 'max(18px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom))',
+    padding: 'max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom))',
     background: 'linear-gradient(180deg, #02070d 0%, #07131c 100%)',
     color: '#e8fbff',
+    display: 'flex',
+    alignItems: 'stretch',
+    justifyContent: 'center',
     fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     WebkitOverflowScrolling: 'touch',
   });
+}
+
+function getGameViewportRect() {
+  const candidates = [
+    document?.querySelector?.('canvas'),
+    document?.querySelector?.('#app'),
+  ].filter(Boolean);
+
+  for (const node of candidates) {
+    const rect = node.getBoundingClientRect?.();
+    if (rect?.width > 0 && rect?.height > 0) {
+      return {
+        left: Math.max(0, rect.left),
+        top: Math.max(0, rect.top),
+        width: Math.min(window.innerWidth || rect.width, rect.width),
+        height: Math.min(window.innerHeight || rect.height, rect.height),
+      };
+    }
+  }
+
+  const viewportWidth = window.innerWidth || 390;
+  const viewportHeight = window.innerHeight || 844;
+  const scale = Math.min(viewportWidth / 390, viewportHeight / 844);
+  const width = Math.max(1, Math.floor(390 * scale));
+  const height = Math.max(1, Math.floor(844 * scale));
+
+  return {
+    left: Math.max(0, Math.floor((viewportWidth - width) / 2)),
+    top: Math.max(0, Math.floor((viewportHeight - height) / 2)),
+    width,
+    height,
+  };
 }
 
 function makeMetric(label, value) {
@@ -214,26 +255,30 @@ function renderCrashScreen(report) {
   if (!root) {
     root = document.createElement('section');
     root.id = 'evolution-zero-crash-screen';
-    createStyles(root);
     document.body.appendChild(root);
   }
+
+  createStyles(root);
 
   root.innerHTML = `
     <style>
       #evolution-zero-crash-screen * { box-sizing: border-box; }
       .ez-crash-card {
         width: min(100%, 520px);
+        max-height: 100%;
         margin: 0 auto;
         border: 1px solid rgba(82, 227, 255, 0.58);
         border-radius: 12px;
         background: rgba(4, 13, 22, 0.96);
         box-shadow: 0 0 28px rgba(20, 210, 255, 0.18);
-        padding: 16px;
+        padding: 12px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
       }
-      .ez-crash-title { margin: 0 0 8px; font-size: 22px; line-height: 1.25; color: #ffffff; }
-      .ez-crash-body { margin: 0 0 14px; font-size: 13px; line-height: 1.65; color: #c9edf2; }
-      .ez-crash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
-      .ez-crash-metric { min-width: 0; border: 1px solid rgba(96, 151, 174, 0.34); border-radius: 8px; padding: 7px 8px; background: rgba(9, 26, 38, 0.82); }
+      .ez-crash-title { margin: 0 0 6px; font-size: 20px; line-height: 1.25; color: #ffffff; }
+      .ez-crash-body { margin: 0 0 10px; font-size: 12px; line-height: 1.55; color: #c9edf2; }
+      .ez-crash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0; }
+      .ez-crash-metric { min-width: 0; border: 1px solid rgba(96, 151, 174, 0.34); border-radius: 8px; padding: 6px 7px; background: rgba(9, 26, 38, 0.82); }
       .ez-crash-metric span { display: block; color: #8fb8c6; font-size: 10px; line-height: 1.2; }
       .ez-crash-metric b { display: block; color: #f4fdff; font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
       .ez-crash-error {
@@ -246,7 +291,7 @@ function renderCrashScreen(report) {
         font: 11px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
-        max-height: 174px;
+        max-height: 118px;
         overflow: auto;
       }
       .ez-crash-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
@@ -264,7 +309,7 @@ function renderCrashScreen(report) {
       .ez-crash-compact { color: #9ec4cf; font-size: 11px; line-height: 1.45; margin-top: 10px; overflow-wrap: anywhere; }
       .ez-crash-report-text {
         width: 100%;
-        max-height: 118px;
+        max-height: 86px;
         margin-top: 10px;
         border: 1px solid rgba(96, 151, 174, 0.34);
         border-radius: 8px;
@@ -278,9 +323,10 @@ function renderCrashScreen(report) {
         -webkit-user-select: text;
       }
       @media (max-width: 380px) {
-        .ez-crash-card { padding: 13px; }
+        .ez-crash-card { padding: 10px; }
         .ez-crash-grid { grid-template-columns: 1fr; }
-        .ez-crash-title { font-size: 20px; }
+        .ez-crash-title { font-size: 18px; }
+        .ez-crash-body { font-size: 11px; }
       }
     </style>
     <div class="ez-crash-card">
@@ -319,6 +365,9 @@ function renderCrashScreen(report) {
   const reloadButton = root.querySelector('#ez-crash-reload');
   const state = root.querySelector('#ez-crash-copy-state');
   const reportTextarea = root.querySelector('#ez-crash-report-text');
+
+  requestAnimationFrame?.(() => createStyles(root));
+  window.setTimeout?.(() => createStyles(root), 300);
 
   copyButton?.addEventListener('click', async () => {
     const ok = await copyText(reportText);
@@ -384,7 +433,12 @@ export function updateCrashDiagnosticsContext(context = {}) {
 }
 
 export function markCrashDiagnosticsHeartbeat(context = {}) {
+  hasHeartbeat = true;
   updateCrashDiagnosticsContext(context);
+}
+
+function shouldReportWindowError(event) {
+  return Boolean(event?.error || event?.message || (typeof ErrorEvent !== 'undefined' && event instanceof ErrorEvent));
 }
 
 export function showCrashDiagnostics(reason, payload = {}, context = null) {
@@ -429,6 +483,9 @@ export function installCrashDiagnostics({ getContext = null } = {}) {
   installed = true;
 
   window.addEventListener('error', (event) => {
+    if (!shouldReportWindowError(event)) {
+      return;
+    }
     showCrashDiagnostics('runtime-error', event);
   });
 
@@ -438,6 +495,10 @@ export function installCrashDiagnostics({ getContext = null } = {}) {
 
   window.setInterval(() => {
     if (crashVisible || document?.visibilityState === 'hidden') {
+      return;
+    }
+
+    if (!hasHeartbeat || lastContext.currentScreen !== 'play') {
       return;
     }
 

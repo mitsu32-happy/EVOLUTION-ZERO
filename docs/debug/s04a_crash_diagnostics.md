@@ -38,3 +38,10 @@ for desktop debugging.
 - `?debugCrash=runtime` triggers an artificial runtime error after boot.
 - Expected result: the screen shows `ゲームが停止しました`, the copy button copies
   an `EVOLUTION ZERO Crash Report`, and the reload button restarts the app.
+
+## HOTFIX-S04a.1
+
+- Saved `EVOLUTION_ZERO_CRASH_REPORT` entries are retained for reporting but are
+  never shown automatically on the next boot.
+- The crash screen is positioned against the game canvas rectangle and scrolls
+  internally so it stays inside the visible game area on mobile/PWA displays.
