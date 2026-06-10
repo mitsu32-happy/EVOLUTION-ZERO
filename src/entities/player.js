@@ -92,9 +92,9 @@ export class Player {
     this.setAnimation(animationName, animationName !== 'idle' && animationName !== 'run');
   }
 
-  applyUpgrade(upgradeId, level) {
+  applyUpgrade(upgradeId, level, modifiers = {}) {
     if (upgradeId === 'move_speed_up') {
-      this.moveSpeed += 22 + level * 4;
+      this.moveSpeed += modifiers.statUpgradeValue?.baseMoveSpeedGain ?? (28 + level * 6);
     }
   }
 

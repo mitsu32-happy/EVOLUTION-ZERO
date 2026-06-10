@@ -5101,9 +5101,10 @@ export class PlayScene {
     }
 
     const statUpgradeTheoryLevel = getAdaptationResearchBonuses(this.gameState.researchLevels).statUpgradeTheoryLevel;
+    const statUpgradeValue = getStatUpgradeTheoryValue(option.id, acquiredSkill.level, this.gameState.researchLevels);
 
-    this.player.applyUpgrade(option.id, acquiredSkill.level);
-    this.combatSystem.applyUpgrade(option.id, acquiredSkill.level, { statUpgradeTheoryLevel });
+    this.player.applyUpgrade(option.id, acquiredSkill.level, { statUpgradeValue });
+    this.combatSystem.applyUpgrade(option.id, acquiredSkill.level, { statUpgradeTheoryLevel, statUpgradeValue });
     this.combatSystem.applyAdaptationSkill?.(option, acquiredSkill.level);
     this.applyUtilitySkill(option.id, acquiredSkill.level);
     this.applyAdaptationSynergyState();

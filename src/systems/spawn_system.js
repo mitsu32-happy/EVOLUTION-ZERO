@@ -239,7 +239,7 @@ export class SpawnSystem {
 
     return {
       hp: 1 + bonusLevel * 0.13 + lateBonus * 0.055,
-      damage: earlyDamageBase + bonusLevel * 0.075 + lateBonus * 0.045,
+      damage: earlyDamageBase + bonusLevel * 0.055 + lateBonus * 0.025,
       speed: 1 + Math.min(0.52, bonusLevel * 0.035 + lateBonus * 0.018),
     };
   }
@@ -255,7 +255,7 @@ export class SpawnSystem {
 
       return {
         hp: ZERO_SCALING_CONFIG.enemyHp + pressure * 1.12,
-        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.52,
+        damage: ZERO_SCALING_CONFIG.enemyDamage + pressure * 0.36,
         spawnRate: ZERO_SCALING_CONFIG.spawnRate + pressure * 1.95,
         maxEnemyBonus: ZERO_SCALING_CONFIG.maxEnemyBonus + Math.floor(pressure * 42),
         eliteBonus: ZERO_SCALING_CONFIG.eliteBonus + pressure * 0.22,
@@ -283,7 +283,7 @@ export class SpawnSystem {
 
       return {
         hp: 0.9 + pressure * 0.34,
-        damage: 0.82 + pressure * 0.78,
+        damage: 0.82 + pressure * 0.56,
         spawnRate: 1 + pressure * 0.78,
         maxEnemyBonus: Math.floor(pressure * 22),
         eliteBonus: pressure * 0.05,
@@ -310,7 +310,7 @@ export class SpawnSystem {
 
     return {
       hp: phase.hp + longRunBonus * 1.15,
-      damage: phase.damage + longRunBonus * 0.95,
+      damage: phase.damage + longRunBonus * 0.68,
       spawnRate: phase.spawnRate + longRunBonus * 1.85,
       maxEnemyBonus: phase.maxEnemyBonus + Math.floor(longRunBonus * 44),
       eliteBonus: phase.eliteBonus + longRunBonus * 0.05,

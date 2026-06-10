@@ -3647,3 +3647,10 @@ No new image/audio asset generation is required for this MVP.
 - No new raster assets were generated.
 - S02 adds code-side pooling and emergency load shedding for high-density combat scenes.
 - Existing projectile, warning, pickup, and boss effect assets remain unchanged.
+
+## MVP-A15.4 Balance Note
+
+- A15.4 is a numeric balance/UI text update only.
+- No new visual assets were generated.
+- S01-S03 performance stabilization assets, pools, and debug overlays are unchanged.
+- Ability upgrade card values and `適応強化理論` display text were updated through code-side Text rendering.

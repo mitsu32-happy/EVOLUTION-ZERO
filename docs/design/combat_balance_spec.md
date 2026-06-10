@@ -223,3 +223,10 @@ See:
 - Enemy spawn budget smooths creation pressure without changing enemy cap targets.
 - Boss hazard overlap can be temporarily reduced only when emergency load shedding is active.
 - The goal is preserving ZERO/endless pressure while preventing visual/audio overload from deciding the run.
+
+## MVP-A15.4 雑魚攻撃力再調整
+
+- ZERO終盤の雑魚敵ダメージは、「1発が重すぎる」状態を避けるため高Lv補正とZEROモード圧によるダメージ上昇を緩和した。
+- 敵HP、移動速度、敵数、spawn圧は維持し、囲まれて押し負ける方向の難易度を優先する。
+- ボス攻撃力は今回の対象外とし、通常ボス、ZERO第2ボス、ZEROラスボスの攻撃性能は既存値を維持する。
+- HARD/EXPERT/ENDLESSの終盤ダメージ圧も少し緩和し、NORMAL序盤にはほぼ影響しない敵Lv補正にした。

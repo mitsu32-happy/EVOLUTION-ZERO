@@ -1,5 +1,19 @@
 export const UPDATE_NEWS = [
   {
+    id: 'stat-upgrade-balance-a15-4-2026-06-10',
+    date: '2026/06/10',
+    category: 'バランス調整',
+    title: '能力強化と難易度バランスを調整しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・ZERO終盤の雑魚敵ダメージを調整しました。',
+      '・能力強化カードの効果を上方修正しました。',
+      '・研究「適応強化理論」の効果を調整しました。',
+      '・高難易度での成長の手応えを高めました。',
+    ],
+  },
+  {
     id: 'final-phase-stability-s03-2026-06-10',
     date: '2026/06/10',
     category: '改善',

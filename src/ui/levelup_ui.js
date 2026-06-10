@@ -298,7 +298,7 @@ function getCardInfo(option, { currentLevel, nextLevel, isFallbackReward, isStat
   if (isStatUpgrade) {
     const theoryValue = getStatUpgradeTheoryValue(option.id, nextLevel, gameState?.researchLevels);
     const effectText = theoryValue.label ?? option.levelUpText ?? option.upgradeSummary ?? '基礎性能が上昇';
-    const theoryText = theoryValue.theoryLevel > 0 ? `研究補正 +${theoryValue.theoryLevel}` : '基礎ステータスを強化';
+    const theoryText = theoryValue.theoryLevel > 0 ? `研究補正 x${theoryValue.theoryMultiplier.toFixed(1)}` : '基礎ステータスを強化';
 
     return {
       type: '種別: 能力強化',

@@ -282,3 +282,15 @@ MVP-086の反映対象:
 - Adaptation Analysis is consolidated into one Body Enhancement card with max level 5.
 - Adaptation Enhancement Theory is consolidated into one Body Enhancement card with max level 3.
 - Both use the same `強化段階 current / max` presentation as other body upgrades.
+
+## MVP-A15.4 適応強化理論
+
+- `適応強化理論` は身体強化リストに置く能力強化カード支援研究として扱う。
+- 効果は固定値加算ではなく、能力強化カードの基礎値に対する乗算補正に変更した。
+- 研究段階ごとの倍率は以下:
+  - I: 基礎値 x1.1
+  - II: 基礎値 x1.2
+  - III: 基礎値 x1.3
+- 対象カードは `HP増加`、`攻撃力増加`、`移動速度増加`、`回収範囲増加`。
+- 既存セーブの研究段階は維持し、同じ研究IDのレベルから倍率を再計算する。
+- 研究画面の効果表示は `能力強化 +10%/段階` とし、次段階表示もパーセント表記で統一する。

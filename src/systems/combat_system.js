@@ -166,9 +166,9 @@ export class CombatSystem {
     }
 
     if (upgradeId === 'attack_power_up' || upgradeId === 'predator_instinct') {
-      const theoryLevel = modifiers.statUpgradeTheoryLevel ?? 0;
-      this.damage += 3 + level + theoryLevel;
-      this.adaptationDamageMultiplier += 0.09 + level * 0.02 + theoryLevel * 0.015;
+      const theoryValue = modifiers.statUpgradeValue ?? {};
+      this.damage += theoryValue.attackGain ?? (5 + level * 2);
+      this.adaptationDamageMultiplier += theoryValue.adaptationDamageBonus ?? (0.1 + level * 0.025);
       return;
     }
 

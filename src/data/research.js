@@ -226,9 +226,9 @@ export const RESEARCH_ITEMS = [
     category: RESEARCH_CATEGORY_IDS.bodyEnhancement,
     name: '適応強化理論',
     description: '能力強化カードの効果が上がります。',
-    effectLabel: '能力強化 +1/段階',
+    effectLabel: '能力強化 +10%/段階',
     effectType: 'statUpgradeTheory',
-    effectPerLevel: 1,
+    effectPerLevel: 0.1,
     material: 'DNA',
     iconName: 'bodyEnhancement',
     status: 'available',
@@ -499,7 +499,7 @@ export function getResearchNextEffectLabel(item, level) {
   }
 
   if (item.effectType === 'statUpgradeTheory') {
-    return `次: 能力強化 +${nextValue}`;
+    return `次: 能力強化 +${Math.round(nextValue * 100)}%`;
   }
 
   return item.effectLabel;
@@ -540,47 +540,67 @@ export function getAdaptationResearchBonuses(researchLevels = {}) {
   };
 }
 
+function roundPercentBonus(value) {
+  return Math.round(value * 100) / 100;
+}
+
 export function getStatUpgradeTheoryValue(skillId, level = 1, researchLevels = {}) {
   const theoryLevel = getAdaptationResearchBonuses(researchLevels).statUpgradeTheoryLevel;
+  const theoryMultiplier = 1 + theoryLevel * 0.1;
 
   if (skillId === 'hard_skin') {
-    const hpGain = 12 + level * 3 + theoryLevel * 3;
+    const baseHpGain = 24 + level * 5;
+    const hpGain = Math.round(baseHpGain * theoryMultiplier);
     return {
       theoryLevel,
+      theoryMultiplier,
+      baseHpGain,
       hpGain,
       label: `HP +${hpGain}`,
     };
   }
 
   if (skillId === 'attack_power_up' || skillId === 'predator_instinct') {
-    const attackGain = 3 + level + theoryLevel;
-    const adaptationDamageBonus = 0.09 + level * 0.02 + theoryLevel * 0.015;
+    const baseAttackGain = 5 + level * 2;
+    const baseAdaptationDamageBonus = 0.1 + level * 0.025;
+    const attackGain = Math.round(baseAttackGain * theoryMultiplier);
+    const adaptationDamageBonus = roundPercentBonus(baseAdaptationDamageBonus * theoryMultiplier);
     return {
       theoryLevel,
+      theoryMultiplier,
+      baseAttackGain,
       attackGain,
+      baseAdaptationDamageBonus,
       adaptationDamageBonus,
-      label: `攻撃力 +${attackGain}`,
+      label: `攻撃力 +${attackGain} / 適応技 +${Math.round(adaptationDamageBonus * 100)}%`,
     };
   }
 
   if (skillId === 'move_speed_up') {
-    const baseMoveSpeedGain = 22 + level * 4;
-    const extraMoveSpeedGain = theoryLevel * 4;
+    const baseMoveSpeedGain = 28 + level * 6;
+    const moveSpeedGain = Math.round(baseMoveSpeedGain * theoryMultiplier);
+    const extraMoveSpeedGain = moveSpeedGain - baseMoveSpeedGain;
     return {
       theoryLevel,
+      theoryMultiplier,
       baseMoveSpeedGain,
       extraMoveSpeedGain,
-      moveSpeedGain: baseMoveSpeedGain + extraMoveSpeedGain,
-      label: `移動速度 +${baseMoveSpeedGain + extraMoveSpeedGain}`,
+      moveSpeedGain,
+      label: `移動速度 +${moveSpeedGain}`,
     };
   }
 
   if (skillId === 'exp_sense') {
-    const magnetBonus = level * 0.12 + theoryLevel * 0.02;
-    const pullBonus = level * 0.08 + theoryLevel * 0.015;
+    const baseMagnetBonus = 0.15 + Math.max(0, level - 1) * 0.13;
+    const basePullBonus = 0.1 + Math.max(0, level - 1) * 0.09;
+    const magnetBonus = roundPercentBonus(baseMagnetBonus * theoryMultiplier);
+    const pullBonus = roundPercentBonus(basePullBonus * theoryMultiplier);
     return {
       theoryLevel,
+      theoryMultiplier,
+      baseMagnetBonus,
       magnetBonus,
+      basePullBonus,
       pullBonus,
       label: `回収範囲 +${Math.round(magnetBonus * 100)}%`,
     };
@@ -588,6 +608,7 @@ export function getStatUpgradeTheoryValue(skillId, level = 1, researchLevels = {
 
   return {
     theoryLevel,
+    theoryMultiplier,
     label: null,
   };
 }

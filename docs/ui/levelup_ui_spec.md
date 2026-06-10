@@ -83,3 +83,15 @@
 - The bottom hint line explains the next threshold, such as `あと1つで高速シナジーⅠ`.
 - At 2 same-type pickups the card switches to tier II guidance; at 3 pickups it shows the tier II active state.
 - Power/range/recast text remains visible so synergy guidance does not replace the immediate skill comparison.
+
+## MVP-A15.4 能力強化カード
+
+- 能力強化カードの基礎値を上方修正し、1回選んだ時の伸びを分かりやすくした。
+- `適応強化理論` 研究済みの場合は、カード基礎値に倍率を掛けた最終値を表示する。
+- 表示値と実際の効果は `getStatUpgradeTheoryValue` を共通参照し、カード表示だけが強く見える状態を避ける。
+- 対象:
+  - `HP増加`: HP増加量を表示
+  - `攻撃力増加`: 攻撃力増加量と適応技ダメージ補正を表示
+  - `移動速度増加`: 移動速度増加量を表示
+  - `回収範囲増加`: 回収範囲増加率を表示
+- 研究補正がある場合は `研究補正 x1.1` などの倍率表示を添える。
