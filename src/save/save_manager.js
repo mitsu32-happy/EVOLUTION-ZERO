@@ -25,6 +25,15 @@ import {
   getJstDateKey,
   normalizeDailyMissionsState,
 } from '../data/daily_missions.js';
+import {
+  COMPANION_HATCH_CONFIG,
+  cloneCompanionState,
+  createDefaultCompanionState,
+  getCompanionById,
+  getCompanionUpgradeCost,
+  normalizeCompanionState,
+  pickRandomUnownedCompanion,
+} from '../data/companion_dinos.js';
 
 const SAVE_KEY = 'evolution_zero_save_v1';
 const SAVE_VERSION = 1;
@@ -69,6 +78,7 @@ const DEFAULT_SAVE = {
   currentHomeEvolutionId: null,
   dailyMissions: { dateKey: null, missions: [] },
   dailyMissionClaims: {},
+  companion: createDefaultCompanionState(),
   tutorialFlags: {
     home: false,
     sortie: false,
@@ -78,6 +88,10 @@ const DEFAULT_SAVE = {
     evolution: false,
     ultimate: false,
     warningGuide: false,
+    companionEggPickup: false,
+    companionEggResearch: false,
+    companionObtained: false,
+    companionSet: false,
   },
   audioSettings: {
     masterVolume: 0.8,
@@ -165,6 +179,7 @@ export class SaveManager {
       researchLevels: { ...this.data.researchLevels },
       dailyMissions: this.cloneDailyMissions(this.data.dailyMissions),
       dailyMissionClaims: { ...(this.data.dailyMissionClaims ?? {}) },
+      companion: cloneCompanionState(this.data.companion),
       tutorialFlags: this.cloneTutorialFlags(this.data.tutorialFlags),
       audioSettings: { ...this.data.audioSettings },
       gameplaySettings: this.cloneGameplaySettings(this.data.gameplaySettings),
@@ -398,6 +413,152 @@ export class SaveManager {
     return this.save();
   }
 
+  getCompanionState() {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    return cloneCompanionState(this.data.companion);
+  }
+
+  grantCompanionEgg(source = 'run') {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+
+    if (companion.eggPending || companion.eggIncubating) {
+      return { success: false, reason: 'already_has_egg', data: this.getData() };
+    }
+
+    companion.eggPending = true;
+    companion.lastEggSource = source;
+    this.data.companion = companion;
+    return { success: true, data: this.save() };
+  }
+
+  startCompanionEggIncubation({ instant = false } = {}) {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+
+    if (!companion.eggPending || companion.eggIncubating) {
+      return { success: false, reason: 'no_pending_egg', data: this.getData() };
+    }
+
+    const dnaCost = COMPANION_HATCH_CONFIG.dnaCost;
+    const researchPtCost = COMPANION_HATCH_CONFIG.researchPtCost;
+    if ((this.data.ownedDna ?? 0) < dnaCost || (this.data.researchPt ?? 0) < researchPtCost) {
+      return { success: false, reason: 'insufficient', data: this.getData() };
+    }
+
+    const now = Date.now();
+    this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) - dnaCost);
+    this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt) - researchPtCost);
+    companion.eggPending = false;
+    companion.eggIncubating = true;
+    companion.hatchStartedAt = new Date(now).toISOString();
+    companion.hatchCompleteAt = new Date(now + (instant ? 0 : COMPANION_HATCH_CONFIG.durationMs)).toISOString();
+    this.data.companion = companion;
+    return { success: true, data: this.save() };
+  }
+
+  completeCompanionEggIncubation({ force = false } = {}) {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+
+    if (!companion.eggIncubating) {
+      return { success: false, reason: 'not_incubating', data: this.getData() };
+    }
+
+    const completeAt = Date.parse(companion.hatchCompleteAt ?? '');
+    if (!force && Number.isFinite(completeAt) && Date.now() < completeAt) {
+      return { success: false, reason: 'not_ready', data: this.getData() };
+    }
+
+    const hatched = pickRandomUnownedCompanion(companion);
+    companion.eggIncubating = false;
+    companion.hatchStartedAt = null;
+    companion.hatchCompleteAt = null;
+
+    if (!hatched) {
+      companion.lastHatchedId = null;
+      this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) + 120);
+      this.data.companion = companion;
+      return { success: true, duplicateReward: { dna: 120 }, data: this.save() };
+    }
+
+    companion.ownedIds = [...new Set([...(companion.ownedIds ?? []), hatched.id])];
+    companion.levels = {
+      ...(companion.levels ?? {}),
+      [hatched.id]: companion.levels?.[hatched.id] ?? 1,
+    };
+    companion.selectedId = companion.selectedId ?? hatched.id;
+    companion.lastHatchedId = hatched.id;
+    this.data.companion = companion;
+
+    return { success: true, companion: hatched, data: this.save() };
+  }
+
+  setSelectedCompanion(companionId = null) {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+
+    if (companionId === null) {
+      companion.selectedId = null;
+      this.data.companion = companion;
+      return { success: true, data: this.save() };
+    }
+
+    if (!companion.ownedIds.includes(companionId) || !getCompanionById(companionId)) {
+      return { success: false, reason: 'not_owned', data: this.getData() };
+    }
+
+    companion.selectedId = companionId;
+    this.data.companion = companion;
+    return { success: true, data: this.save() };
+  }
+
+  upgradeCompanion(companionId) {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+    const config = getCompanionById(companionId);
+
+    if (!config || !companion.ownedIds.includes(companionId)) {
+      return { success: false, reason: 'not_owned', data: this.getData() };
+    }
+
+    const level = Math.max(1, companion.levels?.[companionId] ?? 1);
+    const cost = getCompanionUpgradeCost(companionId, level);
+    if (!cost) {
+      return { success: false, reason: 'max', data: this.getData() };
+    }
+
+    if ((this.data.ownedDna ?? 0) < cost) {
+      return { success: false, reason: 'insufficient', data: this.getData() };
+    }
+
+    this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) - cost);
+    companion.levels = {
+      ...(companion.levels ?? {}),
+      [companionId]: Math.min(config.maxLevel, level + 1),
+    };
+    this.data.companion = companion;
+    return { success: true, data: this.save() };
+  }
+
+  debugGrantCompanion(companionId) {
+    const config = getCompanionById(companionId);
+    if (!config) {
+      return { success: false, data: this.getData() };
+    }
+
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+    companion.ownedIds = [...new Set([...(companion.ownedIds ?? []), config.id])];
+    companion.levels = {
+      ...(companion.levels ?? {}),
+      [config.id]: companion.levels?.[config.id] ?? 1,
+    };
+    companion.selectedId = companion.selectedId ?? config.id;
+    this.data.companion = companion;
+    return { success: true, data: this.save() };
+  }
+
   setEquippedTitle(titleId) {
     this.data.ownedTitles = this.normalizeOwnedEntries(this.data.ownedTitles);
     const title = getTitleById(titleId);
@@ -523,6 +684,8 @@ export class SaveManager {
     gameState.selectedDino = this.data.lastSelectedDino;
     gameState.selectedMode = this.data.lastSelectedMode;
     gameState.researchLevels = { ...(this.data.researchLevels ?? {}) };
+    gameState.companion = cloneCompanionState(this.data.companion);
+    gameState.selectedCompanionId = gameState.companion.selectedId ?? null;
   }
 
   saveSelections(gameState) {
@@ -571,6 +734,9 @@ export class SaveManager {
       totalRuns: this.data.totalRuns,
       dnaEarned,
       researchPtEarned,
+      companionEggReward: gameState.companionEggCollected
+        ? { type: 'companionEgg', label: 'お供恐竜の卵' }
+        : null,
       evolutionDiscovery,
       newEvolutionRoute: zeroReward.newEvolutionRoute ?? (evolutionDiscovery?.isNew ? evolutionDiscovery.discovery : null),
       stageResult,
@@ -881,6 +1047,7 @@ export class SaveManager {
       dailyMissionClaims: typeof value?.dailyMissionClaims === 'object' && value.dailyMissionClaims !== null
         ? { ...value.dailyMissionClaims }
         : {},
+      companion: normalizeCompanionState(value?.companion),
       tutorialFlags: this.normalizeTutorialFlags(value?.tutorialFlags),
       audioSettings: {
         ...DEFAULT_SAVE.audioSettings,

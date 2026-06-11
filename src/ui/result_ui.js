@@ -471,6 +471,7 @@ export class ResultUi {
       titleFrames,
       firstClearRewards,
       zeroRewards,
+      companionEggReward: saveInfo?.companionEggReward,
       newEvolutionRoute: saveInfo?.newEvolutionRoute,
       stageResult: saveInfo?.stageResult,
       resultKind: resultType.kind,
@@ -1141,10 +1142,13 @@ export class ResultUi {
     this.applyButtonSprite(this.homeButton, this.textures.get('homeButton'), size);
   }
 
-  createRewardRows({ dnaEarned = 0, rewardTitles = [], titleFrames = [], firstClearRewards = [], zeroRewards = [], newEvolutionRoute = null, stageResult = null, resultKind = 'result' }) {
+  createRewardRows({ dnaEarned = 0, rewardTitles = [], titleFrames = [], firstClearRewards = [], zeroRewards = [], companionEggReward = null, newEvolutionRoute = null, stageResult = null, resultKind = 'result' }) {
     const rows = [];
 
     rows.push(['獲得DNA', dnaEarned > 0 ? `+${this.formatNumber(dnaEarned)}` : '0', dnaEarned > 0 ? 'normal' : 'muted']);
+    if (companionEggReward) {
+      rows.push(['卵入手', companionEggReward.label ?? 'お供恐竜の卵', 'normal']);
+    }
 
     if (resultKind === 'zeroClear') {
       rows.push(['獲得称号', rewardTitles[0]?.name ?? rewardTitles[0] ?? '取得済み', rewardTitles.length > 0 ? 'zero' : 'muted']);

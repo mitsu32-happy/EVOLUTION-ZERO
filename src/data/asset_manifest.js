@@ -204,6 +204,13 @@ export const ASSET_KEYS = {
     expMedium: 'pickups.expMedium',
     expLarge: 'pickups.expLarge',
     expBoss: 'pickups.expBoss',
+    companionEgg: 'pickups.companionEgg',
+  },
+  companions: {
+    eggIcon: 'companions.eggIcon',
+    hatchEffect: 'companions.hatchEffect',
+    raptorlingSprite: 'companions.raptorlingSprite',
+    raptorlingIcon: 'companions.raptorlingIcon',
   },
   items: {
     meatHeal: 'items.meatHeal',
@@ -2716,6 +2723,28 @@ export const ASSET_MANIFEST = {
       note: 'MVP-134 generated large EXP crystal pickup.',
     },
     expBoss: 'assets/effects/pickups/exp_boss.png',
+    companionEgg: {
+      path: 'assets/companions/companion_egg_p01.png',
+      note: 'MVP-P01 companion egg pickup icon.',
+    },
+  },
+  companions: {
+    eggIcon: {
+      path: 'assets/companions/companion_egg_p01.png',
+      note: 'MVP-P01 companion egg icon shared by pickup and hatch UI.',
+    },
+    hatchEffect: {
+      path: 'assets/companions/hatch_effect_p01.png',
+      note: 'MVP-P01 companion hatch glow effect.',
+    },
+    raptorlingSprite: {
+      path: 'assets/companions/raptorling_sprite_p01.png',
+      note: 'MVP-P01 representative small companion dino sprite.',
+    },
+    raptorlingIcon: {
+      path: 'assets/companions/raptorling_icon_p01.png',
+      note: 'MVP-P01 representative small companion dino icon.',
+    },
   },
   items: {
     meatHeal: {
@@ -5388,6 +5417,13 @@ export const ENTITY_VISUAL_RULES = {
       anchor: { x: 0.5, y: 0.5 },
       labelY: 0,
       glowRadius: 24,
+    },
+    companionEgg: {
+      spriteWidth: 38,
+      spriteHeight: 38,
+      anchor: { x: 0.5, y: 0.5 },
+      labelY: 28,
+      glowRadius: 26,
     },
   },
 };

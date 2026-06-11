@@ -9,7 +9,7 @@ export class Pickup {
     this.glow = new Graphics();
     this.assetSprite = new Sprite();
     this.valueLabel = new Text({
-      text: value >= 4 ? 'BIG' : value >= 2 ? 'EXP+' : '',
+      text: type === 'companion_egg' ? 'EGG' : value >= 4 ? 'BIG' : value >= 2 ? 'EXP+' : '',
       style: {
         fill: value >= 4 ? '#fff0b0' : '#c8fbff',
         fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
@@ -23,8 +23,8 @@ export class Pickup {
     this.type = type;
     this.value = value;
     this.healAmount = healAmount;
-    this.sizeScale = type === 'heal' ? 1.08 : Math.min(1.58, 0.78 + value * 0.16);
-    this.radius = type === 'heal' ? 18 : 11 + value * 3;
+    this.sizeScale = type === 'companion_egg' ? 1.18 : type === 'heal' ? 1.08 : Math.min(1.58, 0.78 + value * 0.16);
+    this.radius = type === 'companion_egg' ? 20 : type === 'heal' ? 18 : 11 + value * 3;
     this.magnetRadius = 132;
     this.pullSpeed = 280;
     this.targeted = false;
@@ -74,12 +74,18 @@ export class Pickup {
 
     this.view.position.set(this.position.x, this.position.y + Math.sin(this.floatTime) * 4);
     this.view.alpha = 0.9 + Math.sin(this.floatTime * 1.8) * 0.1;
-    this.valueLabel.visible = this.type === 'exp' && this.value >= 2;
+    this.valueLabel.visible = (this.type === 'exp' && this.value >= 2) || this.type === 'companion_egg';
 
     if (this.type === 'heal') {
       const pulse = 1 + Math.sin(this.floatTime * 2.4) * 0.08;
       this.glow.scale.set(pulse);
       this.glow.alpha = 0.88 + Math.sin(this.floatTime * 2.1) * 0.12;
+    }
+
+    if (this.type === 'companion_egg') {
+      const pulse = 1 + Math.sin(this.floatTime * 2.1) * 0.07;
+      this.glow.scale.set(pulse);
+      this.glow.alpha = 0.78 + Math.sin(this.floatTime * 1.7) * 0.12;
     }
   }
 
@@ -137,6 +143,10 @@ export class Pickup {
       return ASSET_KEYS.items?.meatHeal ?? null;
     }
 
+    if (this.type === 'companion_egg') {
+      return ASSET_KEYS.pickups?.companionEgg ?? ASSET_KEYS.companions?.eggIcon ?? null;
+    }
+
     return this.getAssetKeyForValue(this.value);
   }
 
@@ -159,6 +169,16 @@ export class Pickup {
   getVisualRule() {
     if (this.type === 'heal') {
       return ENTITY_VISUAL_RULES.pickups.heal;
+    }
+
+    if (this.type === 'companion_egg') {
+      return ENTITY_VISUAL_RULES.pickups.companionEgg ?? {
+        spriteWidth: 34,
+        spriteHeight: 34,
+        glowRadius: 24,
+        labelY: 24,
+        anchor: { x: 0.5, y: 0.5 },
+      };
     }
 
     return this.getVisualRuleForValue(this.value);
@@ -204,6 +224,24 @@ export class Pickup {
         .fill({ color: 0xff6456, alpha: 0.75 })
         .circle(7, 2, 4)
         .fill({ color: 0x320707, alpha: 0.68 });
+      return;
+    }
+
+    if (this.type === 'companion_egg') {
+      this.glow
+        .circle(0, 2, this.visualRule.glowRadius)
+        .fill({ color: 0x35d7ff, alpha: 0.22 })
+        .circle(0, 2, this.visualRule.glowRadius * 0.58)
+        .fill({ color: 0xfff0b4, alpha: 0.16 })
+        .circle(0, 2, this.visualRule.glowRadius * 1.38)
+        .stroke({ color: 0x7cf7d4, width: 2, alpha: 0.5 });
+      this.crystal
+        .ellipse(-14, -18, 14, 20)
+        .fill({ color: 0x1e122d, alpha: 0.96 })
+        .stroke({ color: 0x7cf7d4, width: 2, alpha: 0.84 })
+        .poly([-6, -4, 2, -12, 9, -2, 4, 8, -8, 6])
+        .fill({ color: 0x35d7ff, alpha: 0.42 });
+      this.crystal.scale.set(this.sizeScale);
       return;
     }
 

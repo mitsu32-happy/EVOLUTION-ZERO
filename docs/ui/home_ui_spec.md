@@ -582,3 +582,10 @@ MVP-082 ではホーム画面の主要操作に短い押下フィードバック
 - Home tutorial now spotlights the actual sortie button, daily panel, title area, news button, and bottom navigation targets.
 - The Options `チュートリアルを再表示` action resets tutorial flags and reopens the Home tutorial for QA and later review.
 - Tutorial panels reuse the A07d news panel direction so the overlay does not read as a temporary debug dialog.
+# MVP-P01 お供恐竜ホーム導線
+
+- ホーム画面に「お供」パネルを追加する。
+- 未セット時は `お供なし`、卵所持時は `卵あり`、孵化中は `孵化中`、セット時は `お供名 Lv` を表示する。
+- パネル押下でお供恐竜選択モーダルを開く。
+- 選択モーダルでは所持済みお供恐竜のセットとDNA強化を行える。
+- P01では代表アイコンを使用し、10種類の個別アセット差し替えはP02以降の対象とする。

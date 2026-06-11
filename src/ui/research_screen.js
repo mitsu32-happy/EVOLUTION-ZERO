@@ -12,6 +12,10 @@ import { createBottomNav } from './bottom_nav.js';
 import { ConfirmDialog } from './confirm_dialog.js';
 import { playPressFeedback } from './ui_feedback.js';
 import { drawButtonFrame, drawPanel, drawScreenBackground, UI_COLORS } from './ui_theme.js';
+import {
+  COMPANION_HATCH_CONFIG,
+  getCompanionById,
+} from '../data/companion_dinos.js';
 
 const RESEARCH_ASSET_PATHS = {
   researchBackground: 'assets/ui/research/research_background.png',
@@ -369,6 +373,11 @@ export class ResearchScreen {
       return;
     }
 
+    if (card.isCompanionHatch) {
+      this.handleCompanionHatchAction(card);
+      return;
+    }
+
     if (!item || !this.isPurchasableResearch(item) || card.isMax) {
       this.noticeText.text = '本格接続は次フェーズで実装予定です';
       return;
@@ -574,6 +583,66 @@ export class ResearchScreen {
     this.gamepadFocusIndex = 0;
     this.noticeText.text = '';
     this.render();
+  }
+
+  handleCompanionHatchAction(card) {
+    const item = card.item;
+
+    if (item.action === 'wait') {
+      this.noticeText.text = '孵化完了まで少し待ちましょう';
+      return;
+    }
+
+    if (!card.canBuy) {
+      this.noticeText.text = 'DNAまたは研究Ptが不足しています';
+      return;
+    }
+
+    if (item.action === 'claim') {
+      this.confirmDialog.show({
+        title: '孵化完了',
+        message: '卵からお供恐竜を受け取りますか？',
+        detail: '未所持のお供恐竜からランダムで加入します。',
+        confirmLabel: '受け取る',
+        cancelLabel: 'あとで',
+        onConfirm: () => {
+          const result = this.saveManager.completeCompanionEggIncubation({ force: true });
+          const name = result.companion?.displayName ?? (result.duplicateReward ? 'DNA報酬' : 'お供恐竜');
+          this.noticeText.text = result.success ? `${name}を獲得しました` : '受け取りできませんでした';
+          this.saveManager.markTutorialComplete?.('companionObtained');
+          this.render();
+        },
+      });
+      return;
+    }
+
+    this.confirmDialog.show({
+      title: '卵を孵化',
+      message: 'DNAと研究Ptを使って卵を孵化しますか？',
+      detail: `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost}\n必要研究Pt ${COMPANION_HATCH_CONFIG.researchPtCost}`,
+      confirmLabel: '孵化',
+      cancelLabel: 'やめる',
+      onConfirm: () => {
+        const instant = this.getDebugFlag('debugCompanionInstantHatch') || this.getDebugFlag('debugCompanionHatchNow');
+        const result = this.saveManager.startCompanionEggIncubation({ instant });
+        if (instant && result.success) {
+          const hatch = this.saveManager.completeCompanionEggIncubation({ force: true });
+          this.noticeText.text = hatch.companion ? `${hatch.companion.displayName}を獲得しました` : '孵化が完了しました';
+        } else {
+          this.noticeText.text = result.success ? '孵化を開始しました' : '孵化できませんでした';
+        }
+        this.saveManager.markTutorialComplete?.('companionEggResearch');
+        this.render();
+      },
+    });
+  }
+
+  getDebugFlag(name) {
+    if (typeof window === 'undefined' || !import.meta.env.DEV) {
+      return false;
+    }
+
+    return new URLSearchParams(window.location.search).get(name) === '1';
   }
 
   moveCardFocus(delta) {
@@ -785,8 +854,10 @@ export class ResearchScreen {
 
     const allItems = getResearchItemsByCategory(selected.id);
     const isBodyCategory = selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement;
-    const items = isBodyCategory ? allItems : allItems.slice(0, 3);
-    const maxScroll = this.getBodyMaxScroll(allItems.length);
+    const hatchEntry = isBodyCategory ? this.getCompanionHatchEntry(data) : null;
+    const bodyItems = hatchEntry ? [hatchEntry, ...allItems] : allItems;
+    const items = isBodyCategory ? bodyItems : allItems.slice(0, 3);
+    const maxScroll = this.getBodyMaxScroll(bodyItems.length);
 
     this.bodyScrollOffset = isBodyCategory ? Math.min(this.bodyScrollOffset, maxScroll) : 0;
     this.renderBodyScrollBar(isBodyCategory);
@@ -809,6 +880,11 @@ export class ResearchScreen {
         return;
       }
 
+      if (item.isCompanionHatch) {
+        this.renderCompanionHatchCard(card, item, data);
+        return;
+      }
+
       const level = data.researchLevels?.[item.id] ?? 0;
       const cost = getResearchCostDetail(item, level);
       const isMax = item.maxLevel ? level >= item.maxLevel : false;
@@ -826,6 +902,7 @@ export class ResearchScreen {
 
       card.item = item;
       card.isConversion = false;
+      card.isCompanionHatch = false;
       card.conversionRate = null;
       card.isMax = isMax;
       card.isLocked = isLocked;
@@ -893,6 +970,96 @@ export class ResearchScreen {
     });
   }
 
+  getCompanionHatchEntry(data) {
+    const companion = data.companion;
+
+    if (!companion?.eggPending && !companion?.eggIncubating) {
+      return null;
+    }
+
+    const completeAt = Date.parse(companion.hatchCompleteAt ?? '');
+    const isReady = companion.eggIncubating && (!Number.isFinite(completeAt) || Date.now() >= completeAt);
+
+    return {
+      id: 'companion_hatch',
+      isCompanionHatch: true,
+      name: isReady ? '卵の孵化完了' : companion.eggIncubating ? '卵を孵化中' : '卵を孵化',
+      description: isReady
+        ? '新しいお供恐竜を受け取れます。'
+        : companion.eggIncubating
+          ? '時間経過で孵化します。'
+          : 'DNAと研究Ptでお供恐竜の卵を孵化します。',
+      action: isReady ? 'claim' : companion.eggIncubating ? 'wait' : 'start',
+      category: RESEARCH_CATEGORY_IDS.bodyEnhancement,
+    };
+  }
+
+  renderCompanionHatchCard(card, item, data) {
+    const layout = this.getCardLayout();
+    const color = UI_COLORS.gold;
+    const completeAt = Date.parse(data.companion?.hatchCompleteAt ?? '');
+    const isReady = item.action === 'claim';
+    const canStart = item.action === 'start'
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
+      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+    const canBuy = isReady || canStart;
+
+    card.item = item;
+    card.isConversion = false;
+    card.isCompanionHatch = true;
+    card.isMax = false;
+    card.isLocked = false;
+    card.canBuy = canBuy;
+    this.applyCardLayout(card, layout);
+    this.drawCardFrame(card, isReady ? 'cardCompleted' : 'cardFrame', color, isReady, layout);
+    this.applyCardIcon(card, 'bodyEnhancement', RESEARCH_CATEGORY_IDS.bodyEnhancement, color, false, layout);
+    this.drawProgress(card.progress, isReady ? 1 : 0, 1, color, layout);
+    this.hideAdaptationUnlockSupplements(card);
+    card.name.text = item.name;
+    card.desc.text = item.description;
+    card.effect.text = isReady
+      ? '未所持からランダム取得'
+      : item.action === 'wait'
+        ? `完了 ${Number.isFinite(completeAt) ? this.formatHatchRemain(completeAt) : 'まもなく'}`
+        : 'お供恐竜を入手';
+    card.step.text = item.action === 'start'
+      ? `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost} / Pt ${COMPANION_HATCH_CONFIG.researchPtCost}`
+      : 'お供恐竜';
+    card.status.text = isReady
+      ? '受取'
+      : item.action === 'wait'
+        ? '孵化中'
+        : canStart ? '孵化' : this.getInsufficientLabel({
+          dna: COMPANION_HATCH_CONFIG.dnaCost,
+          researchPt: COMPANION_HATCH_CONFIG.researchPtCost,
+        }, data);
+    card.status.style.fill = canBuy ? '#e7fff6' : '#ffaaa2';
+    card.costBadge.visible = !!this.textures.get('costBadge');
+    card.button.visible = true;
+    card.buttonBg.visible = !card.costBadge.visible;
+    this.drawBadgeFallback(card.buttonBg, color, isReady, layout);
+    card.costDnaText.visible = false;
+    card.costPtText.visible = false;
+    card.costDnaIcon.visible = false;
+    card.costPtIcon.visible = false;
+  }
+
+  formatHatchRemain(completeAt) {
+    const remain = Math.max(0, Math.ceil((completeAt - Date.now()) / 1000));
+
+    if (remain <= 0) {
+      return '受取可能';
+    }
+
+    const hours = Math.floor(remain / 3600);
+    const minutes = Math.floor((remain % 3600) / 60);
+    if (hours > 0) {
+      return `あと${hours}時間${minutes}分`;
+    }
+
+    return `あと${Math.max(1, minutes)}分`;
+  }
+
   renderPageControls(maxPage) {
     const visible = maxPage > 0;
     [this.pagePrev, this.pageNext].forEach((button) => {
@@ -932,6 +1099,7 @@ export class ResearchScreen {
       card.item = null;
       card.conversionRate = rate;
       card.isConversion = true;
+      card.isCompanionHatch = false;
       card.isMax = false;
       card.isLocked = false;
       card.canBuy = canBuy;
@@ -961,6 +1129,12 @@ export class ResearchScreen {
     return Math.max(0, contentHeight - viewportHeight);
   }
 
+  getBodyResearchRenderCount() {
+    const data = this.saveManager?.getData?.() ?? {};
+    const base = getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length;
+    return base + (this.getCompanionHatchEntry(data) ? 1 : 0);
+  }
+
   isBodyScrollTarget(event) {
     if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
       return false;
@@ -972,7 +1146,7 @@ export class ResearchScreen {
   }
 
   setBodyScrollOffset(value) {
-    const maxScroll = this.getBodyMaxScroll(getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length);
+    const maxScroll = this.getBodyMaxScroll(this.getBodyResearchRenderCount());
     const rowHeight = CARD.height + CARD.gap;
     const clamped = Math.max(0, Math.min(maxScroll, value));
     const next = Math.max(0, Math.min(maxScroll, Math.round(clamped / rowHeight) * rowHeight));
@@ -993,7 +1167,7 @@ export class ResearchScreen {
       return;
     }
 
-    const itemCount = getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length;
+    const itemCount = this.getBodyResearchRenderCount();
     const maxScroll = this.getBodyMaxScroll(itemCount);
 
     if (maxScroll <= 0) {

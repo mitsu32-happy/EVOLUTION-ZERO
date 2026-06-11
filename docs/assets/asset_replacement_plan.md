@@ -3654,3 +3654,11 @@ No new image/audio asset generation is required for this MVP.
 - No new visual assets were generated.
 - S01-S03 performance stabilization assets, pools, and debug overlays are unchanged.
 - Ability upgrade card values and `適応強化理論` display text were updated through code-side Text rendering.
+# MVP-P01 お供恐竜アセット
+
+- `public/assets/companions/companion_egg_p01.png`: 卵ピックアップ/孵化UI用アイコン。
+- `public/assets/companions/raptorling_sprite_p01.png`: P01代表お供恐竜スプライト。
+- `public/assets/companions/raptorling_icon_p01.png`: P01代表お供恐竜アイコン。
+- `public/assets/companions/hatch_effect_p01.png`: 孵化演出用の汎用発光。
+- P01では10種類データを先行定義し、個別スプライト/アイコン/スキル演出はP02以降で差し替える。
+- 簡易Graphicsのみで完了扱いにせず、画面表示は上記PNGアセットを優先する。

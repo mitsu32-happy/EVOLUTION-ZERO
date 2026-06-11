@@ -101,6 +101,13 @@ const TUTORIAL_PAGES = {
       tooltipPosition: 'bottom',
     },
     {
+      title: 'お供恐竜',
+      body: '入手したお供恐竜をセットできます。\n一緒に出撃してプレイヤーを支援します。',
+      target: 'お供',
+      targetId: 'home.companion',
+      tooltipPosition: 'bottom',
+    },
+    {
       title: 'お知らせ',
       body: 'アップデート内容を確認できます。\n追加や修正の内容はここにまとまります。',
       target: 'お知らせ',
@@ -200,6 +207,8 @@ export class ScreenManager {
     this.saveManager = new SaveManager();
     this.applyDebugTutorialReset();
     this.applyDebugResearchPt();
+    this.applyDebugDna();
+    this.applyDebugCompanion();
     this.applyDebugStageProgress();
     this.applyDebugTitleRewards();
     this.applyDebugDailyMissions();
@@ -1211,6 +1220,35 @@ export class ScreenManager {
     }
 
     this.saveManager.data.researchPt = Math.max(this.saveManager.data.researchPt ?? 0, value);
+  }
+
+  applyDebugDna() {
+    if (!import.meta.env.DEV) {
+      return;
+    }
+
+    const value = Number(getDebugParams().get('debugDna'));
+    if (!Number.isFinite(value) || value <= 0) {
+      return;
+    }
+
+    this.saveManager.data.ownedDna = Math.max(this.saveManager.data.ownedDna ?? 0, Math.floor(value));
+  }
+
+  applyDebugCompanion() {
+    if (!import.meta.env.DEV) {
+      return;
+    }
+
+    const params = getDebugParams();
+    if (params.get('debugCompanionEgg') === '1' || params.get('debugCompanionGrantEgg') === '1') {
+      this.saveManager.grantCompanionEgg?.('debug');
+    }
+
+    const companionId = params.get('debugCompanionOwned');
+    if (companionId) {
+      this.saveManager.debugGrantCompanion?.(companionId);
+    }
   }
 
   applyDebugStageProgress() {

@@ -10,6 +10,11 @@ import {
 import { getAdaptationResearchBonuses, getBodyResearchBonuses, getStatUpgradeTheoryValue } from '../data/research.js';
 import { ENDLESS_SCALING_CONFIG, ZERO_SCALING_CONFIG, getDifficultyConfig, getDinoConfig, getStageBossConfig, getStageConfig, getStageGimmickConfig } from '../data/run_config.js';
 import { getEvolutionCandidate, getSkillById } from '../data/skills.js';
+import {
+  COMPANION_TYPES,
+  getCompanionById,
+  getCompanionEffectSummary,
+} from '../data/companion_dinos.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
 import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
 import { Boss } from '../entities/boss.js';
@@ -319,6 +324,15 @@ export class PlayScene {
     this.depthLayer = new Container();
     this.effectLayer = new Container();
     this.uiLayer = new Container();
+    this.companionView = new Container();
+    this.companionSprite = new Sprite(Texture.EMPTY);
+    this.companionFallback = new Graphics();
+    this.companionGlow = new Graphics();
+    this.companionPosition = { x: 0, y: 0 };
+    this.companionOrbitTime = 0;
+    this.companionAttackTimer = 0;
+    this.activeCompanion = null;
+    this.activeCompanionLevel = 1;
     this.vignette = new Graphics();
     this.damageFlash = new Graphics();
     this.bossDefeatFxLayer = new Graphics();
@@ -684,6 +698,8 @@ export class PlayScene {
     this.world.scale.set(WORLD_ZOOM);
     this.loadStageBackground();
     this.pickups.forEach((pickup) => this.depthLayer.addChild(pickup.view));
+    this.setupCompanion();
+    this.depthLayer.addChild(this.companionView);
     this.depthLayer.addChild(this.player.view);
 
     this.uiLayer.addChild(this.ultimateSystem.overlay);
@@ -787,6 +803,7 @@ export class PlayScene {
       this.player.update(delta);
       this.applyPlayerStatusMovement();
       this.player.clampToBounds(STAGE_BOUNDS);
+      this.updateCompanion(delta);
       this.applyStageGimmicks(delta);
       this.updateDebugStressKillState();
       this.updatePickups(delta);
@@ -2856,6 +2873,129 @@ export class PlayScene {
     this.screenShakeIntensity = Math.max(this.screenShakeIntensity, intensity);
   }
 
+  setupCompanion() {
+    const state = this.saveManager?.getCompanionState?.() ?? this.gameState.companion ?? null;
+    const companion = getCompanionById(state?.selectedId);
+
+    this.gameState.companion = state;
+    this.gameState.selectedCompanionId = companion?.id ?? null;
+    this.activeCompanion = companion;
+    this.activeCompanionLevel = companion ? Math.max(1, state?.levels?.[companion.id] ?? 1) : 1;
+    this.companionView.visible = !!companion;
+    this.companionView.addChild(this.companionGlow, this.companionSprite, this.companionFallback);
+    this.companionPosition.x = this.player.position.x - 54;
+    this.companionPosition.y = this.player.position.y + 18;
+    this.companionView.position.set(this.companionPosition.x, this.companionPosition.y);
+
+    if (!companion) {
+      return;
+    }
+
+    this.drawCompanionFallback();
+    this.assetLoader?.load?.(companion.assetKey).then((texture) => {
+      if (!texture || this.activeCompanion?.id !== companion.id) {
+        return;
+      }
+
+      this.companionSprite.texture = texture;
+      this.companionSprite.anchor.set(0.5, 0.72);
+      this.companionSprite.width = 58;
+      this.companionSprite.height = 46;
+      this.companionSprite.visible = true;
+      this.companionFallback.visible = false;
+    }).catch(() => {
+      this.companionSprite.visible = false;
+      this.companionFallback.visible = true;
+    });
+  }
+
+  drawCompanionFallback() {
+    const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? 0x7cf7d4;
+
+    this.companionGlow
+      .clear()
+      .ellipse(0, 10, 24, 9)
+      .fill({ color: 0x000000, alpha: 0.28 })
+      .circle(0, -3, 24)
+      .fill({ color: accent, alpha: 0.1 });
+    this.companionFallback
+      .clear()
+      .ellipse(-5, -4, 22, 13)
+      .fill({ color: 0x124b52, alpha: 0.94 })
+      .stroke({ color: accent, width: 1.8, alpha: 0.8 })
+      .ellipse(14, -10, 12, 9)
+      .fill({ color: 0x17636b, alpha: 0.96 })
+      .stroke({ color: 0xc8fbff, width: 1.2, alpha: 0.72 })
+      .circle(18, -12, 2)
+      .fill({ color: 0xfff0b4, alpha: 0.96 })
+      .poly([-25, -6, -38, -11, -30, 2])
+      .fill({ color: 0x0c343a, alpha: 0.9 });
+    this.companionFallback.visible = !this.companionSprite.visible;
+  }
+
+  updateCompanion(delta) {
+    if (!this.activeCompanion || !this.companionView.visible) {
+      return;
+    }
+
+    this.companionOrbitTime += delta;
+    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 46 - 42;
+    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 18 + 22;
+    const targetX = this.player.position.x + orbitX;
+    const targetY = this.player.position.y + orbitY;
+    const follow = Math.min(1, delta * 5.4);
+
+    this.companionPosition.x += (targetX - this.companionPosition.x) * follow;
+    this.companionPosition.y += (targetY - this.companionPosition.y) * follow;
+    this.companionView.position.set(this.companionPosition.x, this.companionPosition.y + Math.sin(this.companionOrbitTime * 4) * 2);
+    this.companionView.zIndex = this.companionPosition.y + 0.5;
+    const flip = targetX >= this.player.position.x ? 1 : -1;
+    this.companionSprite.scale.x = Math.abs(this.companionSprite.scale.x || 1) * flip;
+    this.companionFallback.scale.x = flip;
+
+    this.updateCompanionSupportAttack(delta);
+  }
+
+  updateCompanionSupportAttack(delta) {
+    if (!this.activeCompanion || !['attack', 'area', 'swarm', 'boss'].includes(this.activeCompanion.type)) {
+      return;
+    }
+
+    this.companionAttackTimer -= delta;
+    if (this.companionAttackTimer > 0) {
+      return;
+    }
+
+    const interval = Math.max(1.05, 2.4 - this.activeCompanionLevel * 0.18);
+    const range = this.activeCompanion.type === 'boss' ? 260 : 205;
+    const targets = this.enemies
+      .filter((enemy) => !enemy.isDead)
+      .map((enemy) => ({
+        enemy,
+        distance: CollisionSystem.distanceSquared(this.companionPosition, enemy.position),
+      }))
+      .filter((entry) => entry.distance <= range * range)
+      .sort((a, b) => a.distance - b.distance);
+
+    this.companionAttackTimer = interval;
+    const target = targets[0]?.enemy;
+    if (!target) {
+      return;
+    }
+
+    const damage = Math.round((8 + this.activeCompanionLevel * 3) * (this.activeCompanion.type === 'boss' && target.isBoss ? 1.55 : 1));
+    target.takeDamage?.(damage);
+    this.spawnPickupPopup(target.position.x, target.position.y - 28, `${damage}`, 0xc8fbff);
+  }
+
+  showCompanionTutorialNotice(message, tutorialId) {
+    if (tutorialId) {
+      this.saveManager?.markTutorialComplete?.(tutorialId);
+    }
+
+    this.spawnPickupPopup(this.player.position.x, this.player.position.y - 72, message, 0xfff0b4);
+  }
+
   updatePickups(delta) {
     const playerCollider = this.player.getCollider();
     const suppressPickupCollection = getDebugFlag('debugNoPickupCollect')
@@ -2879,6 +3019,15 @@ export class PlayScene {
             this.saveManager?.recordDailyProgress?.('pickupHeal', 1);
             this.spawnPickupBurst(pickup.position.x, pickup.position.y, 2, 'heal');
             this.spawnPickupPopup(pickup.position.x, pickup.position.y - 24, `HP +${displayedHeal}`, 0x65e878);
+          }
+        } else if (pickup.type === 'companion_egg') {
+          const result = this.saveManager?.grantCompanionEgg?.('run');
+          this.gameState.companionEggCollected = Boolean(result?.success);
+          this.audioManager?.play('ui_confirm');
+          this.spawnPickupBurst(pickup.position.x, pickup.position.y, 4, 'egg');
+          this.spawnPickupPopup(pickup.position.x, pickup.position.y - 30, '卵を入手', 0xfff0b4);
+          if (!this.saveManager?.isTutorialComplete?.('companionEggPickup')) {
+            this.showCompanionTutorialNotice('卵を入手しました。研究画面で孵化できます。', 'companionEggPickup');
           }
         } else {
           this.audioManager?.play('pickup_exp');
@@ -3981,6 +4130,7 @@ export class PlayScene {
         this.applyEnemyDefeatEffect(enemy);
         this.dropExpPickup(enemy.position.x, enemy.position.y, enemy.expReward);
         this.maybeDropHealPickup(enemy);
+        this.maybeDropCompanionEgg(enemy);
       }
     });
 
@@ -4859,6 +5009,43 @@ export class PlayScene {
     this.depthLayer.addChild(pickup.view);
   }
 
+  dropCompanionEggPickup(x, y) {
+    const pickup = new Pickup({
+      x,
+      y,
+      type: 'companion_egg',
+      value: 1,
+      assetLoader: this.assetLoader,
+    });
+
+    this.gameState.companionEggDroppedThisRun = true;
+    this.pickups.push(pickup);
+    this.depthLayer.addChild(pickup.view);
+  }
+
+  maybeDropCompanionEgg(enemy) {
+    if (this.gameState.companionEggDroppedThisRun || this.gameState.companionEggCollected) {
+      return;
+    }
+
+    const companion = this.saveManager?.getCompanionState?.() ?? this.gameState.companion;
+    if (companion?.eggPending || companion?.eggIncubating) {
+      return;
+    }
+
+    const debugForced = getDebugFlag('debugCompanionEggDrop') || getDebugFlag('debugCompanionEgg');
+    const hasOwnedCompanion = (companion?.ownedIds?.length ?? 0) > 0;
+    const defeated = this.gameState.defeatedCount ?? 0;
+    const firstEggPity = !hasOwnedCompanion && defeated >= 18;
+    const chance = hasOwnedCompanion ? 0.0025 : 0.018;
+
+    if (!debugForced && !firstEggPity && Math.random() > chance) {
+      return;
+    }
+
+    this.dropCompanionEggPickup(enemy.position.x - 14, enemy.position.y - 18);
+  }
+
   maybeDropHealPickup(enemy) {
     if (this.gameState.playerHp >= this.gameState.playerMaxHp * 0.92) {
       return;
@@ -5011,6 +5198,8 @@ export class PlayScene {
         ? 0x65e878
         : burst.type === 'lava'
           ? 0xff5a38
+          : burst.type === 'egg'
+            ? 0xfff0b4
           : burst.value >= 4 ? 0xffc94d : burst.value >= 2 ? 0x35d7ff : 0x8d4dff;
       const radius = 10 + progress * (18 + burst.value * 3);
 
@@ -6369,6 +6558,9 @@ export class PlayScene {
     this.pickups = this.createPickups();
     this.pickups.forEach((pickup) => this.depthLayer.addChild(pickup.view));
 
+    this.companionView.parent?.removeChild(this.companionView);
+    this.setupCompanion();
+    this.depthLayer.addChild(this.companionView);
     this.depthLayer.addChild(this.player.view);
     this.camera.x = 0;
     this.camera.y = 0;

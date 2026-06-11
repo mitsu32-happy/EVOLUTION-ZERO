@@ -10,6 +10,13 @@ import { getDinoConfig } from '../data/run_config.js';
 import { getTitleById, getTitleFrameById } from '../data/reward_titles.js';
 import { DAILY_MISSION_COUNT, formatDailyReward, getDailyMissionTemplate } from '../data/daily_missions.js';
 import { UPDATE_NEWS } from '../data/update_news.js';
+import {
+  COMPANION_DINOS,
+  COMPANION_TYPES,
+  getCompanionById,
+  getCompanionEffectSummary,
+  getCompanionUpgradeCost,
+} from '../data/companion_dinos.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
 import { playPressFeedback } from './ui_feedback.js';
@@ -194,7 +201,7 @@ export class HomeScreen {
     this.onApplyUpdate = onApplyUpdate;
     this.textures = new Map();
     this.activeHomeInfoTab = 'daily';
-    this.gamepadFocusItems = ['deploy', 'title', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
+    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
     this.gamepadFocusIndex = 0;
     this.newsGamepadIndex = 0;
 
@@ -220,6 +227,11 @@ export class HomeScreen {
     this.newsEntryFallback = new Graphics();
     this.newsEntryText = this.createText('お知らせ', 14, '#f2fffb', 122);
     this.newsModal = this.createNewsModal();
+    this.companionPanel = new Graphics();
+    this.companionIcon = new Sprite(Texture.EMPTY);
+    this.companionTitle = this.createText('お供', 10, '#7cf7d4', 70);
+    this.companionName = this.createText('お供なし', 11, '#fff0b4', 98);
+    this.companionModal = this.createCompanionModal();
     this.switchLeft = new Sprite(Texture.EMPTY);
     this.switchRight = new Sprite(Texture.EMPTY);
     this.switchFallback = new Graphics();
@@ -315,6 +327,10 @@ export class HomeScreen {
       this.newsEntryFallback,
       this.newsEntryFrame,
       this.newsEntryText,
+      this.companionPanel,
+      this.companionIcon,
+      this.companionTitle,
+      this.companionName,
       ...this.resourceTexts.flatMap((entry) => [entry.label, entry.value]),
       this.dinoName,
       this.dinoLine,
@@ -333,6 +349,7 @@ export class HomeScreen {
       this.bottomNav.view,
       this.titleSelectUi.view,
       this.newsModal.view,
+      this.companionModal.view,
     );
 
     this.drawStatic();
@@ -366,6 +383,9 @@ export class HomeScreen {
     this.equippedTitleText.eventMode = 'static';
     this.equippedTitleText.cursor = 'pointer';
     this.equippedTitleText.on('pointertap', () => this.openTitleSelect());
+    this.companionPanel.eventMode = 'static';
+    this.companionPanel.cursor = 'pointer';
+    this.companionPanel.on('pointertap', () => this.openCompanionModal());
     this.loadAssets();
     this.setSaveData(this.saveData, this.gameState);
   }
@@ -387,6 +407,10 @@ export class HomeScreen {
 
     if (this.newsModal?.view?.visible) {
       return this.handleNewsGamepadAction(actions);
+    }
+
+    if (this.companionModal?.view?.visible) {
+      return this.handleCompanionGamepadAction(actions);
     }
 
     if (actions.cancelPressed) {
@@ -434,7 +458,7 @@ export class HomeScreen {
   moveGamepadFocus(actions) {
     const current = this.getFocusedHomeItem();
     const rows = {
-      top: ['title', 'news'],
+      top: ['title', 'companion', 'news'],
       info: ['daily', 'record', 'unlock'],
       nav: ['home', 'research', 'codex', 'options'],
     };
@@ -449,7 +473,7 @@ export class HomeScreen {
       }
 
       if (current === 'deploy') {
-        this.focusHomeItem(actions.rightPressed ? 'news' : 'title');
+        this.focusHomeItem(actions.rightPressed ? 'companion' : 'title');
       }
       return;
     }
@@ -457,6 +481,7 @@ export class HomeScreen {
     if (actions.downPressed) {
       const downMap = {
         title: 'deploy',
+        companion: 'deploy',
         news: 'deploy',
         deploy: 'daily',
         daily: 'home',
@@ -474,6 +499,7 @@ export class HomeScreen {
     if (actions.upPressed) {
       const upMap = {
         title: 'title',
+        companion: 'companion',
         news: 'news',
         deploy: 'title',
         daily: 'deploy',
@@ -494,6 +520,8 @@ export class HomeScreen {
       this.handleDeployTap();
     } else if (id === 'title') {
       this.openTitleSelect();
+    } else if (id === 'companion') {
+      this.openCompanionModal();
     } else if (id === 'news') {
       this.openNewsModal();
     } else if (['daily', 'record', 'unlock'].includes(id)) {
@@ -541,7 +569,7 @@ export class HomeScreen {
   }
 
   getGamepadFocusBounds() {
-    if (this.titleSelectUi?.view?.visible || this.newsModal?.view?.visible) {
+    if (this.titleSelectUi?.view?.visible || this.newsModal?.view?.visible || this.companionModal?.view?.visible) {
       return null;
     }
 
@@ -553,6 +581,7 @@ export class HomeScreen {
       record: { x: 146, y: 520, width: 98, height: 44, radius: 12 },
       unlock: { x: 254, y: 520, width: 98, height: 44, radius: 12 },
       title: { x: Math.round(this.width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
+      companion: { x: 38, y: 188, width: 136, height: 44, radius: 12 },
       news: { x: 226, y: 114, width: 130, height: 44, radius: 12 },
       home: { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
       research: { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
@@ -656,7 +685,46 @@ export class HomeScreen {
     this.applyTextures(homeDinoId, homeTarget.evolutionId);
     this.updateHomeInfoTabVisibility();
     this.updateEquippedTitle(data);
+    this.updateCompanionPanel(data);
     this.drawDynamic(dino);
+  }
+
+  updateCompanionPanel(data) {
+    const companionState = data.companion ?? {};
+    const companion = getCompanionById(companionState.selectedId);
+    const eggTexture = this.textures.get('companionEgg');
+    const iconTexture = this.textures.get('companionIcon');
+    const hasEgg = companionState.eggPending || companionState.eggIncubating;
+    const x = 38;
+    const y = 188;
+    const width = 136;
+    const height = 44;
+    const accent = companion ? (COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4) : hasEgg ? 0xfff0b4 : 0x23434a;
+
+    this.companionPanel
+      .clear()
+      .roundRect(x, y, width, height, 12)
+      .fill({ color: 0x020708, alpha: 0.66 })
+      .stroke({ color: accent, width: 1.4, alpha: companion || hasEgg ? 0.78 : 0.45 })
+      .roundRect(x + 5, y + 5, width - 10, height - 10, 9)
+      .stroke({ color: 0x6cf7ff, width: 0.7, alpha: 0.16 });
+    this.companionIcon.texture = (companion ? iconTexture : hasEgg ? eggTexture : iconTexture) ?? Texture.EMPTY;
+    this.companionIcon.visible = Boolean(this.companionIcon.texture && this.companionIcon.texture !== Texture.EMPTY);
+    this.companionIcon.anchor.set(0.5);
+    this.companionIcon.position.set(x + 24, y + 22);
+    this.companionIcon.width = 30;
+    this.companionIcon.height = 30;
+    this.companionTitle.text = 'お供';
+    this.companionTitle.anchor.set(0, 0.5);
+    this.companionTitle.position.set(x + 46, y + 14);
+    this.companionName.text = companion
+      ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}`
+      : hasEgg
+        ? (companionState.eggIncubating ? '孵化中' : '卵あり')
+        : 'お供なし';
+    this.companionName.anchor.set(0, 0.5);
+    this.companionName.position.set(x + 46, y + 30);
+    this.companionName.style.fill = companion || hasEgg ? '#fff0b4' : '#8da49e';
   }
 
   updateEquippedTitle(data) {
@@ -754,6 +822,16 @@ export class HomeScreen {
   }
 
   getTutorialBounds(targetId) {
+    if (targetId === 'home.companion') {
+      return {
+        x: 38,
+        y: 188,
+        width: 136,
+        height: 44,
+        radius: 12,
+      };
+    }
+
     if (targetId !== 'home.title') {
       return null;
     }
@@ -1054,6 +1132,8 @@ export class HomeScreen {
       ['newsButtonBack', ASSET_KEYS.homeUi?.newsButtonBack, HOME_ASSET_PATHS.newsButtonBack],
       ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
       ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
+      ['companionIcon', ASSET_KEYS.companions?.raptorlingIcon, null],
+      ['companionEgg', ASSET_KEYS.companions?.eggIcon, null],
       ...Object.entries(HOME_ASSET_PATHS.titleFrames).map(([id, path]) => [
         `titleFrame:${id}`,
         ASSET_KEYS.titleFrames?.[id],
@@ -1555,6 +1635,176 @@ export class HomeScreen {
       detailBody,
       mode: 'list',
     };
+  }
+
+  createCompanionModal() {
+    const modal = {
+      view: new Container(),
+      overlay: new Graphics(),
+      panel: new Graphics(),
+      title: this.createText('お供恐竜', 18, '#fff0b4', 260),
+      body: this.createText('', 11, '#d7fff2', 286),
+      rows: [],
+      closeText: this.createText('範囲外で閉じる', 9, '#8da49e', 160),
+    };
+
+    modal.view.visible = false;
+    modal.overlay
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x000000, alpha: 0.55 });
+    modal.overlay.eventMode = 'static';
+    modal.overlay.on('pointertap', () => this.closeCompanionModal());
+    modal.panel.position.set(34, 206);
+    modal.panel.eventMode = 'static';
+    modal.panel.on('pointertap', () => {});
+    modal.title.anchor.set(0.5, 0);
+    modal.title.position.set(this.width / 2, 222);
+    modal.body.position.set(56, 260);
+    modal.closeText.anchor.set(0.5);
+    modal.closeText.position.set(this.width / 2, 624);
+    modal.view.addChild(modal.overlay, modal.panel, modal.title, modal.body, modal.closeText);
+
+    for (let index = 0; index < 5; index += 1) {
+      const row = {
+        view: new Container(),
+        bg: new Graphics(),
+        icon: new Sprite(Texture.EMPTY),
+        name: this.createText('', 12, '#ffffff', 140),
+        detail: this.createText('', 9, '#cbe0da', 184),
+        action: this.createText('', 10, '#071015', 62),
+        companionId: null,
+      };
+      row.view.position.set(52, 308 + index * 52);
+      row.view.eventMode = 'static';
+      row.view.cursor = 'pointer';
+      row.view.on('pointertap', () => this.handleCompanionRow(row));
+      row.icon.anchor.set(0.5);
+      row.icon.position.set(20, 24);
+      row.icon.width = 34;
+      row.icon.height = 34;
+      row.name.position.set(44, 8);
+      row.detail.position.set(44, 27);
+      row.action.anchor.set(0.5);
+      row.action.position.set(246, 24);
+      row.view.addChild(row.bg, row.icon, row.name, row.detail, row.action);
+      modal.rows.push(row);
+      modal.view.addChild(row.view);
+    }
+
+    modal.upgradeButton = {
+      view: new Container(),
+      bg: new Graphics(),
+      text: this.createText('強化', 12, '#071015', 64),
+    };
+    modal.upgradeButton.view.position.set(224, 572);
+    modal.upgradeButton.text.anchor.set(0.5);
+    modal.upgradeButton.text.position.set(42, 18);
+    modal.upgradeButton.view.eventMode = 'static';
+    modal.upgradeButton.view.cursor = 'pointer';
+    modal.upgradeButton.view.on('pointertap', () => this.upgradeSelectedCompanion());
+    modal.upgradeButton.view.addChild(modal.upgradeButton.bg, modal.upgradeButton.text);
+    modal.view.addChild(modal.upgradeButton.view);
+
+    return modal;
+  }
+
+  openCompanionModal() {
+    this.playUiFeedback('ui_select');
+    this.companionModal.view.visible = true;
+    this.renderCompanionModal();
+  }
+
+  closeCompanionModal() {
+    this.companionModal.view.visible = false;
+  }
+
+  renderCompanionModal() {
+    const data = this.saveManager?.getData?.() ?? this.saveData ?? {};
+    const state = data.companion ?? {};
+    const selected = getCompanionById(state.selectedId);
+    const owned = (state.ownedIds ?? []).map((id) => getCompanionById(id)).filter(Boolean);
+    const iconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
+
+    this.companionModal.panel
+      .clear()
+      .roundRect(0, 0, this.width - 68, 430, 14)
+      .fill({ color: 0x021114, alpha: 0.92 })
+      .stroke({ color: 0x35d7ff, width: 1.8, alpha: 0.74 })
+      .roundRect(8, 8, this.width - 84, 414, 11)
+      .stroke({ color: 0xffd36b, width: 0.8, alpha: 0.28 });
+    this.companionModal.body.text = owned.length > 0
+      ? `セット中: ${selected?.displayName ?? 'お供なし'}\nDNAで強化できます。`
+      : state.eggPending || state.eggIncubating
+        ? '研究画面で卵を孵化すると、お供恐竜を入手できます。'
+        : 'まだお供恐竜を所持していません。プレイ中に卵を探しましょう。';
+    this.companionModal.rows.forEach((row, index) => {
+      const companion = owned[index] ?? null;
+      const level = companion ? state.levels?.[companion.id] ?? 1 : 1;
+      const isSelected = companion?.id === state.selectedId;
+      const accent = companion ? COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4 : 0x23434a;
+
+      row.view.visible = !!companion;
+      if (!companion) {
+        return;
+      }
+      row.companionId = companion.id;
+      row.bg
+        .clear()
+        .roundRect(0, 0, 286, 44, 10)
+        .fill({ color: isSelected ? 0x08272f : 0x031216, alpha: 0.86 })
+        .stroke({ color: accent, width: isSelected ? 1.8 : 1, alpha: isSelected ? 0.86 : 0.44 });
+      row.icon.texture = iconTexture;
+      row.icon.visible = iconTexture !== Texture.EMPTY;
+      row.name.text = `${companion.displayName} Lv${level}`;
+      row.detail.text = getCompanionEffectSummary(companion.id, level);
+      row.action.text = isSelected ? 'SET' : '選択';
+      row.action.style.fill = isSelected ? '#071015' : '#e7fff6';
+    });
+    const selectedCost = selected ? getCompanionUpgradeCost(selected.id, state.levels?.[selected.id] ?? 1) : null;
+    this.companionModal.upgradeButton.view.visible = !!selected;
+    this.companionModal.upgradeButton.bg
+      .clear()
+      .roundRect(0, 0, 84, 36, 10)
+      .fill({ color: selectedCost ? 0xffd36b : 0x23434a, alpha: selectedCost ? 0.94 : 0.62 })
+      .stroke({ color: 0xffffff, width: 1, alpha: selectedCost ? 0.42 : 0.18 });
+    this.companionModal.upgradeButton.text.text = selectedCost ? `強化 ${selectedCost}` : 'MAX';
+  }
+
+  handleCompanionRow(row) {
+    if (!row.companionId) {
+      return;
+    }
+
+    const result = this.saveManager?.setSelectedCompanion?.(row.companionId);
+    if (result?.success) {
+      this.saveManager.markTutorialComplete?.('companionSet');
+      this.saveData = result.data;
+      this.noticeText.text = 'お供恐竜をセットしました';
+      this.setSaveData(result.data, this.gameState);
+      this.renderCompanionModal();
+    }
+  }
+
+  upgradeSelectedCompanion() {
+    const selectedId = this.saveManager?.getCompanionState?.().selectedId;
+    if (!selectedId) {
+      return;
+    }
+
+    const result = this.saveManager.upgradeCompanion(selectedId);
+    this.saveData = result.data;
+    this.noticeText.text = result.success ? 'お供恐竜を強化しました' : result.reason === 'insufficient' ? 'DNAが不足しています' : '強化できません';
+    this.setSaveData(result.data, this.gameState);
+    this.renderCompanionModal();
+  }
+
+  handleCompanionGamepadAction(actions) {
+    if (actions.cancelPressed || actions.pausePressed) {
+      this.closeCompanionModal();
+      return true;
+    }
+
+    return true;
   }
 
   openNewsModal() {
