@@ -1,6 +1,7 @@
 import { APP_BUILD, APP_VERSION } from '../data/app_version.js';
 
 const CRASH_REPORT_STORAGE_KEY = 'EVOLUTION_ZERO_CRASH_REPORT';
+const DEBUG_CRASH_SESSION_KEY = 'EVOLUTION_ZERO_DEBUG_CRASH_TRIGGERED';
 const CRASH_TICKER_STALL_MS = 8000;
 const STACK_LINE_LIMIT = 7;
 
@@ -271,30 +272,39 @@ function renderCrashScreen(report) {
         border-radius: 12px;
         background: rgba(4, 13, 22, 0.96);
         box-shadow: 0 0 28px rgba(20, 210, 255, 0.18);
-        padding: 12px;
+        padding: 10px;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
-      .ez-crash-title { margin: 0 0 6px; font-size: 20px; line-height: 1.25; color: #ffffff; }
-      .ez-crash-body { margin: 0 0 10px; font-size: 12px; line-height: 1.55; color: #c9edf2; }
-      .ez-crash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0; }
-      .ez-crash-metric { min-width: 0; border: 1px solid rgba(96, 151, 174, 0.34); border-radius: 8px; padding: 6px 7px; background: rgba(9, 26, 38, 0.82); }
-      .ez-crash-metric span { display: block; color: #8fb8c6; font-size: 10px; line-height: 1.2; }
-      .ez-crash-metric b { display: block; color: #f4fdff; font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
+      .ez-crash-title { margin: 0 0 5px; font-size: 18px; line-height: 1.2; color: #ffffff; }
+      .ez-crash-body { margin: 0 0 8px; font-size: 11px; line-height: 1.45; color: #c9edf2; }
+      .ez-crash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin: 8px 0; }
+      .ez-crash-metric { min-width: 0; border: 1px solid rgba(96, 151, 174, 0.34); border-radius: 7px; padding: 5px 6px; background: rgba(9, 26, 38, 0.82); }
+      .ez-crash-metric span { display: block; color: #8fb8c6; font-size: 9px; line-height: 1.15; }
+      .ez-crash-metric b { display: block; color: #f4fdff; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere; }
       .ez-crash-error {
-        margin: 12px 0;
+        margin: 8px 0;
         border-radius: 8px;
-        padding: 10px;
+        padding: 8px;
         background: rgba(1, 6, 10, 0.88);
         border: 1px solid rgba(255, 115, 115, 0.42);
         color: #ffd7d7;
         font: 11px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
-        max-height: 118px;
+        max-height: 84px;
         overflow: auto;
       }
-      .ez-crash-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+      .ez-crash-actions {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        padding-top: 7px;
+        background: linear-gradient(180deg, rgba(4, 13, 22, 0.78), rgba(4, 13, 22, 0.98));
+      }
       .ez-crash-actions button {
         appearance: none;
         border: 1px solid rgba(90, 232, 255, 0.72);
@@ -303,30 +313,30 @@ function renderCrashScreen(report) {
         color: #eaffff;
         font-weight: 800;
         font-size: 13px;
-        padding: 10px 12px;
+        padding: 8px 10px;
       }
       .ez-crash-copy-state { min-height: 18px; margin-top: 8px; color: #8effd7; font-size: 12px; }
       .ez-crash-compact { color: #9ec4cf; font-size: 11px; line-height: 1.45; margin-top: 10px; overflow-wrap: anywhere; }
       .ez-crash-report-text {
         width: 100%;
-        max-height: 86px;
-        margin-top: 10px;
+        max-height: 62px;
+        margin-top: 8px;
         border: 1px solid rgba(96, 151, 174, 0.34);
         border-radius: 8px;
         background: rgba(1, 6, 10, 0.82);
         color: #d8f8ff;
         font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
-        padding: 8px;
+        padding: 7px;
         white-space: pre-wrap;
         overflow: auto;
         user-select: text;
         -webkit-user-select: text;
       }
       @media (max-width: 380px) {
-        .ez-crash-card { padding: 10px; }
+        .ez-crash-card { padding: 8px; }
         .ez-crash-grid { grid-template-columns: 1fr; }
-        .ez-crash-title { font-size: 18px; }
-        .ez-crash-body { font-size: 11px; }
+        .ez-crash-title { font-size: 17px; }
+        .ez-crash-body { font-size: 10px; }
       }
     </style>
     <div class="ez-crash-card">
@@ -387,7 +397,13 @@ function renderCrashScreen(report) {
   });
 
   reloadButton?.addEventListener('click', () => {
-    location.reload();
+    try {
+      const url = new URL(location.href);
+      url.searchParams.delete('debugCrash');
+      location.replace(url.toString());
+    } catch {
+      location.reload();
+    }
   });
 }
 
@@ -513,8 +529,26 @@ export function installCrashDiagnostics({ getContext = null } = {}) {
   const params = new URLSearchParams(window.location.search);
   const debugCrash = params.get('debugCrash');
   if (debugCrash === 'runtime') {
+    let alreadyTriggered = false;
+    try {
+      alreadyTriggered = sessionStorage.getItem(DEBUG_CRASH_SESSION_KEY) === 'runtime';
+      sessionStorage.setItem(DEBUG_CRASH_SESSION_KEY, 'runtime');
+    } catch {
+      // Session storage is optional; if unavailable, keep the explicit debug behavior.
+    }
+
+    if (alreadyTriggered) {
+      return;
+    }
+
     window.setTimeout(() => {
       throw new Error('Debug crash diagnostics test');
     }, 1200);
+  } else {
+    try {
+      sessionStorage.removeItem(DEBUG_CRASH_SESSION_KEY);
+    } catch {
+      // Optional debug state only.
+    }
   }
 }
