@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'hotfix-intro-audio-safari-2026-06-11',
+    date: '2026/06/11',
+    category: 'HOTFIX',
+    title: 'イントロ音声の不具合を修正しました',
+    isImportant: true,
+    body: [
+      '今回の修正内容',
+      '・一部のiPhone/Safari環境で、イントロのサウンドON時に停止画面が表示される問題を修正しました。',
+      '・イントロ音声の再生処理を安定化しました。',
+    ],
+  },
+  {
     id: 'stat-upgrade-balance-a15-4-2026-06-10',
     date: '2026/06/10',
     category: 'バランス調整',

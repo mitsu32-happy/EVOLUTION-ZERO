@@ -405,10 +405,22 @@ export class IntroOverlay {
     this.updateAudioToggleLabel();
   }
 
-  getIntroVolume(settings = this.saveManager?.getAudioSettings?.() ?? {}) {
-    const masterVolume = Number.isFinite(Number(settings.masterVolume))
-      ? Number(settings.masterVolume)
-      : Number(this.audioManager?.masterVolume ?? 0.8);
+  getIntroVolume(settings) {
+    let currentSettings = settings;
+
+    if (!currentSettings) {
+      try {
+        currentSettings = this.saveManager?.getAudioSettings?.() ?? {};
+      } catch {
+        currentSettings = {};
+      }
+    }
+
+    const configuredVolume = Number(currentSettings?.masterVolume);
+    const fallbackVolume = Number(this.audioManager?.masterVolume ?? 0.8);
+    const masterVolume = Number.isFinite(configuredVolume)
+      ? configuredVolume
+      : (Number.isFinite(fallbackVolume) ? fallbackVolume : 0.8);
 
     return Math.max(0, Math.min(1, masterVolume * 0.8));
   }
