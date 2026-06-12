@@ -43,6 +43,7 @@ const MAX_ENEMY_PROJECTILE_POOL = 64;
 const MAX_STAGE_GIMMICKS = 34;
 const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
+const MAX_COMPANION_EFFECTS = 24;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -572,6 +573,10 @@ export class PlayScene {
     this.pickupBurstPool = [];
     this.pickupPopups = [];
     this.pickupPopupPool = [];
+    this.companionEffects = [];
+    this.companionEffectPool = [];
+    this.companionEffectTextureCache = new Map();
+    this.companionPickupEffectTimer = 0;
     this.debugStatsTimer = 0;
     this.debugFpsEstimate = 0;
     this.debugPerformanceEnabled = isDebugPerformanceEnabled();
@@ -871,6 +876,7 @@ export class PlayScene {
     this.updatePlayerDamageState();
     this.updateVisibilityGuideLayer();
     this.updatePickupBursts(delta);
+    this.updateCompanionEffects(delta);
     this.updateDamageFlash(delta);
     this.updateBossWarning(delta);
     this.updateZeroPhaseNotice(0);
@@ -890,6 +896,7 @@ export class PlayScene {
     this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS, { children: true });
     this.trimPickupBursts(MAX_PICKUP_BURSTS);
     this.trimPickupPopups(MAX_PICKUP_POPUPS);
+    this.trimCompanionEffects(MAX_COMPANION_EFFECTS);
     this.trimWorldPickups();
     this.pruneStaleRuntimeChildren();
   }
@@ -993,6 +1000,7 @@ export class PlayScene {
     this.pickups.forEach((pickup) => views.add(pickup.view));
     this.pickupBursts.forEach((burst) => views.add(burst.view));
     this.pickupPopups.forEach((popup) => views.add(popup.view));
+    this.companionEffects.forEach((effect) => views.add(effect.view));
     this.combatSystem?.effects?.forEach((effect) => views.add(effect.view));
     this.combatSystem?.projectiles?.forEach((projectile) => views.add(projectile.view));
     this.combatSystem?.damageNumbers?.forEach((number) => views.add(number.view));
@@ -1039,6 +1047,7 @@ export class PlayScene {
       + this.pickups.length
       + this.pickupBursts.length
       + this.pickupPopups.length
+      + this.companionEffects.length
       + (this.ultimateSystem?.effects?.length ?? 0);
   }
 
@@ -1462,6 +1471,8 @@ export class PlayScene {
       enemyProjectilePoolFree: this.enemyProjectilePool.length,
       pickupBursts: this.pickupBursts.length,
       pickupPopups: this.pickupPopups.length,
+      companionEffects: this.companionEffects.length,
+      companionEffectPoolFree: this.companionEffectPool.length,
       pickups: this.pickups.length,
       effectChildren: this.effectLayer.children.length,
       gimmickChildren: this.gimmickLayer.children.length,
@@ -1481,6 +1492,7 @@ export class PlayScene {
         stageGimmicks: MAX_STAGE_GIMMICKS,
         pickupBursts: MAX_PICKUP_BURSTS,
         pickupPopups: MAX_PICKUP_POPUPS,
+        companionEffects: MAX_COMPANION_EFFECTS,
         pickups: MAX_WORLD_PICKUPS,
         ...(combatStats.caps ?? {}),
         ...(ultimateStats.caps ?? {}),
@@ -3011,11 +3023,13 @@ export class PlayScene {
       const multiplier = behavior.speedMultiplier ?? 1.025;
       this.companionMoveSpeedBonus = Math.round(this.player.moveSpeed * (multiplier + level * 0.004 - 1));
       this.player.moveSpeed += this.companionMoveSpeedBonus;
+      this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 18, this.activeCompanion, { scale: 0.34, duration: 0.46 });
     }
 
     if (this.activeCompanion.type === 'exp') {
       this.companionExpMultiplier = behavior.expMultiplier + level * 0.006;
       this.gameState.expGainMultiplier = (this.gameState.expGainMultiplier ?? 1) * this.companionExpMultiplier;
+      this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 18, this.activeCompanion, { scale: 0.34, duration: 0.46 });
     }
   }
 
@@ -3131,6 +3145,7 @@ export class PlayScene {
       const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
       const damage = Math.round(((behavior.damage ?? 8) + this.activeCompanionLevel * 3) * bossMultiplier);
       enemy.takeDamage?.(damage);
+      this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
       this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
     });
   }
@@ -3145,6 +3160,7 @@ export class PlayScene {
 
     if (this.activeCompanion.type === 'pickup') {
       const radius = (behavior.pickupRadius ?? 135) + level * 12;
+      let targetedCount = 0;
       this.pickups.forEach((pickup) => {
         if (pickup.isCollected || pickup.type === 'companion_egg') {
           return;
@@ -3153,8 +3169,14 @@ export class PlayScene {
         const distanceSquared = CollisionSystem.distanceSquared(this.companionPosition, pickup.position);
         if (distanceSquared <= radius * radius) {
           pickup.targeted = true;
+          targetedCount += 1;
         }
       });
+      this.companionPickupEffectTimer = Math.max(0, this.companionPickupEffectTimer - delta);
+      if (targetedCount > 0 && this.companionPickupEffectTimer <= 0) {
+        this.companionPickupEffectTimer = 1.05;
+        this.spawnCompanionEffect(this.companionPosition.x, this.companionPosition.y - 18, this.activeCompanion, { scale: 0.32, duration: 0.42 });
+      }
       return;
     }
 
@@ -3173,6 +3195,7 @@ export class PlayScene {
     if (this.activeCompanion.type === 'heal') {
       const healed = this.gameState.healPlayer((behavior.heal ?? 3) + level);
       if (healed > 0) {
+        this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.38, duration: 0.48 });
         this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, `HP +${Math.round(healed)}`, 0x65e878);
         this.spawnPickupBurst(this.player.position.x, this.player.position.y, 2, 'heal');
       }
@@ -3182,8 +3205,110 @@ export class PlayScene {
     if (this.activeCompanion.type === 'defense') {
       const duration = (behavior.guardDuration ?? 0.45) + level * 0.05;
       this.gameState.invincibleTime = Math.max(this.gameState.invincibleTime, duration);
+      this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.42, duration: 0.52 });
       this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, 'GUARD', 0x9ec8ff);
     }
+  }
+
+  spawnCompanionEffect(x, y, companion = this.activeCompanion, options = {}) {
+    if (!companion?.effectAssetKey || this.performanceLoadSheddingLevel >= 2) {
+      return;
+    }
+
+    const effect = {
+      age: 0,
+      duration: options.duration ?? 0.38,
+      startScale: options.scale ?? 0.36,
+      key: companion.effectAssetKey,
+      view: this.acquireCompanionEffectSprite(),
+    };
+
+    effect.view.anchor.set(0.5);
+    effect.view.position.set(x, y);
+    effect.view.alpha = 0;
+    effect.view.visible = false;
+    effect.view.rotation = options.rotation ?? 0;
+    effect.view.scale.set(effect.startScale);
+    this.trimCompanionEffects(MAX_COMPANION_EFFECTS - 1);
+    this.effectLayer.addChild(effect.view);
+    this.companionEffects.push(effect);
+
+    const cachedTexture = this.companionEffectTextureCache.get(effect.key);
+    if (cachedTexture) {
+      effect.view.texture = cachedTexture;
+      effect.view.visible = true;
+      effect.view.alpha = 0.9;
+      return;
+    }
+
+    this.assetLoader?.load?.(effect.key).then((texture) => {
+      if (!texture || !this.companionEffects.includes(effect)) {
+        return;
+      }
+
+      this.companionEffectTextureCache.set(effect.key, texture);
+      effect.view.texture = texture;
+      effect.view.visible = true;
+      effect.view.alpha = 0.9;
+    }).catch(() => {
+      this.releaseCompanionEffectSprite(effect.view);
+      this.companionEffects = this.companionEffects.filter((entry) => entry !== effect);
+    });
+  }
+
+  acquireCompanionEffectSprite() {
+    const sprite = this.companionEffectPool.pop() ?? new Sprite(Texture.EMPTY);
+    sprite.texture = Texture.EMPTY;
+    sprite.visible = false;
+    sprite.alpha = 0;
+    sprite.rotation = 0;
+    sprite.scale.set(1);
+    return sprite;
+  }
+
+  releaseCompanionEffectSprite(sprite) {
+    if (!sprite || sprite.destroyed) {
+      return;
+    }
+
+    sprite.parent?.removeChild(sprite);
+    sprite.texture = Texture.EMPTY;
+    sprite.visible = false;
+    sprite.alpha = 0;
+    sprite.rotation = 0;
+    sprite.scale.set(1);
+
+    if (this.companionEffectPool.length < MAX_COMPANION_EFFECTS) {
+      this.companionEffectPool.push(sprite);
+      return;
+    }
+
+    sprite.destroy();
+  }
+
+  trimCompanionEffects(maxCount) {
+    while (this.companionEffects.length > maxCount) {
+      const effect = this.companionEffects.shift();
+      this.releaseCompanionEffectSprite(effect?.view);
+    }
+  }
+
+  updateCompanionEffects(delta) {
+    this.companionEffects = this.companionEffects.filter((effect) => {
+      effect.age += delta;
+      const progress = effect.age / effect.duration;
+
+      if (progress >= 1) {
+        this.releaseCompanionEffectSprite(effect.view);
+        return false;
+      }
+
+      effect.view.alpha = Math.sin(progress * Math.PI) * 0.88;
+      const scale = effect.startScale * (0.82 + progress * 0.42);
+      effect.view.scale.set(scale);
+      effect.view.rotation += delta * 0.25;
+      return true;
+    });
   }
 
   showCompanionTutorialNotice(message, tutorialId) {

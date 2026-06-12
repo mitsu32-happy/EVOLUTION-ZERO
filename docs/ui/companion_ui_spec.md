@@ -66,3 +66,14 @@
   - `debugSelectCompanion=raptorling`: 指定お供を所持/セットして確認
   - `debugUnlockCompanions=1`: 10種類を開発確認用に所持
 - 確認画像: `docs/assets/p02_1_companion_ingame_qa.png`
+
+## MVP-P04 UI接続
+
+- ホームのお供パネルとお供選択モーダルは、P04用の本番iconを表示します。
+- お供選択モーダルは5件ずつのページングに対応しました。
+  - `前` / `次` ボタンでページ切替。
+  - gamepad/仮想マウス操作では左右またはLB/RB相当でページ切替。
+- 強化UIは選択中のお供に対して従来通り表示します。
+- PlaySceneではP04 spriteを読み込み、読み込み中だけfallbackを表示します。
+- 行動時effectはP04 effect PNGを使います。
+- 今回は大規模UI改修は行わず、P06でスクロール/詳細表示/強化差分表示を本番化します。

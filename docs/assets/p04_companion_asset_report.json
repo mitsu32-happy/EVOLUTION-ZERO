@@ -1,0 +1,681 @@
+{
+  "version": "MVP-P04",
+  "sourceImages": {
+    "effect": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_093f10f30007733f016a2b79698d6481989be0159a1fd48c7b.png",
+    "sprite": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_093f10f30007733f016a2b787a52b48198be1071fffd444bb5.png",
+    "icon": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_093f10f30007733f016a2b77ecebd88198aea9b4f328390dcb.png"
+  },
+  "outputs": [
+    {
+      "id": "raptorling",
+      "kind": "effect",
+      "path": "public/assets/companions/raptorling_effect_p04.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        34,
+        45,
+        222,
+        209
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 15714,
+      "status": "generated_p04"
+    },
+    {
+      "id": "spino_pup",
+      "kind": "effect",
+      "path": "public/assets/companions/spino_pup_effect_p04.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        35,
+        53,
+        234,
+        205
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 15375,
+      "status": "generated_p04"
+    },
+    {
+      "id": "medic_saur",
+      "kind": "effect",
+      "path": "public/assets/companions/medic_saur_effect_p04.png",
+      "sourceCell": {
+        "column": 3,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        34,
+        35,
+        221,
+        220
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 19063,
+      "status": "generated_p04"
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "effect",
+      "path": "public/assets/companions/ptera_chick_effect_p04.png",
+      "sourceCell": {
+        "column": 4,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        36,
+        42,
+        220,
+        213
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 10844,
+      "status": "generated_p04"
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "effect",
+      "path": "public/assets/companions/tricera_calf_effect_p04.png",
+      "sourceCell": {
+        "column": 5,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        34,
+        37,
+        222,
+        216
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 22620,
+      "status": "generated_p04"
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "effect",
+      "path": "public/assets/companions/para_juvenile_effect_p04.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        37,
+        52,
+        231,
+        204
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 13705,
+      "status": "generated_p04"
+    },
+    {
+      "id": "stego_calf",
+      "kind": "effect",
+      "path": "public/assets/companions/stego_calf_effect_p04.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        33,
+        57,
+        222,
+        198
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 10582,
+      "status": "generated_p04"
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "effect",
+      "path": "public/assets/companions/rex_hatchling_effect_p04.png",
+      "sourceCell": {
+        "column": 3,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        35,
+        46,
+        222,
+        210
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 11329,
+      "status": "generated_p04"
+    },
+    {
+      "id": "compy_pack",
+      "kind": "effect",
+      "path": "public/assets/companions/compy_pack_effect_p04.png",
+      "sourceCell": {
+        "column": 4,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        34,
+        47,
+        222,
+        208
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 11124,
+      "status": "generated_p04"
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "effect",
+      "path": "public/assets/companions/exp_chaser_effect_p04.png",
+      "sourceCell": {
+        "column": 5,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        34,
+        38,
+        222,
+        216
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 13644,
+      "status": "generated_p04"
+    },
+    {
+      "id": "raptorling",
+      "kind": "sprite",
+      "path": "public/assets/companions/raptorling_sprite_p04.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 1
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        51,
+        72,
+        284,
+        252
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 17944,
+      "status": "generated_p04"
+    },
+    {
+      "id": "spino_pup",
+      "kind": "sprite",
+      "path": "public/assets/companions/spino_pup_sprite_p04.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 1
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        47,
+        67,
+        297,
+        262
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 25552,
+      "status": "generated_p04"
+    },
+    {
+      "id": "medic_saur",
+      "kind": "sprite",
+      "path": "public/assets/companions/medic_saur_sprite_p04.png",
+      "sourceCell": {
+        "column": 3,
+        "row": 1
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        51,
+        69,
+        297,
+        262
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 18593,
+      "status": "generated_p04"
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "sprite",
+      "path": "public/assets/companions/ptera_chick_sprite_p04.png",
+      "sourceCell": {
+        "column": 4,
+        "row": 1
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        22,
+        66,
+        297,
+        264
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 18636,
+      "status": "generated_p04"
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "sprite",
+      "path": "public/assets/companions/tricera_calf_sprite_p04.png",
+      "sourceCell": {
+        "column": 5,
+        "row": 1
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        22,
+        70,
+        266,
+        258
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 27124,
+      "status": "generated_p04"
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "sprite",
+      "path": "public/assets/companions/para_juvenile_sprite_p04.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 2
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        45,
+        57,
+        297,
+        250
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 17877,
+      "status": "generated_p04"
+    },
+    {
+      "id": "stego_calf",
+      "kind": "sprite",
+      "path": "public/assets/companions/stego_calf_sprite_p04.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 2
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        22,
+        57,
+        297,
+        247
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 26948,
+      "status": "generated_p04"
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "sprite",
+      "path": "public/assets/companions/rex_hatchling_sprite_p04.png",
+      "sourceCell": {
+        "column": 3,
+        "row": 2
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        22,
+        70,
+        297,
+        247
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 21586,
+      "status": "generated_p04"
+    },
+    {
+      "id": "compy_pack",
+      "kind": "sprite",
+      "path": "public/assets/companions/compy_pack_sprite_p04.png",
+      "sourceCell": {
+        "column": 4,
+        "row": 2
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        22,
+        79,
+        297,
+        241
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 20983,
+      "status": "generated_p04"
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "sprite",
+      "path": "public/assets/companions/exp_chaser_sprite_p04.png",
+      "sourceCell": {
+        "column": 5,
+        "row": 2
+      },
+      "size": [
+        320,
+        320
+      ],
+      "alphaBBox": [
+        22,
+        63,
+        266,
+        256
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 24561,
+      "status": "generated_p04"
+    },
+    {
+      "id": "raptorling",
+      "kind": "icon",
+      "path": "public/assets/companions/raptorling_icon_p04.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        34,
+        31,
+        230,
+        223
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 20356,
+      "status": "generated_p04"
+    },
+    {
+      "id": "spino_pup",
+      "kind": "icon",
+      "path": "public/assets/companions/spino_pup_icon_p04.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        20,
+        48,
+        228,
+        214
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 21561,
+      "status": "generated_p04"
+    },
+    {
+      "id": "medic_saur",
+      "kind": "icon",
+      "path": "public/assets/companions/medic_saur_icon_p04.png",
+      "sourceCell": {
+        "column": 3,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        32,
+        33,
+        238,
+        228
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 20781,
+      "status": "generated_p04"
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "icon",
+      "path": "public/assets/companions/ptera_chick_icon_p04.png",
+      "sourceCell": {
+        "column": 4,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        18,
+        28,
+        238,
+        225
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 18283,
+      "status": "generated_p04"
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "icon",
+      "path": "public/assets/companions/tricera_calf_icon_p04.png",
+      "sourceCell": {
+        "column": 5,
+        "row": 1
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        18,
+        34,
+        216,
+        224
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 24442,
+      "status": "generated_p04"
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "icon",
+      "path": "public/assets/companions/para_juvenile_icon_p04.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        28,
+        28,
+        215,
+        212
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 18668,
+      "status": "generated_p04"
+    },
+    {
+      "id": "stego_calf",
+      "kind": "icon",
+      "path": "public/assets/companions/stego_calf_icon_p04.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        20,
+        27,
+        223,
+        211
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 21546,
+      "status": "generated_p04"
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "icon",
+      "path": "public/assets/companions/rex_hatchling_icon_p04.png",
+      "sourceCell": {
+        "column": 3,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        24,
+        25,
+        218,
+        212
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 20251,
+      "status": "generated_p04"
+    },
+    {
+      "id": "compy_pack",
+      "kind": "icon",
+      "path": "public/assets/companions/compy_pack_icon_p04.png",
+      "sourceCell": {
+        "column": 4,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        18,
+        56,
+        238,
+        201
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 14621,
+      "status": "generated_p04"
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "icon",
+      "path": "public/assets/companions/exp_chaser_icon_p04.png",
+      "sourceCell": {
+        "column": 5,
+        "row": 2
+      },
+      "size": [
+        256,
+        256
+      ],
+      "alphaBBox": [
+        18,
+        36,
+        218,
+        208
+      ],
+      "transparentCorners": true,
+      "nontransparentPixels": 22176,
+      "status": "generated_p04"
+    }
+  ],
+  "contactSheet": "docs/assets/p04_companion_asset_contact.png",
+  "qualityChecks": {
+    "transparentPng": true,
+    "individualAssetCount": 30,
+    "expectedAssetCount": 30,
+    "sourceSheetCount": 3,
+    "notes": [
+      "Generated as three chroma-key contact sheets, then removed key color and sliced into individual transparent PNGs.",
+      "P02 files are preserved; P04 files use *_p04.png names."
+    ]
+  }
+}

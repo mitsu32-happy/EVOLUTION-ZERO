@@ -204,6 +204,7 @@ export class HomeScreen {
     this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
     this.gamepadFocusIndex = 0;
     this.newsGamepadIndex = 0;
+    this.companionModalPage = 0;
 
     this.view = new Container();
     this.background = new Graphics();
@@ -1652,6 +1653,7 @@ export class HomeScreen {
       title: this.createText('お供恐竜', 18, '#fff0b4', 260),
       body: this.createText('', 11, '#d7fff2', 286),
       rows: [],
+      pageText: this.createText('', 10, '#c8fbff', 84),
       closeText: this.createText('範囲外で閉じる', 9, '#8da49e', 160),
     };
 
@@ -1669,7 +1671,9 @@ export class HomeScreen {
     modal.body.position.set(56, 260);
     modal.closeText.anchor.set(0.5);
     modal.closeText.position.set(this.width / 2, 624);
-    modal.view.addChild(modal.overlay, modal.panel, modal.title, modal.body, modal.closeText);
+    modal.pageText.anchor.set(0.5);
+    modal.pageText.position.set(this.width / 2, 566);
+    modal.view.addChild(modal.overlay, modal.panel, modal.title, modal.body, modal.closeText, modal.pageText);
 
     for (let index = 0; index < 5; index += 1) {
       const row = {
@@ -1712,11 +1716,32 @@ export class HomeScreen {
     modal.upgradeButton.view.addChild(modal.upgradeButton.bg, modal.upgradeButton.text);
     modal.view.addChild(modal.upgradeButton.view);
 
+    modal.prevButton = this.createCompanionPageButton('前', 56, 572, () => this.changeCompanionModalPage(-1));
+    modal.nextButton = this.createCompanionPageButton('次', 140, 572, () => this.changeCompanionModalPage(1));
+    modal.view.addChild(modal.prevButton.view, modal.nextButton.view);
+
     return modal;
+  }
+
+  createCompanionPageButton(label, x, y, onTap) {
+    const button = {
+      view: new Container(),
+      bg: new Graphics(),
+      text: this.createText(label, 11, '#e7fff6', 42),
+    };
+    button.view.position.set(x, y);
+    button.view.eventMode = 'static';
+    button.view.cursor = 'pointer';
+    button.view.on('pointertap', onTap);
+    button.text.anchor.set(0.5);
+    button.text.position.set(28, 16);
+    button.view.addChild(button.bg, button.text);
+    return button;
   }
 
   openCompanionModal() {
     this.playUiFeedback('ui_select');
+    this.companionModalPage = 0;
     this.companionModal.view.visible = true;
     this.renderCompanionModal();
   }
@@ -1731,6 +1756,11 @@ export class HomeScreen {
     const selected = getCompanionById(state.selectedId);
     const owned = (state.ownedIds ?? []).map((id) => getCompanionById(id)).filter(Boolean);
     const fallbackIconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
+    const pageSize = this.companionModal.rows.length;
+    const maxPage = Math.max(0, Math.ceil(owned.length / pageSize) - 1);
+    this.companionModalPage = Math.max(0, Math.min(maxPage, this.companionModalPage));
+    const pageStart = this.companionModalPage * pageSize;
+    const visibleOwned = owned.slice(pageStart, pageStart + pageSize);
 
     this.companionModal.panel
       .clear()
@@ -1745,7 +1775,7 @@ export class HomeScreen {
         ? '研究画面で卵を孵化すると、お供恐竜を入手できます。'
         : 'まだお供恐竜を所持していません。プレイ中に卵を探しましょう。';
     this.companionModal.rows.forEach((row, index) => {
-      const companion = owned[index] ?? null;
+      const companion = visibleOwned[index] ?? null;
       const level = companion ? state.levels?.[companion.id] ?? 1 : 1;
       const isSelected = companion?.id === state.selectedId;
       const accent = companion ? COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4 : 0x23434a;
@@ -1769,6 +1799,9 @@ export class HomeScreen {
       row.action.style.fill = isSelected ? '#071015' : '#e7fff6';
     });
     const selectedCost = selected ? getCompanionUpgradeCost(selected.id, state.levels?.[selected.id] ?? 1) : null;
+    this.companionModal.pageText.text = owned.length > pageSize ? `${this.companionModalPage + 1}/${maxPage + 1}` : '';
+    this.drawCompanionPageButton(this.companionModal.prevButton, this.companionModalPage > 0);
+    this.drawCompanionPageButton(this.companionModal.nextButton, this.companionModalPage < maxPage);
     this.companionModal.upgradeButton.view.visible = !!selected;
     this.companionModal.upgradeButton.bg
       .clear()
@@ -1776,6 +1809,36 @@ export class HomeScreen {
       .fill({ color: selectedCost ? 0xffd36b : 0x23434a, alpha: selectedCost ? 0.94 : 0.62 })
       .stroke({ color: 0xffffff, width: 1, alpha: selectedCost ? 0.42 : 0.18 });
     this.companionModal.upgradeButton.text.text = selectedCost ? `強化 ${selectedCost}` : 'MAX';
+  }
+
+  drawCompanionPageButton(button, enabled) {
+    if (!button) {
+      return;
+    }
+
+    button.view.visible = enabled;
+    button.bg
+      .clear()
+      .roundRect(0, 0, 56, 32, 9)
+      .fill({ color: enabled ? 0x08272f : 0x123035, alpha: enabled ? 0.9 : 0.32 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: enabled ? 0.64 : 0.18 });
+    button.text.style.fill = enabled ? '#e7fff6' : '#8da49e';
+  }
+
+  changeCompanionModalPage(delta) {
+    const state = this.saveManager?.getData?.()?.companion ?? this.saveData?.companion ?? {};
+    const owned = state.ownedIds ?? [];
+    const pageSize = this.companionModal.rows.length;
+    const maxPage = Math.max(0, Math.ceil(owned.length / pageSize) - 1);
+    const nextPage = Math.max(0, Math.min(maxPage, this.companionModalPage + delta));
+
+    if (nextPage === this.companionModalPage) {
+      return;
+    }
+
+    this.companionModalPage = nextPage;
+    this.playUiFeedback('ui_select');
+    this.renderCompanionModal();
   }
 
   handleCompanionRow(row) {
@@ -1809,6 +1872,16 @@ export class HomeScreen {
   handleCompanionGamepadAction(actions) {
     if (actions.cancelPressed || actions.pausePressed) {
       this.closeCompanionModal();
+      return true;
+    }
+
+    if (actions.leftPressed || actions.previousPressed) {
+      this.changeCompanionModalPage(-1);
+      return true;
+    }
+
+    if (actions.rightPressed || actions.nextPressed) {
+      this.changeCompanionModalPage(1);
       return true;
     }
 

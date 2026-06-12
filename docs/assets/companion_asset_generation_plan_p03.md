@@ -46,3 +46,18 @@
 ## P04推奨
 
 P04では10種類のiconとsprite sheetを先に本番化する。effectはP05のAI実装と同時に差し替えると、実挙動に合わせて無駄なく作れる。
+
+## MVP-P04 実施結果
+
+- 10種類すべてに本番用 `icon` / `sprite` / `effect` を追加した。
+- 既存P02ファイルは残し、P04ファイルは `public/assets/companions/{id}_{kind}_p04.png` として追加した。
+- `src/data/asset_manifest.js` はP04ファイルを参照するように更新した。
+- 生成元は3枚のcontact sheetで、個別PNGはクロマキー除去後に切り出した。
+- 品質確認用contact: `docs/assets/p04_companion_asset_contact.png`
+- 生成レポート: `docs/assets/p04_companion_asset_report.json`
+
+## P04で残した課題
+
+- spriteは静止画。歩行/飛行アニメーションsheet化はP04b以降。
+- effectはPlaySceneで短寿命Spriteとして接続済みだが、type別の細かい発火タイミングやSEはP05で調整する。
+- お供選択モーダルは5件ずつのページングに対応した。より本格的なスクロールUIはP06で検討する。

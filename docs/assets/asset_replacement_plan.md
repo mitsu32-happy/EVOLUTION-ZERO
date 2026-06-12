@@ -3673,3 +3673,16 @@ No new image/audio asset generation is required for this MVP.
 - The P01 representative raptorling paths now resolve to the P02 raptorling assets in `asset_manifest.js`.
 - Contact sheet: `docs/assets/p02_companion_asset_contact.png`.
 - These are project PNG assets, not runtime-only placeholder Graphics.
+
+## MVP-P04 Companion Dino Production Assets
+
+- P04 adds production transparent PNG assets for all 10 companion dinos.
+- Each companion now has:
+  - `public/assets/companions/{id}_icon_p04.png`
+  - `public/assets/companions/{id}_sprite_p04.png`
+  - `public/assets/companions/{id}_effect_p04.png`
+- `src/data/asset_manifest.js` now points companion icon/sprite/effect keys to the P04 assets.
+- Existing P02 assets are preserved for comparison and rollback.
+- Contact sheet: `docs/assets/p04_companion_asset_contact.png`.
+- Generation report: `docs/assets/p04_companion_asset_report.json`.
+- P04 connects companion `effectAssetKey` in PlayScene with capped/pool-managed short-lived Sprite effects.
