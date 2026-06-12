@@ -46,6 +46,8 @@ const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
 const MAX_COMPANION_EFFECTS = 24;
 const COMPANION_ACTION_DURATION = 0.46;
+const COMPANION_BASE_WIDTH = 104;
+const COMPANION_BASE_HEIGHT = 82;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -62,16 +64,16 @@ const DEBUG_EVOLUTION_SKILLS = {
   zero: ['afterimage_claw', 'homing_fang', 'shock_roar_wave'],
 };
 const COMPANION_ANIMATION_PROFILES = {
-  raptorling: { scale: 1.04, bob: 3.8, bobSpeed: 7.5, tilt: 0.08, action: 'lunge', actionScale: 1.16, trail: 0xff776b },
-  spino_pup: { scale: 1.06, bob: 2.6, bobSpeed: 5.2, tilt: 0.05, action: 'waterShot', actionScale: 1.1, trail: 0x35d7ff },
-  medic_saur: { scale: 1.02, bob: 2.1, bobSpeed: 4.4, tilt: 0.035, action: 'healPulse', actionScale: 1.08, trail: 0x65e878 },
-  ptera_chick: { scale: 0.96, bob: 7.4, bobSpeed: 8.4, tilt: 0.12, action: 'airShot', actionScale: 1.12, trail: 0x9eeaff },
-  tricera_calf: { scale: 1.08, bob: 1.7, bobSpeed: 4.1, tilt: 0.035, action: 'guard', actionScale: 1.1, trail: 0x9ec8ff },
-  para_juvenile: { scale: 1.02, bob: 2.8, bobSpeed: 5.6, tilt: 0.06, action: 'sonar', actionScale: 1.08, trail: 0x35d7ff },
-  stego_calf: { scale: 1.08, bob: 2.2, bobSpeed: 4.8, tilt: 0.045, action: 'shockwave', actionScale: 1.12, trail: 0xffb04d },
-  rex_hatchling: { scale: 1.11, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
-  compy_pack: { scale: 0.94, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
-  exp_chaser: { scale: 0.98, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
+  raptorling: { scale: 1.04, displayScale: 1.02, bob: 3.8, bobSpeed: 7.5, tilt: 0.08, action: 'lunge', actionScale: 1.16, trail: 0xff776b },
+  spino_pup: { scale: 1.06, displayScale: 1.06, bob: 2.6, bobSpeed: 5.2, tilt: 0.05, action: 'waterShot', actionScale: 1.1, trail: 0x35d7ff },
+  medic_saur: { scale: 1.02, displayScale: 1.04, bob: 2.1, bobSpeed: 4.4, tilt: 0.035, action: 'healPulse', actionScale: 1.08, trail: 0x65e878 },
+  ptera_chick: { scale: 0.96, displayScale: 1, bob: 7.4, bobSpeed: 8.4, tilt: 0.12, action: 'airShot', actionScale: 1.12, trail: 0x9eeaff },
+  tricera_calf: { scale: 1.08, displayScale: 1.14, bob: 1.7, bobSpeed: 4.1, tilt: 0.035, action: 'guard', actionScale: 1.1, trail: 0x9ec8ff },
+  para_juvenile: { scale: 1.02, displayScale: 1.04, bob: 2.8, bobSpeed: 5.6, tilt: 0.06, action: 'sonar', actionScale: 1.08, trail: 0x35d7ff },
+  stego_calf: { scale: 1.08, displayScale: 1.08, bob: 2.2, bobSpeed: 4.8, tilt: 0.045, action: 'shockwave', actionScale: 1.12, trail: 0xffb04d },
+  rex_hatchling: { scale: 1.11, displayScale: 1.16, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
+  compy_pack: { scale: 0.94, displayScale: 0.94, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
+  exp_chaser: { scale: 0.98, displayScale: 1, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
 };
 const STAGE_BOUNDS = {
   left: -1500,
@@ -2972,8 +2974,8 @@ export class PlayScene {
       this.companionDebugLabel,
     );
     this.applyCompanionPassiveBonuses();
-    this.companionPosition.x = this.player.position.x + 58;
-    this.companionPosition.y = this.player.position.y + 20;
+    this.companionPosition.x = this.player.position.x + 84;
+    this.companionPosition.y = this.player.position.y + 34;
     this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
@@ -2992,8 +2994,10 @@ export class PlayScene {
       if (this.companionSprite.anchor?.set) {
         this.companionSprite.anchor.set(0.5, 0.72);
       }
-      this.companionSprite.width = 74;
-      this.companionSprite.height = 58;
+      const profile = this.getCompanionAnimationProfile(companion);
+      const displayScale = profile.displayScale ?? 1;
+      this.companionSprite.width = COMPANION_BASE_WIDTH * displayScale;
+      this.companionSprite.height = COMPANION_BASE_HEIGHT * displayScale;
       this.companionBaseScaleX = Math.abs(this.companionSprite.scale?.x || 1);
       this.companionBaseScaleY = Math.abs(this.companionSprite.scale?.y || 1);
       this.companionSprite.visible = true;
@@ -3009,16 +3013,20 @@ export class PlayScene {
 
   drawCompanionFallback() {
     const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? 0x7cf7d4;
-    const debugAlpha = getDebugFlag('debugCompanion') ? 0.82 : 0.5;
+    const debugGuide = getDebugFlag('debugCompanion') || getDebugFlag('debugCompanionGuide');
+    const debugAlpha = debugGuide ? 0.82 : 0.5;
 
     this.companionGlow
       .clear()
       .ellipse(0, 12, 34, 12)
       .fill({ color: 0x000000, alpha: 0.38 })
       .circle(0, -7, 31)
-      .fill({ color: accent, alpha: debugAlpha * 0.22 })
-      .circle(0, -7, 36)
-      .stroke({ color: accent, width: getDebugFlag('debugCompanion') ? 2.4 : 1.2, alpha: debugAlpha });
+      .fill({ color: accent, alpha: debugAlpha * 0.16 });
+    if (debugGuide) {
+      this.companionGlow
+        .circle(0, -7, 36)
+        .stroke({ color: accent, width: 2.4, alpha: debugAlpha });
+    }
     this.companionFallback
       .clear()
       .ellipse(-6, -4, 28, 16)
@@ -3140,16 +3148,24 @@ export class PlayScene {
     const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? profile.trail ?? 0x7cf7d4;
     const trailColor = profile.trail ?? accent;
     const actionAlpha = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
-    const debugBoost = getDebugFlag('debugCompanion') ? 1.18 : 1;
+    const debugGuide = getDebugFlag('debugCompanion') || getDebugFlag('debugCompanionGuide');
+    const debugBoost = debugGuide ? 1.18 : 1;
 
     this.companionGlow
       .clear()
-      .ellipse(0, 14, 30 + moveIntensity * 6, 9 + moveIntensity * 2)
+      .ellipse(0, 16, 34 + moveIntensity * 7, 10 + moveIntensity * 2)
       .fill({ color: 0x000000, alpha: 0.3 })
-      .circle(0, -10, 27 + actionAlpha * 6)
-      .fill({ color: accent, alpha: (0.1 + actionAlpha * 0.13) * debugBoost })
-      .circle(0, -10, 32 + actionAlpha * 7)
-      .stroke({ color: accent, width: 1.2 + actionAlpha * 1.4, alpha: (0.28 + actionAlpha * 0.42) * debugBoost });
+      .circle(0, -12, 31 + actionAlpha * 7)
+      .fill({ color: accent, alpha: (0.055 + actionAlpha * 0.16) * debugBoost });
+    if (debugGuide || actionAlpha > 0.08) {
+      this.companionGlow
+        .circle(0, -12, 37 + actionAlpha * 8)
+        .stroke({
+          color: accent,
+          width: debugGuide ? 1.8 + actionAlpha * 1.4 : 1.2 + actionAlpha * 1.1,
+          alpha: (debugGuide ? 0.32 : 0.16) + actionAlpha * 0.38,
+        });
+    }
 
     this.companionTrail.clear();
     if (moveIntensity > 0.06 || actionAlpha > 0.05) {
@@ -3328,8 +3344,8 @@ export class PlayScene {
       ? this.clamp(1 - (this.companionActionTimer / actionDuration), 0, 1)
       : 0;
     const actionWave = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
-    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 38 + 58;
-    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 16 + 24;
+    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 48 + 84;
+    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 20 + 34;
     const targetX = this.player.position.x + orbitX;
     const targetY = this.player.position.y + orbitY;
     const follow = Math.min(1, delta * 5.4);
@@ -3343,8 +3359,8 @@ export class PlayScene {
     const animationState = actionWave > 0.02 ? 'action' : moveIntensity > 0.08 ? 'move' : 'idle';
     const bob = Math.sin(this.companionOrbitTime * profile.bobSpeed) * profile.bob;
     const lungeX = this.companionActionTarget
-      ? this.clamp((this.companionActionTarget.x - this.companionPosition.x) / 160, -1, 1) * actionWave * 18
-      : this.companionFacing * actionWave * 10;
+      ? this.clamp((this.companionActionTarget.x - this.companionPosition.x) / 160, -1, 1) * actionWave * 22
+      : this.companionFacing * actionWave * 12;
     const lungeY = actionWave > 0 ? -Math.abs(actionWave) * (profile.action === 'airShot' ? 10 : 4) : 0;
     const displayX = this.companionPosition.x + lungeX;
     const displayY = this.companionPosition.y + bob + lungeY;
