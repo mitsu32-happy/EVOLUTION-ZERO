@@ -1,0 +1,52 @@
+# MVP-P03 お供恐竜 save/migration audit
+
+## 現在のsave構造
+
+`companion` には以下を保存する。
+
+- `ownedIds`: 所持済みお供ID。
+- `selectedId`: セット中のお供ID。
+- `levels`: お供IDごとのLv。
+- `eggPending`: 未孵化卵を所持しているか。
+- `eggIncubating`: 孵化中か。
+- `hatchStartedAt`: 孵化開始時刻。
+- `hatchCompleteAt`: 孵化完了予定時刻。
+- `lastHatchedId`: 直近で孵化したID。
+- `tutorialFlags`: お供関連チュートリアル表示状態。
+
+## 互換性の現状
+
+- 既存セーブに`companion`がない場合はデフォルト値で補完される。
+- 不正な`ownedIds`は定義済みIDだけに絞られる。
+- `selectedId`は所持済みIDでない場合nullに戻る。
+- `levels`は所持済みIDだけ残り、Lv1からmaxLevelまでに丸められる。
+- 全所持済みで孵化完了した場合はDNA代替報酬になる。
+
+## 本番前に確認するケース
+
+| ケース | 期待値 | 優先度 |
+| --- | --- | --- |
+| 旧セーブに`companion`なし | 起動し、ホーム/出撃/研究が壊れない | 高 |
+| `selectedId`が削除済みID | nullに戻り、お供なしで出撃できる | 高 |
+| `ownedIds`に不正ID | 不正IDだけ除去 | 高 |
+| `levels`に0/999/文字列 | Lv範囲内に正規化 | 高 |
+| `eggPending`中に出撃 | 通常通りプレイ開始 | 高 |
+| `eggIncubating`中に出撃 | 通常通りプレイ開始 | 高 |
+| `hatchCompleteAt`が過去 | 研究画面で受け取り可能 | 高 |
+| `hatchCompleteAt`が不正文字列 | 安全にready扱いまたはwait扱いを固定 | 中 |
+| 全所持済みで孵化 | DNA代替報酬 | 中 |
+| 端末時刻変更 | 孵化判定が破綻しない | 中 |
+
+## migration要否
+
+featureブランチ段階ではVERSION更新を行わないため、main統合時に次を確認する。
+
+1. `app_version`更新時のリリースノートにお供恐竜のsave追加を明記。
+2. 初回起動時に`normalizeCompanionState`が必ず走る導線を維持。
+3. 将来IDを削除/変更する場合は、旧IDから新IDへの変換表を追加。
+
+## リスク
+
+- 表示名/説明文が文字化けしている場合、save自体は壊れないがUI品質に直結する。
+- 全10種類所持時のモーダル表示が5行固定のため、save上は所持していてもUIから選べないお供が出る。
+- debug導線で作った状態を通常saveに残せるため、main統合前のQAでは`debugCompanionClear=1`後の通常導線も確認する。
