@@ -211,6 +211,34 @@ export const ASSET_KEYS = {
     hatchEffect: 'companions.hatchEffect',
     raptorlingSprite: 'companions.raptorlingSprite',
     raptorlingIcon: 'companions.raptorlingIcon',
+    raptorlingEffect: 'companions.raptorlingEffect',
+    spinoPupSprite: 'companions.spinoPupSprite',
+    spinoPupIcon: 'companions.spinoPupIcon',
+    spinoPupEffect: 'companions.spinoPupEffect',
+    medicSaurSprite: 'companions.medicSaurSprite',
+    medicSaurIcon: 'companions.medicSaurIcon',
+    medicSaurEffect: 'companions.medicSaurEffect',
+    pteraChickSprite: 'companions.pteraChickSprite',
+    pteraChickIcon: 'companions.pteraChickIcon',
+    pteraChickEffect: 'companions.pteraChickEffect',
+    triceraCalfSprite: 'companions.triceraCalfSprite',
+    triceraCalfIcon: 'companions.triceraCalfIcon',
+    triceraCalfEffect: 'companions.triceraCalfEffect',
+    paraJuvenileSprite: 'companions.paraJuvenileSprite',
+    paraJuvenileIcon: 'companions.paraJuvenileIcon',
+    paraJuvenileEffect: 'companions.paraJuvenileEffect',
+    stegoCalfSprite: 'companions.stegoCalfSprite',
+    stegoCalfIcon: 'companions.stegoCalfIcon',
+    stegoCalfEffect: 'companions.stegoCalfEffect',
+    rexHatchlingSprite: 'companions.rexHatchlingSprite',
+    rexHatchlingIcon: 'companions.rexHatchlingIcon',
+    rexHatchlingEffect: 'companions.rexHatchlingEffect',
+    compyPackSprite: 'companions.compyPackSprite',
+    compyPackIcon: 'companions.compyPackIcon',
+    compyPackEffect: 'companions.compyPackEffect',
+    expChaserSprite: 'companions.expChaserSprite',
+    expChaserIcon: 'companions.expChaserIcon',
+    expChaserEffect: 'companions.expChaserEffect',
   },
   items: {
     meatHeal: 'items.meatHeal',
@@ -2738,12 +2766,124 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P01 companion hatch glow effect.',
     },
     raptorlingSprite: {
-      path: 'assets/companions/raptorling_sprite_p01.png',
-      note: 'MVP-P01 representative small companion dino sprite.',
+      path: 'assets/companions/raptorling_sprite_p02.png',
+      note: 'MVP-P02 attack companion raptorling sprite.',
     },
     raptorlingIcon: {
-      path: 'assets/companions/raptorling_icon_p01.png',
-      note: 'MVP-P01 representative small companion dino icon.',
+      path: 'assets/companions/raptorling_icon_p02.png',
+      note: 'MVP-P02 attack companion raptorling icon.',
+    },
+    raptorlingEffect: {
+      path: 'assets/companions/raptorling_effect_p02.png',
+      note: 'MVP-P02 attack companion hit effect.',
+    },
+    spinoPupSprite: {
+      path: 'assets/companions/spino_pup_sprite_p02.png',
+      note: 'MVP-P02 area companion spino pup sprite.',
+    },
+    spinoPupIcon: {
+      path: 'assets/companions/spino_pup_icon_p02.png',
+      note: 'MVP-P02 area companion spino pup icon.',
+    },
+    spinoPupEffect: {
+      path: 'assets/companions/spino_pup_effect_p02.png',
+      note: 'MVP-P02 area companion splash effect.',
+    },
+    medicSaurSprite: {
+      path: 'assets/companions/medic_saur_sprite_p02.png',
+      note: 'MVP-P02 healing companion sprite.',
+    },
+    medicSaurIcon: {
+      path: 'assets/companions/medic_saur_icon_p02.png',
+      note: 'MVP-P02 healing companion icon.',
+    },
+    medicSaurEffect: {
+      path: 'assets/companions/medic_saur_effect_p02.png',
+      note: 'MVP-P02 healing pulse effect.',
+    },
+    pteraChickSprite: {
+      path: 'assets/companions/ptera_chick_sprite_p02.png',
+      note: 'MVP-P02 pickup companion sprite.',
+    },
+    pteraChickIcon: {
+      path: 'assets/companions/ptera_chick_icon_p02.png',
+      note: 'MVP-P02 pickup companion icon.',
+    },
+    pteraChickEffect: {
+      path: 'assets/companions/ptera_chick_effect_p02.png',
+      note: 'MVP-P02 pickup companion effect.',
+    },
+    triceraCalfSprite: {
+      path: 'assets/companions/tricera_calf_sprite_p02.png',
+      note: 'MVP-P02 defense companion sprite.',
+    },
+    triceraCalfIcon: {
+      path: 'assets/companions/tricera_calf_icon_p02.png',
+      note: 'MVP-P02 defense companion icon.',
+    },
+    triceraCalfEffect: {
+      path: 'assets/companions/tricera_calf_effect_p02.png',
+      note: 'MVP-P02 defense companion guard effect.',
+    },
+    paraJuvenileSprite: {
+      path: 'assets/companions/para_juvenile_sprite_p02.png',
+      note: 'MVP-P02 speed companion sprite.',
+    },
+    paraJuvenileIcon: {
+      path: 'assets/companions/para_juvenile_icon_p02.png',
+      note: 'MVP-P02 speed companion icon.',
+    },
+    paraJuvenileEffect: {
+      path: 'assets/companions/para_juvenile_effect_p02.png',
+      note: 'MVP-P02 speed companion effect.',
+    },
+    stegoCalfSprite: {
+      path: 'assets/companions/stego_calf_sprite_p02.png',
+      note: 'MVP-P02 synergy companion sprite.',
+    },
+    stegoCalfIcon: {
+      path: 'assets/companions/stego_calf_icon_p02.png',
+      note: 'MVP-P02 synergy companion icon.',
+    },
+    stegoCalfEffect: {
+      path: 'assets/companions/stego_calf_effect_p02.png',
+      note: 'MVP-P02 synergy companion effect.',
+    },
+    rexHatchlingSprite: {
+      path: 'assets/companions/rex_hatchling_sprite_p02.png',
+      note: 'MVP-P02 boss-focused companion sprite.',
+    },
+    rexHatchlingIcon: {
+      path: 'assets/companions/rex_hatchling_icon_p02.png',
+      note: 'MVP-P02 boss-focused companion icon.',
+    },
+    rexHatchlingEffect: {
+      path: 'assets/companions/rex_hatchling_effect_p02.png',
+      note: 'MVP-P02 boss-focused companion effect.',
+    },
+    compyPackSprite: {
+      path: 'assets/companions/compy_pack_sprite_p02.png',
+      note: 'MVP-P02 swarm companion sprite.',
+    },
+    compyPackIcon: {
+      path: 'assets/companions/compy_pack_icon_p02.png',
+      note: 'MVP-P02 swarm companion icon.',
+    },
+    compyPackEffect: {
+      path: 'assets/companions/compy_pack_effect_p02.png',
+      note: 'MVP-P02 swarm companion effect.',
+    },
+    expChaserSprite: {
+      path: 'assets/companions/exp_chaser_sprite_p02.png',
+      note: 'MVP-P02 EXP support companion sprite.',
+    },
+    expChaserIcon: {
+      path: 'assets/companions/exp_chaser_icon_p02.png',
+      note: 'MVP-P02 EXP support companion icon.',
+    },
+    expChaserEffect: {
+      path: 'assets/companions/exp_chaser_effect_p02.png',
+      note: 'MVP-P02 EXP support companion effect.',
     },
   },
   items: {

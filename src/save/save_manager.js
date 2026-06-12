@@ -559,6 +559,11 @@ export class SaveManager {
     return { success: true, data: this.save() };
   }
 
+  debugResetCompanion() {
+    this.data.companion = createDefaultCompanionState();
+    return { success: true, data: this.save() };
+  }
+
   setEquippedTitle(titleId) {
     this.data.ownedTitles = this.normalizeOwnedEntries(this.data.ownedTitles);
     const title = getTitleById(titleId);

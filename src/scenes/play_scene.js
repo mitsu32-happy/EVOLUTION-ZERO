@@ -331,6 +331,9 @@ export class PlayScene {
     this.companionPosition = { x: 0, y: 0 };
     this.companionOrbitTime = 0;
     this.companionAttackTimer = 0;
+    this.companionUtilityTimer = 0;
+    this.companionMoveSpeedBonus = 0;
+    this.companionExpMultiplier = 1;
     this.activeCompanion = null;
     this.activeCompanionLevel = 1;
     this.vignette = new Graphics();
@@ -2883,9 +2886,10 @@ export class PlayScene {
     this.activeCompanionLevel = companion ? Math.max(1, state?.levels?.[companion.id] ?? 1) : 1;
     this.companionView.visible = !!companion;
     this.companionView.addChild(this.companionGlow, this.companionSprite, this.companionFallback);
+    this.applyCompanionPassiveBonuses();
     this.companionPosition.x = this.player.position.x - 54;
     this.companionPosition.y = this.player.position.y + 18;
-    this.companionView.position.set(this.companionPosition.x, this.companionPosition.y);
+    this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
       return;
@@ -2898,7 +2902,9 @@ export class PlayScene {
       }
 
       this.companionSprite.texture = texture;
-      this.companionSprite.anchor.set(0.5, 0.72);
+      if (this.companionSprite.anchor?.set) {
+        this.companionSprite.anchor.set(0.5, 0.72);
+      }
       this.companionSprite.width = 58;
       this.companionSprite.height = 46;
       this.companionSprite.visible = true;
@@ -2933,6 +2939,74 @@ export class PlayScene {
     this.companionFallback.visible = !this.companionSprite.visible;
   }
 
+  applyCompanionPassiveBonuses() {
+    if (this.companionMoveSpeedBonus) {
+      this.player.moveSpeed = Math.max(80, this.player.moveSpeed - this.companionMoveSpeedBonus);
+      this.companionMoveSpeedBonus = 0;
+    }
+
+    if (this.companionExpMultiplier !== 1) {
+      this.gameState.expGainMultiplier = Math.max(0.1, (this.gameState.expGainMultiplier ?? 1) / this.companionExpMultiplier);
+      this.companionExpMultiplier = 1;
+    }
+
+    if (!this.activeCompanion) {
+      return;
+    }
+
+    const level = this.activeCompanionLevel;
+    const behavior = this.activeCompanion.behavior ?? {};
+
+    if (this.activeCompanion.type === 'speed') {
+      const multiplier = behavior.speedMultiplier ?? 1.025;
+      this.companionMoveSpeedBonus = Math.round(this.player.moveSpeed * (multiplier + level * 0.004 - 1));
+      this.player.moveSpeed += this.companionMoveSpeedBonus;
+    }
+
+    if (this.activeCompanion.type === 'exp') {
+      this.companionExpMultiplier = behavior.expMultiplier + level * 0.006;
+      this.gameState.expGainMultiplier = (this.gameState.expGainMultiplier ?? 1) * this.companionExpMultiplier;
+    }
+  }
+
+  setCompanionDisplayPosition(display, x, y) {
+    if (!display || display.destroyed || !Number.isFinite(x) || !Number.isFinite(y)) {
+      return false;
+    }
+
+    if (display.position?.set) {
+      display.position.set(x, y);
+      return true;
+    }
+
+    if (display.position) {
+      display.position.x = x;
+      display.position.y = y;
+      return true;
+    }
+
+    return false;
+  }
+
+  setCompanionDisplayScale(display, x, y = 1) {
+    if (!display || display.destroyed || !Number.isFinite(x) || !Number.isFinite(y)) {
+      return false;
+    }
+
+    if (display.scale?.set) {
+      display.scale.set(x, y);
+      return true;
+    }
+
+    if (display.scale) {
+      display.scale.x = x;
+      display.scale.y = y;
+      return true;
+    }
+
+    return false;
+  }
+
   updateCompanion(delta) {
     if (!this.activeCompanion || !this.companionView.visible) {
       return;
@@ -2947,17 +3021,25 @@ export class PlayScene {
 
     this.companionPosition.x += (targetX - this.companionPosition.x) * follow;
     this.companionPosition.y += (targetY - this.companionPosition.y) * follow;
-    this.companionView.position.set(this.companionPosition.x, this.companionPosition.y + Math.sin(this.companionOrbitTime * 4) * 2);
+    const bobY = this.companionPosition.y + Math.sin(this.companionOrbitTime * 4) * 2;
+    if (!this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, bobY)) {
+      this.companionView.visible = false;
+      return;
+    }
+
     this.companionView.zIndex = this.companionPosition.y + 0.5;
     const flip = targetX >= this.player.position.x ? 1 : -1;
-    this.companionSprite.scale.x = Math.abs(this.companionSprite.scale.x || 1) * flip;
-    this.companionFallback.scale.x = flip;
+    const spriteScaleY = Math.abs(this.companionSprite?.scale?.y || 1);
+    const spriteScaleX = Math.abs(this.companionSprite?.scale?.x || 1) * flip;
+    this.setCompanionDisplayScale(this.companionSprite, spriteScaleX, spriteScaleY);
+    this.setCompanionDisplayScale(this.companionFallback, flip, 1);
 
     this.updateCompanionSupportAttack(delta);
+    this.updateCompanionUtility(delta);
   }
 
   updateCompanionSupportAttack(delta) {
-    if (!this.activeCompanion || !['attack', 'area', 'swarm', 'boss'].includes(this.activeCompanion.type)) {
+    if (!this.activeCompanion || !['attack', 'area', 'swarm', 'boss', 'synergy'].includes(this.activeCompanion.type)) {
       return;
     }
 
@@ -2966,8 +3048,9 @@ export class PlayScene {
       return;
     }
 
-    const interval = Math.max(1.05, 2.4 - this.activeCompanionLevel * 0.18);
-    const range = this.activeCompanion.type === 'boss' ? 260 : 205;
+    const behavior = this.activeCompanion.behavior ?? {};
+    const interval = Math.max(1.05, (behavior.interval ?? 2.4) - this.activeCompanionLevel * 0.16);
+    const range = behavior.range ?? (this.activeCompanion.type === 'boss' ? 260 : 205);
     const targets = this.enemies
       .filter((enemy) => !enemy.isDead)
       .map((enemy) => ({
@@ -2975,17 +3058,81 @@ export class PlayScene {
         distance: CollisionSystem.distanceSquared(this.companionPosition, enemy.position),
       }))
       .filter((entry) => entry.distance <= range * range)
-      .sort((a, b) => a.distance - b.distance);
+      .sort((a, b) => {
+        if (this.activeCompanion.type === 'boss') {
+          return Number(Boolean(b.enemy.isBoss)) - Number(Boolean(a.enemy.isBoss)) || a.distance - b.distance;
+        }
+
+        if (this.activeCompanion.type === 'swarm') {
+          return (a.enemy.hp ?? 99999) - (b.enemy.hp ?? 99999) || a.distance - b.distance;
+        }
+
+        return a.distance - b.distance;
+      });
 
     this.companionAttackTimer = interval;
-    const target = targets[0]?.enemy;
-    if (!target) {
+    const selectedTargets = targets.slice(0, Math.max(1, behavior.targets ?? 1));
+    if (selectedTargets.length <= 0) {
       return;
     }
 
-    const damage = Math.round((8 + this.activeCompanionLevel * 3) * (this.activeCompanion.type === 'boss' && target.isBoss ? 1.55 : 1));
-    target.takeDamage?.(damage);
-    this.spawnPickupPopup(target.position.x, target.position.y - 28, `${damage}`, 0xc8fbff);
+    selectedTargets.forEach(({ enemy }) => {
+      const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
+      const damage = Math.round(((behavior.damage ?? 8) + this.activeCompanionLevel * 3) * bossMultiplier);
+      enemy.takeDamage?.(damage);
+      this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
+    });
+  }
+
+  updateCompanionUtility(delta) {
+    if (!this.activeCompanion) {
+      return;
+    }
+
+    const behavior = this.activeCompanion.behavior ?? {};
+    const level = this.activeCompanionLevel;
+
+    if (this.activeCompanion.type === 'pickup') {
+      const radius = (behavior.pickupRadius ?? 135) + level * 12;
+      this.pickups.forEach((pickup) => {
+        if (pickup.isCollected || pickup.type === 'companion_egg') {
+          return;
+        }
+
+        const distanceSquared = CollisionSystem.distanceSquared(this.companionPosition, pickup.position);
+        if (distanceSquared <= radius * radius) {
+          pickup.targeted = true;
+        }
+      });
+      return;
+    }
+
+    if (!['heal', 'defense'].includes(this.activeCompanion.type)) {
+      return;
+    }
+
+    this.companionUtilityTimer -= delta;
+    if (this.companionUtilityTimer > 0) {
+      return;
+    }
+
+    const interval = Math.max(5.2, (behavior.interval ?? 10) - level * 0.35);
+    this.companionUtilityTimer = interval;
+
+    if (this.activeCompanion.type === 'heal') {
+      const healed = this.gameState.healPlayer((behavior.heal ?? 3) + level);
+      if (healed > 0) {
+        this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, `HP +${Math.round(healed)}`, 0x65e878);
+        this.spawnPickupBurst(this.player.position.x, this.player.position.y, 2, 'heal');
+      }
+      return;
+    }
+
+    if (this.activeCompanion.type === 'defense') {
+      const duration = (behavior.guardDuration ?? 0.45) + level * 0.05;
+      this.gameState.invincibleTime = Math.max(this.gameState.invincibleTime, duration);
+      this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, 'GUARD', 0x9ec8ff);
+    }
   }
 
   showCompanionTutorialNotice(message, tutorialId) {

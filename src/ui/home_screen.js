@@ -693,7 +693,9 @@ export class HomeScreen {
     const companionState = data.companion ?? {};
     const companion = getCompanionById(companionState.selectedId);
     const eggTexture = this.textures.get('companionEgg');
-    const iconTexture = this.textures.get('companionIcon');
+    const iconTexture = companion
+      ? (this.textures.get(`companionIcon:${companion.id}`) ?? this.textures.get('companionIcon'))
+      : this.textures.get('companionIcon');
     const hasEgg = companionState.eggPending || companionState.eggIncubating;
     const x = 38;
     const y = 188;
@@ -1133,6 +1135,11 @@ export class HomeScreen {
       ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
       ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
       ['companionIcon', ASSET_KEYS.companions?.raptorlingIcon, null],
+      ...COMPANION_DINOS.map((companion) => [
+        `companionIcon:${companion.id}`,
+        companion.iconAssetKey,
+        null,
+      ]),
       ['companionEgg', ASSET_KEYS.companions?.eggIcon, null],
       ...Object.entries(HOME_ASSET_PATHS.titleFrames).map(([id, path]) => [
         `titleFrame:${id}`,
@@ -1723,7 +1730,7 @@ export class HomeScreen {
     const state = data.companion ?? {};
     const selected = getCompanionById(state.selectedId);
     const owned = (state.ownedIds ?? []).map((id) => getCompanionById(id)).filter(Boolean);
-    const iconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
+    const fallbackIconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
 
     this.companionModal.panel
       .clear()
@@ -1748,6 +1755,7 @@ export class HomeScreen {
         return;
       }
       row.companionId = companion.id;
+      const iconTexture = this.textures.get(`companionIcon:${companion.id}`) ?? fallbackIconTexture;
       row.bg
         .clear()
         .roundRect(0, 0, 286, 44, 10)

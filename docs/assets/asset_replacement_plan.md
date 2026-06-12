@@ -3662,3 +3662,14 @@ No new image/audio asset generation is required for this MVP.
 - `public/assets/companions/hatch_effect_p01.png`: 孵化演出用の汎用発光。
 - P01では10種類データを先行定義し、個別スプライト/アイコン/スキル演出はP02以降で差し替える。
 - 簡易Graphicsのみで完了扱いにせず、画面表示は上記PNGアセットを優先する。
+## MVP-P02 Companion Dino Assets
+
+- P02 adds individual transparent PNG assets for all 10 companion dinos.
+- Each companion has:
+  - `public/assets/companions/{id}_sprite_p02.png`
+  - `public/assets/companions/{id}_icon_p02.png`
+  - `public/assets/companions/{id}_effect_p02.png`
+- Added IDs: `raptorling`, `spino_pup`, `medic_saur`, `ptera_chick`, `tricera_calf`, `para_juvenile`, `stego_calf`, `rex_hatchling`, `compy_pack`, `exp_chaser`.
+- The P01 representative raptorling paths now resolve to the P02 raptorling assets in `asset_manifest.js`.
+- Contact sheet: `docs/assets/p02_companion_asset_contact.png`.
+- These are project PNG assets, not runtime-only placeholder Graphics.

@@ -1241,8 +1241,17 @@ export class ScreenManager {
     }
 
     const params = getDebugParams();
+    if (params.get('debugCompanionClear') === '1') {
+      this.saveManager.debugResetCompanion?.();
+    }
+
     if (params.get('debugCompanionEgg') === '1' || params.get('debugCompanionGrantEgg') === '1') {
       this.saveManager.grantCompanionEgg?.('debug');
+    }
+
+    if (params.get('debugCompanionIncubating') === '1') {
+      this.saveManager.grantCompanionEgg?.('debug');
+      this.saveManager.startCompanionEggIncubation?.({ instant: false });
     }
 
     const companionId = params.get('debugCompanionOwned');
