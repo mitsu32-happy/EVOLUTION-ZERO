@@ -1,0 +1,129 @@
+{
+  "cellSize": {
+    "sprite": 384,
+    "effect": 320
+  },
+  "assets": [
+    {
+      "id": "raptorling",
+      "kind": "sprite",
+      "path": "public/assets/companions/raptorling_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "raptorling",
+      "kind": "effect",
+      "path": "public/assets/companions/raptorling_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "spino_pup",
+      "kind": "sprite",
+      "path": "public/assets/companions/spino_pup_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "spino_pup",
+      "kind": "effect",
+      "path": "public/assets/companions/spino_pup_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "medic_saur",
+      "kind": "sprite",
+      "path": "public/assets/companions/medic_saur_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "medic_saur",
+      "kind": "effect",
+      "path": "public/assets/companions/medic_saur_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "sprite",
+      "path": "public/assets/companions/ptera_chick_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "effect",
+      "path": "public/assets/companions/ptera_chick_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "sprite",
+      "path": "public/assets/companions/tricera_calf_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "effect",
+      "path": "public/assets/companions/tricera_calf_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "sprite",
+      "path": "public/assets/companions/para_juvenile_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "effect",
+      "path": "public/assets/companions/para_juvenile_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "stego_calf",
+      "kind": "sprite",
+      "path": "public/assets/companions/stego_calf_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "stego_calf",
+      "kind": "effect",
+      "path": "public/assets/companions/stego_calf_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "sprite",
+      "path": "public/assets/companions/rex_hatchling_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "effect",
+      "path": "public/assets/companions/rex_hatchling_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "compy_pack",
+      "kind": "sprite",
+      "path": "public/assets/companions/compy_pack_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "compy_pack",
+      "kind": "effect",
+      "path": "public/assets/companions/compy_pack_effect_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "sprite",
+      "path": "public/assets/companions/exp_chaser_sprite_sheet_p04d.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "effect",
+      "path": "public/assets/companions/exp_chaser_effect_sheet_p04d.png",
+      "edgeRisks": []
+    }
+  ],
+  "contact": "docs/assets/p04d_companion_animation_contact.png"
+}

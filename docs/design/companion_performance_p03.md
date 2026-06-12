@@ -111,3 +111,22 @@ P04c adds sprite/effect sheets, but does not add new runtime entity lists.
 - Effect animation still lives inside the existing short-lived `companionEffects` lifecycle.
 - Existing `MAX_COMPANION_EFFECTS` and high-load suppression remain unchanged.
 - Release QA should confirm repeated action effects do not cause `companionEffects` or container children to grow.
+
+## MVP-P04d sheet performance note
+
+P04d increases companion sheet resolution and display size, but keeps runtime object counts unchanged.
+
+- Sprite sheets are larger: 384 x 384 cells.
+- Effect sheets are larger: 320 x 320 cells.
+- Companion sprite remains a single `Sprite` inside `companionView`.
+- Companion effects still use the existing `companionEffects` list and pool.
+- `MAX_COMPANION_EFFECTS` remains unchanged.
+- `performanceLoadSheddingLevel >= 2` still suppresses new companion effects.
+- P04d does not add companion projectiles, damage text, pickups, or save-state arrays.
+
+Performance QA priority after P04d:
+
+- Check all 10 companions with `debugCompanionId`.
+- Confirm larger sheets do not create missing texture or frame-slicing errors.
+- Confirm ZERO/ENDLESS high-density scenes do not show companion effect growth.
+- Confirm the larger companion display does not obscure warning guides or boss projectiles.

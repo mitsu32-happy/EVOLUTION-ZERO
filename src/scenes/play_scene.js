@@ -46,8 +46,8 @@ const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
 const MAX_COMPANION_EFFECTS = 24;
 const COMPANION_ACTION_DURATION = 0.46;
-const COMPANION_BASE_WIDTH = 104;
-const COMPANION_BASE_HEIGHT = 82;
+const COMPANION_BASE_WIDTH = 170;
+const COMPANION_BASE_HEIGHT = 134;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -2974,8 +2974,8 @@ export class PlayScene {
       this.companionDebugLabel,
     );
     this.applyCompanionPassiveBonuses();
-    this.companionPosition.x = this.player.position.x + 84;
-    this.companionPosition.y = this.player.position.y + 34;
+    this.companionPosition.x = this.player.position.x + 112;
+    this.companionPosition.y = this.player.position.y + 48;
     this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
@@ -3344,8 +3344,8 @@ export class PlayScene {
       ? this.clamp(1 - (this.companionActionTimer / actionDuration), 0, 1)
       : 0;
     const actionWave = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
-    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 48 + 84;
-    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 20 + 34;
+    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 60 + 112;
+    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 26 + 48;
     const targetX = this.player.position.x + orbitX;
     const targetY = this.player.position.y + orbitY;
     const follow = Math.min(1, delta * 5.4);
@@ -3569,7 +3569,7 @@ export class PlayScene {
     const effect = {
       age: 0,
       duration: options.duration ?? 0.38,
-      startScale: options.scale ?? 0.36,
+      startScale: options.scale ?? 0.52,
       kind: options.kind ?? companion?.type ?? 'support',
       tint: options.tint ?? 0xffffff,
       key: companion.effectAssetKey,

@@ -109,3 +109,20 @@ Required follow-up:
 
 - These are generated sheet variants derived from P04 art, not hand-authored frame-by-frame character animation.
 - Final release judgment still requires human visual QA in combat, especially for `compy_pack`, `ptera_chick`, and support companions.
+
+## P04d Supersession
+
+P04d supersedes the active runtime use of P04c sheets.
+
+Reason:
+
+- P04c sheets were still too small in real-device play.
+- Some action/move frames were too close to the cell edge.
+- The walking/flying motion difference was not strong enough for release-quality readability.
+
+Current active assets:
+
+- `public/assets/companions/{id}_sprite_sheet_p04d.png`
+- `public/assets/companions/{id}_effect_sheet_p04d.png`
+
+P04c assets remain on disk for comparison and rollback only.

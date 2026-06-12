@@ -81,3 +81,15 @@ P04c implements the next step of this plan:
 - `PlayScene` cuts frame textures from the loaded sheets and switches state by idle/move/action.
 
 See `docs/design/companion_animation_assets_p04c.md` for the asset list and mapping.
+
+## P04d Follow-Up
+
+P04d replaces the active P04c runtime sheets with larger regenerated sprite/effect sheets.
+
+- Sprite sheets: 384 x 384 cells, 4 columns x 3 rows.
+- Effect sheets: 320 x 320 cells, 4 columns x 1 row.
+- Move frames now include stronger walking/flying/floating deltas.
+- Runtime companion display baseline is increased for mobile visibility.
+- The normal guide ring remains hidden outside debug companion modes.
+
+See `docs/design/companion_animation_assets_p04d.md` for the active P04d asset mapping.

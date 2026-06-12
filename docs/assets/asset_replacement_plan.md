@@ -3751,3 +3751,20 @@ P04bでidle/follow/attack/heal/supportの軽量アニメーションまたは同
 - Contact sheet: `docs/assets/p04c_companion_animation_contact.png`
 - Generation report: `docs/assets/p04c_companion_animation_report.json`
 - Existing P04 still PNGs are preserved for comparison/rollback.
+
+## MVP-P04d Companion Animation Asset Regeneration
+
+P04d supersedes P04c for active runtime use.
+
+- New sprite sheets:
+  - `public/assets/companions/{id}_sprite_sheet_p04d.png`
+  - 4 columns x 3 rows, 384 x 384 per frame
+  - rows: `idle`, `move`, `action`
+- New effect sheets:
+  - `public/assets/companions/{id}_effect_sheet_p04d.png`
+  - 4 columns x 1 row, 320 x 320 per frame
+  - row: `active`
+- Contact sheet: `docs/assets/p04d_companion_animation_contact.png`
+- Generation report: `docs/assets/p04d_companion_animation_report.json`
+- P04d fixes P04c cell edge risk, improves move/action frame readability, and increases in-play companion visibility.
+- P04c assets remain available only for comparison/rollback.

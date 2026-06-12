@@ -94,3 +94,19 @@ Expected improvement:
 - Check boss fights where warning guides and boss effects are dense.
 - If readability is still weak, consider a very subtle outline shader/tint pass rather than further size growth.
 - If action timing is still unclear, tune action effect duration rather than base damage or AI.
+
+## P04d Follow-Up
+
+P04c.1 was still too small on real-device visual review, so P04d supersedes the P04c.1 runtime size.
+
+P04d changes:
+
+- sprite sheets regenerated at 384 x 384 cells
+- effect sheets regenerated at 320 x 320 cells
+- companion display baseline increased to 170 x 134
+- follow offset widened to keep the larger companion away from the player body
+- orbit spacing widened
+- default companion effect scale increased for clearer action feedback
+- normal guide ring remains hidden; debug-only guide remains available
+
+P04d keeps the P04c.1 principle of a dedicated companion scale baseline with per-companion variation, but the baseline is now intentionally much larger for mobile readability.

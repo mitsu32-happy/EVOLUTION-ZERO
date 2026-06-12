@@ -208,3 +208,21 @@ P04c adds generated animation sheets for all 10 companions.
 - PlayScene switches companion sprite frames by state and keeps P04b procedural motion as secondary polish.
 
 Detailed mapping: `docs/design/companion_animation_assets_p04c.md`.
+
+## MVP-P04d larger regenerated animation sheets
+
+P04d supersedes the active P04c companion animation sheets.
+
+- Active sprite sheets are now `public/assets/companions/{id}_sprite_sheet_p04d.png`.
+- Active effect sheets are now `public/assets/companions/{id}_effect_sheet_p04d.png`.
+- Sprite sheets use 384 x 384 cells with `idle`, `move`, and `action` rows.
+- Effect sheets use 320 x 320 cells with an `active` row.
+- The runtime companion display baseline is increased to 170 x 134.
+- Follow spacing is widened so the larger companion does not sit on top of the player.
+- Walking companions now have stronger alternating step cues in the move row.
+- `ptera_chick`, `compy_pack`, and `exp_chaser` use stronger flying, swarm, and floating/scan cues.
+- Normal guide/ring display remains off; debug-only guide display remains available.
+
+P04d keeps all existing companion ids, save data, ownership state, hatch flow, and behavior values unchanged.
+
+Detailed mapping: `docs/design/companion_animation_assets_p04d.md`.
