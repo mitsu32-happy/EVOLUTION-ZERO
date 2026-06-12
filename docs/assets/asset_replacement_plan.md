@@ -3728,3 +3728,11 @@ P04のicon/sprite/effectを継続利用しています。
 
 ただし、本リリース品質としては静止sprite中心の見え方が不足です。
 P04bでidle/follow/attack/heal/supportの軽量アニメーションまたは同等の演出強化が必要です。
+## MVP-P04b Companion Animation Pass
+
+- No new raster assets were generated.
+- P04b uses the existing production companion sprite/effect assets:
+  - `public/assets/companions/{id}_sprite_p04.png`
+  - `public/assets/companions/{id}_effect_p04.png`
+- Runtime animation is implemented in code through bob, tilt, squash/stretch, lunge, trail, aura, sonar, guard, shockwave, and support pulse overlays.
+- Future P04b/P08 polish may still generate true sprite sheets if procedural animation is not enough for final release quality.

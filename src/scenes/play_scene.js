@@ -45,6 +45,7 @@ const MAX_STAGE_GIMMICKS = 34;
 const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
 const MAX_COMPANION_EFFECTS = 24;
+const COMPANION_ACTION_DURATION = 0.46;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -59,6 +60,18 @@ const DEBUG_EVOLUTION_SKILLS = {
   hunting: ['homing_fang'],
   attack: ['shock_roar_wave'],
   zero: ['afterimage_claw', 'homing_fang', 'shock_roar_wave'],
+};
+const COMPANION_ANIMATION_PROFILES = {
+  raptorling: { scale: 1.04, bob: 3.8, bobSpeed: 7.5, tilt: 0.08, action: 'lunge', actionScale: 1.16, trail: 0xff776b },
+  spino_pup: { scale: 1.06, bob: 2.6, bobSpeed: 5.2, tilt: 0.05, action: 'waterShot', actionScale: 1.1, trail: 0x35d7ff },
+  medic_saur: { scale: 1.02, bob: 2.1, bobSpeed: 4.4, tilt: 0.035, action: 'healPulse', actionScale: 1.08, trail: 0x65e878 },
+  ptera_chick: { scale: 0.96, bob: 7.4, bobSpeed: 8.4, tilt: 0.12, action: 'airShot', actionScale: 1.12, trail: 0x9eeaff },
+  tricera_calf: { scale: 1.08, bob: 1.7, bobSpeed: 4.1, tilt: 0.035, action: 'guard', actionScale: 1.1, trail: 0x9ec8ff },
+  para_juvenile: { scale: 1.02, bob: 2.8, bobSpeed: 5.6, tilt: 0.06, action: 'sonar', actionScale: 1.08, trail: 0x35d7ff },
+  stego_calf: { scale: 1.08, bob: 2.2, bobSpeed: 4.8, tilt: 0.045, action: 'shockwave', actionScale: 1.12, trail: 0xffb04d },
+  rex_hatchling: { scale: 1.11, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
+  compy_pack: { scale: 0.94, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
+  exp_chaser: { scale: 0.98, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
 };
 const STAGE_BOUNDS = {
   left: -1500,
@@ -339,6 +352,8 @@ export class PlayScene {
     this.companionSprite = new Sprite(Texture.EMPTY);
     this.companionFallback = new Graphics();
     this.companionGlow = new Graphics();
+    this.companionTrail = new Graphics();
+    this.companionActionAura = new Graphics();
     this.companionDebugLabel = new Text({
       text: '',
       style: {
@@ -358,6 +373,13 @@ export class PlayScene {
     this.companionExpMultiplier = 1;
     this.companionLastAction = 'idle';
     this.companionLastTarget = '-';
+    this.companionActionTimer = 0;
+    this.companionActionDuration = COMPANION_ACTION_DURATION;
+    this.companionActionKind = 'idle';
+    this.companionActionTarget = null;
+    this.companionBaseScaleX = 1;
+    this.companionBaseScaleY = 1;
+    this.companionFacing = 1;
     this.activeCompanion = null;
     this.activeCompanionLevel = 1;
     this.vignette = new Graphics();
@@ -2928,9 +2950,18 @@ export class PlayScene {
     this.companionSprite.alpha = 1;
     this.companionFallback.visible = false;
     this.companionDebugLabel.visible = false;
+    this.companionTrail.clear();
+    this.companionActionAura.clear();
     this.companionDebugLabel.anchor.set(0.5, 1);
     this.companionDebugLabel.position.set(0, -42);
-    this.companionView.addChild(this.companionGlow, this.companionSprite, this.companionFallback, this.companionDebugLabel);
+    this.companionView.addChild(
+      this.companionTrail,
+      this.companionGlow,
+      this.companionSprite,
+      this.companionFallback,
+      this.companionActionAura,
+      this.companionDebugLabel,
+    );
     this.applyCompanionPassiveBonuses();
     this.companionPosition.x = this.player.position.x + 58;
     this.companionPosition.y = this.player.position.y + 20;
@@ -2952,6 +2983,8 @@ export class PlayScene {
       }
       this.companionSprite.width = 74;
       this.companionSprite.height = 58;
+      this.companionBaseScaleX = Math.abs(this.companionSprite.scale?.x || 1);
+      this.companionBaseScaleY = Math.abs(this.companionSprite.scale?.y || 1);
       this.companionSprite.visible = true;
       this.companionFallback.visible = false;
       this.updateCompanionDebugLabel('sprite');
@@ -2988,6 +3021,125 @@ export class PlayScene {
       .poly([-31, -6, -46, -13, -36, 4])
       .fill({ color: 0x0c343a, alpha: 0.9 });
     this.companionFallback.visible = !this.companionSprite.visible;
+  }
+
+  getCompanionAnimationProfile(companion = this.activeCompanion) {
+    if (!companion) {
+      return COMPANION_ANIMATION_PROFILES.raptorling;
+    }
+
+    return COMPANION_ANIMATION_PROFILES[companion.id]
+      ?? COMPANION_ANIMATION_PROFILES.raptorling;
+  }
+
+  triggerCompanionAction(kind = 'support', target = null, options = {}) {
+    if (!this.activeCompanion) {
+      return;
+    }
+
+    this.companionActionKind = kind;
+    this.companionActionTimer = options.duration ?? COMPANION_ACTION_DURATION;
+    this.companionActionDuration = this.companionActionTimer;
+    this.companionActionTarget = target && Number.isFinite(target.x) && Number.isFinite(target.y)
+      ? { x: target.x, y: target.y }
+      : null;
+
+    if (this.companionActionTarget) {
+      this.companionFacing = this.companionActionTarget.x >= this.companionPosition.x ? 1 : -1;
+    }
+  }
+
+  drawCompanionMotionOverlays(profile, actionProgress, moveIntensity) {
+    const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? profile.trail ?? 0x7cf7d4;
+    const trailColor = profile.trail ?? accent;
+    const actionAlpha = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
+    const debugBoost = getDebugFlag('debugCompanion') ? 1.18 : 1;
+
+    this.companionGlow
+      .clear()
+      .ellipse(0, 14, 30 + moveIntensity * 6, 9 + moveIntensity * 2)
+      .fill({ color: 0x000000, alpha: 0.3 })
+      .circle(0, -10, 27 + actionAlpha * 6)
+      .fill({ color: accent, alpha: (0.1 + actionAlpha * 0.13) * debugBoost })
+      .circle(0, -10, 32 + actionAlpha * 7)
+      .stroke({ color: accent, width: 1.2 + actionAlpha * 1.4, alpha: (0.28 + actionAlpha * 0.42) * debugBoost });
+
+    this.companionTrail.clear();
+    if (moveIntensity > 0.06 || actionAlpha > 0.05) {
+      const lineAlpha = Math.min(0.46, 0.12 + moveIntensity * 0.24 + actionAlpha * 0.2);
+      const length = 18 + moveIntensity * 22 + actionAlpha * 10;
+      const laneOffset = this.activeCompanion?.id === 'compy_pack' ? 8 : 5;
+      for (let index = 0; index < 3; index += 1) {
+        const y = -18 + index * laneOffset;
+        const x0 = -this.companionFacing * (8 + index * 4);
+        const x1 = -this.companionFacing * (length + index * 7);
+        this.companionTrail
+          .moveTo(x0, y)
+          .lineTo(x1, y + Math.sin(this.companionOrbitTime * 5 + index) * 2)
+          .stroke({ color: trailColor, width: 1.4, alpha: lineAlpha * (1 - index * 0.18) });
+      }
+    }
+
+    this.companionActionAura.clear();
+    if (actionAlpha <= 0) {
+      return;
+    }
+
+    const auraRadius = 22 + actionAlpha * 18;
+    const kind = this.companionActionKind || profile.action;
+    if (kind === 'healPulse') {
+      this.companionActionAura
+        .circle(0, -18, auraRadius * 0.72)
+        .stroke({ color: 0x65e878, width: 2.2, alpha: actionAlpha * 0.78 })
+        .circle(0, -18, auraRadius * 0.38)
+        .fill({ color: 0x65e878, alpha: actionAlpha * 0.12 });
+      return;
+    }
+
+    if (kind === 'guard') {
+      this.companionActionAura
+        .roundRect(-30, -47, 60, 44, 13)
+        .stroke({ color: 0x9ec8ff, width: 2.4, alpha: actionAlpha * 0.78 })
+        .roundRect(-24, -40, 48, 32, 10)
+        .fill({ color: 0x9ec8ff, alpha: actionAlpha * 0.1 });
+      return;
+    }
+
+    if (kind === 'sonar' || kind === 'expTrace') {
+      const lineCount = kind === 'expTrace' ? 4 : 3;
+      for (let index = 0; index < lineCount; index += 1) {
+        const radius = auraRadius + index * 9;
+        this.companionActionAura
+          .circle(0, -16, radius)
+          .stroke({ color: kind === 'expTrace' ? 0xd9b4ff : 0x35d7ff, width: 1.4, alpha: actionAlpha * (0.42 - index * 0.07) });
+      }
+      return;
+    }
+
+    if (kind === 'shockwave') {
+      this.companionActionAura
+        .ellipse(0, 2, auraRadius * 1.28, auraRadius * 0.44)
+        .stroke({ color: 0xffb04d, width: 2, alpha: actionAlpha * 0.72 });
+      return;
+    }
+
+    if (kind === 'swarmDash') {
+      for (let index = 0; index < 4; index += 1) {
+        const offset = (index - 1.5) * 9;
+        this.companionActionAura
+          .moveTo(-this.companionFacing * (12 + index * 3), -27 + offset)
+          .lineTo(this.companionFacing * (20 + index * 5), -18 + offset)
+          .stroke({ color: 0xff9f38, width: 2, alpha: actionAlpha * 0.68 });
+      }
+      return;
+    }
+
+    const biteColor = kind === 'heavyBite' ? 0xfff0b4 : kind === 'waterShot' ? 0x35d7ff : kind === 'airShot' ? 0x9eeaff : trailColor;
+    this.companionActionAura
+      .moveTo(this.companionFacing * 5, -18)
+      .lineTo(this.companionFacing * (auraRadius + 18), -30)
+      .lineTo(this.companionFacing * (auraRadius + 9), -12)
+      .stroke({ color: biteColor, width: kind === 'heavyBite' ? 3 : 2, alpha: actionAlpha * 0.76 });
   }
 
   updateCompanionDebugLabel(source = '') {
@@ -3034,6 +3186,7 @@ export class PlayScene {
       this.companionExpMultiplier = behavior.expMultiplier ?? 1.045;
       this.gameState.expGainMultiplier = (this.gameState.expGainMultiplier ?? 1) * this.companionExpMultiplier;
       this.companionLastAction = 'exp boost';
+      this.triggerCompanionAction('expTrace', this.player.position, { duration: 0.62 });
       this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 18, this.activeCompanion, { scale: 0.34, duration: 0.46 });
     }
   }
@@ -3082,26 +3235,51 @@ export class PlayScene {
     }
 
     this.companionOrbitTime += delta;
+    const profile = this.getCompanionAnimationProfile();
+    const actionDuration = Math.max(0.001, this.companionActionDuration || COMPANION_ACTION_DURATION);
+    const actionProgress = this.companionActionTimer > 0
+      ? this.clamp(1 - (this.companionActionTimer / actionDuration), 0, 1)
+      : 0;
+    const actionWave = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
     const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 38 + 58;
     const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 16 + 24;
     const targetX = this.player.position.x + orbitX;
     const targetY = this.player.position.y + orbitY;
     const follow = Math.min(1, delta * 5.4);
+    const previousX = this.companionPosition.x;
+    const previousY = this.companionPosition.y;
 
     this.companionPosition.x += (targetX - this.companionPosition.x) * follow;
     this.companionPosition.y += (targetY - this.companionPosition.y) * follow;
-    const bobY = this.companionPosition.y + Math.sin(this.companionOrbitTime * 4) * 2;
-    if (!this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, bobY)) {
+    const movement = Math.hypot(this.companionPosition.x - previousX, this.companionPosition.y - previousY);
+    const moveIntensity = this.clamp(movement / Math.max(1, delta * 280), 0, 1);
+    const bob = Math.sin(this.companionOrbitTime * profile.bobSpeed) * profile.bob;
+    const lungeX = this.companionActionTarget
+      ? this.clamp((this.companionActionTarget.x - this.companionPosition.x) / 160, -1, 1) * actionWave * 18
+      : this.companionFacing * actionWave * 10;
+    const lungeY = actionWave > 0 ? -Math.abs(actionWave) * (profile.action === 'airShot' ? 10 : 4) : 0;
+    const displayX = this.companionPosition.x + lungeX;
+    const displayY = this.companionPosition.y + bob + lungeY;
+    if (!this.setCompanionDisplayPosition(this.companionView, displayX, displayY)) {
       this.companionView.visible = false;
       return;
     }
 
     this.companionView.zIndex = this.companionPosition.y + 1.2;
     const flip = targetX >= this.player.position.x ? 1 : -1;
-    const spriteScaleY = Math.abs(this.companionSprite?.scale?.y || 1);
-    const spriteScaleX = Math.abs(this.companionSprite?.scale?.x || 1) * flip;
-    this.setCompanionDisplayScale(this.companionSprite, spriteScaleX, spriteScaleY);
-    this.setCompanionDisplayScale(this.companionFallback, flip, 1);
+    this.companionFacing = actionWave > 0 && this.companionActionTarget
+      ? (this.companionActionTarget.x >= this.companionPosition.x ? 1 : -1)
+      : flip;
+    const squash = Math.sin(this.companionOrbitTime * profile.bobSpeed + 0.7) * 0.022;
+    const actionScale = 1 + actionWave * ((profile.actionScale ?? 1.1) - 1);
+    const scaleX = this.companionBaseScaleX * profile.scale * actionScale * (1 + squash) * this.companionFacing;
+    const scaleY = this.companionBaseScaleY * profile.scale * (1 - squash * 0.55) * (1 + actionWave * 0.04);
+    this.setCompanionDisplayScale(this.companionSprite, scaleX, scaleY);
+    this.setCompanionDisplayScale(this.companionFallback, this.companionFacing * profile.scale * actionScale, profile.scale * (1 + actionWave * 0.04));
+    this.companionSprite.rotation = (Math.sin(this.companionOrbitTime * profile.bobSpeed * 0.72) * profile.tilt) + this.companionFacing * actionWave * 0.08;
+    this.companionFallback.rotation = this.companionSprite.rotation;
+    this.drawCompanionMotionOverlays(profile, actionProgress, moveIntensity);
+    this.companionActionTimer = Math.max(0, this.companionActionTimer - delta);
     this.updateCompanionDebugLabel(this.companionSprite.visible ? 'sprite' : 'fallback');
 
     this.updateCompanionSupportAttack(delta);
@@ -3151,6 +3329,18 @@ export class PlayScene {
       return;
     }
 
+    const primary = selectedTargets[0]?.enemy;
+    const actionKind = {
+      attack: 'lunge',
+      area: 'waterShot',
+      ranged: 'airShot',
+      swarm: 'swarmDash',
+      boss: 'heavyBite',
+      synergy: 'shockwave',
+    }[this.activeCompanion.type] ?? 'support';
+    this.triggerCompanionAction(actionKind, primary?.position, {
+      duration: this.activeCompanion.type === 'boss' ? 0.58 : 0.44,
+    });
     selectedTargets.forEach(({ enemy }) => {
       const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
       const damage = Math.round((behavior.damage ?? 8) * bossMultiplier);
@@ -3158,7 +3348,6 @@ export class PlayScene {
       this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
       this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
     });
-    const primary = selectedTargets[0]?.enemy;
     this.companionLastAction = `${this.activeCompanion.type} hit`;
     this.companionLastTarget = primary?.isBoss ? 'boss' : primary?.enemyType ?? 'enemy';
   }
@@ -3206,6 +3395,7 @@ export class PlayScene {
 
       const healed = this.gameState.healPlayer(behavior.heal ?? 3);
       if (healed > 0) {
+        this.triggerCompanionAction('healPulse', this.player.position, { duration: 0.7 });
         this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.38, duration: 0.48 });
         this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, `HP +${Math.round(healed)}`, 0x65e878);
         this.spawnPickupBurst(this.player.position.x, this.player.position.y, 2, 'heal');
@@ -3218,6 +3408,7 @@ export class PlayScene {
     if (this.activeCompanion.type === 'defense') {
       const duration = behavior.guardDuration ?? 0.45;
       this.gameState.invincibleTime = Math.max(this.gameState.invincibleTime, duration);
+      this.triggerCompanionAction('guard', this.player.position, { duration: 0.72 });
       this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.42, duration: 0.52 });
       this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, 'GUARD', 0x9ec8ff);
       this.companionLastAction = `guard ${duration.toFixed(2)}s`;
@@ -3258,6 +3449,7 @@ export class PlayScene {
     this.companionPickupEffectTimer = Math.max(0, this.companionPickupEffectTimer - delta);
     if (targetedCount > 0 && this.companionPickupEffectTimer <= 0) {
       this.companionPickupEffectTimer = effectCooldown;
+      this.triggerCompanionAction(expOnly ? 'expTrace' : 'sonar', this.companionPosition, { duration: 0.56 });
       this.spawnCompanionEffect(this.companionPosition.x, this.companionPosition.y - 18, this.activeCompanion, { scale: 0.32, duration: 0.42 });
     }
 
@@ -3273,6 +3465,8 @@ export class PlayScene {
       age: 0,
       duration: options.duration ?? 0.38,
       startScale: options.scale ?? 0.36,
+      kind: options.kind ?? companion?.type ?? 'support',
+      tint: options.tint ?? 0xffffff,
       key: companion.effectAssetKey,
       view: this.acquireCompanionEffectSprite(),
     };
@@ -3282,6 +3476,7 @@ export class PlayScene {
     effect.view.alpha = 0;
     effect.view.visible = false;
     effect.view.rotation = options.rotation ?? 0;
+    effect.view.tint = effect.tint;
     effect.view.scale.set(effect.startScale);
     this.trimCompanionEffects(MAX_COMPANION_EFFECTS - 1);
     this.effectLayer.addChild(effect.view);
@@ -3316,6 +3511,7 @@ export class PlayScene {
     sprite.visible = false;
     sprite.alpha = 0;
     sprite.rotation = 0;
+    sprite.tint = 0xffffff;
     sprite.scale.set(1);
     return sprite;
   }
@@ -3330,6 +3526,7 @@ export class PlayScene {
     sprite.visible = false;
     sprite.alpha = 0;
     sprite.rotation = 0;
+    sprite.tint = 0xffffff;
     sprite.scale.set(1);
 
     if (this.companionEffectPool.length < MAX_COMPANION_EFFECTS) {
@@ -3357,10 +3554,17 @@ export class PlayScene {
         return false;
       }
 
-      effect.view.alpha = Math.sin(progress * Math.PI) * 0.88;
-      const scale = effect.startScale * (0.82 + progress * 0.42);
+      const fade = Math.sin(progress * Math.PI);
+      effect.view.alpha = fade * (effect.kind === 'heal' || effect.kind === 'defense' ? 0.78 : 0.88);
+      const growth = ['pickup', 'exp'].includes(effect.kind)
+        ? 0.58
+        : ['area', 'synergy'].includes(effect.kind)
+          ? 0.72
+          : 0.42;
+      const scale = effect.startScale * (0.82 + progress * growth);
       effect.view.scale.set(scale);
-      effect.view.rotation += delta * 0.25;
+      const spinSpeed = effect.kind === 'swarm' ? 1.4 : effect.kind === 'boss' ? 0.12 : 0.25;
+      effect.view.rotation += delta * spinSpeed;
       return true;
     });
   }

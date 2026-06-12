@@ -182,3 +182,16 @@ P07bで修正した軽微問題:
 詳細:
 - `docs/design/companion_main_merge_final_qa_p07b.md`
 - `docs/design/companion_animation_gap_p07b.md`
+## MVP-P04b runtime animation pass
+
+P04b adds release-oriented runtime presentation improvements without changing companion save data, hatch flow, selection flow, or major AI balance.
+
+- PlayScene now assigns each companion a small animation profile.
+- Companions have visible idle bob, follow tilt, facing, squash/stretch, and action lunge/pulse behavior.
+- `raptorling`, `rex_hatchling`, and `compy_pack` emphasize fast or heavy attack motion.
+- `medic_saur`, `tricera_calf`, `para_juvenile`, and `exp_chaser` emphasize support pulses, guard aura, sonar rings, and EXP trace rings.
+- `spino_pup`, `ptera_chick`, and `stego_calf` emphasize ranged, water, air, and shockwave-style feedback.
+- P04 production sprite/effect PNGs remain the source assets.
+- Companion action effects remain capped by `MAX_COMPANION_EFFECTS` and pooled.
+
+See `docs/design/companion_animation_p04b.md` for the detailed animation matrix and follow-up QA requirements.

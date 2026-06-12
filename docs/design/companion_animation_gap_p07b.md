@@ -93,3 +93,23 @@ Medium priority before main:
 The companion feature should not merge to main as a release feature yet.
 
 The system foundation is strong, but animation and action feedback need a P04b-quality pass first.
+
+## P04b Update
+
+P04b added a lightweight runtime animation pass in `PlayScene`.
+
+Implemented:
+
+- per-companion animation profiles
+- idle bob and follow tilt
+- action lunge / pulse / guard / sonar / shockwave / swarm dash feedback
+- persistent trail and action aura layers inside `companionView`
+- role-specific action triggers for attack, heal, defense, pickup, and EXP support
+- continued use of P04 production sprite/effect PNGs and the capped companion effect pool
+
+P04b addresses the most obvious "static cutout sliding" issue, but final main integration still needs visual QA across all 10 companions, smartphone width, and ZERO/ENDLESS high-density scenes.
+
+Current provisional impact after P04b:
+
+- The animation gap is reduced.
+- Main integration should still be judged only after P04b visual QA, because the implementation remains procedural rather than authored sprite-sheet animation.
