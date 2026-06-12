@@ -165,3 +165,20 @@ main統合前に残す確認:
 - debugなしの新規セーブ自然導線で卵取得から孵化、セット、再起動後保存までを最終確認する。
 - 実プレイヤー相当の既存セーブがあれば、companion領域なしからホーム/研究/出撃が壊れないことを確認する。
 - ZERO/ENDLESSを攻撃型と補助型のお供で長めにソークする。
+
+## MVP-P07b final QA note
+
+P07bでは、main統合可否を「最低限動くか」ではなく「本リリース品質に達しているか」で判定しました。
+
+結論:
+- 現時点ではmain統合不可。
+- save互換、通常UIからPlayScene開始、卵/孵化/セット/強化の基盤は概ね機能しています。
+- ただし、companion本体が静止sprite中心で、攻撃/回復/補助の視覚フィードバックがまだ商品レベルには足りません。
+- ZERO/ENDLESSの3-5分ソークも、Game Overやレベルアップ選択停止により完全な長時間確認としては未完了です。
+
+P07bで修正した軽微問題:
+- `src/data/companion_dinos.js` のユーザー表示名、タイプ名、説明、効果サマリーの文字化け/表記崩れを修正しました。
+
+詳細:
+- `docs/design/companion_main_merge_final_qa_p07b.md`
+- `docs/design/companion_animation_gap_p07b.md`

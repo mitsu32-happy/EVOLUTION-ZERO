@@ -54,7 +54,7 @@ function withAssets(id, values) {
 export const COMPANION_DINOS = [
   withAssets('raptorling', {
     id: 'raptorling',
-    displayName: 'ラプトル幼体',
+    displayName: 'ラプトリング',
     species: 'ヴェロキラプトル幼体',
     type: 'attack',
     description: '近い敵を素早く切り裂く、雑魚処理向けのお供です。',
@@ -66,7 +66,7 @@ export const COMPANION_DINOS = [
   }),
   withAssets('spino_pup', {
     id: 'spino_pup',
-    displayName: 'スピノ幼体',
+    displayName: 'スピノパップ',
     species: 'スピノサウルス幼体',
     type: 'area',
     description: '水刃で複数の敵を巻き込み、中距離を制圧します。',
@@ -78,7 +78,7 @@ export const COMPANION_DINOS = [
   }),
   withAssets('medic_saur', {
     id: 'medic_saur',
-    displayName: 'メディサウルス',
+    displayName: 'メディサウル',
     species: '小型草食竜',
     type: 'heal',
     description: 'HPが減った時、一定間隔で少し回復します。',
@@ -90,7 +90,7 @@ export const COMPANION_DINOS = [
   }),
   withAssets('ptera_chick', {
     id: 'ptera_chick',
-    displayName: 'プテラ幼鳥',
+    displayName: 'プテラチック',
     species: 'プテラノドン幼鳥',
     type: 'ranged',
     description: '少し遠い敵へ小弾を飛ばし、接近前に牽制します。',
@@ -102,8 +102,8 @@ export const COMPANION_DINOS = [
   }),
   withAssets('tricera_calf', {
     id: 'tricera_calf',
-    displayName: 'トリケラ仔竜',
-    species: 'トリケラトプス仔竜',
+    displayName: 'トリケラカーフ',
+    species: 'トリケラトプス幼体',
     type: 'defense',
     description: '短時間の小バリアで、被弾リスクを軽減します。',
     skill: 'ガードホーン',
@@ -114,7 +114,7 @@ export const COMPANION_DINOS = [
   }),
   withAssets('para_juvenile', {
     id: 'para_juvenile',
-    displayName: 'パラサウロ幼体',
+    displayName: 'パラジュブナイル',
     species: 'パラサウロロフス幼体',
     type: 'pickup',
     description: '近くのEXPやアイテムを引き寄せ、回収を助けます。',
@@ -126,8 +126,8 @@ export const COMPANION_DINOS = [
   }),
   withAssets('stego_calf', {
     id: 'stego_calf',
-    displayName: 'ステゴ仔竜',
-    species: 'ステゴサウルス仔竜',
+    displayName: 'ステゴカーフ',
+    species: 'ステゴサウルス幼体',
     type: 'synergy',
     description: '周囲の敵へ小さなDNA衝撃を放つ、接近戦向けのお供です。',
     skill: 'シナジープレート',
@@ -138,7 +138,7 @@ export const COMPANION_DINOS = [
   }),
   withAssets('rex_hatchling', {
     id: 'rex_hatchling',
-    displayName: 'レックス幼体',
+    displayName: 'レックスハッチ',
     species: 'ティラノサウルス幼体',
     type: 'boss',
     description: 'ボスを優先して重い一撃を入れる、ボス特化のお供です。',

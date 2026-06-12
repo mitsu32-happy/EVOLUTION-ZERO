@@ -75,3 +75,13 @@ main統合前の推奨:
 - ZERO/ENDLESSで3-5分以上のソーク確認。
 - 攻撃型、回復型、回収型、EXP型をそれぞれ1回ずつ高密度戦闘で確認。
 - debugPerformanceの `companionEffects` / `companionEffectPoolFree` が増え続けないことを再確認。
+
+## MVP-P07b performance release-quality note
+
+P07bではZERO/ENDLESSの短時間確認でruntime error/warnやwhiteoutは確認されませんでした。
+
+ただし、3-5分の完全な高密度ソークは未完了です。
+- ZEROは自動操作で早期Game Overしました。
+- ENDLESSはレベルアップ選択で停止しました。
+
+main統合前には、レベルアップ自動選択または手動操作で3-5分以上のZERO/ENDLESS確認が必要です。

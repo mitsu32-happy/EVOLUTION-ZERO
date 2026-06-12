@@ -3720,3 +3720,11 @@ main統合前の確認対象:
 - P04 contact sheetとmanifest keyの再確認。
 - 10種類のicon/sprite/effectが404/fallbackにならないこと。
 - スマホ幅でiconが小さすぎないこと。
+
+## MVP-P07b asset / animation note
+
+P07bで新規生成したアセットはありません。
+P04のicon/sprite/effectを継続利用しています。
+
+ただし、本リリース品質としては静止sprite中心の見え方が不足です。
+P04bでidle/follow/attack/heal/supportの軽量アニメーションまたは同等の演出強化が必要です。
