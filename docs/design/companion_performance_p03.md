@@ -44,3 +44,19 @@
 ## P03結論
 
 現状の1体追従表示だけなら負荷は小さい。ただし、P05以降にeffect/projectileを本実装する際は、S01-S03の負荷制御に接続しないと高密度戦闘で再発リスクがある。
+
+## MVP-P05 パフォーマンス確認方針
+
+P05では、お供行動の実効果追加に伴い、以下の負荷制御を維持・追加しました。
+
+- お供effectはP04の `MAX_COMPANION_EFFECTS = 24` とSprite poolを継続使用します。
+- 高負荷時 (`performanceLoadSheddingLevel >= 2`) はお供effectを新規表示しません。
+- 回収補助は1フレームあたりのpickup処理数を通常48件、高負荷時24件までに制限します。
+- EXP補助はEXP pickupのみを対象にし、全pickupを常時処理しないようにしています。
+- debugCompanion表示に攻撃/補助cooldown、lastAction、lastTarget、active effect数を追加しました。
+- debugPerformanceでは既存の `companionEffects` / `companionEffectPoolFree` で増加傾向を確認します。
+
+P06以降の課題:
+
+- 専用projectileを導入する場合はS01-S03のprojectile上限管理へ接続する。
+- お供攻撃のdamage popup間引き条件を、高密度戦闘でさらに調整する。

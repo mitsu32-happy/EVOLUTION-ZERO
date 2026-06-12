@@ -14,6 +14,7 @@ import {
   COMPANION_TYPES,
   getCompanionById,
   getCompanionEffectSummary,
+  getCompanionScaledBehavior,
 } from '../data/companion_dinos.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
 import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
@@ -355,6 +356,8 @@ export class PlayScene {
     this.companionUtilityTimer = 0;
     this.companionMoveSpeedBonus = 0;
     this.companionExpMultiplier = 1;
+    this.companionLastAction = 'idle';
+    this.companionLastTarget = '-';
     this.activeCompanion = null;
     this.activeCompanionLevel = 1;
     this.vignette = new Graphics();
@@ -2998,7 +3001,15 @@ export class PlayScene {
     const y = Math.round(this.companionPosition.y);
     const spriteVisible = this.companionSprite?.visible ? 'on' : 'off';
     const fallbackVisible = this.companionFallback?.visible ? 'on' : 'off';
-    this.companionDebugLabel.text = `${this.activeCompanion.id}\n${source} s:${spriteVisible} f:${fallbackVisible}\n${x},${y}`;
+    const attackCooldown = Math.max(0, this.companionAttackTimer ?? 0).toFixed(1);
+    const utilityCooldown = Math.max(0, this.companionUtilityTimer ?? 0).toFixed(1);
+    this.companionDebugLabel.text = [
+      `${this.activeCompanion.id} Lv${this.activeCompanionLevel}`,
+      `${source} s:${spriteVisible} f:${fallbackVisible}`,
+      `cd ${attackCooldown}/${utilityCooldown} fx ${this.companionEffects?.length ?? 0}`,
+      `${this.companionLastAction ?? 'idle'} ${this.companionLastTarget ?? '-'}`,
+      `${x},${y}`,
+    ].join('\n');
   }
 
   applyCompanionPassiveBonuses() {
@@ -3017,18 +3028,12 @@ export class PlayScene {
     }
 
     const level = this.activeCompanionLevel;
-    const behavior = this.activeCompanion.behavior ?? {};
-
-    if (this.activeCompanion.type === 'speed') {
-      const multiplier = behavior.speedMultiplier ?? 1.025;
-      this.companionMoveSpeedBonus = Math.round(this.player.moveSpeed * (multiplier + level * 0.004 - 1));
-      this.player.moveSpeed += this.companionMoveSpeedBonus;
-      this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 18, this.activeCompanion, { scale: 0.34, duration: 0.46 });
-    }
+    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, level) ?? this.activeCompanion.behavior ?? {};
 
     if (this.activeCompanion.type === 'exp') {
-      this.companionExpMultiplier = behavior.expMultiplier + level * 0.006;
+      this.companionExpMultiplier = behavior.expMultiplier ?? 1.045;
       this.gameState.expGainMultiplier = (this.gameState.expGainMultiplier ?? 1) * this.companionExpMultiplier;
+      this.companionLastAction = 'exp boost';
       this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 18, this.activeCompanion, { scale: 0.34, duration: 0.46 });
     }
   }
@@ -3104,7 +3109,7 @@ export class PlayScene {
   }
 
   updateCompanionSupportAttack(delta) {
-    if (!this.activeCompanion || !['attack', 'area', 'swarm', 'boss', 'synergy'].includes(this.activeCompanion.type)) {
+    if (!this.activeCompanion || !['attack', 'area', 'ranged', 'swarm', 'boss', 'synergy'].includes(this.activeCompanion.type)) {
       return;
     }
 
@@ -3113,16 +3118,17 @@ export class PlayScene {
       return;
     }
 
-    const behavior = this.activeCompanion.behavior ?? {};
-    const interval = Math.max(1.05, (behavior.interval ?? 2.4) - this.activeCompanionLevel * 0.16);
+    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionLevel) ?? this.activeCompanion.behavior ?? {};
+    const interval = Math.max(0.85, behavior.interval ?? 2.4);
     const range = behavior.range ?? (this.activeCompanion.type === 'boss' ? 260 : 205);
+    const minRange = behavior.minRange ?? 0;
     const targets = this.enemies
       .filter((enemy) => !enemy.isDead)
       .map((enemy) => ({
         enemy,
         distance: CollisionSystem.distanceSquared(this.companionPosition, enemy.position),
       }))
-      .filter((entry) => entry.distance <= range * range)
+      .filter((entry) => entry.distance <= range * range && entry.distance >= minRange * minRange)
       .sort((a, b) => {
         if (this.activeCompanion.type === 'boss') {
           return Number(Boolean(b.enemy.isBoss)) - Number(Boolean(a.enemy.isBoss)) || a.distance - b.distance;
@@ -3130,6 +3136,10 @@ export class PlayScene {
 
         if (this.activeCompanion.type === 'swarm') {
           return (a.enemy.hp ?? 99999) - (b.enemy.hp ?? 99999) || a.distance - b.distance;
+        }
+
+        if (this.activeCompanion.type === 'ranged') {
+          return b.distance - a.distance;
         }
 
         return a.distance - b.distance;
@@ -3143,11 +3153,14 @@ export class PlayScene {
 
     selectedTargets.forEach(({ enemy }) => {
       const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
-      const damage = Math.round(((behavior.damage ?? 8) + this.activeCompanionLevel * 3) * bossMultiplier);
+      const damage = Math.round((behavior.damage ?? 8) * bossMultiplier);
       enemy.takeDamage?.(damage);
       this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
       this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
     });
+    const primary = selectedTargets[0]?.enemy;
+    this.companionLastAction = `${this.activeCompanion.type} hit`;
+    this.companionLastTarget = primary?.isBoss ? 'boss' : primary?.enemyType ?? 'enemy';
   }
 
   updateCompanionUtility(delta) {
@@ -3155,27 +3168,18 @@ export class PlayScene {
       return;
     }
 
-    const behavior = this.activeCompanion.behavior ?? {};
-    const level = this.activeCompanionLevel;
+    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionLevel) ?? this.activeCompanion.behavior ?? {};
 
     if (this.activeCompanion.type === 'pickup') {
-      const radius = (behavior.pickupRadius ?? 135) + level * 12;
-      let targetedCount = 0;
-      this.pickups.forEach((pickup) => {
-        if (pickup.isCollected || pickup.type === 'companion_egg') {
-          return;
-        }
+      const targetedCount = this.applyCompanionPickupAssist(behavior, delta);
+      this.companionLastAction = targetedCount > 0 ? `pickup ${targetedCount}` : 'pickup scan';
+      return;
+    }
 
-        const distanceSquared = CollisionSystem.distanceSquared(this.companionPosition, pickup.position);
-        if (distanceSquared <= radius * radius) {
-          pickup.targeted = true;
-          targetedCount += 1;
-        }
-      });
-      this.companionPickupEffectTimer = Math.max(0, this.companionPickupEffectTimer - delta);
-      if (targetedCount > 0 && this.companionPickupEffectTimer <= 0) {
-        this.companionPickupEffectTimer = 1.05;
-        this.spawnCompanionEffect(this.companionPosition.x, this.companionPosition.y - 18, this.activeCompanion, { scale: 0.32, duration: 0.42 });
+    if (this.activeCompanion.type === 'exp') {
+      const targetedCount = this.applyCompanionPickupAssist(behavior, delta, { expOnly: true, effectCooldown: 1.45 });
+      if (targetedCount > 0) {
+        this.companionLastAction = `exp pull ${targetedCount}`;
       }
       return;
     }
@@ -3189,25 +3193,75 @@ export class PlayScene {
       return;
     }
 
-    const interval = Math.max(5.2, (behavior.interval ?? 10) - level * 0.35);
+    const interval = Math.max(5.2, behavior.interval ?? 10);
     this.companionUtilityTimer = interval;
 
     if (this.activeCompanion.type === 'heal') {
-      const healed = this.gameState.healPlayer((behavior.heal ?? 3) + level);
+      const hpRatio = this.gameState.playerHp / Math.max(1, this.gameState.playerMaxHp);
+      if (hpRatio > (behavior.threshold ?? 0.86)) {
+        this.companionUtilityTimer = Math.min(this.companionUtilityTimer, 1.2);
+        this.companionLastAction = 'heal wait';
+        return;
+      }
+
+      const healed = this.gameState.healPlayer(behavior.heal ?? 3);
       if (healed > 0) {
         this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.38, duration: 0.48 });
         this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, `HP +${Math.round(healed)}`, 0x65e878);
         this.spawnPickupBurst(this.player.position.x, this.player.position.y, 2, 'heal');
+        this.companionLastAction = `heal ${Math.round(healed)}`;
+        this.companionLastTarget = 'player';
       }
       return;
     }
 
     if (this.activeCompanion.type === 'defense') {
-      const duration = (behavior.guardDuration ?? 0.45) + level * 0.05;
+      const duration = behavior.guardDuration ?? 0.45;
       this.gameState.invincibleTime = Math.max(this.gameState.invincibleTime, duration);
       this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.42, duration: 0.52 });
       this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, 'GUARD', 0x9ec8ff);
+      this.companionLastAction = `guard ${duration.toFixed(2)}s`;
+      this.companionLastTarget = 'player';
     }
+  }
+
+  applyCompanionPickupAssist(behavior, delta, options = {}) {
+    const { expOnly = false, effectCooldown = 1.05 } = options;
+    const radius = behavior.pickupRadius ?? 135;
+    const pullMultiplier = behavior.pullMultiplier ?? 1.12;
+    const maxProcess = this.performanceLoadSheddingLevel >= 1 ? 24 : 48;
+    let targetedCount = 0;
+    let processedCount = 0;
+
+    for (const pickup of this.pickups) {
+      if (!pickup || pickup.isCollected || pickup.type === 'companion_egg') {
+        continue;
+      }
+
+      if (expOnly && pickup.type !== 'exp') {
+        continue;
+      }
+
+      processedCount += 1;
+      if (processedCount > maxProcess) {
+        break;
+      }
+
+      const distanceSquared = CollisionSystem.distanceSquared(this.companionPosition, pickup.position);
+      if (distanceSquared <= radius * radius) {
+        pickup.targeted = true;
+        pickup.pullSpeed = Math.max(pickup.pullSpeed ?? 280, Math.round(280 * pullMultiplier));
+        targetedCount += 1;
+      }
+    }
+
+    this.companionPickupEffectTimer = Math.max(0, this.companionPickupEffectTimer - delta);
+    if (targetedCount > 0 && this.companionPickupEffectTimer <= 0) {
+      this.companionPickupEffectTimer = effectCooldown;
+      this.spawnCompanionEffect(this.companionPosition.x, this.companionPosition.y - 18, this.activeCompanion, { scale: 0.32, duration: 0.42 });
+    }
+
+    return targetedCount;
   }
 
   spawnCompanionEffect(x, y, companion = this.activeCompanion, options = {}) {

@@ -3686,3 +3686,14 @@ No new image/audio asset generation is required for this MVP.
 - Contact sheet: `docs/assets/p04_companion_asset_contact.png`.
 - Generation report: `docs/assets/p04_companion_asset_report.json`.
 - P04 connects companion `effectAssetKey` in PlayScene with capped/pool-managed short-lived Sprite effects.
+
+## MVP-P05 お供恐竜行動アセット利用
+
+P05ではP04で追加した10種類の `effect` PNGを、各お供の行動時に接続しました。
+
+- 攻撃型/範囲型/遠距離型/雑魚処理型/ボス特化型/シナジー補助型: 命中位置へeffectを表示。
+- 回復型: プレイヤー位置に回復effectを表示。
+- 防御型: プレイヤー位置にバリアeffectを表示。
+- 回収型/EXP補助型: お供位置に吸引/補助effectを表示。
+
+今回は新規アセット生成は行っていません。P04アセットを本挙動へ接続する作業に限定しています。
