@@ -101,3 +101,13 @@ Follow-up performance QA:
 - Confirm `companionEffects` does not grow during ZERO/ENDLESS.
 - Confirm trail/aura redraw does not produce container child growth.
 - Confirm all 10 companion animation profiles remain visible under load without causing whiteout/freeze.
+
+## MVP-P04c sheet performance note
+
+P04c adds sprite/effect sheets, but does not add new runtime entity lists.
+
+- Companion sprite frames are Pixi sub-textures cut from the loaded P04c sheet.
+- Companion effect frames are Pixi sub-textures cut from the loaded P04c effect sheet.
+- Effect animation still lives inside the existing short-lived `companionEffects` lifecycle.
+- Existing `MAX_COMPANION_EFFECTS` and high-load suppression remain unchanged.
+- Release QA should confirm repeated action effects do not cause `companionEffects` or container children to grow.

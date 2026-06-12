@@ -3736,3 +3736,18 @@ P04bでidle/follow/attack/heal/supportの軽量アニメーションまたは同
   - `public/assets/companions/{id}_effect_p04.png`
 - Runtime animation is implemented in code through bob, tilt, squash/stretch, lunge, trail, aura, sonar, guard, shockwave, and support pulse overlays.
 - Future P04b/P08 polish may still generate true sprite sheets if procedural animation is not enough for final release quality.
+
+## MVP-P04c Companion Animation Assets
+
+- P04c adds generated transparent PNG sheets derived from the P04 production companion art.
+- New sprite sheets:
+  - `public/assets/companions/{id}_sprite_sheet_p04c.png`
+  - 4 columns x 3 rows, 320 x 320 per frame
+  - rows: `idle`, `move`, `action`
+- New effect sheets:
+  - `public/assets/companions/{id}_effect_sheet_p04c.png`
+  - 4 columns x 1 row, 256 x 256 per frame
+  - row: `active`
+- Contact sheet: `docs/assets/p04c_companion_animation_contact.png`
+- Generation report: `docs/assets/p04c_companion_animation_report.json`
+- Existing P04 still PNGs are preserved for comparison/rollback.

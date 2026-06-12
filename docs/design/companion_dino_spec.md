@@ -195,3 +195,16 @@ P04b adds release-oriented runtime presentation improvements without changing co
 - Companion action effects remain capped by `MAX_COMPANION_EFFECTS` and pooled.
 
 See `docs/design/companion_animation_p04b.md` for the detailed animation matrix and follow-up QA requirements.
+
+## MVP-P04c animation assets
+
+P04c adds generated animation sheets for all 10 companions.
+
+- Sprite sheets: `public/assets/companions/{id}_sprite_sheet_p04c.png`
+- Effect sheets: `public/assets/companions/{id}_effect_sheet_p04c.png`
+- Each sprite sheet has 3 state rows: `idle`, `move`, `action`.
+- Each effect sheet has an `active` row.
+- Existing companion asset keys are reused, so save data and companion definitions do not change.
+- PlayScene switches companion sprite frames by state and keeps P04b procedural motion as secondary polish.
+
+Detailed mapping: `docs/design/companion_animation_assets_p04c.md`.

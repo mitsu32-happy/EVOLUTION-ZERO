@@ -70,3 +70,14 @@ P04b substantially reduces the static-sprite impression, but full product polish
 - stronger pack readability for `compy_pack`
 - projectile-like readable travel feedback for `spino_pup` and `ptera_chick`
 - final mobile visual QA before main integration
+
+## P04c Follow-Up
+
+P04c implements the next step of this plan:
+
+- 10 generated companion sprite sheets with `idle` / `move` / `action` rows.
+- 10 generated companion effect sheets with animated `active` frames.
+- `asset_manifest.js` now points the existing companion sprite/effect keys to the P04c sheets.
+- `PlayScene` cuts frame textures from the loaded sheets and switches state by idle/move/action.
+
+See `docs/design/companion_animation_assets_p04c.md` for the asset list and mapping.

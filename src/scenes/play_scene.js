@@ -380,6 +380,10 @@ export class PlayScene {
     this.companionBaseScaleX = 1;
     this.companionBaseScaleY = 1;
     this.companionFacing = 1;
+    this.companionAnimationTextures = null;
+    this.companionAnimationState = 'idle';
+    this.companionAnimationFrame = 0;
+    this.companionAnimationTimer = 0;
     this.activeCompanion = null;
     this.activeCompanionLevel = 1;
     this.vignette = new Graphics();
@@ -601,6 +605,7 @@ export class PlayScene {
     this.companionEffects = [];
     this.companionEffectPool = [];
     this.companionEffectTextureCache = new Map();
+    this.companionEffectAnimationCache = new Map();
     this.companionPickupEffectTimer = 0;
     this.debugStatsTimer = 0;
     this.debugFpsEstimate = 0;
@@ -2948,6 +2953,10 @@ export class PlayScene {
     this.companionView.sortableChildren = true;
     this.companionSprite.visible = false;
     this.companionSprite.alpha = 1;
+    this.companionAnimationTextures = null;
+    this.companionAnimationState = 'idle';
+    this.companionAnimationFrame = 0;
+    this.companionAnimationTimer = 0;
     this.companionFallback.visible = false;
     this.companionDebugLabel.visible = false;
     this.companionTrail.clear();
@@ -2977,7 +2986,9 @@ export class PlayScene {
         return;
       }
 
-      this.companionSprite.texture = texture;
+      const item = this.assetLoader?.getItem?.(companion.assetKey);
+      this.companionAnimationTextures = this.createCompanionAnimationTextures(texture, item?.meta);
+      this.companionSprite.texture = this.companionAnimationTextures?.idle?.[0] ?? texture;
       if (this.companionSprite.anchor?.set) {
         this.companionSprite.anchor.set(0.5, 0.72);
       }
@@ -3030,6 +3041,82 @@ export class PlayScene {
 
     return COMPANION_ANIMATION_PROFILES[companion.id]
       ?? COMPANION_ANIMATION_PROFILES.raptorling;
+  }
+
+  createCompanionAnimationTextures(texture, meta = {}) {
+    const sheet = meta?.sheet;
+    const columns = sheet?.columns ?? 0;
+    const rows = sheet?.rows ?? 0;
+    const frameWidth = sheet?.frameWidth ?? 0;
+    const frameHeight = sheet?.frameHeight ?? 0;
+    const textureWidth = texture?.width ?? texture?.source?.width ?? 0;
+    const textureHeight = texture?.height ?? texture?.source?.height ?? 0;
+    const canAnimate = meta?.spriteSheet === true
+      && columns > 0
+      && rows > 0
+      && frameWidth > 0
+      && frameHeight > 0
+      && texture?.source
+      && textureWidth >= columns * frameWidth
+      && textureHeight >= rows * frameHeight;
+
+    if (!canAnimate) {
+      return null;
+    }
+
+    const makeFrames = (animationName, fallbackRow) => {
+      const animation = meta.animations?.[animationName] ?? {};
+      const row = Math.max(0, Math.min(rows - 1, animation.row ?? fallbackRow));
+      const frameIndexes = Array.isArray(animation.frames) && animation.frames.length > 0
+        ? animation.frames
+        : Array.from({ length: columns }, (_, index) => index);
+      const textures = frameIndexes
+        .map((frameIndex) => Math.max(0, Math.min(columns - 1, Number(frameIndex) || 0)))
+        .map((column) => new Texture({
+          source: texture.source,
+          frame: new Rectangle(
+            column * frameWidth,
+            row * frameHeight,
+            frameWidth,
+            frameHeight,
+          ),
+        }));
+
+      return {
+        textures,
+        fps: animation.fps ?? (animationName === 'action' ? 12 : animationName === 'move' ? 8 : 5),
+      };
+    };
+
+    return {
+      idle: makeFrames('idle', 0),
+      move: makeFrames('move', 1),
+      action: makeFrames('action', 2),
+    };
+  }
+
+  updateCompanionSpriteAnimation(state, delta) {
+    if (!this.companionAnimationTextures?.[state]?.textures?.length || !this.companionSprite?.visible) {
+      return;
+    }
+
+    if (this.companionAnimationState !== state) {
+      this.companionAnimationState = state;
+      this.companionAnimationFrame = 0;
+      this.companionAnimationTimer = 0;
+      this.companionSprite.texture = this.companionAnimationTextures[state].textures[0];
+      return;
+    }
+
+    const animation = this.companionAnimationTextures[state];
+    const frameDuration = 1 / Math.max(1, animation.fps ?? 8);
+    this.companionAnimationTimer += delta;
+
+    while (this.companionAnimationTimer >= frameDuration) {
+      this.companionAnimationTimer -= frameDuration;
+      this.companionAnimationFrame = (this.companionAnimationFrame + 1) % animation.textures.length;
+      this.companionSprite.texture = animation.textures[this.companionAnimationFrame];
+    }
   }
 
   triggerCompanionAction(kind = 'support', target = null, options = {}) {
@@ -3253,6 +3340,7 @@ export class PlayScene {
     this.companionPosition.y += (targetY - this.companionPosition.y) * follow;
     const movement = Math.hypot(this.companionPosition.x - previousX, this.companionPosition.y - previousY);
     const moveIntensity = this.clamp(movement / Math.max(1, delta * 280), 0, 1);
+    const animationState = actionWave > 0.02 ? 'action' : moveIntensity > 0.08 ? 'move' : 'idle';
     const bob = Math.sin(this.companionOrbitTime * profile.bobSpeed) * profile.bob;
     const lungeX = this.companionActionTarget
       ? this.clamp((this.companionActionTarget.x - this.companionPosition.x) / 160, -1, 1) * actionWave * 18
@@ -3278,6 +3366,7 @@ export class PlayScene {
     this.setCompanionDisplayScale(this.companionFallback, this.companionFacing * profile.scale * actionScale, profile.scale * (1 + actionWave * 0.04));
     this.companionSprite.rotation = (Math.sin(this.companionOrbitTime * profile.bobSpeed * 0.72) * profile.tilt) + this.companionFacing * actionWave * 0.08;
     this.companionFallback.rotation = this.companionSprite.rotation;
+    this.updateCompanionSpriteAnimation(animationState, delta);
     this.drawCompanionMotionOverlays(profile, actionProgress, moveIntensity);
     this.companionActionTimer = Math.max(0, this.companionActionTimer - delta);
     this.updateCompanionDebugLabel(this.companionSprite.visible ? 'sprite' : 'fallback');
@@ -3468,6 +3557,10 @@ export class PlayScene {
       kind: options.kind ?? companion?.type ?? 'support',
       tint: options.tint ?? 0xffffff,
       key: companion.effectAssetKey,
+      animationTextures: null,
+      animationFrame: 0,
+      animationTimer: 0,
+      animationFps: 12,
       view: this.acquireCompanionEffectSprite(),
     };
 
@@ -3484,7 +3577,7 @@ export class PlayScene {
 
     const cachedTexture = this.companionEffectTextureCache.get(effect.key);
     if (cachedTexture) {
-      effect.view.texture = cachedTexture;
+      this.applyCompanionEffectTexture(effect, cachedTexture);
       effect.view.visible = true;
       effect.view.alpha = 0.9;
       return;
@@ -3496,13 +3589,78 @@ export class PlayScene {
       }
 
       this.companionEffectTextureCache.set(effect.key, texture);
-      effect.view.texture = texture;
+      this.applyCompanionEffectTexture(effect, texture);
       effect.view.visible = true;
       effect.view.alpha = 0.9;
     }).catch(() => {
       this.releaseCompanionEffectSprite(effect.view);
       this.companionEffects = this.companionEffects.filter((entry) => entry !== effect);
     });
+  }
+
+  applyCompanionEffectTexture(effect, texture) {
+    if (!effect || !texture) {
+      return;
+    }
+
+    const animation = this.getCompanionEffectAnimation(effect.key, texture);
+    effect.animationTextures = animation?.textures ?? null;
+    effect.animationFps = animation?.fps ?? 12;
+    effect.animationFrame = 0;
+    effect.animationTimer = 0;
+    effect.view.texture = effect.animationTextures?.[0] ?? texture;
+  }
+
+  getCompanionEffectAnimation(key, texture) {
+    if (this.companionEffectAnimationCache.has(key)) {
+      return this.companionEffectAnimationCache.get(key);
+    }
+
+    const item = this.assetLoader?.getItem?.(key);
+    const meta = item?.meta ?? {};
+    const sheet = meta.sheet ?? {};
+    const columns = sheet.columns ?? 0;
+    const rows = sheet.rows ?? 0;
+    const frameWidth = sheet.frameWidth ?? 0;
+    const frameHeight = sheet.frameHeight ?? 0;
+    const textureWidth = texture?.width ?? texture?.source?.width ?? 0;
+    const textureHeight = texture?.height ?? texture?.source?.height ?? 0;
+    const canAnimate = meta.spriteSheet === true
+      && columns > 0
+      && rows > 0
+      && frameWidth > 0
+      && frameHeight > 0
+      && texture?.source
+      && textureWidth >= columns * frameWidth
+      && textureHeight >= rows * frameHeight;
+
+    if (!canAnimate) {
+      this.companionEffectAnimationCache.set(key, null);
+      return null;
+    }
+
+    const animation = meta.animations?.active ?? {};
+    const row = Math.max(0, Math.min(rows - 1, animation.row ?? 0));
+    const frameIndexes = Array.isArray(animation.frames) && animation.frames.length > 0
+      ? animation.frames
+      : Array.from({ length: columns }, (_, index) => index);
+    const textures = frameIndexes
+      .map((frameIndex) => Math.max(0, Math.min(columns - 1, Number(frameIndex) || 0)))
+      .map((column) => new Texture({
+        source: texture.source,
+        frame: new Rectangle(
+          column * frameWidth,
+          row * frameHeight,
+          frameWidth,
+          frameHeight,
+        ),
+      }));
+    const result = {
+      textures,
+      fps: animation.fps ?? 12,
+    };
+    this.companionEffectAnimationCache.set(key, result);
+    return result;
   }
 
   acquireCompanionEffectSprite() {
@@ -3565,6 +3723,15 @@ export class PlayScene {
       effect.view.scale.set(scale);
       const spinSpeed = effect.kind === 'swarm' ? 1.4 : effect.kind === 'boss' ? 0.12 : 0.25;
       effect.view.rotation += delta * spinSpeed;
+      if (effect.animationTextures?.length > 1) {
+        const frameDuration = 1 / Math.max(1, effect.animationFps ?? 12);
+        effect.animationTimer += delta;
+        while (effect.animationTimer >= frameDuration) {
+          effect.animationTimer -= frameDuration;
+          effect.animationFrame = Math.min(effect.animationTextures.length - 1, effect.animationFrame + 1);
+          effect.view.texture = effect.animationTextures[effect.animationFrame];
+        }
+      }
       return true;
     });
   }

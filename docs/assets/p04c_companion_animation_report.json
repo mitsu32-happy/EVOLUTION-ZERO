@@ -1,0 +1,162 @@
+{
+  "generated": [
+    {
+      "id": "raptorling",
+      "spriteSheet": "public/assets/companions/raptorling_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/raptorling_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "claw"
+    },
+    {
+      "id": "spino_pup",
+      "spriteSheet": "public/assets/companions/spino_pup_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/spino_pup_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "water"
+    },
+    {
+      "id": "medic_saur",
+      "spriteSheet": "public/assets/companions/medic_saur_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/medic_saur_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "heal"
+    },
+    {
+      "id": "ptera_chick",
+      "spriteSheet": "public/assets/companions/ptera_chick_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/ptera_chick_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "air"
+    },
+    {
+      "id": "tricera_calf",
+      "spriteSheet": "public/assets/companions/tricera_calf_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/tricera_calf_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "guard"
+    },
+    {
+      "id": "para_juvenile",
+      "spriteSheet": "public/assets/companions/para_juvenile_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/para_juvenile_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "sonar"
+    },
+    {
+      "id": "stego_calf",
+      "spriteSheet": "public/assets/companions/stego_calf_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/stego_calf_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "shock"
+    },
+    {
+      "id": "rex_hatchling",
+      "spriteSheet": "public/assets/companions/rex_hatchling_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/rex_hatchling_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "bite"
+    },
+    {
+      "id": "compy_pack",
+      "spriteSheet": "public/assets/companions/compy_pack_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/compy_pack_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "swarm"
+    },
+    {
+      "id": "exp_chaser",
+      "spriteSheet": "public/assets/companions/exp_chaser_sprite_sheet_p04c.png",
+      "effectSheet": "public/assets/companions/exp_chaser_effect_sheet_p04c.png",
+      "frameWidth": 320,
+      "frameHeight": 320,
+      "effectFrameWidth": 256,
+      "effectFrameHeight": 256,
+      "states": [
+        "idle",
+        "move",
+        "action"
+      ],
+      "roleEffect": "exp"
+    }
+  ],
+  "source": "P04 production sprites/effects",
+  "sheet": {
+    "spriteColumns": 4,
+    "spriteRows": 3,
+    "effectColumns": 4,
+    "effectRows": 1
+  },
+  "contactSheet": "docs/assets/p04c_companion_animation_contact.png"
+}
