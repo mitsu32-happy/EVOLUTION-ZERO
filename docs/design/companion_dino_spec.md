@@ -148,3 +148,20 @@ P06でのUI改善:
 
 - `debugCompanionHatchReady=1`: 受け取り可能な孵化状態を作る。
 - `debugCompanionAllOwned=1`: 全お供所持状態を作る。
+
+## MVP-P07 総合QA / main統合準備
+
+P07ではmain統合前の総合確認として、10種類すべての `debugCompanionId` 起動、お供なし通常プレイ、ZERO/ENDLESS短時間の `debugPerformance=1` 確認、卵所持/孵化完了/全所持代替報酬の研究画面確認を実施しました。
+
+確認結果:
+- 10種類すべてでPlayScene起動、sprite/fallback/debug label経路、行動更新経路がruntime error/warn 0件。
+- お供なしでもPlayScene起動に問題なし。
+- ZEROお供あり、ENDLESSお供なしの短時間debugPerformance smokeでruntime error/warn 0件。
+- `normalizeCompanionState(undefined)` により旧セーブ相当の補完を確認。
+- 不正selectedId、不正ownedIds、不正levelは正規化で安全化されることを確認。
+- main統合前チェックリストは `docs/design/companion_main_merge_checklist_p07.md` に分離。
+
+main統合前に残す確認:
+- debugなしの新規セーブ自然導線で卵取得から孵化、セット、再起動後保存までを最終確認する。
+- 実プレイヤー相当の既存セーブがあれば、companion領域なしからホーム/研究/出撃が壊れないことを確認する。
+- ZERO/ENDLESSを攻撃型と補助型のお供で長めにソークする。

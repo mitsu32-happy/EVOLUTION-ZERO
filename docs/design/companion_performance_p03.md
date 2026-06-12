@@ -60,3 +60,18 @@ P06以降の課題:
 
 - 専用projectileを導入する場合はS01-S03のprojectile上限管理へ接続する。
 - お供攻撃のdamage popup間引き条件を、高密度戦闘でさらに調整する。
+
+## MVP-P07 performance confirmation
+
+P07では `debugPerformance=1` を使い、ZEROお供あり、ENDLESSお供なしの短時間smokeを実施しました。
+
+確認結果:
+- runtime console error/warn 0件。
+- companion effectはP04/P05の `MAX_COMPANION_EFFECTS` とpool管理を維持。
+- `performanceLoadSheddingLevel >= 2` の場合、companion effectの新規表示を抑制する既存方針を維持。
+- `companionView` はactive runtime viewとしてstale cleanupから保護される。
+
+main統合前の推奨:
+- ZERO/ENDLESSで3-5分以上のソーク確認。
+- 攻撃型、回復型、回収型、EXP型をそれぞれ1回ずつ高密度戦闘で確認。
+- debugPerformanceの `companionEffects` / `companionEffectPoolFree` が増え続けないことを再確認。

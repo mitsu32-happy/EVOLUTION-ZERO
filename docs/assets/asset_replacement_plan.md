@@ -3711,3 +3711,12 @@ P07以降で検討:
 - 専用の孵化完了パネル。
 - レアリティ別の孵化演出差分。
 - お供強化専用ボタン/フレーム。
+
+## MVP-P07 merge readiness note
+
+P07で追加生成したアセットはありません。P04の本番icon/sprite/effect、P01の卵icon/孵化effectを継続利用しています。
+
+main統合前の確認対象:
+- P04 contact sheetとmanifest keyの再確認。
+- 10種類のicon/sprite/effectが404/fallbackにならないこと。
+- スマホ幅でiconが小さすぎないこと。

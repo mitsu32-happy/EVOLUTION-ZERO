@@ -70,3 +70,17 @@ P06追加debug:
 
 - `debugCompanionHatchReady=1`
 - `debugCompanionAllOwned=1`
+
+## MVP-P07 save / edge case confirmation
+
+P07ではコードレベルで以下を確認しました。
+
+- 旧セーブ相当の `companion` 未定義は安全なdefault stateへ補完される。
+- 不正な `ownedIds` は除去される。
+- 不正な `selectedId` は `null` へ戻る。
+- 不正なlevel値はLv1からmaxLevelの範囲へclampされる。
+- 全10種類のIDはuniqueで、Lv5までのscaled behaviorとupgrade costが取得できる。
+
+残課題:
+- 実プレイヤーsaveを使った現物確認。
+- 時刻変更/長時間オフライン経過後の孵化完了表示の実機確認。
