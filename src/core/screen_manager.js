@@ -1254,7 +1254,12 @@ export class ScreenManager {
       this.saveManager.startCompanionEggIncubation?.({ instant: false });
     }
 
-    if (params.get('debugUnlockCompanions') === '1') {
+    if (params.get('debugCompanionHatchReady') === '1') {
+      this.saveManager.grantCompanionEgg?.('debug');
+      this.saveManager.startCompanionEggIncubation?.({ instant: true });
+    }
+
+    if (params.get('debugUnlockCompanions') === '1' || params.get('debugCompanionAllOwned') === '1') {
       this.saveManager.debugUnlockCompanions?.();
     }
 

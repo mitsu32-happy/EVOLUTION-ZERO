@@ -13,8 +13,11 @@ import { ConfirmDialog } from './confirm_dialog.js';
 import { playPressFeedback } from './ui_feedback.js';
 import { drawButtonFrame, drawPanel, drawScreenBackground, UI_COLORS } from './ui_theme.js';
 import {
+  COMPANION_BY_ID,
   COMPANION_HATCH_CONFIG,
+  COMPANION_TYPES,
   getCompanionById,
+  getCompanionEffectSummary,
 } from '../data/companion_dinos.js';
 
 const RESEARCH_ASSET_PATHS = {
@@ -122,6 +125,9 @@ export class ResearchScreen {
     this.bodyScrollTrack = new Graphics();
     this.bodyScrollThumb = new Graphics();
     this.noticeText = this.createText('', 12, '#ffd36b', 320);
+    this.hatchEffectSprite = new Sprite(Texture.EMPTY);
+    this.hatchEffectSprite.anchor.set(0.5);
+    this.hatchEffectSprite.visible = false;
     this.bottomNav = createBottomNav({
       width: this.width,
       height: this.height,
@@ -170,11 +176,13 @@ export class ResearchScreen {
       this.bodyScrollTrack,
       this.bodyScrollThumb,
       this.noticeText,
+      this.hatchEffectSprite,
       this.bottomNav.view,
     );
 
     this.createCategoryButtons();
     this.createCards();
+    this.view.addChild(this.hatchEffectSprite);
     this.view.addChild(this.confirmDialog.view);
     this.drawStatic();
     this.loadAssets();
@@ -208,6 +216,20 @@ export class ResearchScreen {
       this.loadTexture(key, path).then((texture) => {
         if (texture) {
           this.textures.set(`icon:${name}`, texture);
+          this.applyTextures();
+          this.render();
+        }
+      });
+    });
+
+    [
+      ['companionEgg', ASSET_KEYS.companions?.eggIcon, 'assets/companions/companion_egg_p01.png'],
+      ['companionHatchEffect', ASSET_KEYS.companions?.hatchEffect, 'assets/companions/hatch_effect_p01.png'],
+      ...Object.values(COMPANION_BY_ID).map((companion) => [`companionIcon:${companion.id}`, companion.iconAssetKey, null]),
+    ].forEach(([name, key, path]) => {
+      this.loadTexture(key, path).then((texture) => {
+        if (texture) {
+          this.textures.set(name, texture);
           this.applyTextures();
           this.render();
         }
@@ -610,6 +632,9 @@ export class ResearchScreen {
           const name = result.companion?.displayName ?? (result.duplicateReward ? 'DNA報酬' : 'お供恐竜');
           this.noticeText.text = result.success ? `${name}を獲得しました` : '受け取りできませんでした';
           this.saveManager.markTutorialComplete?.('companionObtained');
+          if (result.success) {
+            this.showCompanionHatchResult(result);
+          }
           this.render();
         },
       });
@@ -628,6 +653,9 @@ export class ResearchScreen {
         if (instant && result.success) {
           const hatch = this.saveManager.completeCompanionEggIncubation({ force: true });
           this.noticeText.text = hatch.companion ? `${hatch.companion.displayName}を獲得しました` : '孵化が完了しました';
+          if (hatch.success) {
+            this.showCompanionHatchResult(hatch);
+          }
         } else {
           this.noticeText.text = result.success ? '孵化を開始しました' : '孵化できませんでした';
         }
@@ -635,6 +663,53 @@ export class ResearchScreen {
         this.render();
       },
     });
+
+  }
+
+  showCompanionHatchResult(result) {
+    this.flashHatchEffect();
+
+    if (result.companion) {
+      const companion = result.companion;
+      const typeLabel = COMPANION_TYPES[companion.type]?.label ?? '補助型';
+      this.confirmDialog.show({
+        title: 'お供恐竜を入手',
+        message: `${companion.displayName}が仲間になりました。`,
+        detail: `${typeLabel}\n${getCompanionEffectSummary(companion.id, 1)}\nホームでセットできます。`,
+        confirmLabel: 'OK',
+        cancelLabel: '閉じる',
+      });
+      return;
+    }
+
+    if (result.duplicateReward) {
+      this.confirmDialog.show({
+        title: '代替報酬',
+        message: 'すべてのお供恐竜を入手済みです。',
+        detail: `ボーナスDNA +${result.duplicateReward.dna ?? 0}`,
+        confirmLabel: 'OK',
+        cancelLabel: '閉じる',
+      });
+    }
+  }
+
+  flashHatchEffect() {
+    const texture = this.textures.get('companionHatchEffect');
+    if (!texture) {
+      return;
+    }
+
+    this.hatchEffectSprite.texture = texture;
+    this.hatchEffectSprite.visible = true;
+    this.hatchEffectSprite.alpha = 0.92;
+    this.hatchEffectSprite.scale.set(0.7);
+    this.hatchEffectSprite.position.set(this.width / 2, 410);
+
+    window.setTimeout?.(() => {
+      if (this.hatchEffectSprite) {
+        this.hatchEffectSprite.visible = false;
+      }
+    }, 1100);
   }
 
   getDebugFlag(name) {
@@ -782,6 +857,9 @@ export class ResearchScreen {
     this.summaryBody.position.set(SUMMARY_PANEL.x + 16, SUMMARY_PANEL.y + 34);
     this.noticeText.anchor.set(0.5);
     this.noticeText.position.set(this.width / 2, NOTICE_Y);
+    this.hatchEffectSprite.position.set(this.width / 2, 410);
+    this.hatchEffectSprite.width = 180;
+    this.hatchEffectSprite.height = 180;
   }
 
   applyTextures() {
@@ -1012,18 +1090,29 @@ export class ResearchScreen {
     card.canBuy = canBuy;
     this.applyCardLayout(card, layout);
     this.drawCardFrame(card, isReady ? 'cardCompleted' : 'cardFrame', color, isReady, layout);
-    this.applyCardIcon(card, 'bodyEnhancement', RESEARCH_CATEGORY_IDS.bodyEnhancement, color, false, layout);
+    const eggTexture = this.textures.get('companionEgg');
+    card.iconSprite.texture = eggTexture ?? Texture.EMPTY;
+    card.iconSprite.visible = !!eggTexture;
+    card.iconFallback.visible = !eggTexture;
+    card.iconFallback.clear();
+    if (!eggTexture) {
+      this.drawCardIcon(card.iconFallback, RESEARCH_CATEGORY_IDS.bodyEnhancement, color, false, layout);
+    }
     this.drawProgress(card.progress, isReady ? 1 : 0, 1, color, layout);
     this.hideAdaptationUnlockSupplements(card);
     card.name.text = item.name;
-    card.desc.text = item.description;
+    card.desc.text = item.action === 'start'
+      ? 'DNAと研究Ptで孵化を開始'
+      : item.action === 'wait'
+        ? 'オフライン中も時間が進みます'
+        : '新しいお供恐竜を受け取り';
     card.effect.text = isReady
       ? '未所持からランダム取得'
       : item.action === 'wait'
         ? `完了 ${Number.isFinite(completeAt) ? this.formatHatchRemain(completeAt) : 'まもなく'}`
-        : 'お供恐竜を入手';
+        : `孵化時間 ${this.formatHatchDuration(COMPANION_HATCH_CONFIG.durationMs)}`;
     card.step.text = item.action === 'start'
-      ? `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost} / Pt ${COMPANION_HATCH_CONFIG.researchPtCost}`
+      ? '必要'
       : 'お供恐竜';
     card.status.text = isReady
       ? '受取'
@@ -1038,10 +1127,32 @@ export class ResearchScreen {
     card.button.visible = true;
     card.buttonBg.visible = !card.costBadge.visible;
     this.drawBadgeFallback(card.buttonBg, color, isReady, layout);
-    card.costDnaText.visible = false;
-    card.costPtText.visible = false;
-    card.costDnaIcon.visible = false;
-    card.costPtIcon.visible = false;
+    const dnaIcon = this.textures.get('icon:dnaResource');
+    const ptIcon = this.textures.get('icon:researchPt');
+    card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
+    card.costPtIcon.texture = ptIcon ?? Texture.EMPTY;
+    card.costDnaIcon.visible = item.action === 'start' && !!dnaIcon;
+    card.costPtIcon.visible = item.action === 'start' && !!ptIcon;
+    card.costDnaText.visible = item.action === 'start';
+    card.costPtText.visible = item.action === 'start';
+    card.costDnaText.text = `${COMPANION_HATCH_CONFIG.dnaCost}`;
+    card.costPtText.text = `${COMPANION_HATCH_CONFIG.researchPtCost}`;
+    card.costDnaIcon.position.set(layout.badgeX - 6, 36);
+    card.costDnaText.position.set(layout.badgeX + 12, 35);
+    card.costPtIcon.position.set(layout.badgeX + 48, 36);
+    card.costPtText.position.set(layout.badgeX + 66, 35);
+  }
+
+  formatHatchDuration(ms) {
+    const totalMinutes = Math.max(1, Math.round(ms / 60000));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    if (hours > 0) {
+      return minutes > 0 ? `${hours}時間${minutes}分` : `${hours}時間`;
+    }
+
+    return `${totalMinutes}分`;
   }
 
   formatHatchRemain(completeAt) {

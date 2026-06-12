@@ -1147,7 +1147,7 @@ export class ResultUi {
 
     rows.push(['獲得DNA', dnaEarned > 0 ? `+${this.formatNumber(dnaEarned)}` : '0', dnaEarned > 0 ? 'normal' : 'muted']);
     if (companionEggReward) {
-      rows.push(['卵入手', companionEggReward.label ?? 'お供恐竜の卵', 'normal']);
+      rows.push(['卵入手', '研究で孵化できます', 'normal']);
     }
 
     if (resultKind === 'zeroClear') {
