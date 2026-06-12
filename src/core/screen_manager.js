@@ -1254,8 +1254,19 @@ export class ScreenManager {
       this.saveManager.startCompanionEggIncubation?.({ instant: false });
     }
 
-    const companionId = params.get('debugCompanionOwned');
+    if (params.get('debugUnlockCompanions') === '1') {
+      this.saveManager.debugUnlockCompanions?.();
+    }
+
+    const companionId = params.get('debugSelectCompanion')
+      ?? params.get('debugCompanionId')
+      ?? params.get('debugCompanionOwned');
     if (companionId) {
+      if (params.has('debugSelectCompanion') || params.has('debugCompanionId')) {
+        this.saveManager.debugSelectCompanion?.(companionId);
+        return;
+      }
+
       this.saveManager.debugGrantCompanion?.(companionId);
     }
   }

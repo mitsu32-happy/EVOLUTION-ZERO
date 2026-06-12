@@ -53,3 +53,16 @@
 - 10種類それぞれに `icon` / `sprite` / `effect` のPNGがある。
 - プレイ中にセット中のお供恐竜の小型スプライトが追従する。
 - タイプごとに最小限の行動差がある。
+
+## P02.1 プレイ中表示確認
+
+- お供恐竜は `depthLayer` 上に表示し、背景より上、HUDより下に置きます。
+- `companionView` はruntime cleanupのactive viewとして保持します。
+- sprite読み込み前はfallback表示を出し、透明/空spriteだけにならないようにします。
+- 追従位置はプレイヤー右下寄りを基準にし、画面中央で視認しやすくします。
+- debug表示:
+  - `debugCompanion=1`: お供ID、sprite/fallback状態、座標をラベル表示
+  - `debugCompanionId=rex_hatchling`: 指定お供を直接表示確認
+  - `debugSelectCompanion=raptorling`: 指定お供を所持/セットして確認
+  - `debugUnlockCompanions=1`: 10種類を開発確認用に所持
+- 確認画像: `docs/assets/p02_1_companion_ingame_qa.png`

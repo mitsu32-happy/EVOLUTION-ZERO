@@ -26,6 +26,7 @@ import {
   normalizeDailyMissionsState,
 } from '../data/daily_missions.js';
 import {
+  COMPANION_DINOS,
   COMPANION_HATCH_CONFIG,
   cloneCompanionState,
   createDefaultCompanionState,
@@ -555,6 +556,30 @@ export class SaveManager {
       [config.id]: companion.levels?.[config.id] ?? 1,
     };
     companion.selectedId = companion.selectedId ?? config.id;
+    this.data.companion = companion;
+    return { success: true, data: this.save() };
+  }
+
+  debugSelectCompanion(companionId) {
+    const grantResult = this.debugGrantCompanion(companionId);
+    if (!grantResult.success) {
+      return grantResult;
+    }
+
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    this.data.companion.selectedId = companionId;
+    return { success: true, data: this.save() };
+  }
+
+  debugUnlockCompanions() {
+    this.data.companion = normalizeCompanionState(this.data.companion);
+    const companion = this.data.companion;
+    companion.ownedIds = COMPANION_DINOS.map((entry) => entry.id);
+    companion.levels = companion.ownedIds.reduce((result, id) => {
+      result[id] = companion.levels?.[id] ?? 1;
+      return result;
+    }, {});
+    companion.selectedId = companion.selectedId ?? companion.ownedIds[0] ?? null;
     this.data.companion = companion;
     return { success: true, data: this.save() };
   }

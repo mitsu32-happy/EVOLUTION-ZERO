@@ -225,6 +225,15 @@ function getDebugFlag(name) {
   return new URLSearchParams(window.location.search).get(name) === '1';
 }
 
+function getDebugCompanionId() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get('debugSelectCompanion') ?? params.get('debugCompanionId') ?? null;
+}
+
 function isDebugPerformanceEnabled() {
   return getDebugFlag('debugPerformance');
 }
@@ -328,6 +337,17 @@ export class PlayScene {
     this.companionSprite = new Sprite(Texture.EMPTY);
     this.companionFallback = new Graphics();
     this.companionGlow = new Graphics();
+    this.companionDebugLabel = new Text({
+      text: '',
+      style: {
+        fill: '#fff0b4',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 11,
+        fontWeight: '800',
+        letterSpacing: 0,
+        stroke: { color: '#020708', width: 3 },
+      },
+    });
     this.companionPosition = { x: 0, y: 0 };
     this.companionOrbitTime = 0;
     this.companionAttackTimer = 0;
@@ -960,6 +980,7 @@ export class PlayScene {
   collectActiveRuntimeViews() {
     const views = new Set([
       this.player?.view,
+      this.companionView,
       this.ultimateSystem?.overlay,
       this.hud?.view,
       this.gimmickWarningGraphics,
@@ -2878,17 +2899,26 @@ export class PlayScene {
 
   setupCompanion() {
     const state = this.saveManager?.getCompanionState?.() ?? this.gameState.companion ?? null;
-    const companion = getCompanionById(state?.selectedId);
+    const debugCompanionId = getDebugCompanionId();
+    const companion = getCompanionById(debugCompanionId) ?? getCompanionById(state?.selectedId);
 
     this.gameState.companion = state;
     this.gameState.selectedCompanionId = companion?.id ?? null;
     this.activeCompanion = companion;
     this.activeCompanionLevel = companion ? Math.max(1, state?.levels?.[companion.id] ?? 1) : 1;
     this.companionView.visible = !!companion;
-    this.companionView.addChild(this.companionGlow, this.companionSprite, this.companionFallback);
+    this.companionView.alpha = 1;
+    this.companionView.sortableChildren = true;
+    this.companionSprite.visible = false;
+    this.companionSprite.alpha = 1;
+    this.companionFallback.visible = false;
+    this.companionDebugLabel.visible = false;
+    this.companionDebugLabel.anchor.set(0.5, 1);
+    this.companionDebugLabel.position.set(0, -42);
+    this.companionView.addChild(this.companionGlow, this.companionSprite, this.companionFallback, this.companionDebugLabel);
     this.applyCompanionPassiveBonuses();
-    this.companionPosition.x = this.player.position.x - 54;
-    this.companionPosition.y = this.player.position.y + 18;
+    this.companionPosition.x = this.player.position.x + 58;
+    this.companionPosition.y = this.player.position.y + 20;
     this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
@@ -2905,38 +2935,58 @@ export class PlayScene {
       if (this.companionSprite.anchor?.set) {
         this.companionSprite.anchor.set(0.5, 0.72);
       }
-      this.companionSprite.width = 58;
-      this.companionSprite.height = 46;
+      this.companionSprite.width = 74;
+      this.companionSprite.height = 58;
       this.companionSprite.visible = true;
       this.companionFallback.visible = false;
+      this.updateCompanionDebugLabel('sprite');
     }).catch(() => {
       this.companionSprite.visible = false;
       this.companionFallback.visible = true;
+      this.updateCompanionDebugLabel('fallback');
     });
+    this.updateCompanionDebugLabel('loading');
   }
 
   drawCompanionFallback() {
     const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? 0x7cf7d4;
+    const debugAlpha = getDebugFlag('debugCompanion') ? 0.82 : 0.5;
 
     this.companionGlow
       .clear()
-      .ellipse(0, 10, 24, 9)
-      .fill({ color: 0x000000, alpha: 0.28 })
-      .circle(0, -3, 24)
-      .fill({ color: accent, alpha: 0.1 });
+      .ellipse(0, 12, 34, 12)
+      .fill({ color: 0x000000, alpha: 0.38 })
+      .circle(0, -7, 31)
+      .fill({ color: accent, alpha: debugAlpha * 0.22 })
+      .circle(0, -7, 36)
+      .stroke({ color: accent, width: getDebugFlag('debugCompanion') ? 2.4 : 1.2, alpha: debugAlpha });
     this.companionFallback
       .clear()
-      .ellipse(-5, -4, 22, 13)
+      .ellipse(-6, -4, 28, 16)
       .fill({ color: 0x124b52, alpha: 0.94 })
-      .stroke({ color: accent, width: 1.8, alpha: 0.8 })
-      .ellipse(14, -10, 12, 9)
+      .stroke({ color: accent, width: 2.4, alpha: 0.9 })
+      .ellipse(18, -12, 14, 10)
       .fill({ color: 0x17636b, alpha: 0.96 })
       .stroke({ color: 0xc8fbff, width: 1.2, alpha: 0.72 })
-      .circle(18, -12, 2)
+      .circle(22, -14, 2.5)
       .fill({ color: 0xfff0b4, alpha: 0.96 })
-      .poly([-25, -6, -38, -11, -30, 2])
+      .poly([-31, -6, -46, -13, -36, 4])
       .fill({ color: 0x0c343a, alpha: 0.9 });
     this.companionFallback.visible = !this.companionSprite.visible;
+  }
+
+  updateCompanionDebugLabel(source = '') {
+    const debugEnabled = getDebugFlag('debugCompanion');
+    this.companionDebugLabel.visible = debugEnabled && Boolean(this.activeCompanion);
+    if (!this.companionDebugLabel.visible) {
+      return;
+    }
+
+    const x = Math.round(this.companionPosition.x);
+    const y = Math.round(this.companionPosition.y);
+    const spriteVisible = this.companionSprite?.visible ? 'on' : 'off';
+    const fallbackVisible = this.companionFallback?.visible ? 'on' : 'off';
+    this.companionDebugLabel.text = `${this.activeCompanion.id}\n${source} s:${spriteVisible} f:${fallbackVisible}\n${x},${y}`;
   }
 
   applyCompanionPassiveBonuses() {
@@ -3013,8 +3063,8 @@ export class PlayScene {
     }
 
     this.companionOrbitTime += delta;
-    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 46 - 42;
-    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 18 + 22;
+    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 38 + 58;
+    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 16 + 24;
     const targetX = this.player.position.x + orbitX;
     const targetY = this.player.position.y + orbitY;
     const follow = Math.min(1, delta * 5.4);
@@ -3027,12 +3077,13 @@ export class PlayScene {
       return;
     }
 
-    this.companionView.zIndex = this.companionPosition.y + 0.5;
+    this.companionView.zIndex = this.companionPosition.y + 1.2;
     const flip = targetX >= this.player.position.x ? 1 : -1;
     const spriteScaleY = Math.abs(this.companionSprite?.scale?.y || 1);
     const spriteScaleX = Math.abs(this.companionSprite?.scale?.x || 1) * flip;
     this.setCompanionDisplayScale(this.companionSprite, spriteScaleX, spriteScaleY);
     this.setCompanionDisplayScale(this.companionFallback, flip, 1);
+    this.updateCompanionDebugLabel(this.companionSprite.visible ? 'sprite' : 'fallback');
 
     this.updateCompanionSupportAttack(delta);
     this.updateCompanionUtility(delta);
