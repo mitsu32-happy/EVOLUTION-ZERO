@@ -3836,3 +3836,41 @@ Generation helper:
 QA contact:
 
 - `docs/assets/p04h_companion_true_walk_contact.png`
+
+## MVP-P04i Companion Generated-Pose Sprite Sheets
+
+P04i supersedes P04h for active runtime use. P04h remains available as
+fallback/reference.
+
+New active sprite sheets:
+
+- `public/assets/companions/raptorling_sprite_sheet_p04i.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04i.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04i.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04i.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04i.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04i.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04i.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04i.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04i.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04i.png`
+
+The sheet layout remains `384 x 384`, `4 columns x 3 rows`.
+
+Generation and processing rules:
+
+- source prompts use a fixed right-facing side-view direction
+- source prompts forbid unrelated dinosaurs or extra creatures
+- `medic_saur` healing frames are self-contained and do not include another dinosaur
+- source sheets use a flat `#ff00ff` chroma-key background
+- local processing removes chroma key and normalizes all frames into fixed cells
+- P04f runtime fixed-size rendering remains unchanged
+
+Generation helper:
+
+- `tools/process_companion_sprite_p04i.py`
+
+QA artifacts:
+
+- `docs/assets/p04i_companion_sprite_contact.png`
+- `docs/assets/p04i_companion_sprite_report.json`

@@ -265,3 +265,25 @@ P04h supersedes P04g for active companion sprite sheets.
 - P04g sheets remain available as fallback/reference.
 
 Detailed notes: `docs/design/companion_true_walk_cycle_p04h.md`.
+
+## MVP-P04i generated-pose sprite sheets
+
+P04i supersedes P04h for active companion sprite sheets.
+
+- Active paths are now `public/assets/companions/{id}_sprite_sheet_p04i.png`.
+- Cell size remains `384 x 384`; sheet layout remains `4 x 3`.
+- Every source frame is generated as a complete right-facing pose.
+- The P04h leg-area construction approach is no longer the active direction.
+- Source prompts forbid unrelated dinosaurs, animals, or background characters.
+- `medic_saur` healing frames are self-contained and do not include a patient dinosaur.
+- `compy_pack` is the only multi-body companion source and remains limited to the intended three compies.
+- Local post-processing removes `#ff00ff` chroma key and normalizes every cell.
+- P04f fixed-size texture switching remains unchanged.
+- P04h sheets remain available as fallback/reference.
+
+QA artifacts:
+
+- `docs/assets/p04i_companion_sprite_contact.png`
+- `docs/assets/p04i_companion_sprite_report.json`
+
+Detailed notes: `docs/design/companion_sprite_sheet_regeneration_p04i.md`.

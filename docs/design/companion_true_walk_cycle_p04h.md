@@ -72,3 +72,17 @@ Required checks:
 ## Remaining Work
 
 P04h is a procedural true-walk generation pass. It provides distinct leg poses, but a hand-authored or model-generated frame-by-frame sheet would still improve anatomy and polish before final main integration.
+
+## P04i Supersession Note
+
+P04i supersedes P04h for active runtime use.
+
+Reason:
+
+- P04h still depended on procedural lower-leg construction from existing still sprites.
+- The desired direction is not part-composition, but complete per-frame poses.
+- Runtime facing is easier to control if all generated source frames use a fixed right-facing side view.
+- Healing/support frames must not include another dinosaur or patient inside the source art.
+
+P04h sheets remain on disk as fallback/reference. The active manifest paths now
+target `public/assets/companions/{id}_sprite_sheet_p04i.png`.
