@@ -119,3 +119,17 @@ P04d files remain available for investigation but are no longer active manifest 
 - Move rows use clean body lean/scale/position changes rather than individually redrawn legs.
 - Real-device visual QA should confirm the cleaned sheets no longer look contaminated.
 - If true walk readability is still insufficient, the next pass should create hand-authored per-frame art rather than deriving frames from single PNGs.
+
+## P04f Runtime Follow-Up
+
+P04f found that the remaining bean-size/normal-size alternation was a runtime texture-size reapplication problem, not another asset regeneration problem.
+
+P04f changes:
+
+- no new assets generated
+- texture switching now reapplies fixed companion width/height immediately
+- animation frame switching now happens before runtime scale calculation
+- Pixi sub-textures now define `orig` explicitly
+- `debugCompanion=1` now shows state/frame/texture size/sprite size/scale/anchor
+
+P04e remains the active asset set.

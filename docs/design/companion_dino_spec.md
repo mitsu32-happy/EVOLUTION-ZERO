@@ -226,3 +226,14 @@ P04d supersedes the active P04c companion animation sheets.
 P04d keeps all existing companion ids, save data, ownership state, hatch flow, and behavior values unchanged.
 
 Detailed mapping: `docs/design/companion_animation_assets_p04d.md`.
+
+## MVP-P04f runtime frame-size stabilization
+
+P04f keeps the P04e assets active and fixes runtime frame-size instability.
+
+- Companion texture switching now uses a single helper that reapplies fixed display width/height.
+- Animation frame updates happen before action/facing scale is calculated.
+- Sprite/effect sub-textures explicitly define `orig` to match their frame cell size.
+- `debugCompanion=1` shows state, frame index, texture frame size, sprite size, scale, anchor, and fallback usage.
+
+This pass does not change companion ids, save data, hatch flow, behavior values, or active asset paths.

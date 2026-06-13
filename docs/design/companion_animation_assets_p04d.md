@@ -146,3 +146,9 @@ P04e supersedes P04d by:
 - reducing runtime display baseline to `124 x 98`
 - removing permanent `profile.scale` from the runtime scale stack
 - keeping P04d files only for comparison/rollback
+
+P04f follow-up:
+
+- P04f did not regenerate assets.
+- P04f fixed the remaining bean-size/standard-size flicker in runtime by reapplying fixed sprite display size every time the companion texture changes.
+- P04e remains the active asset set after P04f.
