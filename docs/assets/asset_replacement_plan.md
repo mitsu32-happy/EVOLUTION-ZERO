@@ -3809,3 +3809,30 @@ Generation helper:
 QA contact:
 
 - `docs/assets/p04g_companion_walk_contact.png`
+
+## MVP-P04h Companion True Walk Cycle
+
+P04h supersedes P04g for active runtime use. P04g remains available as fallback/reference.
+
+New active sprite sheets:
+
+- `public/assets/companions/raptorling_sprite_sheet_p04h.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04h.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04h.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04h.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04h.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04h.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04h.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04h.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04h.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04h.png`
+
+The sheet layout remains `384 x 384`, `4 columns x 3 rows`.
+
+Generation helper:
+
+- `tools/generate_companion_true_walk_p04h.py`
+
+QA contact:
+
+- `docs/assets/p04h_companion_true_walk_contact.png`

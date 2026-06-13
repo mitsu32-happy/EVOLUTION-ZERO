@@ -81,3 +81,12 @@ Expected checks:
 ## Remaining Work
 
 P04g is still a generated motion pass based on existing P04e art. Full hand-authored animation can further improve foot anatomy and species-specific gait, but this pass moves the active sheets closer to a readable product-level movement baseline without destabilizing runtime rendering.
+
+## P04h Supersession
+
+P04h supersedes P04g for active runtime use.
+
+- Active sprite sheet paths now point to `public/assets/companions/{id}_sprite_sheet_p04h.png`.
+- P04h generates dedicated movement poses with separately drawn leg/wing/pack/float frames.
+- P04g remains on disk as a fallback/reference set.
+- Detailed notes: `docs/design/companion_true_walk_cycle_p04h.md`.

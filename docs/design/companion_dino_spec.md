@@ -250,3 +250,18 @@ P04g adds active P04g companion sprite sheets with regenerated move rows.
 - P04f's fixed-size texture switching remains unchanged.
 
 Detailed notes: `docs/design/companion_walk_motion_p04g.md`.
+
+## MVP-P04h true walk cycle
+
+P04h supersedes P04g for active companion sprite sheets.
+
+- Active paths are now `public/assets/companions/{id}_sprite_sheet_p04h.png`.
+- Cell size remains `384 x 384`; sheet layout remains `4 x 3`.
+- Walking companions use dedicated move frames with separately posed legs.
+- `ptera_chick` uses a clearer wing-flap cycle.
+- `compy_pack` uses offset pack running frames.
+- `exp_chaser` uses floating/scan movement frames.
+- P04f fixed-size texture switching remains unchanged.
+- P04g sheets remain available as fallback/reference.
+
+Detailed notes: `docs/design/companion_true_walk_cycle_p04h.md`.
