@@ -110,3 +110,18 @@ P04d changes:
 - normal guide ring remains hidden; debug-only guide remains available
 
 P04d keeps the P04c.1 principle of a dedicated companion scale baseline with per-companion variation, but the baseline is now intentionally much larger for mobile readability.
+
+## P04e Stabilization
+
+P04d proved too large in real-device review. P04e supersedes the P04d runtime sizing.
+
+P04e changes:
+
+- display baseline reduced to `124 x 98`
+- permanent scale now uses `displayScale` only
+- the older profile scale is no longer stacked onto the permanent display scale
+- follow/orbit offset moved to a safer middle ground
+- default companion effect scale reduced to `0.42`
+- P04e cleaned sheets replace P04d active manifest references
+
+This keeps the goal of better visibility while avoiding companion images that feel larger than the player or unstable during animation.

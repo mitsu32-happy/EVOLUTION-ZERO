@@ -128,3 +128,21 @@ The normal guide ring remains hidden in normal play. It is available only throug
 - Confirm real iPhone/PWA visibility after the larger display baseline.
 - Check dense boss fights to ensure the larger companion does not block enemy/projectile readability.
 - If action timing is still unclear, tune action effect timing rather than changing AI or damage.
+
+## P04e Supersession
+
+P04d is no longer the active runtime sheet set.
+
+Reason:
+
+- P04d runtime size was too large after `displayScale`, profile scale, and action scale stacked together.
+- Some source-level small fragments still looked like cell contamination after enlargement.
+- P04d action/backdrop strokes increased the flicker/fragment impression.
+
+P04e supersedes P04d by:
+
+- regenerating sheets from cleaned P04 single PNGs, not from P04c/P04d sheets
+- removing small isolated alpha components before frame generation
+- reducing runtime display baseline to `124 x 98`
+- removing permanent `profile.scale` from the runtime scale stack
+- keeping P04d files only for comparison/rollback

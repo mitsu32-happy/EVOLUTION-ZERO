@@ -1,0 +1,600 @@
+{
+  "cellSize": {
+    "sprite": 384,
+    "effect": 320
+  },
+  "source": "P04 clean single PNG assets with small isolated components removed",
+  "removedComponents": {
+    "raptorling": [],
+    "spino_pup": [
+      {
+        "area": 22,
+        "bbox": [
+          84,
+          113,
+          89,
+          119
+        ]
+      },
+      {
+        "area": 8,
+        "bbox": [
+          94,
+          125,
+          97,
+          128
+        ]
+      },
+      {
+        "area": 28,
+        "bbox": [
+          77,
+          138,
+          82,
+          145
+        ]
+      },
+      {
+        "area": 12,
+        "bbox": [
+          87,
+          148,
+          91,
+          153
+        ]
+      },
+      {
+        "area": 14,
+        "bbox": [
+          70,
+          151,
+          74,
+          156
+        ]
+      },
+      {
+        "area": 13,
+        "bbox": [
+          51,
+          176,
+          54,
+          181
+        ]
+      },
+      {
+        "area": 34,
+        "bbox": [
+          59,
+          187,
+          66,
+          194
+        ]
+      },
+      {
+        "area": 54,
+        "bbox": [
+          251,
+          193,
+          259,
+          203
+        ]
+      },
+      {
+        "area": 8,
+        "bbox": [
+          83,
+          194,
+          86,
+          197
+        ]
+      },
+      {
+        "area": 5,
+        "bbox": [
+          66,
+          195,
+          68,
+          198
+        ]
+      },
+      {
+        "area": 132,
+        "bbox": [
+          74,
+          199,
+          91,
+          223
+        ]
+      },
+      {
+        "area": 16,
+        "bbox": [
+          91,
+          202,
+          95,
+          208
+        ]
+      },
+      {
+        "area": 18,
+        "bbox": [
+          235,
+          203,
+          239,
+          209
+        ]
+      },
+      {
+        "area": 13,
+        "bbox": [
+          247,
+          204,
+          251,
+          209
+        ]
+      },
+      {
+        "area": 426,
+        "bbox": [
+          213,
+          213,
+          256,
+          252
+        ]
+      },
+      {
+        "area": 39,
+        "bbox": [
+          231,
+          220,
+          238,
+          230
+        ]
+      },
+      {
+        "area": 12,
+        "bbox": [
+          126,
+          231,
+          130,
+          235
+        ]
+      },
+      {
+        "area": 20,
+        "bbox": [
+          246,
+          231,
+          251,
+          236
+        ]
+      },
+      {
+        "area": 26,
+        "bbox": [
+          74,
+          233,
+          80,
+          239
+        ]
+      },
+      {
+        "area": 17,
+        "bbox": [
+          134,
+          238,
+          140,
+          242
+        ]
+      },
+      {
+        "area": 14,
+        "bbox": [
+          210,
+          241,
+          214,
+          246
+        ]
+      },
+      {
+        "area": 10,
+        "bbox": [
+          240,
+          241,
+          244,
+          244
+        ]
+      }
+    ],
+    "medic_saur": [
+      {
+        "area": 52,
+        "bbox": [
+          126,
+          116,
+          133,
+          127
+        ]
+      },
+      {
+        "area": 7,
+        "bbox": [
+          139,
+          130,
+          142,
+          133
+        ]
+      },
+      {
+        "area": 52,
+        "bbox": [
+          96,
+          169,
+          106,
+          175
+        ]
+      },
+      {
+        "area": 237,
+        "bbox": [
+          203,
+          182,
+          220,
+          207
+        ]
+      },
+      {
+        "area": 582,
+        "bbox": [
+          267,
+          207,
+          297,
+          255
+        ]
+      }
+    ],
+    "ptera_chick": [
+      {
+        "area": 419,
+        "bbox": [
+          269,
+          175,
+          297,
+          202
+        ]
+      }
+    ],
+    "tricera_calf": [],
+    "para_juvenile": [
+      {
+        "area": 32,
+        "bbox": [
+          84,
+          105,
+          90,
+          112
+        ]
+      },
+      {
+        "area": 34,
+        "bbox": [
+          97,
+          111,
+          103,
+          118
+        ]
+      },
+      {
+        "area": 29,
+        "bbox": [
+          70,
+          120,
+          76,
+          126
+        ]
+      },
+      {
+        "area": 4,
+        "bbox": [
+          84,
+          132,
+          86,
+          134
+        ]
+      },
+      {
+        "area": 27,
+        "bbox": [
+          294,
+          158,
+          297,
+          169
+        ]
+      },
+      {
+        "area": 44,
+        "bbox": [
+          289,
+          180,
+          297,
+          190
+        ]
+      },
+      {
+        "area": 1,
+        "bbox": [
+          137,
+          202,
+          138,
+          203
+        ]
+      }
+    ],
+    "stego_calf": [
+      {
+        "area": 50,
+        "bbox": [
+          292,
+          135,
+          297,
+          149
+        ]
+      }
+    ],
+    "rex_hatchling": [
+      {
+        "area": 34,
+        "bbox": [
+          290,
+          125,
+          297,
+          132
+        ]
+      },
+      {
+        "area": 968,
+        "bbox": [
+          258,
+          167,
+          297,
+          238
+        ]
+      }
+    ],
+    "compy_pack": [
+      {
+        "area": 90,
+        "bbox": [
+          288,
+          140,
+          297,
+          158
+        ]
+      }
+    ],
+    "exp_chaser": [
+      {
+        "area": 666,
+        "bbox": [
+          114,
+          65,
+          142,
+          106
+        ]
+      },
+      {
+        "area": 27,
+        "bbox": [
+          98,
+          75,
+          104,
+          81
+        ]
+      },
+      {
+        "area": 210,
+        "bbox": [
+          56,
+          84,
+          71,
+          104
+        ]
+      },
+      {
+        "area": 25,
+        "bbox": [
+          151,
+          87,
+          156,
+          94
+        ]
+      },
+      {
+        "area": 32,
+        "bbox": [
+          149,
+          104,
+          155,
+          112
+        ]
+      },
+      {
+        "area": 112,
+        "bbox": [
+          61,
+          116,
+          74,
+          129
+        ]
+      },
+      {
+        "area": 30,
+        "bbox": [
+          40,
+          139,
+          46,
+          145
+        ]
+      },
+      {
+        "area": 53,
+        "bbox": [
+          33,
+          188,
+          42,
+          197
+        ]
+      },
+      {
+        "area": 136,
+        "bbox": [
+          207,
+          191,
+          220,
+          206
+        ]
+      },
+      {
+        "area": 182,
+        "bbox": [
+          37,
+          209,
+          53,
+          226
+        ]
+      },
+      {
+        "area": 22,
+        "bbox": [
+          109,
+          231,
+          114,
+          237
+        ]
+      }
+    ]
+  },
+  "assets": [
+    {
+      "id": "raptorling",
+      "kind": "sprite",
+      "path": "public/assets/companions/raptorling_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "raptorling",
+      "kind": "effect",
+      "path": "public/assets/companions/raptorling_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "spino_pup",
+      "kind": "sprite",
+      "path": "public/assets/companions/spino_pup_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "spino_pup",
+      "kind": "effect",
+      "path": "public/assets/companions/spino_pup_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "medic_saur",
+      "kind": "sprite",
+      "path": "public/assets/companions/medic_saur_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "medic_saur",
+      "kind": "effect",
+      "path": "public/assets/companions/medic_saur_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "sprite",
+      "path": "public/assets/companions/ptera_chick_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "ptera_chick",
+      "kind": "effect",
+      "path": "public/assets/companions/ptera_chick_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "sprite",
+      "path": "public/assets/companions/tricera_calf_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "tricera_calf",
+      "kind": "effect",
+      "path": "public/assets/companions/tricera_calf_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "sprite",
+      "path": "public/assets/companions/para_juvenile_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "para_juvenile",
+      "kind": "effect",
+      "path": "public/assets/companions/para_juvenile_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "stego_calf",
+      "kind": "sprite",
+      "path": "public/assets/companions/stego_calf_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "stego_calf",
+      "kind": "effect",
+      "path": "public/assets/companions/stego_calf_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "sprite",
+      "path": "public/assets/companions/rex_hatchling_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "rex_hatchling",
+      "kind": "effect",
+      "path": "public/assets/companions/rex_hatchling_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "compy_pack",
+      "kind": "sprite",
+      "path": "public/assets/companions/compy_pack_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "compy_pack",
+      "kind": "effect",
+      "path": "public/assets/companions/compy_pack_effect_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "sprite",
+      "path": "public/assets/companions/exp_chaser_sprite_sheet_p04e.png",
+      "edgeRisks": []
+    },
+    {
+      "id": "exp_chaser",
+      "kind": "effect",
+      "path": "public/assets/companions/exp_chaser_effect_sheet_p04e.png",
+      "edgeRisks": []
+    }
+  ],
+  "contact": "docs/assets/p04e_companion_animation_contact.png"
+}

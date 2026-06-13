@@ -2766,8 +2766,8 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P01 companion hatch glow effect.',
     },
     raptorlingSprite: {
-      path: 'assets/companions/raptorling_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated attack companion raptorling sprite sheet.',
+      path: 'assets/companions/raptorling_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated attack companion raptorling sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2781,15 +2781,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production attack companion raptorling icon.',
     },
     raptorlingEffect: {
-      path: 'assets/companions/raptorling_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated attack companion hit effect.',
+      path: 'assets/companions/raptorling_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated attack companion hit effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
     },
     spinoPupSprite: {
-      path: 'assets/companions/spino_pup_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated area companion spino pup sprite sheet.',
+      path: 'assets/companions/spino_pup_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated area companion spino pup sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2803,15 +2803,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production area companion spino pup icon.',
     },
     spinoPupEffect: {
-      path: 'assets/companions/spino_pup_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated area companion splash effect.',
+      path: 'assets/companions/spino_pup_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated area companion splash effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
     },
     medicSaurSprite: {
-      path: 'assets/companions/medic_saur_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated healing companion sprite sheet.',
+      path: 'assets/companions/medic_saur_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated healing companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2825,15 +2825,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production healing companion icon.',
     },
     medicSaurEffect: {
-      path: 'assets/companions/medic_saur_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated healing pulse effect.',
+      path: 'assets/companions/medic_saur_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated healing pulse effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     pteraChickSprite: {
-      path: 'assets/companions/ptera_chick_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated ranged flying companion sprite sheet.',
+      path: 'assets/companions/ptera_chick_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated ranged flying companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2847,15 +2847,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production pickup companion icon.',
     },
     pteraChickEffect: {
-      path: 'assets/companions/ptera_chick_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated ranged flying companion effect.',
+      path: 'assets/companions/ptera_chick_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated ranged flying companion effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
     },
     triceraCalfSprite: {
-      path: 'assets/companions/tricera_calf_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated defense companion sprite sheet.',
+      path: 'assets/companions/tricera_calf_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated defense companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2869,15 +2869,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production defense companion icon.',
     },
     triceraCalfEffect: {
-      path: 'assets/companions/tricera_calf_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated defense companion guard effect.',
+      path: 'assets/companions/tricera_calf_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated defense companion guard effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     paraJuvenileSprite: {
-      path: 'assets/companions/para_juvenile_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated pickup companion sprite sheet.',
+      path: 'assets/companions/para_juvenile_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated pickup companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2891,15 +2891,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production speed companion icon.',
     },
     paraJuvenileEffect: {
-      path: 'assets/companions/para_juvenile_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated pickup companion sonar effect.',
+      path: 'assets/companions/para_juvenile_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated pickup companion sonar effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     stegoCalfSprite: {
-      path: 'assets/companions/stego_calf_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated area/synergy companion sprite sheet.',
+      path: 'assets/companions/stego_calf_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated area/synergy companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2913,15 +2913,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production synergy companion icon.',
     },
     stegoCalfEffect: {
-      path: 'assets/companions/stego_calf_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated area/synergy companion effect.',
+      path: 'assets/companions/stego_calf_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated area/synergy companion effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     rexHatchlingSprite: {
-      path: 'assets/companions/rex_hatchling_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated boss-focused companion sprite sheet.',
+      path: 'assets/companions/rex_hatchling_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated boss-focused companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2935,15 +2935,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production boss-focused companion icon.',
     },
     rexHatchlingEffect: {
-      path: 'assets/companions/rex_hatchling_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated boss-focused companion effect.',
+      path: 'assets/companions/rex_hatchling_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated boss-focused companion effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     compyPackSprite: {
-      path: 'assets/companions/compy_pack_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated swarm companion sprite sheet.',
+      path: 'assets/companions/compy_pack_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated swarm companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2957,15 +2957,15 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production swarm companion icon.',
     },
     compyPackEffect: {
-      path: 'assets/companions/compy_pack_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated swarm companion effect.',
+      path: 'assets/companions/compy_pack_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated swarm companion effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 16, loop: false } },
     },
     expChaserSprite: {
-      path: 'assets/companions/exp_chaser_sprite_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated EXP support companion sprite sheet.',
+      path: 'assets/companions/exp_chaser_sprite_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated EXP support companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2979,8 +2979,8 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P04 production EXP support companion icon.',
     },
     expChaserEffect: {
-      path: 'assets/companions/exp_chaser_effect_sheet_p04d.png',
-      note: 'MVP-P04d regenerated animated EXP support companion effect.',
+      path: 'assets/companions/exp_chaser_effect_sheet_p04e.png',
+      note: 'MVP-P04e cleaned animated EXP support companion effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },

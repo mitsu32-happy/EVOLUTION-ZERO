@@ -3768,3 +3768,19 @@ P04d supersedes P04c for active runtime use.
 - Generation report: `docs/assets/p04d_companion_animation_report.json`
 - P04d fixes P04c cell edge risk, improves move/action frame readability, and increases in-play companion visibility.
 - P04c assets remain available only for comparison/rollback.
+
+## MVP-P04e Companion Asset Cleanup
+
+P04e supersedes P04d for active runtime use.
+
+- New sprite sheets:
+  - `public/assets/companions/{id}_sprite_sheet_p04e.png`
+  - 4 columns x 3 rows, 384 x 384 per frame
+- New effect sheets:
+  - `public/assets/companions/{id}_effect_sheet_p04e.png`
+  - 4 columns x 1 row, 320 x 320 per frame
+- Contact sheet: `docs/assets/p04e_companion_animation_contact.png`
+- Generation report: `docs/assets/p04e_companion_animation_report.json`
+- P04e starts from cleaned P04 single PNGs instead of P04c/P04d sheets.
+- Small isolated source fragments are removed before sheet generation.
+- P04d remains on disk for investigation/rollback, but manifest targets now point to P04e.

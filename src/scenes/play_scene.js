@@ -1,4 +1,4 @@
-ï»¿import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
+import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { GameState } from '../core/game_state.js';
 import { ASSET_KEYS } from '../data/asset_manifest.js';
 import { ADAPTATION_RESEARCH_IDS, ADAPTATION_SKILLS } from '../data/adaptation_skills.js';
@@ -46,8 +46,8 @@ const MAX_PICKUP_BURSTS = 48;
 const MAX_PICKUP_POPUPS = 40;
 const MAX_COMPANION_EFFECTS = 24;
 const COMPANION_ACTION_DURATION = 0.46;
-const COMPANION_BASE_WIDTH = 170;
-const COMPANION_BASE_HEIGHT = 134;
+const COMPANION_BASE_WIDTH = 124;
+const COMPANION_BASE_HEIGHT = 98;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -64,16 +64,16 @@ const DEBUG_EVOLUTION_SKILLS = {
   zero: ['afterimage_claw', 'homing_fang', 'shock_roar_wave'],
 };
 const COMPANION_ANIMATION_PROFILES = {
-  raptorling: { scale: 1.04, displayScale: 1.02, bob: 3.8, bobSpeed: 7.5, tilt: 0.08, action: 'lunge', actionScale: 1.16, trail: 0xff776b },
-  spino_pup: { scale: 1.06, displayScale: 1.06, bob: 2.6, bobSpeed: 5.2, tilt: 0.05, action: 'waterShot', actionScale: 1.1, trail: 0x35d7ff },
-  medic_saur: { scale: 1.02, displayScale: 1.04, bob: 2.1, bobSpeed: 4.4, tilt: 0.035, action: 'healPulse', actionScale: 1.08, trail: 0x65e878 },
-  ptera_chick: { scale: 0.96, displayScale: 1, bob: 7.4, bobSpeed: 8.4, tilt: 0.12, action: 'airShot', actionScale: 1.12, trail: 0x9eeaff },
-  tricera_calf: { scale: 1.08, displayScale: 1.14, bob: 1.7, bobSpeed: 4.1, tilt: 0.035, action: 'guard', actionScale: 1.1, trail: 0x9ec8ff },
-  para_juvenile: { scale: 1.02, displayScale: 1.04, bob: 2.8, bobSpeed: 5.6, tilt: 0.06, action: 'sonar', actionScale: 1.08, trail: 0x35d7ff },
-  stego_calf: { scale: 1.08, displayScale: 1.08, bob: 2.2, bobSpeed: 4.8, tilt: 0.045, action: 'shockwave', actionScale: 1.12, trail: 0xffb04d },
-  rex_hatchling: { scale: 1.11, displayScale: 1.16, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
-  compy_pack: { scale: 0.94, displayScale: 0.94, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
-  exp_chaser: { scale: 0.98, displayScale: 1, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
+  raptorling: { displayScale: 0.98, bob: 3.8, bobSpeed: 7.5, tilt: 0.08, action: 'lunge', actionScale: 1.16, trail: 0xff776b },
+  spino_pup: { displayScale: 1.02, bob: 2.6, bobSpeed: 5.2, tilt: 0.05, action: 'waterShot', actionScale: 1.1, trail: 0x35d7ff },
+  medic_saur: { displayScale: 0.96, bob: 2.1, bobSpeed: 4.4, tilt: 0.035, action: 'healPulse', actionScale: 1.08, trail: 0x65e878 },
+  ptera_chick: { displayScale: 0.94, bob: 7.4, bobSpeed: 8.4, tilt: 0.12, action: 'airShot', actionScale: 1.12, trail: 0x9eeaff },
+  tricera_calf: { displayScale: 1.08, bob: 1.7, bobSpeed: 4.1, tilt: 0.035, action: 'guard', actionScale: 1.1, trail: 0x9ec8ff },
+  para_juvenile: { displayScale: 0.98, bob: 2.8, bobSpeed: 5.6, tilt: 0.06, action: 'sonar', actionScale: 1.08, trail: 0x35d7ff },
+  stego_calf: { displayScale: 1.02, bob: 2.2, bobSpeed: 4.8, tilt: 0.045, action: 'shockwave', actionScale: 1.12, trail: 0xffb04d },
+  rex_hatchling: { displayScale: 1.1, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
+  compy_pack: { displayScale: 0.9, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
+  exp_chaser: { displayScale: 0.94, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
 };
 const STAGE_BOUNDS = {
   left: -1500,
@@ -2087,23 +2087,23 @@ export class PlayScene {
       id: 'levelup',
       pages: [
         {
-          title: 'ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—',
-          body: 'é©å¿œæŠ€ã¯æˆ¦é—˜ã§ä½¿ã†ã‚¹ã‚­ãƒ«ã§ã™ã€‚\nå¨åŠ›ãƒ»ç¯„å›²ãƒ»å†ç™ºå‹•ã‚’è¦‹ã¦é¸ã³ã¾ã—ã‚‡ã†ã€‚',
-          target: 'ã‚«ãƒ¼ãƒ‰é¸æŠ',
+          title: 'ƒŒƒxƒ‹ƒAƒbƒv',
+          body: '“K‰‹Z‚Íí“¬‚Åg‚¤ƒXƒLƒ‹‚Å‚·B\nˆĞ—ÍE”ÍˆÍEÄ”­“®‚ğŒ©‚Ä‘I‚Ñ‚Ü‚µ‚å‚¤B',
+          target: 'ƒJ[ƒh‘I‘ğ',
           targetId: 'levelup.cards',
           tooltipPosition: 'top',
         },
         {
-          title: 'é©å¿œã¨é€²åŒ–',
-          body: 'èƒ½åŠ›å¼·åŒ–ã¯HPã‚„æ”»æ’ƒåŠ›ã‚’ä¼¸ã°ã—ã¾ã™ã€‚\né©å¿œLvã¯é€²åŒ–æ¡ä»¶ã«ã‚‚é–¢ä¿‚ã—ã¾ã™ã€‚',
-          target: 'é©å¿œæŠ€ã‚«ãƒ¼ãƒ‰',
+          title: '“K‰‚Æi‰»',
+          body: '”\—Í‹­‰»‚ÍHP‚âUŒ‚—Í‚ğL‚Î‚µ‚Ü‚·B\n“K‰Lv‚Íi‰»ğŒ‚É‚àŠÖŒW‚µ‚Ü‚·B',
+          target: '“K‰‹ZƒJ[ƒh',
           targetId: 'levelup.adaptation',
           tooltipPosition: 'bottom',
         },
         {
-          title: 'é©å¿œã‚·ãƒŠã‚¸ãƒ¼',
-          body: 'åŒã˜ã‚¿ã‚¤ãƒ—ã®é©å¿œã‚’é›†ã‚ã‚‹ã¨ã‚·ãƒŠã‚¸ãƒ¼ãŒç™ºç”Ÿã—ã¾ã™ã€‚\n2å€‹ã§â… ã€3å€‹ã§â…¡ã€‚çµ„ã¿åˆã‚ã›ã‚‚é‡è¦ã§ã™ã€‚',
-          target: 'é©å¿œæŠ€ã‚«ãƒ¼ãƒ‰',
+          title: '“K‰ƒVƒiƒW[',
+          body: '“¯‚¶ƒ^ƒCƒv‚Ì“K‰‚ğW‚ß‚é‚ÆƒVƒiƒW[‚ª”­¶‚µ‚Ü‚·B\n2ŒÂ‚Å‡TA3ŒÂ‚Å‡UB‘g‚İ‡‚í‚¹‚àd—v‚Å‚·B',
+          target: '“K‰‹ZƒJ[ƒh',
           targetId: 'levelup.adaptation',
           tooltipPosition: 'bottom',
         },
@@ -2156,9 +2156,9 @@ export class PlayScene {
   showUltimateTutorialIfNeeded({ force = false } = {}) {
     return this.showPlayEventTutorialIfNeeded('ultimate', [
       {
-        title: 'å¿…æ®ºæŠ€',
-        body: 'å¿…æ®ºæŠ€ãŒä½¿ç”¨å¯èƒ½ã§ã™ã€‚\nãƒœã‚¿ãƒ³ã‚’æŠ¼ã™ã¨å¼·åŠ›ãªæ”»æ’ƒã‚’ç™ºå‹•ã§ãã¾ã™ã€‚',
-        target: 'å¿…æ®ºãƒœã‚¿ãƒ³',
+        title: '•KE‹Z',
+        body: '•KE‹Z‚ªg—p‰Â”\‚Å‚·B\nƒ{ƒ^ƒ“‚ğ‰Ÿ‚·‚Æ‹­—Í‚ÈUŒ‚‚ğ”­“®‚Å‚«‚Ü‚·B',
+        target: '•KEƒ{ƒ^ƒ“',
         targetId: 'play.ultimate',
         tooltipPosition: 'top',
       },
@@ -2168,9 +2168,9 @@ export class PlayScene {
   showWarningGuideTutorialIfNeeded({ force = false } = {}) {
     return this.showPlayEventTutorialIfNeeded('warningGuide', [
       {
-        title: 'è­¦å‘Šã‚¬ã‚¤ãƒ‰',
-        body: 'èµ¤ã„ç¯„å›²ã¯å±é™ºã§ã™ã€‚\næ•µã‚„ã‚®ãƒŸãƒƒã‚¯ã®æ”»æ’ƒç¯„å›²ãªã®ã§ã€è¡¨ç¤ºã•ã‚ŒãŸã‚‰é›¢ã‚Œã¾ã—ã‚‡ã†ã€‚',
-        target: 'è­¦å‘Šè¡¨ç¤º',
+        title: 'ŒxƒKƒCƒh',
+        body: 'Ô‚¢”ÍˆÍ‚ÍŠëŒ¯‚Å‚·B\n“G‚âƒMƒ~ƒbƒN‚ÌUŒ‚”ÍˆÍ‚È‚Ì‚ÅA•\¦‚³‚ê‚½‚ç—£‚ê‚Ü‚µ‚å‚¤B',
+        target: 'Œx•\¦',
         targetId: 'play.warning',
         tooltipPosition: 'bottom',
       },
@@ -2574,7 +2574,7 @@ export class PlayScene {
       this.gamepadInput.connected = true;
       this.gamepadInput.lastUltimatePressed = false;
       this.gamepadInput.lastPausePressed = false;
-      this.showGamepadNotice('ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æ¥ç¶š');
+      this.showGamepadNotice('ƒRƒ“ƒgƒ[ƒ‰[Ú‘±');
       return;
     }
 
@@ -2586,7 +2586,7 @@ export class PlayScene {
       if (this.input.source === 'gamepad') {
         this.clearInput();
       }
-      this.showGamepadNotice('ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼åˆ‡æ–­');
+      this.showGamepadNotice('ƒRƒ“ƒgƒ[ƒ‰[Ø’f');
     }
   }
 
@@ -2974,8 +2974,8 @@ export class PlayScene {
       this.companionDebugLabel,
     );
     this.applyCompanionPassiveBonuses();
-    this.companionPosition.x = this.player.position.x + 112;
-    this.companionPosition.y = this.player.position.y + 48;
+    this.companionPosition.x = this.player.position.x + 92;
+    this.companionPosition.y = this.player.position.y + 38;
     this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
@@ -3344,8 +3344,8 @@ export class PlayScene {
       ? this.clamp(1 - (this.companionActionTimer / actionDuration), 0, 1)
       : 0;
     const actionWave = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
-    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 60 + 112;
-    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 26 + 48;
+    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 52 + 92;
+    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 22 + 38;
     const targetX = this.player.position.x + orbitX;
     const targetY = this.player.position.y + orbitY;
     const follow = Math.min(1, delta * 5.4);
@@ -3376,10 +3376,10 @@ export class PlayScene {
       : flip;
     const squash = Math.sin(this.companionOrbitTime * profile.bobSpeed + 0.7) * 0.022;
     const actionScale = 1 + actionWave * ((profile.actionScale ?? 1.1) - 1);
-    const scaleX = this.companionBaseScaleX * profile.scale * actionScale * (1 + squash) * this.companionFacing;
-    const scaleY = this.companionBaseScaleY * profile.scale * (1 - squash * 0.55) * (1 + actionWave * 0.04);
+    const scaleX = this.companionBaseScaleX * actionScale * (1 + squash) * this.companionFacing;
+    const scaleY = this.companionBaseScaleY * (1 - squash * 0.55) * (1 + actionWave * 0.04);
     this.setCompanionDisplayScale(this.companionSprite, scaleX, scaleY);
-    this.setCompanionDisplayScale(this.companionFallback, this.companionFacing * profile.scale * actionScale, profile.scale * (1 + actionWave * 0.04));
+    this.setCompanionDisplayScale(this.companionFallback, this.companionFacing * actionScale, 1 + actionWave * 0.04);
     this.companionSprite.rotation = (Math.sin(this.companionOrbitTime * profile.bobSpeed * 0.72) * profile.tilt) + this.companionFacing * actionWave * 0.08;
     this.companionFallback.rotation = this.companionSprite.rotation;
     this.updateCompanionSpriteAnimation(animationState, delta);
@@ -3569,7 +3569,7 @@ export class PlayScene {
     const effect = {
       age: 0,
       duration: options.duration ?? 0.38,
-      startScale: options.scale ?? 0.52,
+      startScale: options.scale ?? 0.42,
       kind: options.kind ?? companion?.type ?? 'support',
       tint: options.tint ?? 0xffffff,
       key: companion.effectAssetKey,
@@ -3789,9 +3789,9 @@ export class PlayScene {
           this.gameState.companionEggCollected = Boolean(result?.success);
           this.audioManager?.play('ui_confirm');
           this.spawnPickupBurst(pickup.position.x, pickup.position.y, 4, 'egg');
-          this.spawnPickupPopup(pickup.position.x, pickup.position.y - 30, 'åµã‚’å…¥æ‰‹', 0xfff0b4);
+          this.spawnPickupPopup(pickup.position.x, pickup.position.y - 30, '—‘‚ğ“üè', 0xfff0b4);
           if (!this.saveManager?.isTutorialComplete?.('companionEggPickup')) {
-            this.showCompanionTutorialNotice('åµã‚’å…¥æ‰‹ã—ã¾ã—ãŸã€‚ç ”ç©¶ç”»é¢ã§å­µåŒ–ã§ãã¾ã™ã€‚', 'companionEggPickup');
+            this.showCompanionTutorialNotice('—‘‚ğ“üè‚µ‚Ü‚µ‚½BŒ¤‹†‰æ–Ê‚Å›z‰»‚Å‚«‚Ü‚·B', 'companionEggPickup');
           }
         } else {
           this.audioManager?.play('pickup_exp');
@@ -4580,7 +4580,7 @@ export class PlayScene {
       const stageFinals = {
         jungle: {
           id: 'jungle_zero_final_boss',
-          name: 'ã‚¢ãƒ“ã‚¹ãƒ»ã‚«ãƒãƒ”ãƒ¼',
+          name: 'ƒAƒrƒXEƒJƒmƒs[',
           assetKey: ASSET_KEYS.bosses.jungleZeroFinalBoss,
           summonEnemyType: 'swarm',
           beamColor: 0x8ffcff,
@@ -4590,7 +4590,7 @@ export class PlayScene {
         },
         swamp: {
           id: 'swamp_zero_final_boss',
-          name: 'ãƒŸã‚¢ã‚ºãƒãƒ»ã‚ªãƒ¡ã‚¬',
+          name: 'ƒ~ƒAƒYƒ}EƒIƒƒK',
           assetKey: ASSET_KEYS.bosses.swampZeroFinalBoss,
           summonEnemyType: 'swampPoison',
           beamColor: 0xb8ff62,
@@ -4612,7 +4612,7 @@ export class PlayScene {
       };
       const stageFinal = stageFinals[stageId] ?? {
         id: 'zero_eclipse_protocol',
-        name: 'ã‚¨ã‚¯ãƒªãƒ—ã‚¹ãƒ»ãƒ—ãƒ­ãƒˆã‚³ãƒ«',
+        name: 'ƒGƒNƒŠƒvƒXEƒvƒƒgƒRƒ‹',
         assetKey: ASSET_KEYS.bosses.zeroEclipseProtocol,
         summonEnemyType: 'ruinsSummoner',
         beamColor: 0xe8fbff,
@@ -4824,7 +4824,7 @@ export class PlayScene {
     const phaseConfig = this.scaleBossConfig({
       ...base,
       id: phase === 2 ? `${base.id ?? 'stage_boss'}_zero_secondary` : `${base.id ?? 'stage_boss'}_zero_first`,
-      name: phase === 2 ? `${base.name ?? 'ZERO BOSS'}ãƒ»ZEROå¤‰ç•°` : base.name,
+      name: phase === 2 ? `${base.name ?? 'ZERO BOSS'}EZERO•ÏˆÙ` : base.name,
       speed: phase === 2 ? Math.round((base.speed ?? 40) * 1.08) : base.speed,
       attacks: {
         ...(base.attacks ?? {}),
@@ -6749,7 +6749,7 @@ export class PlayScene {
   triggerBossWarning(boss) {
     const shouldShowTextWarning = this.gameState.selectedMode !== 'zero';
     if (shouldShowTextWarning) {
-      this.bossWarningText.text = `${boss.displayLabel ?? 'APEX'}æ¥è¿‘: ${boss.name}`;
+      this.bossWarningText.text = `${boss.displayLabel ?? 'APEX'}Ú‹ß: ${boss.name}`;
       this.bossWarningArrow.rotation = Math.atan2(
         boss.position.y - this.player.position.y,
         boss.position.x - this.player.position.x,
@@ -6932,7 +6932,7 @@ export class PlayScene {
     this.showZeroPhaseNotice({
       key: 'zero-start',
       title: 'ZERO MODE',
-      subtitle: 'æ­»ç·šåˆ°é”ãƒ—ãƒ­ãƒˆã‚³ãƒ«é–‹å§‹',
+      subtitle: '€ü“’BƒvƒƒgƒRƒ‹ŠJn',
       variant: 'phase',
       duration: 1.9,
     });
@@ -6949,7 +6949,7 @@ export class PlayScene {
       ? {
           key: 'zero-final-boss',
           title: 'FINAL PROTOCOL',
-          subtitle: `${boss?.name ?? 'ã‚¨ã‚¯ãƒªãƒ—ã‚¹ãƒ»ãƒ—ãƒ­ãƒˆã‚³ãƒ«'} èµ·å‹•`,
+          subtitle: `${boss?.name ?? 'ƒGƒNƒŠƒvƒXEƒvƒƒgƒRƒ‹'} ‹N“®`,
           variant: 'final',
           duration: 2.62,
         }
@@ -6957,14 +6957,14 @@ export class PlayScene {
         ? {
             key: 'zero-phase-2-boss',
             title: 'PHASE 2',
-            subtitle: 'ZEROå¤‰ç•°åå¿œ',
+            subtitle: 'ZERO•ÏˆÙ”½‰',
             variant: 'warning',
             duration: 2.12,
           }
         : {
             key: 'zero-phase-1-boss',
             title: 'PHASE 1',
-            subtitle: 'ç•°å¸¸å€‹ä½“æ¥è¿‘',
+            subtitle: 'ˆÙíŒÂ‘ÌÚ‹ß',
             variant: 'warning',
             duration: 2.02,
           };
@@ -7174,7 +7174,7 @@ export class PlayScene {
   }
 
   triggerEvolutionWarning(candidate) {
-    this.evolutionWarningTitle.text = 'é€²åŒ–åå¿œã‚’æ¤œå‡º';
+    this.evolutionWarningTitle.text = 'i‰»”½‰‚ğŒŸo';
     this.evolutionWarningText.text = candidate.message;
     this.evolutionWarningTimer = 1.45;
     this.evolutionWarningLayer.visible = true;
@@ -7481,7 +7481,7 @@ export class PlayScene {
 
   createTinyBuildLabel() {
     const label = new Text({
-      text: 'èœƒï½ºè¬¦ãƒ»æ“…è‰ï½¶',
+      text: 'å‡ºæ’E¡ä»¶',
       style: {
         fill: '#96d7bd',
         fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
