@@ -152,3 +152,12 @@ P04f follow-up:
 - P04f did not regenerate assets.
 - P04f fixed the remaining bean-size/standard-size flicker in runtime by reapplying fixed sprite display size every time the companion texture changes.
 - P04e remains the active asset set after P04f.
+
+P04g follow-up:
+
+- P04g adds new active `public/assets/companions/{id}_sprite_sheet_p04g.png` sheets and keeps the `384 x 384` cell layout.
+- Only the `move` row is regenerated; idle/action rows are inherited from P04e.
+- P04g avoids additive foot markers, afterimages, and ghost-body layering because those read as double images in play.
+- Runtime sizing, anchors, and P04f frame-size stabilization were not changed.
+- Contact image: `docs/assets/p04g_companion_walk_contact.png`.
+- Detailed notes: `docs/design/companion_walk_motion_p04g.md`.

@@ -237,3 +237,16 @@ P04f keeps the P04e assets active and fixes runtime frame-size instability.
 - `debugCompanion=1` shows state, frame index, texture frame size, sprite size, scale, anchor, and fallback usage.
 
 This pass does not change companion ids, save data, hatch flow, behavior values, or active asset paths.
+
+## MVP-P04g move motion readability
+
+P04g adds active P04g companion sprite sheets with regenerated move rows.
+
+- Active paths are now `public/assets/companions/{id}_sprite_sheet_p04g.png`.
+- Cell size remains `384 x 384`; sheet layout remains `4 x 3`.
+- Walking companions now have stronger frame-to-frame body lean and weight shifts.
+- `ptera_chick`, `compy_pack`, and `exp_chaser` use wing-flap, pack silhouette shift, and floating motion instead of walking cues.
+- The sheets are regenerated from clean P04 single PNGs and avoid additive overlays/ghosting.
+- P04f's fixed-size texture switching remains unchanged.
+
+Detailed notes: `docs/design/companion_walk_motion_p04g.md`.

@@ -3784,3 +3784,28 @@ P04e supersedes P04d for active runtime use.
 - P04e starts from cleaned P04 single PNGs instead of P04c/P04d sheets.
 - Small isolated source fragments are removed before sheet generation.
 - P04d remains on disk for investigation/rollback, but manifest targets now point to P04e.
+
+## MVP-P04g Companion Move Row Regeneration
+
+P04g adds new active sprite sheets. They inherit P04e idle/action rows and regenerate only the `move` row from clean P04 single PNGs without additive foot markers, afterimages, or ghost-body layering.
+
+- `public/assets/companions/raptorling_sprite_sheet_p04g.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04g.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04g.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04g.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04g.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04g.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04g.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04g.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04g.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04g.png`
+
+The sheet layout stays `384 x 384`, `4 columns x 3 rows`. `src/data/asset_manifest.js` now points companion sprite keys to the P04g sheets.
+
+Generation helper:
+
+- `tools/generate_companion_walk_p04g.py`
+
+QA contact:
+
+- `docs/assets/p04g_companion_walk_contact.png`
