@@ -1,4 +1,4 @@
-﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+﻿import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { ASSET_KEYS } from '../data/asset_manifest.js';
 import {
   getDiscoveredEvolutionCount as getSavedEvolutionCount,
