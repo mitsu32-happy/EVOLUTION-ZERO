@@ -335,3 +335,22 @@ P05c refines P05b target pursuit.
 - P04f fixed display-size handling and P04j sprite references are unchanged.
 
 Detailed notes: `docs/design/companion_movement_smoothing_p05c.md`.
+
+## MVP-P05d skill effect assets
+
+P05d makes the dedicated companion effect sheets the primary action feedback.
+
+- Active effect assets remain the P04e sheets:
+  `public/assets/companions/{id}_effect_sheet_p04e.png`.
+- `src/data/asset_manifest.js` documents those keys as P05d-connected
+  companion skill effects.
+- `PlayScene` now applies per-companion effect profiles for scale, duration,
+  growth, alpha, rotation speed, and FPS.
+- Normal play suppresses the simple `Graphics` action rings, slash lines, and
+  aura shapes that made skills look like debug graphics.
+- Those simple guide shapes remain available only through
+  `debugCompanionGuide`; `debugCompanion` keeps the label/debug readout only.
+- Effect sprites still use `companionEffects`, `companionEffectPool`, and
+  `MAX_COMPANION_EFFECTS`.
+
+Detailed notes: `docs/design/companion_skill_effect_assets_p05d.md`.

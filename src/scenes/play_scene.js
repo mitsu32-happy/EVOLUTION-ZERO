@@ -95,6 +95,18 @@ const COMPANION_MOVEMENT_PROFILES = {
   compy_pack: { maxSpeed: 236, pursuitSpeed: 258, acceleration: 9.2, deceleration: 10.2, arrivalRadius: 24, slowRadius: 86 },
   exp_chaser: { maxSpeed: 206, pursuitSpeed: 226, acceleration: 7.0, deceleration: 8.8, arrivalRadius: 32, slowRadius: 108 },
 };
+const COMPANION_EFFECT_PROFILES = {
+  raptorling: { kind: 'slash', scale: 0.38, duration: 0.34, growth: 0.5, alpha: 0.94, rotationSpeed: 0.08, fps: 16 },
+  spino_pup: { kind: 'water', scale: 0.45, duration: 0.46, growth: 0.62, alpha: 0.9, rotationSpeed: 0.16, fps: 14 },
+  medic_saur: { kind: 'heal', scale: 0.46, duration: 0.62, growth: 0.7, alpha: 0.78, rotationSpeed: 0.04, fps: 12 },
+  ptera_chick: { kind: 'wind', scale: 0.36, duration: 0.38, growth: 0.56, alpha: 0.9, rotationSpeed: 0.22, fps: 15 },
+  tricera_calf: { kind: 'defense', scale: 0.5, duration: 0.58, growth: 0.52, alpha: 0.8, rotationSpeed: 0.03, fps: 12 },
+  para_juvenile: { kind: 'sonar', scale: 0.46, duration: 0.52, growth: 0.76, alpha: 0.82, rotationSpeed: 0.08, fps: 12 },
+  stego_calf: { kind: 'shockwave', scale: 0.48, duration: 0.5, growth: 0.76, alpha: 0.88, rotationSpeed: 0.05, fps: 12 },
+  rex_hatchling: { kind: 'bite', scale: 0.46, duration: 0.42, growth: 0.48, alpha: 0.92, rotationSpeed: 0.03, fps: 12 },
+  compy_pack: { kind: 'swarm', scale: 0.4, duration: 0.34, growth: 0.58, alpha: 0.9, rotationSpeed: 1.0, fps: 16 },
+  exp_chaser: { kind: 'exp', scale: 0.42, duration: 0.54, growth: 0.78, alpha: 0.84, rotationSpeed: 0.18, fps: 12 },
+};
 const STAGE_BOUNDS = {
   left: -1500,
   right: 1500,
@@ -3050,7 +3062,7 @@ export class PlayScene {
 
   drawCompanionFallback() {
     const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? 0x7cf7d4;
-    const debugGuide = getDebugFlag('debugCompanion') || getDebugFlag('debugCompanionGuide');
+    const debugGuide = getDebugFlag('debugCompanionGuide');
     const debugAlpha = debugGuide ? 0.82 : 0.5;
 
     this.companionGlow
@@ -3214,7 +3226,7 @@ export class PlayScene {
     const accent = COMPANION_TYPES[this.activeCompanion?.type]?.accent ?? profile.trail ?? 0x7cf7d4;
     const trailColor = profile.trail ?? accent;
     const actionAlpha = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
-    const debugGuide = getDebugFlag('debugCompanion') || getDebugFlag('debugCompanionGuide');
+    const debugGuide = getDebugFlag('debugCompanionGuide');
     const debugBoost = debugGuide ? 1.18 : 1;
 
     this.companionGlow
@@ -3222,8 +3234,8 @@ export class PlayScene {
       .ellipse(0, 16, 34 + moveIntensity * 7, 10 + moveIntensity * 2)
       .fill({ color: 0x000000, alpha: 0.3 })
       .circle(0, -12, 31 + actionAlpha * 7)
-      .fill({ color: accent, alpha: (0.055 + actionAlpha * 0.16) * debugBoost });
-    if (debugGuide || actionAlpha > 0.08) {
+      .fill({ color: accent, alpha: (0.045 + actionAlpha * 0.045) * debugBoost });
+    if (debugGuide) {
       this.companionGlow
         .circle(0, -12, 37 + actionAlpha * 8)
         .stroke({
@@ -3234,7 +3246,7 @@ export class PlayScene {
     }
 
     this.companionTrail.clear();
-    if (moveIntensity > 0.06 || actionAlpha > 0.05) {
+    if (debugGuide && (moveIntensity > 0.06 || actionAlpha > 0.05)) {
       const lineAlpha = Math.min(0.46, 0.12 + moveIntensity * 0.24 + actionAlpha * 0.2);
       const length = 18 + moveIntensity * 22 + actionAlpha * 10;
       const laneOffset = this.activeCompanion?.id === 'compy_pack' ? 8 : 5;
@@ -3250,7 +3262,7 @@ export class PlayScene {
     }
 
     this.companionActionAura.clear();
-    if (actionAlpha <= 0) {
+    if (!debugGuide || actionAlpha <= 0) {
       return;
     }
 
@@ -3439,6 +3451,22 @@ export class PlayScene {
   getCompanionMovementProfile(companion = this.activeCompanion) {
     return COMPANION_MOVEMENT_PROFILES[companion?.id]
       ?? { maxSpeed: 178, pursuitSpeed: 196, acceleration: 6.4, deceleration: 8.4, arrivalRadius: COMPANION_DEFAULT_ARRIVAL_RADIUS, slowRadius: COMPANION_DEFAULT_SLOW_RADIUS };
+  }
+
+  getCompanionSkillEffectProfile(companion = this.activeCompanion, options = {}) {
+    const profile = COMPANION_EFFECT_PROFILES[companion?.id] ?? {
+      kind: companion?.type ?? 'support',
+      scale: 0.42,
+      duration: 0.42,
+      growth: 0.55,
+      alpha: 0.86,
+      rotationSpeed: 0.12,
+      fps: 12,
+    };
+    return {
+      ...profile,
+      ...options,
+    };
   }
 
   clampCompanionPointToScreen(point) {
@@ -3863,7 +3891,7 @@ export class PlayScene {
       const healed = this.gameState.healPlayer(behavior.heal ?? 3);
       if (healed > 0) {
         this.triggerCompanionAction('healPulse', this.player.position, { duration: 0.7 });
-        this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.38, duration: 0.48 });
+        this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion);
         this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, `HP +${Math.round(healed)}`, 0x65e878);
         this.spawnPickupBurst(this.player.position.x, this.player.position.y, 2, 'heal');
         this.companionLastAction = `heal ${Math.round(healed)}`;
@@ -3876,7 +3904,7 @@ export class PlayScene {
       const duration = behavior.guardDuration ?? 0.45;
       this.gameState.invincibleTime = Math.max(this.gameState.invincibleTime, duration);
       this.triggerCompanionAction('guard', this.player.position, { duration: 0.72 });
-      this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion, { scale: 0.42, duration: 0.52 });
+      this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion);
       this.spawnPickupPopup(this.player.position.x, this.player.position.y - 48, 'GUARD', 0x9ec8ff);
       this.companionLastAction = `guard ${duration.toFixed(2)}s`;
       this.companionLastTarget = 'player';
@@ -3917,7 +3945,7 @@ export class PlayScene {
     if (targetedCount > 0 && this.companionPickupEffectTimer <= 0) {
       this.companionPickupEffectTimer = effectCooldown;
       this.triggerCompanionAction(expOnly ? 'expTrace' : 'sonar', this.companionPosition, { duration: 0.56 });
-      this.spawnCompanionEffect(this.companionPosition.x, this.companionPosition.y - 18, this.activeCompanion, { scale: 0.32, duration: 0.42 });
+      this.spawnCompanionEffect(this.companionPosition.x, this.companionPosition.y - 18, this.activeCompanion);
     }
 
     return targetedCount;
@@ -3928,17 +3956,21 @@ export class PlayScene {
       return;
     }
 
+    const effectProfile = this.getCompanionSkillEffectProfile(companion, options);
     const effect = {
       age: 0,
-      duration: options.duration ?? 0.38,
-      startScale: options.scale ?? 0.42,
-      kind: options.kind ?? companion?.type ?? 'support',
-      tint: options.tint ?? 0xffffff,
+      duration: effectProfile.duration ?? 0.38,
+      startScale: effectProfile.scale ?? 0.42,
+      kind: effectProfile.kind ?? companion?.type ?? 'support',
+      tint: effectProfile.tint ?? 0xffffff,
+      maxAlpha: effectProfile.alpha ?? 0.88,
+      growth: effectProfile.growth ?? 0.5,
+      rotationSpeed: effectProfile.rotationSpeed ?? 0.12,
       key: companion.effectAssetKey,
       animationTextures: null,
       animationFrame: 0,
       animationTimer: 0,
-      animationFps: 12,
+      animationFps: effectProfile.fps ?? 12,
       view: this.acquireCompanionEffectSprite(),
     };
 
@@ -3957,7 +3989,7 @@ export class PlayScene {
     if (cachedTexture) {
       this.applyCompanionEffectTexture(effect, cachedTexture);
       effect.view.visible = true;
-      effect.view.alpha = 0.9;
+      effect.view.alpha = effect.maxAlpha ?? 0.9;
       return;
     }
 
@@ -3969,7 +4001,7 @@ export class PlayScene {
       this.companionEffectTextureCache.set(effect.key, texture);
       this.applyCompanionEffectTexture(effect, texture);
       effect.view.visible = true;
-      effect.view.alpha = 0.9;
+      effect.view.alpha = effect.maxAlpha ?? 0.9;
     }).catch(() => {
       this.releaseCompanionEffectSprite(effect.view);
       this.companionEffects = this.companionEffects.filter((entry) => entry !== effect);
@@ -3983,7 +4015,7 @@ export class PlayScene {
 
     const animation = this.getCompanionEffectAnimation(effect.key, texture);
     effect.animationTextures = animation?.textures ?? null;
-    effect.animationFps = animation?.fps ?? 12;
+    effect.animationFps = effect.animationFps ?? animation?.fps ?? 12;
     effect.animationFrame = 0;
     effect.animationTimer = 0;
     effect.view.texture = effect.animationTextures?.[0] ?? texture;
@@ -4091,16 +4123,12 @@ export class PlayScene {
         return false;
       }
 
-      const fade = Math.sin(progress * Math.PI);
-      effect.view.alpha = fade * (effect.kind === 'heal' || effect.kind === 'defense' ? 0.78 : 0.88);
-      const growth = ['pickup', 'exp'].includes(effect.kind)
-        ? 0.58
-        : ['area', 'synergy'].includes(effect.kind)
-          ? 0.72
-          : 0.42;
+    const fade = Math.sin(progress * Math.PI);
+      effect.view.alpha = fade * (effect.maxAlpha ?? 0.88);
+      const growth = effect.growth ?? 0.5;
       const scale = effect.startScale * (0.82 + progress * growth);
       effect.view.scale.set(scale);
-      const spinSpeed = effect.kind === 'swarm' ? 1.4 : effect.kind === 'boss' ? 0.12 : 0.25;
+      const spinSpeed = effect.rotationSpeed ?? 0.12;
       effect.view.rotation += delta * spinSpeed;
       if (effect.animationTextures?.length > 1) {
         const frameDuration = 1 / Math.max(1, effect.animationFps ?? 12);

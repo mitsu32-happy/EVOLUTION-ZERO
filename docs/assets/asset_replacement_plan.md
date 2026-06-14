@@ -3916,3 +3916,37 @@ QA artifacts:
 P04j also adds a reusable generation guide for future player and enemy assets:
 
 - `docs/design/sprite_sheet_asset_generation_guidelines.md`
+
+## MVP-P05d Companion Skill Effect Connection
+
+P05d does not add a new bitmap batch. The existing cleaned P04e effect sheets
+are now the connected production skill-effect assets for companion actions.
+
+Active effect sheets:
+
+- `public/assets/companions/raptorling_effect_sheet_p04e.png`
+- `public/assets/companions/spino_pup_effect_sheet_p04e.png`
+- `public/assets/companions/medic_saur_effect_sheet_p04e.png`
+- `public/assets/companions/ptera_chick_effect_sheet_p04e.png`
+- `public/assets/companions/tricera_calf_effect_sheet_p04e.png`
+- `public/assets/companions/para_juvenile_effect_sheet_p04e.png`
+- `public/assets/companions/stego_calf_effect_sheet_p04e.png`
+- `public/assets/companions/rex_hatchling_effect_sheet_p04e.png`
+- `public/assets/companions/compy_pack_effect_sheet_p04e.png`
+- `public/assets/companions/exp_chaser_effect_sheet_p04e.png`
+
+Runtime changes:
+
+- `src/data/asset_manifest.js` now labels the existing companion effect keys as
+  P05d dedicated skill effects.
+- `src/scenes/play_scene.js` applies per-companion effect profiles to make
+  those sheets carry the action feedback.
+- Normal-play simple `Graphics` action rings/lines are suppressed and remain
+  available only through `debugCompanionGuide`.
+
+Future replacement criteria:
+
+- create `{id}_effect_sheet_p05d.png` only if real-device QA finds a P04e sheet
+  too generic or too hard to read on phone screens
+- keep the same transparent PNG, `4 x 1`, `320 x 320` frame contract unless a
+  later runtime change explicitly revises it

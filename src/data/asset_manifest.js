@@ -2782,7 +2782,7 @@ export const ASSET_MANIFEST = {
     },
     raptorlingEffect: {
       path: 'assets/companions/raptorling_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated attack companion hit effect.',
+      note: 'MVP-P05d connected dedicated animated slash/claw companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
@@ -2804,7 +2804,7 @@ export const ASSET_MANIFEST = {
     },
     spinoPupEffect: {
       path: 'assets/companions/spino_pup_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated area companion splash effect.',
+      note: 'MVP-P05d connected dedicated animated water splash companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
@@ -2826,7 +2826,7 @@ export const ASSET_MANIFEST = {
     },
     medicSaurEffect: {
       path: 'assets/companions/medic_saur_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated healing pulse effect.',
+      note: 'MVP-P05d connected dedicated animated healing aura companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
@@ -2848,7 +2848,7 @@ export const ASSET_MANIFEST = {
     },
     pteraChickEffect: {
       path: 'assets/companions/ptera_chick_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated ranged flying companion effect.',
+      note: 'MVP-P05d connected dedicated animated wind/air-shot companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
@@ -2870,7 +2870,7 @@ export const ASSET_MANIFEST = {
     },
     triceraCalfEffect: {
       path: 'assets/companions/tricera_calf_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated defense companion guard effect.',
+      note: 'MVP-P05d connected dedicated animated guard shield companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
@@ -2892,7 +2892,7 @@ export const ASSET_MANIFEST = {
     },
     paraJuvenileEffect: {
       path: 'assets/companions/para_juvenile_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated pickup companion sonar effect.',
+      note: 'MVP-P05d connected dedicated animated sonar/pickup companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
@@ -2914,7 +2914,7 @@ export const ASSET_MANIFEST = {
     },
     stegoCalfEffect: {
       path: 'assets/companions/stego_calf_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated area/synergy companion effect.',
+      note: 'MVP-P05d connected dedicated animated shockwave companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
@@ -2936,7 +2936,7 @@ export const ASSET_MANIFEST = {
     },
     rexHatchlingEffect: {
       path: 'assets/companions/rex_hatchling_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated boss-focused companion effect.',
+      note: 'MVP-P05d connected dedicated animated bite/impact companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
@@ -2958,7 +2958,7 @@ export const ASSET_MANIFEST = {
     },
     compyPackEffect: {
       path: 'assets/companions/compy_pack_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated swarm companion effect.',
+      note: 'MVP-P05d connected dedicated animated swarm slash companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 16, loop: false } },
@@ -2980,7 +2980,7 @@ export const ASSET_MANIFEST = {
     },
     expChaserEffect: {
       path: 'assets/companions/exp_chaser_effect_sheet_p04e.png',
-      note: 'MVP-P04e cleaned animated EXP support companion effect.',
+      note: 'MVP-P05d connected dedicated animated EXP scan companion skill effect.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 1, frameWidth: 320, frameHeight: 320 },
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },

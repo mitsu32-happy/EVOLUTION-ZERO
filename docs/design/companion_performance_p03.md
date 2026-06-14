@@ -155,3 +155,20 @@ P05c adds only scalar velocity math to the P05b movement path.
 - The per-frame cost is still limited to one active companion.
 
 `debugCompanion=1` exposes movement state, target type, speed, and distance for QA without changing normal runtime UI.
+
+## MVP-P05d skill effect performance
+
+P05d reuses existing P04e effect sheets and does not add new spawned object
+classes.
+
+- Each skill effect still spawns through `spawnCompanionEffect()`.
+- The same `companionEffects` array and `companionEffectPool` are used.
+- `MAX_COMPANION_EFFECTS` and `performanceLoadSheddingLevel >= 2` suppression
+  remain unchanged.
+- Per-companion effect profiles only change scale, duration, alpha, growth,
+  rotation speed, and animation FPS.
+- Normal-play `Graphics` action rings/trails are suppressed, reducing simple
+  redraw noise under load.
+
+P05d QA should confirm repeated companion actions do not grow
+`companionEffects`, pool usage, or container child counts.
