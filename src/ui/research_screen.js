@@ -178,6 +178,7 @@ export class ResearchScreen {
     this.companionFocusIndex = 0;
     this.companionUpgradeChoiceTargetId = null;
     this.companionUpgradeChoiceFocusIndex = 0;
+    this.companionUpgradeChoiceShowFocus = false;
     this.companionUnlockTutorialQueued = false;
     this.companionTabTutorialQueued = false;
     this.gamepadFocusArea = 'card';
@@ -782,6 +783,7 @@ export class ResearchScreen {
   }
 
   handleCompanionUpgradeChoiceGamepadAction(actions = {}) {
+    this.companionUpgradeChoiceShowFocus = true;
     if (actions.cancelPressed || actions.pausePressed) {
       this.closeCompanionUpgradeChoice();
       return true;
@@ -898,7 +900,7 @@ export class ResearchScreen {
     }
 
     if (item.type === 'upgrade') {
-      this.upgradeResearchCompanion(item.companionId);
+      this.upgradeResearchCompanion(item.companionId, { showFocus: true });
       return;
     }
 
@@ -1262,7 +1264,7 @@ export class ResearchScreen {
       const level = levels[row.typeId] ?? 1;
       const cost = companion ? getCompanionUpgradeCost(companion.id, level, row.typeId) : null;
       const canUpgrade = Boolean(cost && (data.ownedDna ?? 0) >= cost);
-      const focused = index === this.companionUpgradeChoiceFocusIndex;
+      const focused = Boolean(this.companionUpgradeChoiceShowFocus) && index === this.companionUpgradeChoiceFocusIndex;
       row.frame.texture = optionTexture ?? Texture.EMPTY;
       row.frame.visible = !!optionTexture;
       row.frame.width = 292;
@@ -1827,7 +1829,7 @@ export class ResearchScreen {
     this.handleCompanionHatchAction({ item, canBuy: item.action === 'claim' || canStart });
   }
 
-  upgradeResearchCompanion(companionId) {
+  upgradeResearchCompanion(companionId, options = {}) {
     if (!companionId) {
       return;
     }
@@ -1842,6 +1844,7 @@ export class ResearchScreen {
 
     this.companionUpgradeChoiceTargetId = companionId;
     this.companionUpgradeChoiceFocusIndex = 0;
+    this.companionUpgradeChoiceShowFocus = Boolean(options.showFocus);
     this.companionUpgradeChoiceModal.view.visible = true;
     this.drawCompanionUpgradeChoiceModal();
   }
@@ -1853,6 +1856,7 @@ export class ResearchScreen {
 
     this.companionUpgradeChoiceModal.view.visible = false;
     this.companionUpgradeChoiceTargetId = null;
+    this.companionUpgradeChoiceShowFocus = false;
   }
 
   confirmCompanionUpgradeChoice(upgradeType) {

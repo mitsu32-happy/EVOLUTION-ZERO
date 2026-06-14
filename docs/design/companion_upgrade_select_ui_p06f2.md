@@ -34,6 +34,13 @@ primary look. It now reuses production P06d assets:
 Runtime text remains code-rendered so Japanese labels stay sharp and can be
 shortened without regenerating images.
 
+The gold focus frame is input-mode aware:
+
+- Mouse / touch opening: no persistent option focus frame.
+- Gamepad opening or D-pad movement: focused option frame is shown.
+- The gamepad focus ring remains available for controller navigation without
+  making the touch UI feel selected by default.
+
 ## Option Contents
 
 Each line card displays:
@@ -48,7 +55,11 @@ Each line card displays:
 
 - Confirm selected cards visibly show `セット中`.
 - Confirm unset state changes all owned card actions to `選択`.
+- Confirm multiple owned companions page correctly in home selection.
+- Confirm multiple owned companions page correctly in research owned view.
 - Confirm research owned rows show the `強化` label.
 - Confirm the upgrade line selection modal appears with P06d production
   panel/card/button assets.
+- Confirm the upgrade option focus frame is hidden for mouse/touch opening and
+  kept for gamepad navigation.
 - Confirm no runtime error/warn is introduced.
