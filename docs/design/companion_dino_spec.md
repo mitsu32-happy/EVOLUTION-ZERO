@@ -393,3 +393,13 @@ See `docs/design/companion_ui_polish_p06c.md`.
   - `companionTabViewed`
   - `companionHomeViewed`
 - The warning guide tutorial is intentionally suppressed and marked complete.
+## MVP-P06f Independent Upgrade Lines
+
+- Companion upgrades are split into `range`, `effect`, and `speed`.
+- `levels[id]` remains as a compatibility/display aggregate and is the highest
+  line level.
+- `range` affects movement reach and skill/pickup range.
+- `effect` affects attack, healing, guard, EXP, pull, and boss bonus values.
+- `speed` affects movement speed and action interval scaling.
+- `selectedId: null` is valid for owned companions and starts PlayScene without
+  a companion.

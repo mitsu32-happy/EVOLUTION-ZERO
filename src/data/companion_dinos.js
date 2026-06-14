@@ -14,6 +14,32 @@ export const COMPANION_TUTORIAL_FLAGS = {
   set: 'companionSet',
 };
 
+export const COMPANION_UPGRADE_TYPES = {
+  range: {
+    id: 'range',
+    label: '移動範囲',
+    shortLabel: '範囲',
+    description: 'お供が行動できる範囲が広がる',
+    costMultiplier: 1,
+  },
+  effect: {
+    id: 'effect',
+    label: '効果',
+    shortLabel: '効果',
+    description: '攻撃・回復・補助効果が上がる',
+    costMultiplier: 1.12,
+  },
+  speed: {
+    id: 'speed',
+    label: '速度',
+    shortLabel: '速度',
+    description: '移動速度と行動のキレが上がる',
+    costMultiplier: 0.95,
+  },
+};
+
+export const COMPANION_UPGRADE_TYPE_IDS = Object.keys(COMPANION_UPGRADE_TYPES);
+
 export const COMPANION_TYPES = {
   attack: { label: '近接攻撃型', accent: 0xff776b },
   area: { label: '範囲攻撃型', accent: 0xffb04d },
@@ -188,6 +214,7 @@ export function createDefaultCompanionState() {
     ownedIds: [],
     selectedId: null,
     levels: {},
+    upgradeLevels: {},
     eggPending: false,
     eggDiscovered: false,
     eggIncubating: false,
@@ -203,6 +230,22 @@ export function createDefaultCompanionState() {
   };
 }
 
+export function normalizeCompanionUpgradeLevels(value = {}, fallbackLevel = 1, maxLevel = 5) {
+  const source = typeof value === 'object' && value !== null ? value : {};
+  const fallback = Math.max(1, Math.min(maxLevel, Math.floor(Number.isFinite(Number(fallbackLevel)) ? Number(fallbackLevel) : 1)));
+
+  return COMPANION_UPGRADE_TYPE_IDS.reduce((result, typeId) => {
+    const raw = Number(source[typeId] ?? fallback);
+    result[typeId] = Math.max(1, Math.min(maxLevel, Math.floor(Number.isFinite(raw) ? raw : fallback)));
+    return result;
+  }, {});
+}
+
+export function getCompanionTotalLevel(upgradeLevels = {}, fallbackLevel = 1) {
+  const levels = normalizeCompanionUpgradeLevels(upgradeLevels, fallbackLevel);
+  return Math.max(...COMPANION_UPGRADE_TYPE_IDS.map((typeId) => levels[typeId] ?? 1));
+}
+
 export function normalizeCompanionState(value = {}) {
   const defaults = createDefaultCompanionState();
   const source = typeof value === 'object' && value !== null ? value : {};
@@ -213,7 +256,13 @@ export function normalizeCompanionState(value = {}) {
   const levels = ownedIds.reduce((result, id) => {
     const companion = getCompanionById(id);
     const valueLevel = Number(source.levels?.[id] ?? 1);
-    result[id] = Math.max(1, Math.min(companion?.maxLevel ?? 5, Math.floor(Number.isFinite(valueLevel) ? valueLevel : 1)));
+    const upgradeLevels = normalizeCompanionUpgradeLevels(source.upgradeLevels?.[id], valueLevel, companion?.maxLevel ?? 5);
+    result[id] = getCompanionTotalLevel(upgradeLevels, valueLevel);
+    return result;
+  }, {});
+  const upgradeLevels = ownedIds.reduce((result, id) => {
+    const companion = getCompanionById(id);
+    result[id] = normalizeCompanionUpgradeLevels(source.upgradeLevels?.[id], source.levels?.[id] ?? 1, companion?.maxLevel ?? 5);
     return result;
   }, {});
   const selectedId = ownedIds.includes(source.selectedId) ? source.selectedId : null;
@@ -226,6 +275,7 @@ export function normalizeCompanionState(value = {}) {
     ownedIds,
     selectedId,
     levels,
+    upgradeLevels,
     eggPending: Boolean(source.eggPending),
     eggDiscovered: Boolean(source.eggDiscovered || source.eggPending || source.eggIncubating || ownedIds.length > 0 || source.lastHatchedId),
     eggIncubating: Boolean(source.eggIncubating),
@@ -243,6 +293,7 @@ export function cloneCompanionState(value = {}) {
     ...normalized,
     ownedIds: [...normalized.ownedIds],
     levels: { ...normalized.levels },
+    upgradeLevels: Object.fromEntries(Object.entries(normalized.upgradeLevels ?? {}).map(([id, levels]) => [id, { ...levels }])),
     tutorialFlags: { ...normalized.tutorialFlags },
   };
 }
@@ -264,7 +315,7 @@ export function pickRandomUnownedCompanion(state = {}, rng = Math.random) {
   return getCompanionById(unowned[index]);
 }
 
-export function getCompanionUpgradeCost(companionId, level = 1) {
+export function getCompanionUpgradeCost(companionId, level = 1, upgradeType = 'effect') {
   const companion = getCompanionById(companionId);
 
   if (!companion || level >= companion.maxLevel) {
@@ -272,43 +323,61 @@ export function getCompanionUpgradeCost(companionId, level = 1) {
   }
 
   const rarityMultiplier = companion.rarity === 'epic' ? 1.45 : companion.rarity === 'rare' ? 1.2 : 1;
-  return Math.round((46 + level * 34) * rarityMultiplier);
+  const typeMultiplier = COMPANION_UPGRADE_TYPES[upgradeType]?.costMultiplier ?? 1;
+  return Math.round((46 + level * 34) * rarityMultiplier * typeMultiplier);
+}
+
+export function getCompanionUpgradeLevelsFromState(state = {}, companionId) {
+  const companion = getCompanionById(companionId);
+  if (!companion) {
+    return normalizeCompanionUpgradeLevels();
+  }
+  return normalizeCompanionUpgradeLevels(state.upgradeLevels?.[companionId], state.levels?.[companionId] ?? 1, companion.maxLevel);
 }
 
 export function getCompanionScaledBehavior(companionId, level = 1) {
   const companion = getCompanionById(companionId);
-  const safeLevel = Math.max(1, Math.floor(level));
 
   if (!companion) {
     return null;
   }
 
-  const rank = safeLevel - 1;
+  const levels = typeof level === 'object' && level !== null
+    ? normalizeCompanionUpgradeLevels(level, 1, companion.maxLevel)
+    : normalizeCompanionUpgradeLevels(null, level, companion.maxLevel);
+  const effectRank = (levels.effect ?? 1) - 1;
+  const rangeRank = (levels.range ?? 1) - 1;
+  const speedRank = (levels.speed ?? 1) - 1;
   const behavior = companion.behavior ?? {};
   const targetsAtLevel = behavior.targetsAtLevel ?? {};
+  const targetLevel = Math.max(levels.effect ?? 1, levels.range ?? 1);
   const levelTargetBonus = Object.entries(targetsAtLevel).reduce((result, [requiredLevel, value]) => (
-    safeLevel >= Number(requiredLevel) ? Math.max(result, Number(value)) : result
+    targetLevel >= Number(requiredLevel) ? Math.max(result, Number(value)) : result
   ), behavior.targets ?? 1);
 
   return {
     ...behavior,
-    damage: Math.round((behavior.damage ?? 0) + (behavior.damageGrowth ?? 0) * rank),
-    heal: Math.round((behavior.heal ?? 0) + (behavior.healGrowth ?? 0) * rank),
-    interval: Math.max(0.85, (behavior.interval ?? 2.4) - (behavior.intervalGrowth ?? 0) * rank),
-    range: Math.round((behavior.range ?? behavior.pickupRadius ?? 180) + (behavior.rangeGrowth ?? behavior.radiusGrowth ?? 0) * rank),
-    pickupRadius: Math.round((behavior.pickupRadius ?? behavior.range ?? 130) + (behavior.radiusGrowth ?? behavior.rangeGrowth ?? 0) * rank),
-    pullMultiplier: Number(((behavior.pullMultiplier ?? 1) + (behavior.pullGrowth ?? 0) * rank).toFixed(2)),
-    guardDuration: Number(((behavior.guardDuration ?? 0) + (behavior.durationGrowth ?? 0) * rank).toFixed(2)),
-    expMultiplier: Number(((behavior.expMultiplier ?? 1) + (behavior.expGrowth ?? 0) * rank).toFixed(3)),
-    bossBonus: Number(((behavior.bossBonus ?? 1) + (behavior.bossBonusGrowth ?? 0) * rank).toFixed(2)),
+    upgradeLevels: levels,
+    damage: Math.round((behavior.damage ?? 0) + (behavior.damageGrowth ?? 0) * effectRank),
+    heal: Math.round((behavior.heal ?? 0) + (behavior.healGrowth ?? 0) * effectRank),
+    interval: Math.max(0.85, (behavior.interval ?? 2.4) - (behavior.intervalGrowth ?? 0) * speedRank),
+    range: Math.round((behavior.range ?? behavior.pickupRadius ?? 180) + (behavior.rangeGrowth ?? behavior.radiusGrowth ?? 0) * rangeRank),
+    pickupRadius: Math.round((behavior.pickupRadius ?? behavior.range ?? 130) + (behavior.radiusGrowth ?? behavior.rangeGrowth ?? 0) * rangeRank),
+    pullMultiplier: Number(((behavior.pullMultiplier ?? 1) + (behavior.pullGrowth ?? 0) * effectRank).toFixed(2)),
+    guardDuration: Number(((behavior.guardDuration ?? 0) + (behavior.durationGrowth ?? 0) * effectRank).toFixed(2)),
+    expMultiplier: Number(((behavior.expMultiplier ?? 1) + (behavior.expGrowth ?? 0) * effectRank).toFixed(3)),
+    bossBonus: Number(((behavior.bossBonus ?? 1) + (behavior.bossBonusGrowth ?? 0) * effectRank).toFixed(2)),
     targets: Math.max(1, Math.floor(levelTargetBonus)),
   };
 }
 
 export function getCompanionEffectSummary(companionId, level = 1) {
   const companion = getCompanionById(companionId);
-  const safeLevel = Math.max(1, Math.floor(level));
-  const scaled = getCompanionScaledBehavior(companionId, safeLevel);
+  const levels = typeof level === 'object' && level !== null
+    ? normalizeCompanionUpgradeLevels(level, 1, companion?.maxLevel ?? 5)
+    : normalizeCompanionUpgradeLevels(null, level, companion?.maxLevel ?? 5);
+  const displayLevel = getCompanionTotalLevel(levels, 1);
+  const scaled = getCompanionScaledBehavior(companionId, levels);
 
   if (!companion || !scaled) {
     return '効果未設定';
@@ -355,5 +424,5 @@ export function getCompanionEffectSummary(companionId, level = 1) {
     return `EXP +${expBonus}% / 回収半径${scaled.pickupRadius}`;
   }
 
-  return `${COMPANION_TYPES[companion.type]?.label ?? '補助'} Lv${safeLevel}`;
+  return `${COMPANION_TYPES[companion.type]?.label ?? '補助'} Lv${displayLevel}`;
 }

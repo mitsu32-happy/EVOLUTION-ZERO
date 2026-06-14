@@ -213,3 +213,13 @@ Runtime text remains separate from the bitmaps. The generated assets reserve
 dark, low-noise text-safe areas and keep border decoration at the edges.
 
 Detailed asset notes: `docs/design/companion_ui_asset_generation_p06d.md`.
+## MVP-P06f Upgrade Flow
+
+- Research companion rows keep a visible `強化` button and move DNA details to
+  the row text.
+- Pressing `強化` opens a line selection modal before the confirmation dialog.
+- The three selectable lines are `移動範囲`, `効果`, and `速度`.
+- Confirmation copy is shortened to avoid overflow.
+- Home selection cards show `セット中` or `選択` in the right action area.
+- `セット解除` saves an owned-but-unselected state; the home panel shows
+  `未セット` so the route back to selection stays visible.

@@ -15,6 +15,7 @@ import {
   COMPANION_TYPES,
   getCompanionById,
   getCompanionEffectSummary,
+  getCompanionUpgradeLevelsFromState,
 } from '../data/companion_dinos.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
@@ -730,7 +731,7 @@ export class HomeScreen {
       return;
     }
 
-    const companion = getCompanionById(companionState.selectedId) ?? getCompanionById(ownedIds[0]);
+    const companion = getCompanionById(companionState.selectedId);
     const iconTexture = companion
       ? (this.textures.get(`companionIcon:${companion.id}`) ?? this.textures.get('companionIcon'))
       : this.textures.get('companionIcon');
@@ -758,7 +759,7 @@ export class HomeScreen {
     this.companionTitle.text = 'お供';
     this.companionTitle.anchor.set(0, 0.5);
     this.companionTitle.position.set(x + 58, y + 20);
-    this.companionName.text = companion ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}` : '';
+    this.companionName.text = companion ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}` : '未セット';
     this.companionName.anchor.set(0, 0.5);
     this.companionName.position.set(x + 58, y + 38);
     this.companionName.style.fill = '#fff0b4';
@@ -1703,6 +1704,11 @@ export class HomeScreen {
       rows: [],
       pageText: this.createText('', 10, '#c8fbff', 84),
       closeText: this.createText('範囲外で閉じる', 9, '#8da49e', 160),
+      clearButton: {
+        view: new Container(),
+        bg: new Graphics(),
+        text: this.createText('セット解除', 11, '#e7fff6', 86),
+      },
     };
 
     modal.view.visible = false;
@@ -1725,7 +1731,15 @@ export class HomeScreen {
     modal.pageText.anchor.set(0.5);
     modal.pageText.position.set(this.width / 2, 566);
     modal.panelFrame.position.set(34, 206);
-    modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, modal.selectedDetail, modal.closeText, modal.pageText);
+    modal.clearButton.view.position.set(252, 572);
+    modal.clearButton.view.hitArea = new Rectangle(0, 0, 96, 32);
+    modal.clearButton.view.eventMode = 'static';
+    modal.clearButton.view.cursor = 'pointer';
+    modal.clearButton.view.on('pointertap', () => this.clearSelectedCompanion());
+    modal.clearButton.text.anchor.set(0.5);
+    modal.clearButton.text.position.set(48, 16);
+    modal.clearButton.view.addChild(modal.clearButton.bg, modal.clearButton.text);
+    modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, modal.selectedDetail, modal.closeText, modal.pageText, modal.clearButton.view);
 
     for (let index = 0; index < 5; index += 1) {
       const row = {
@@ -1775,8 +1789,8 @@ export class HomeScreen {
     modal.upgradeButton.view.eventMode = 'none';
     modal.view.addChild(modal.upgradeButton.view);
 
-    modal.prevButton = this.createCompanionPageButton('前', 56, 572, () => this.changeCompanionModalPage(-1));
-    modal.nextButton = this.createCompanionPageButton('次', 140, 572, () => this.changeCompanionModalPage(1));
+    modal.prevButton = this.createCompanionPageButton('前', 52, 572, () => this.changeCompanionModalPage(-1));
+    modal.nextButton = this.createCompanionPageButton('次', 128, 572, () => this.changeCompanionModalPage(1));
     modal.view.addChild(modal.prevButton.view, modal.nextButton.view);
 
     return modal;
@@ -1818,7 +1832,7 @@ export class HomeScreen {
     const state = data.companion ?? {};
     const ownedIds = new Set(state.ownedIds ?? []);
     const ownedCompanions = COMPANION_DINOS.filter((companion) => ownedIds.has(companion.id));
-    const selected = getCompanionById(state.selectedId) ?? ownedCompanions[0] ?? null;
+    const selected = getCompanionById(state.selectedId);
     const fallbackIconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
     const pageSize = this.companionModal.rows.length;
     const maxPage = Math.max(0, Math.ceil(ownedCompanions.length / pageSize) - 1);
@@ -1839,13 +1853,15 @@ export class HomeScreen {
       .stroke({ color: 0x35d7ff, width: 1.8, alpha: panelTexture ? 0.16 : 0.74 })
       .roundRect(8, 8, this.width - 84, 414, 11)
       .stroke({ color: 0xffd36b, width: 0.8, alpha: panelTexture ? 0.08 : 0.28 });
-    const selectedLevel = selected ? state.levels?.[selected.id] ?? 1 : 1;
+    const selectedLevels = selected ? getCompanionUpgradeLevelsFromState(state, selected.id) : null;
     this.companionModal.body.text = ownedCompanions.length > 0
       ? `セット中: ${selected?.displayName ?? 'お供なし'}`
       : '所持しているお供恐竜はありません。';
     this.companionModal.selectedDetail.text = selected
-      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n効果: ${getCompanionEffectSummary(selected.id, selectedLevel)}`
-      : '卵を孵化すると、ここでセットできます。';
+      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n効果: ${getCompanionEffectSummary(selected.id, selectedLevels)}`
+      : ownedCompanions.length > 0
+        ? 'お供を選択すると、次の出撃から一緒に行動します。'
+        : '卵を孵化すると、ここでセットできます。';
     this.companionModal.rows.forEach((row, index) => {
       const companion = visibleCompanions[index] ?? null;
       const level = companion ? state.levels?.[companion.id] ?? 1 : 1;
@@ -1874,17 +1890,26 @@ export class HomeScreen {
       row.icon.alpha = 1;
       row.name.text = `${companion.displayName} Lv${level}`;
       row.name.style.fill = '#ffffff';
-      row.detail.text = COMPANION_UI_DESCRIPTIONS[companion.id] ?? getCompanionEffectSummary(companion.id, level);
+      row.detail.text = COMPANION_UI_DESCRIPTIONS[companion.id] ?? getCompanionEffectSummary(companion.id, getCompanionUpgradeLevelsFromState(state, companion.id));
       row.detail.style.fill = '#cbe0da';
       row.actionFrame.texture = this.textures.get('companionSelectButton') ?? Texture.EMPTY;
       row.actionFrame.visible = row.actionFrame.texture !== Texture.EMPTY;
       row.actionFrame.alpha = isSelected ? 1 : 0.8;
-      row.action.text = isSelected ? 'SET' : '選択';
+      row.action.text = isSelected ? 'セット中' : '選択';
+      row.action.style.fontSize = isSelected ? 9 : 10;
       row.action.style.fill = isSelected ? '#071015' : '#e7fff6';
     });
     this.companionModal.pageText.text = ownedCompanions.length > pageSize ? `${this.companionModalPage + 1}/${maxPage + 1}` : '';
     this.drawCompanionPageButton(this.companionModal.prevButton, this.companionModalPage > 0);
     this.drawCompanionPageButton(this.companionModal.nextButton, this.companionModalPage < maxPage);
+    const clearVisible = ownedCompanions.length > 0 && Boolean(state.selectedId);
+    this.companionModal.clearButton.view.visible = clearVisible;
+    this.companionModal.clearButton.view.eventMode = clearVisible ? 'static' : 'none';
+    this.companionModal.clearButton.bg
+      .clear()
+      .roundRect(0, 0, 96, 32, 9)
+      .fill({ color: 0x08272f, alpha: 0.9 })
+      .stroke({ color: 0xffd36b, width: 1, alpha: 0.58 });
     this.companionModal.upgradeButton.view.visible = false;
   }
 
@@ -1934,6 +1959,16 @@ export class HomeScreen {
       this.saveManager.markTutorialComplete?.('companionSet');
       this.saveData = result.data;
       this.noticeText.text = 'お供恐竜をセットしました';
+      this.setSaveData(result.data, this.gameState);
+      this.renderCompanionModal();
+    }
+  }
+
+  clearSelectedCompanion() {
+    const result = this.saveManager?.setSelectedCompanion?.(null);
+    if (result?.success) {
+      this.saveData = result.data;
+      this.noticeText.text = 'お供を外しました';
       this.setSaveData(result.data, this.gameState);
       this.renderCompanionModal();
     }

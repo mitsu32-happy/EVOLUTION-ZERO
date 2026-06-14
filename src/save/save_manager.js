@@ -31,7 +31,9 @@ import {
   cloneCompanionState,
   createDefaultCompanionState,
   getCompanionById,
+  getCompanionTotalLevel,
   getCompanionUpgradeCost,
+  getCompanionUpgradeLevelsFromState,
   normalizeCompanionState,
   pickRandomUnownedCompanion,
 } from '../data/companion_dinos.js';
@@ -494,6 +496,10 @@ export class SaveManager {
       ...(companion.levels ?? {}),
       [hatched.id]: companion.levels?.[hatched.id] ?? 1,
     };
+    companion.upgradeLevels = {
+      ...(companion.upgradeLevels ?? {}),
+      [hatched.id]: getCompanionUpgradeLevelsFromState(companion, hatched.id),
+    };
     companion.selectedId = companion.selectedId ?? hatched.id;
     companion.lastHatchedId = hatched.id;
     this.data.companion = companion;
@@ -520,7 +526,7 @@ export class SaveManager {
     return { success: true, data: this.save() };
   }
 
-  upgradeCompanion(companionId) {
+  upgradeCompanion(companionId, upgradeType = 'effect') {
     this.data.companion = normalizeCompanionState(this.data.companion);
     const companion = this.data.companion;
     const config = getCompanionById(companionId);
@@ -529,8 +535,9 @@ export class SaveManager {
       return { success: false, reason: 'not_owned', data: this.getData() };
     }
 
-    const level = Math.max(1, companion.levels?.[companionId] ?? 1);
-    const cost = getCompanionUpgradeCost(companionId, level);
+    const upgradeLevels = getCompanionUpgradeLevelsFromState(companion, companionId);
+    const level = Math.max(1, upgradeLevels[upgradeType] ?? 1);
+    const cost = getCompanionUpgradeCost(companionId, level, upgradeType);
     if (!cost) {
       return { success: false, reason: 'max', data: this.getData() };
     }
@@ -540,9 +547,16 @@ export class SaveManager {
     }
 
     this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) - cost);
+    companion.upgradeLevels = {
+      ...(companion.upgradeLevels ?? {}),
+      [companionId]: {
+        ...upgradeLevels,
+        [upgradeType]: Math.min(config.maxLevel, level + 1),
+      },
+    };
     companion.levels = {
       ...(companion.levels ?? {}),
-      [companionId]: Math.min(config.maxLevel, level + 1),
+      [companionId]: getCompanionTotalLevel(companion.upgradeLevels[companionId], companion.levels?.[companionId] ?? 1),
     };
     this.data.companion = companion;
     return { success: true, data: this.save() };
@@ -561,6 +575,10 @@ export class SaveManager {
     companion.levels = {
       ...(companion.levels ?? {}),
       [config.id]: companion.levels?.[config.id] ?? 1,
+    };
+    companion.upgradeLevels = {
+      ...(companion.upgradeLevels ?? {}),
+      [config.id]: getCompanionUpgradeLevelsFromState(companion, config.id),
     };
     companion.selectedId = companion.selectedId ?? config.id;
     this.data.companion = companion;
@@ -584,6 +602,10 @@ export class SaveManager {
     companion.ownedIds = COMPANION_DINOS.map((entry) => entry.id);
     companion.levels = companion.ownedIds.reduce((result, id) => {
       result[id] = companion.levels?.[id] ?? 1;
+      return result;
+    }, {});
+    companion.upgradeLevels = companion.ownedIds.reduce((result, id) => {
+      result[id] = getCompanionUpgradeLevelsFromState(companion, id);
       return result;
     }, {});
     companion.selectedId = companion.selectedId ?? companion.ownedIds[0] ?? null;

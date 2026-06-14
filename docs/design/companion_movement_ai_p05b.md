@@ -144,3 +144,8 @@ P05c supersedes the P05b direct-position interpolation for active movement.
   the right.
 
 Detailed notes: `docs/design/companion_movement_smoothing_p05c.md`.
+## MVP-P06f Range Line
+
+P06f changes movement reach to read the independent `range` upgrade line. Old
+single-level saves still migrate into the same range level, so existing players
+do not lose movement reach.

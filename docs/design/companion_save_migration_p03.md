@@ -109,3 +109,12 @@ P06b adds `companion.eggDiscovered` for research tab reveal control.
 - P06b does not split companion upgrades into separate movement/effect/speed
   save fields. The research UI presents those as level-derived growth labels
   while preserving the existing `levels[id]` structure.
+## MVP-P06f Upgrade Migration
+
+- `companion.upgradeLevels[id].range/effect/speed` is added.
+- Saves that only have `companion.levels[id]` initialize all three new lines to
+  the old level.
+- `companion.levels[id]` is retained and normalized to the maximum line level
+  for old UI/debug compatibility.
+- `selectedId: null` remains valid even when owned companions exist, enabling
+  the new set解除 flow.

@@ -139,3 +139,8 @@ cd 0.8/0.0 fx 1 r202 face-1
   before changing combat values.
 - If fast companions feel too jumpy, lower acceleration rather than lowering
   max speed.
+## MVP-P06f Speed Line
+
+Target pursuit speed now reads the independent `speed` upgrade line. The
+existing per-level movement bonus remains mild at `+2.5%` per speed level after
+Lv1, preserving P05c smoothing while making speed upgrades visible.

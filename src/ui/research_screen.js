@@ -17,9 +17,12 @@ import {
   COMPANION_BY_ID,
   COMPANION_HATCH_CONFIG,
   COMPANION_TYPES,
+  COMPANION_UPGRADE_TYPES,
+  COMPANION_UPGRADE_TYPE_IDS,
   getCompanionById,
   getCompanionEffectSummary,
   getCompanionUpgradeCost,
+  getCompanionUpgradeLevelsFromState,
 } from '../data/companion_dinos.js';
 
 const RESEARCH_ASSET_PATHS = {
@@ -170,6 +173,8 @@ export class ResearchScreen {
     this.companionResearchMode = 'owned';
     this.companionOwnedPage = 0;
     this.companionFocusIndex = 0;
+    this.companionUpgradeChoiceTargetId = null;
+    this.companionUpgradeChoiceFocusIndex = 0;
     this.companionUnlockTutorialQueued = false;
     this.companionTabTutorialQueued = false;
     this.gamepadFocusArea = 'card';
@@ -211,8 +216,10 @@ export class ResearchScreen {
     this.createCategoryButtons();
     this.createCards();
     this.companionResearchView = this.createCompanionResearchView();
+    this.companionUpgradeChoiceModal = this.createCompanionUpgradeChoiceModal();
     this.view.addChild(this.companionResearchView.view);
     this.view.addChild(this.hatchEffectSprite);
+    this.view.addChild(this.companionUpgradeChoiceModal.view);
     this.view.addChild(this.confirmDialog.view);
     this.drawStatic();
     this.loadAssets();
@@ -714,6 +721,9 @@ export class ResearchScreen {
     if (this.confirmDialog.view.visible) {
       return this.confirmDialog.handleGamepadAction?.(actions) ?? false;
     }
+    if (this.companionUpgradeChoiceModal?.view.visible) {
+      return this.handleCompanionUpgradeChoiceGamepadAction(actions);
+    }
 
     if (this.handleGamepadScrollInput(gamepadManager)) {
       return true;
@@ -766,6 +776,30 @@ export class ResearchScreen {
     }
 
     return false;
+  }
+
+  handleCompanionUpgradeChoiceGamepadAction(actions = {}) {
+    if (actions.cancelPressed || actions.pausePressed) {
+      this.closeCompanionUpgradeChoice();
+      return true;
+    }
+
+    if (actions.upPressed || actions.downPressed) {
+      const delta = actions.downPressed ? 1 : -1;
+      this.companionUpgradeChoiceFocusIndex = Math.max(0, Math.min(
+        COMPANION_UPGRADE_TYPE_IDS.length - 1,
+        this.companionUpgradeChoiceFocusIndex + delta,
+      ));
+      this.drawCompanionUpgradeChoiceModal();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      this.confirmCompanionUpgradeChoice(COMPANION_UPGRADE_TYPE_IDS[this.companionUpgradeChoiceFocusIndex]);
+      return true;
+    }
+
+    return true;
   }
 
   handleCompanionResearchGamepadAction(actions = {}) {
@@ -1080,6 +1114,12 @@ export class ResearchScreen {
     if (!this.view.visible || this.confirmDialog.view.visible) {
       return null;
     }
+    if (this.companionUpgradeChoiceModal?.view.visible) {
+      const row = this.companionUpgradeChoiceModal.rows[this.companionUpgradeChoiceFocusIndex];
+      return row
+        ? { x: row.view.position.x, y: row.view.position.y, width: 292, height: 64 }
+        : null;
+    }
 
     if (this.gamepadFocusArea === 'category') {
       const categoryIndex = RESEARCH_CATEGORIES.findIndex((category) => category.id === this.selectedCategory);
@@ -1108,6 +1148,125 @@ export class ResearchScreen {
       width: card.layout?.width ?? CARD_LAYOUT.width,
       height: CARD.height,
     };
+  }
+
+  createCompanionUpgradeChoiceModal() {
+    const modal = {
+      view: new Container(),
+      overlay: new Graphics(),
+      panel: new Graphics(),
+      title: this.createText('強化項目を選択', 18, '#fff0b4', 260),
+      body: this.createText('', 10.5, '#d7fff2', 300),
+      rows: [],
+      cancel: {
+        view: new Container(),
+        bg: new Graphics(),
+        label: this.createText('キャンセル', 11, '#e7fff6', 84),
+      },
+    };
+
+    modal.view.visible = false;
+    modal.overlay
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x000000, alpha: 0.58 });
+    modal.overlay.eventMode = 'static';
+    modal.overlay.on('pointertap', () => this.closeCompanionUpgradeChoice());
+    modal.panel.position.set(30, 220);
+    modal.title.anchor.set(0.5, 0);
+    modal.title.position.set(this.width / 2, 244);
+    modal.body.position.set(54, 282);
+    modal.body.style.lineHeight = 14;
+
+    COMPANION_UPGRADE_TYPE_IDS.forEach((typeId, index) => {
+      const row = {
+        typeId,
+        view: new Container(),
+        bg: new Graphics(),
+        name: this.createText('', 13, '#ffffff', 88),
+        level: this.createText('', 10, '#fff0b4', 88),
+        desc: this.createText('', 9.5, '#cbe0da', 148),
+        cost: this.createText('', 10, '#d7fff2', 70),
+        button: this.createText('選択', 11, '#071015', 54),
+      };
+      row.view.position.set(50, 324 + index * 76);
+      row.view.hitArea = new Rectangle(0, 0, 292, 64);
+      row.view.eventMode = 'static';
+      row.view.cursor = 'pointer';
+      row.view.on('pointertap', () => this.confirmCompanionUpgradeChoice(typeId));
+      row.name.position.set(16, 8);
+      row.level.position.set(16, 30);
+      row.desc.position.set(104, 9);
+      row.desc.style.lineHeight = 12;
+      row.cost.position.set(104, 42);
+      row.button.anchor.set(0.5);
+      row.button.position.set(258, 32);
+      row.view.addChild(row.bg, row.name, row.level, row.desc, row.cost, row.button);
+      modal.rows.push(row);
+    });
+
+    modal.cancel.view.position.set(144, 560);
+    modal.cancel.view.hitArea = new Rectangle(0, 0, 104, 34);
+    modal.cancel.view.eventMode = 'static';
+    modal.cancel.view.cursor = 'pointer';
+    modal.cancel.view.on('pointertap', () => this.closeCompanionUpgradeChoice());
+    modal.cancel.label.anchor.set(0.5);
+    modal.cancel.label.position.set(52, 17);
+    modal.cancel.view.addChild(modal.cancel.bg, modal.cancel.label);
+
+    modal.view.addChild(modal.overlay, modal.panel, modal.title, modal.body, ...modal.rows.map((row) => row.view), modal.cancel.view);
+    return modal;
+  }
+
+  drawCompanionUpgradeChoiceModal() {
+    const modal = this.companionUpgradeChoiceModal;
+    if (!modal?.view.visible) {
+      return;
+    }
+
+    const data = this.saveManager.getData();
+    const companion = getCompanionById(this.companionUpgradeChoiceTargetId);
+    const state = data.companion ?? {};
+    const levels = getCompanionUpgradeLevelsFromState(state, companion?.id);
+
+    modal.panel
+      .clear()
+      .roundRect(0, 0, this.width - 60, 382, 18)
+      .fill({ color: 0x031216, alpha: 0.96 })
+      .stroke({ color: 0x7cf7d4, width: 2, alpha: 0.72 })
+      .roundRect(8, 8, this.width - 76, 366, 14)
+      .stroke({ color: 0xffd36b, width: 1, alpha: 0.34 });
+    modal.body.text = companion
+      ? `${companion.displayName}を個別に強化します。`
+      : '強化するお供を選択してください。';
+
+    modal.rows.forEach((row, index) => {
+      const type = COMPANION_UPGRADE_TYPES[row.typeId];
+      const level = levels[row.typeId] ?? 1;
+      const cost = companion ? getCompanionUpgradeCost(companion.id, level, row.typeId) : null;
+      const canUpgrade = Boolean(cost && (data.ownedDna ?? 0) >= cost);
+      const focused = index === this.companionUpgradeChoiceFocusIndex;
+      row.bg
+        .clear()
+        .roundRect(0, 0, 292, 64, 12)
+        .fill({ color: focused ? 0x0b3038 : 0x06191d, alpha: 0.94 })
+        .stroke({ color: focused ? 0xffd36b : 0x35d7ff, width: focused ? 2 : 1, alpha: focused ? 0.82 : 0.42 })
+        .roundRect(232, 17, 52, 30, 9)
+        .fill({ color: canUpgrade ? 0xffd36b : 0x28464c, alpha: 0.92 });
+      row.name.text = type.label;
+      row.level.text = cost ? `Lv ${level} -> ${level + 1}` : `Lv ${level} MAX`;
+      row.desc.text = type.description;
+      row.cost.text = cost ? `DNA ${cost}` : 'MAX';
+      row.button.text = cost ? '選択' : 'MAX';
+      row.button.style.fill = canUpgrade ? '#071015' : '#8da49e';
+      row.view.eventMode = cost ? 'static' : 'none';
+      row.view.cursor = cost ? 'pointer' : 'default';
+    });
+
+    modal.cancel.bg
+      .clear()
+      .roundRect(0, 0, 104, 34, 10)
+      .fill({ color: 0x08272f, alpha: 0.92 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: 0.64 });
   }
 
   drawStatic() {
@@ -1171,6 +1330,7 @@ export class ResearchScreen {
     this.drawSummary(selected);
     this.renderCategoryButtons();
     this.renderCards(selected, data);
+    this.drawCompanionUpgradeChoiceModal();
   }
 
   renderCategoryButtons() {
@@ -1547,9 +1707,13 @@ export class ResearchScreen {
       if (!companion) {
         return;
       }
-      const level = state.levels?.[companion.id] ?? 1;
-      const cost = getCompanionUpgradeCost(companion.id, level);
-      const canUpgrade = Boolean(cost && (data.ownedDna ?? 0) >= cost);
+      const levels = getCompanionUpgradeLevelsFromState(state, companion.id);
+      const level = state.levels?.[companion.id] ?? Math.max(levels.range, levels.effect, levels.speed);
+      const nextCosts = COMPANION_UPGRADE_TYPE_IDS
+        .map((typeId) => getCompanionUpgradeCost(companion.id, levels[typeId], typeId))
+        .filter((value) => value);
+      const minCost = nextCosts.length > 0 ? Math.min(...nextCosts) : null;
+      const canUpgrade = Boolean(minCost && (data.ownedDna ?? 0) >= minCost);
       const cardTexture = this.textures.get('companionUpgradeCard');
       const buttonTexture = this.textures.get('companionUpgradeButton');
       row.companionId = companion.id;
@@ -1567,8 +1731,8 @@ export class ResearchScreen {
       row.icon.texture = this.textures.get(`companionIcon:${companion.id}`) ?? fallbackIcon;
       row.icon.visible = row.icon.texture !== Texture.EMPTY;
       row.name.text = `${companion.displayName} Lv${level} / ${companion.maxLevel}`;
-      row.detail.text = getCompanionEffectSummary(companion.id, level);
-      row.growth.text = `移動範囲 Lv${level} / 効果 Lv${level} / 速度 Lv${level}`;
+      row.detail.text = getCompanionEffectSummary(companion.id, levels);
+      row.growth.text = `範囲Lv${levels.range} 効果Lv${levels.effect} 速度Lv${levels.speed}${minCost ? ` / DNA${minCost}〜` : ' / MAX'}`;
       row.button.sprite.texture = buttonTexture ?? Texture.EMPTY;
       row.button.sprite.visible = !!buttonTexture;
       row.button.sprite.width = 76;
@@ -1580,11 +1744,11 @@ export class ResearchScreen {
           .fill({ color: canUpgrade ? 0xffd36b : 0x23434a, alpha: 0.88 })
           .stroke({ color: 0xffffff, width: 1, alpha: canUpgrade ? 0.42 : 0.18 });
       }
-      row.button.label.text = cost ? `強化\n${cost}` : 'MAX';
-      row.button.label.style.fontSize = cost ? 10 : 12;
+      row.button.label.text = minCost ? '強化' : 'MAX';
+      row.button.label.style.fontSize = 12;
       row.button.label.style.fill = canUpgrade ? '#071015' : '#8da49e';
-      row.button.view.eventMode = cost ? 'static' : 'none';
-      row.button.view.cursor = cost ? 'pointer' : 'default';
+      row.button.view.eventMode = minCost ? 'static' : 'none';
+      row.button.view.cursor = minCost ? 'pointer' : 'default';
     });
 
     this.drawCompanionPager(ui.pagePrev, this.companionOwnedPage > 0);
@@ -1642,10 +1806,36 @@ export class ResearchScreen {
 
     const data = this.saveManager.getData();
     const companion = getCompanionById(companionId);
-    const level = data.companion?.levels?.[companionId] ?? 1;
-    const cost = getCompanionUpgradeCost(companionId, level);
 
-    if (!companion || !cost) {
+    if (!companion || !data.companion?.ownedIds?.includes(companionId)) {
+      this.noticeText.text = '強化できません';
+      return;
+    }
+
+    this.companionUpgradeChoiceTargetId = companionId;
+    this.companionUpgradeChoiceFocusIndex = 0;
+    this.companionUpgradeChoiceModal.view.visible = true;
+    this.drawCompanionUpgradeChoiceModal();
+  }
+
+  closeCompanionUpgradeChoice() {
+    if (!this.companionUpgradeChoiceModal?.view.visible) {
+      return;
+    }
+
+    this.companionUpgradeChoiceModal.view.visible = false;
+    this.companionUpgradeChoiceTargetId = null;
+  }
+
+  confirmCompanionUpgradeChoice(upgradeType) {
+    const data = this.saveManager.getData();
+    const companion = getCompanionById(this.companionUpgradeChoiceTargetId);
+    const type = COMPANION_UPGRADE_TYPES[upgradeType];
+    const levels = getCompanionUpgradeLevelsFromState(data.companion, companion?.id);
+    const level = levels[upgradeType] ?? 1;
+    const cost = companion ? getCompanionUpgradeCost(companion.id, level, upgradeType) : null;
+
+    if (!companion || !type || !cost) {
       this.noticeText.text = '強化できません';
       return;
     }
@@ -1655,30 +1845,33 @@ export class ResearchScreen {
       return;
     }
 
+    this.companionUpgradeChoiceModal.view.visible = false;
     this.confirmDialog.show({
       title: 'お供強化',
       message: `${companion.displayName}を強化しますか？`,
-      detail: `強化項目: 移動範囲 / 効果 / 速度\nLv ${level} -> ${level + 1}\n消費DNA ${cost}`,
+      detail: `${type.label}: Lv ${level} -> ${level + 1}\n消費DNA ${cost}`,
       confirmLabel: '実行',
       cancelLabel: 'キャンセル',
-      onConfirm: () => this.executeCompanionUpgrade(companionId),
+      onConfirm: () => this.executeCompanionUpgrade(companion.id, upgradeType),
       onCancel: () => {
         this.noticeText.text = '強化をキャンセルしました';
+        this.companionUpgradeChoiceTargetId = null;
       },
     });
   }
 
-  executeCompanionUpgrade(companionId) {
+  executeCompanionUpgrade(companionId, upgradeType = 'effect') {
     if (!companionId) {
       return;
     }
 
-    const result = this.saveManager.upgradeCompanion(companionId);
+    const result = this.saveManager.upgradeCompanion(companionId, upgradeType);
     this.noticeText.text = result.success
       ? 'お供恐竜を強化しました'
       : result.reason === 'insufficient'
         ? 'DNAが不足しています'
         : '強化できません';
+    this.companionUpgradeChoiceTargetId = null;
     this.render();
   }
 

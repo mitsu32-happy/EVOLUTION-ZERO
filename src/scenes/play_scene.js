@@ -15,6 +15,7 @@ import {
   getCompanionById,
   getCompanionEffectSummary,
   getCompanionScaledBehavior,
+  getCompanionUpgradeLevelsFromState,
 } from '../data/companion_dinos.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
 import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
@@ -2993,6 +2994,12 @@ export class PlayScene {
     this.gameState.selectedCompanionId = companion?.id ?? null;
     this.activeCompanion = companion;
     const debugLevel = getDebugCompanionLevel();
+    const savedUpgradeLevels = companion ? getCompanionUpgradeLevelsFromState(state, companion.id) : null;
+    this.activeCompanionUpgradeLevels = companion
+      ? (debugLevel
+          ? { range: debugLevel, effect: debugLevel, speed: debugLevel }
+          : savedUpgradeLevels)
+      : { range: 1, effect: 1, speed: 1 };
     this.activeCompanionLevel = companion
       ? Math.max(1, Math.min(companion.maxLevel ?? 5, debugLevel ?? state?.levels?.[companion.id] ?? 1))
       : 1;
@@ -3373,8 +3380,7 @@ export class PlayScene {
       return;
     }
 
-    const level = this.activeCompanionLevel;
-    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, level) ?? this.activeCompanion.behavior ?? {};
+    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionUpgradeLevels) ?? this.activeCompanion.behavior ?? {};
 
     if (this.activeCompanion.type === 'exp') {
       this.companionExpMultiplier = behavior.expMultiplier ?? 1.045;
@@ -3424,7 +3430,7 @@ export class PlayScene {
   }
 
   getCompanionMovementRadius() {
-    const level = Math.max(1, Math.min(this.activeCompanion?.maxLevel ?? 5, this.activeCompanionLevel ?? 1));
+    const level = Math.max(1, Math.min(this.activeCompanion?.maxLevel ?? 5, this.activeCompanionUpgradeLevels?.range ?? this.activeCompanionLevel ?? 1));
     const rawRadius = COMPANION_BASE_FOLLOW_RADIUS + (level - 1) * COMPANION_RADIUS_PER_LEVEL;
     const visibleLimit = Math.max(
       COMPANION_MIN_DISTANCE_FROM_PLAYER + 12,
@@ -3586,7 +3592,7 @@ export class PlayScene {
 
   getCompanionDesiredTarget(radius) {
     const type = this.activeCompanion?.type;
-    const behavior = getCompanionScaledBehavior(this.activeCompanion?.id, this.activeCompanionLevel)
+    const behavior = getCompanionScaledBehavior(this.activeCompanion?.id, this.activeCompanionUpgradeLevels)
       ?? this.activeCompanion?.behavior
       ?? {};
 
@@ -3643,7 +3649,8 @@ export class PlayScene {
     const returning = desiredTarget.targetType === 'return';
     const arrivalRadius = profile.arrivalRadius ?? COMPANION_DEFAULT_ARRIVAL_RADIUS;
     const slowRadius = profile.slowRadius ?? COMPANION_DEFAULT_SLOW_RADIUS;
-    const levelSpeedBonus = 1 + Math.max(0, (this.activeCompanionLevel ?? 1) - 1) * 0.025;
+    const speedLevel = this.activeCompanionUpgradeLevels?.speed ?? this.activeCompanionLevel ?? 1;
+    const levelSpeedBonus = 1 + Math.max(0, speedLevel - 1) * 0.025;
     const baseMaxSpeed = pursuitTarget
       ? (profile.pursuitSpeed ?? profile.maxSpeed ?? 190)
       : (profile.maxSpeed ?? 178) * (returning ? 0.92 : 0.76);
@@ -3784,7 +3791,7 @@ export class PlayScene {
       return;
     }
 
-    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionLevel) ?? this.activeCompanion.behavior ?? {};
+    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionUpgradeLevels) ?? this.activeCompanion.behavior ?? {};
     const interval = Math.max(0.85, behavior.interval ?? 2.4);
     const range = behavior.range ?? (this.activeCompanion.type === 'boss' ? 260 : 205);
     const minRange = behavior.minRange ?? 0;
@@ -3845,7 +3852,7 @@ export class PlayScene {
       return;
     }
 
-    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionLevel) ?? this.activeCompanion.behavior ?? {};
+    const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionUpgradeLevels) ?? this.activeCompanion.behavior ?? {};
 
     if (this.activeCompanion.type === 'pickup') {
       const targetedCount = this.applyCompanionPickupAssist(behavior, delta);
