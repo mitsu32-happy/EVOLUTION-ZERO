@@ -54,6 +54,8 @@ const COMPANION_MAX_FOLLOW_RADIUS = 230;
 const COMPANION_MIN_DISTANCE_FROM_PLAYER = 48;
 const COMPANION_SCREEN_MARGIN = 42;
 const COMPANION_FACING_DEAD_ZONE = 5.5;
+const COMPANION_DEFAULT_ARRIVAL_RADIUS = 24;
+const COMPANION_DEFAULT_SLOW_RADIUS = 96;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -80,6 +82,18 @@ const COMPANION_ANIMATION_PROFILES = {
   rex_hatchling: { displayScale: 1.1, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
   compy_pack: { displayScale: 0.9, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
   exp_chaser: { displayScale: 0.94, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
+};
+const COMPANION_MOVEMENT_PROFILES = {
+  raptorling: { maxSpeed: 224, pursuitSpeed: 246, acceleration: 8.4, deceleration: 9.6, arrivalRadius: 24, slowRadius: 92 },
+  spino_pup: { maxSpeed: 174, pursuitSpeed: 196, acceleration: 6.2, deceleration: 8.2, arrivalRadius: 30, slowRadius: 108 },
+  medic_saur: { maxSpeed: 168, pursuitSpeed: 178, acceleration: 5.8, deceleration: 8.4, arrivalRadius: 28, slowRadius: 96 },
+  ptera_chick: { maxSpeed: 218, pursuitSpeed: 236, acceleration: 7.4, deceleration: 8.8, arrivalRadius: 34, slowRadius: 116 },
+  tricera_calf: { maxSpeed: 154, pursuitSpeed: 172, acceleration: 5.2, deceleration: 8.6, arrivalRadius: 34, slowRadius: 112 },
+  para_juvenile: { maxSpeed: 178, pursuitSpeed: 194, acceleration: 6.4, deceleration: 8.4, arrivalRadius: 28, slowRadius: 98 },
+  stego_calf: { maxSpeed: 158, pursuitSpeed: 176, acceleration: 5.4, deceleration: 8.4, arrivalRadius: 34, slowRadius: 112 },
+  rex_hatchling: { maxSpeed: 176, pursuitSpeed: 204, acceleration: 6.0, deceleration: 8.8, arrivalRadius: 30, slowRadius: 104 },
+  compy_pack: { maxSpeed: 236, pursuitSpeed: 258, acceleration: 9.2, deceleration: 10.2, arrivalRadius: 24, slowRadius: 86 },
+  exp_chaser: { maxSpeed: 206, pursuitSpeed: 226, acceleration: 7.0, deceleration: 8.8, arrivalRadius: 32, slowRadius: 108 },
 };
 const STAGE_BOUNDS = {
   left: -1500,
@@ -387,6 +401,7 @@ export class PlayScene {
       },
     });
     this.companionPosition = { x: 0, y: 0 };
+    this.companionVelocity = { x: 0, y: 0 };
     this.companionOrbitTime = 0;
     this.companionAttackTimer = 0;
     this.companionUtilityTimer = 0;
@@ -399,6 +414,9 @@ export class PlayScene {
     this.companionActionKind = 'idle';
     this.companionActionTarget = null;
     this.companionReturnTimer = 0;
+    this.companionMovementState = 'idle';
+    this.companionMovementTargetType = 'none';
+    this.companionTargetDistance = 0;
     this.companionBaseScaleX = 1;
     this.companionBaseScaleY = 1;
     this.companionFacing = 1;
@@ -2999,6 +3017,11 @@ export class PlayScene {
     this.applyCompanionPassiveBonuses();
     this.companionPosition.x = this.player.position.x + 92;
     this.companionPosition.y = this.player.position.y + 38;
+    this.companionVelocity.x = 0;
+    this.companionVelocity.y = 0;
+    this.companionMovementState = 'idle';
+    this.companionMovementTargetType = 'none';
+    this.companionTargetDistance = 0;
     this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
@@ -3316,11 +3339,14 @@ export class PlayScene {
       ? `${Number(this.companionSprite.anchor.x).toFixed(2)},${Number(this.companionSprite.anchor.y).toFixed(2)}`
       : '-';
     const radius = Math.round(this.getCompanionMovementRadius());
+    const speed = Math.round(Math.hypot(this.companionVelocity.x, this.companionVelocity.y));
+    const targetDistance = Math.round(this.companionTargetDistance ?? 0);
     this.companionDebugLabel.text = [
       `${this.activeCompanion.id} Lv${this.activeCompanionLevel}`,
       `${source} s:${spriteVisible} f:${fallbackVisible}`,
       `${this.companionAnimationState} #${this.companionAnimationFrame} tex ${frameText}`,
       `size ${sizeText} sc ${scaleText} a ${anchorText}`,
+      `${this.companionMovementState}/${this.companionMovementTargetType} sp${speed} d${targetDistance}`,
       `cd ${attackCooldown}/${utilityCooldown} fx ${this.companionEffects?.length ?? 0} r${radius} face${this.companionFacing}`,
       `${this.companionLastAction ?? 'idle'} ${this.companionLastTarget ?? '-'}`,
       `${x},${y}`,
@@ -3410,6 +3436,11 @@ export class PlayScene {
     );
   }
 
+  getCompanionMovementProfile(companion = this.activeCompanion) {
+    return COMPANION_MOVEMENT_PROFILES[companion?.id]
+      ?? { maxSpeed: 178, pursuitSpeed: 196, acceleration: 6.4, deceleration: 8.4, arrivalRadius: COMPANION_DEFAULT_ARRIVAL_RADIUS, slowRadius: COMPANION_DEFAULT_SLOW_RADIUS };
+  }
+
   clampCompanionPointToScreen(point) {
     const margin = COMPANION_SCREEN_MARGIN;
     const minX = Math.max(STAGE_BOUNDS.left + margin, (this.camera?.x ?? STAGE_BOUNDS.left) + margin);
@@ -3478,7 +3509,7 @@ export class PlayScene {
       + Math.sin(baseAngle * 1.18) * Math.min(radius * 0.42, 74)
       + (type === 'ranged' || type === 'exp' ? -18 : 24);
 
-    return this.clampCompanionMovementPoint({ x, y }, radius);
+    return { ...this.clampCompanionMovementPoint({ x, y }, radius), targetType: 'wander' };
   }
 
   findCompanionEnemyTarget(type, behavior, radius) {
@@ -3539,11 +3570,11 @@ export class PlayScene {
       ?? {};
 
     if (this.companionReturnTimer > 0) {
-      return this.getCompanionWanderTarget(radius);
+      return { ...this.getCompanionWanderTarget(radius), targetType: 'return' };
     }
 
     if (this.companionActionTimer > 0 && this.companionActionTarget) {
-      return this.clampCompanionMovementPoint(this.companionActionTarget, radius);
+      return { ...this.clampCompanionMovementPoint(this.companionActionTarget, radius), targetType: 'action' };
     }
 
     if (['attack', 'area', 'ranged', 'swarm', 'boss', 'synergy'].includes(type)) {
@@ -3554,32 +3585,77 @@ export class PlayScene {
           const dy = enemy.position.y - this.player.position.y;
           const angle = Math.atan2(dy, dx);
           const distance = Math.min(radius, Math.max(COMPANION_MIN_DISTANCE_FROM_PLAYER + 20, radius * 0.78));
-          return this.clampCompanionMovementPoint({
+          return { ...this.clampCompanionMovementPoint({
             x: this.player.position.x + Math.cos(angle) * distance,
             y: this.player.position.y + Math.sin(angle) * distance,
-          }, radius);
+          }, radius), targetType: 'ranged' };
         }
 
-        return this.clampCompanionMovementPoint(enemy.position, radius);
+        return { ...this.clampCompanionMovementPoint(enemy.position, radius), targetType: enemy.isBoss ? 'boss' : 'enemy' };
       }
     }
 
     if (type === 'pickup' || type === 'exp') {
       const pickup = this.findCompanionPickupTarget(type === 'exp', radius);
       if (pickup?.position) {
-        return this.clampCompanionMovementPoint(pickup.position, radius);
+        return { ...this.clampCompanionMovementPoint(pickup.position, radius), targetType: type === 'exp' ? 'exp' : 'pickup' };
       }
     }
 
     if (type === 'heal' || type === 'defense') {
       const offset = type === 'heal' ? { x: -54, y: 36 } : { x: 54, y: 42 };
-      return this.clampCompanionMovementPoint({
+      return { ...this.clampCompanionMovementPoint({
         x: this.player.position.x + offset.x + Math.cos(this.companionOrbitTime * 0.8) * 18,
         y: this.player.position.y + offset.y + Math.sin(this.companionOrbitTime * 0.9) * 18,
-      }, radius);
+      }, radius), targetType: type };
     }
 
     return this.getCompanionWanderTarget(radius);
+  }
+
+  advanceCompanionMovement(desiredTarget, delta) {
+    const profile = this.getCompanionMovementProfile();
+    const dx = desiredTarget.x - this.companionPosition.x;
+    const dy = desiredTarget.y - this.companionPosition.y;
+    const distance = Math.hypot(dx, dy);
+    const pursuitTarget = ['enemy', 'boss', 'pickup', 'exp', 'ranged', 'action'].includes(desiredTarget.targetType);
+    const returning = desiredTarget.targetType === 'return';
+    const arrivalRadius = profile.arrivalRadius ?? COMPANION_DEFAULT_ARRIVAL_RADIUS;
+    const slowRadius = profile.slowRadius ?? COMPANION_DEFAULT_SLOW_RADIUS;
+    const levelSpeedBonus = 1 + Math.max(0, (this.activeCompanionLevel ?? 1) - 1) * 0.025;
+    const baseMaxSpeed = pursuitTarget
+      ? (profile.pursuitSpeed ?? profile.maxSpeed ?? 190)
+      : (profile.maxSpeed ?? 178) * (returning ? 0.92 : 0.76);
+    const maxSpeed = baseMaxSpeed * levelSpeedBonus;
+    const desiredSpeed = distance <= arrivalRadius
+      ? 0
+      : maxSpeed * this.clamp((distance - arrivalRadius) / Math.max(1, slowRadius - arrivalRadius), 0.28, 1);
+    const targetVx = distance > 1 ? (dx / distance) * desiredSpeed : 0;
+    const targetVy = distance > 1 ? (dy / distance) * desiredSpeed : 0;
+    const currentSpeed = Math.hypot(this.companionVelocity.x, this.companionVelocity.y);
+    const accelerating = desiredSpeed > currentSpeed;
+    const response = accelerating ? (profile.acceleration ?? 6.4) : (profile.deceleration ?? 8.4);
+    const blend = Math.min(1, Math.max(0.05, response * delta));
+
+    this.companionVelocity.x += (targetVx - this.companionVelocity.x) * blend;
+    this.companionVelocity.y += (targetVy - this.companionVelocity.y) * blend;
+
+    if (distance <= arrivalRadius && currentSpeed < 18) {
+      this.companionVelocity.x *= Math.max(0, 1 - (profile.deceleration ?? 8.4) * delta);
+      this.companionVelocity.y *= Math.max(0, 1 - (profile.deceleration ?? 8.4) * delta);
+    }
+
+    this.companionPosition.x += this.companionVelocity.x * delta;
+    this.companionPosition.y += this.companionVelocity.y * delta;
+    this.companionTargetDistance = distance;
+    this.companionMovementTargetType = desiredTarget.targetType ?? 'wander';
+
+    const speed = Math.hypot(this.companionVelocity.x, this.companionVelocity.y);
+    this.companionMovementState = speed > 18 || distance > arrivalRadius + 8
+      ? (pursuitTarget ? 'pursuit' : returning ? 'return' : 'wander')
+      : 'idle';
+
+    return speed;
   }
 
   updateCompanion(delta) {
@@ -3597,18 +3673,41 @@ export class PlayScene {
     const actionWave = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
     const movementRadius = this.getCompanionMovementRadius();
     const desiredTarget = this.getCompanionDesiredTarget(movementRadius);
-    const follow = Math.min(1, delta * (4.3 + Math.min(2, this.activeCompanionLevel * 0.18)));
     const previousX = this.companionPosition.x;
     const previousY = this.companionPosition.y;
 
-    this.companionPosition.x += (desiredTarget.x - this.companionPosition.x) * follow;
-    this.companionPosition.y += (desiredTarget.y - this.companionPosition.y) * follow;
+    const speed = this.advanceCompanionMovement(desiredTarget, delta);
     const clampedPosition = this.clampCompanionMovementPoint(this.companionPosition, movementRadius);
+    const clampOffsetX = clampedPosition.x - this.companionPosition.x;
+    const clampOffsetY = clampedPosition.y - this.companionPosition.y;
+    const wasClamped = Math.abs(clampOffsetX) > 0.01 || Math.abs(clampOffsetY) > 0.01;
+    if (wasClamped) {
+      const movementProfile = this.getCompanionMovementProfile();
+      const profileSpeed = (movementProfile.pursuitSpeed ?? movementProfile.maxSpeed ?? 190) * 1.35;
+      const displayVelocityX = (clampedPosition.x - previousX) / Math.max(delta, 0.001);
+      const displayVelocityY = (clampedPosition.y - previousY) / Math.max(delta, 0.001);
+      this.companionVelocity.x = this.clamp(displayVelocityX, -profileSpeed, profileSpeed);
+      this.companionVelocity.y = this.clamp(displayVelocityY, -profileSpeed, profileSpeed);
+    } else {
+      if (Math.abs(clampOffsetX) > 0.01) {
+        this.companionVelocity.x *= 0.45;
+      }
+      if (Math.abs(clampOffsetY) > 0.01) {
+        this.companionVelocity.y *= 0.45;
+      }
+    }
     this.companionPosition.x = clampedPosition.x;
     this.companionPosition.y = clampedPosition.y;
-    const movement = Math.hypot(this.companionPosition.x - previousX, this.companionPosition.y - previousY);
-    const moveIntensity = this.clamp(movement / Math.max(1, delta * 280), 0, 1);
-    const animationState = actionWave > 0.02 ? 'action' : moveIntensity > 0.08 ? 'move' : 'idle';
+    const displayDeltaX = this.companionPosition.x - previousX;
+    const displayDeltaY = this.companionPosition.y - previousY;
+    const movement = Math.hypot(displayDeltaX, displayDeltaY);
+    const displaySpeed = movement / Math.max(delta, 0.001);
+    const moveIntensity = this.clamp(Math.max(movement / Math.max(1, delta * 240), displaySpeed / 230, speed / 230), 0, 1);
+    const animationState = actionWave > 0.22
+      ? 'action'
+      : this.companionMovementState !== 'idle' || moveIntensity > 0.08
+        ? 'move'
+        : 'idle';
     const bob = Math.sin(this.companionOrbitTime * profile.bobSpeed) * profile.bob;
     const lungeX = this.companionActionTarget
       ? this.clamp((this.companionActionTarget.x - this.companionPosition.x) / 160, -1, 1) * actionWave * 22
@@ -3622,8 +3721,12 @@ export class PlayScene {
     }
 
     this.companionView.zIndex = this.companionPosition.y + 1.2;
-    const deltaX = this.companionPosition.x - previousX;
-    this.companionFacing = actionWave > 0 && this.companionActionTarget
+    const deltaX = Math.abs(displayDeltaX) > COMPANION_FACING_DEAD_ZONE
+      ? displayDeltaX
+      : Math.abs(this.companionVelocity.x) > 8
+        ? this.companionVelocity.x
+        : displayDeltaX;
+    this.companionFacing = actionWave > 0 && this.companionActionTarget && Math.abs(displayDeltaX) <= COMPANION_FACING_DEAD_ZONE
       ? (this.companionActionTarget.x >= this.companionPosition.x ? 1 : -1)
       : Math.abs(deltaX) > COMPANION_FACING_DEAD_ZONE
         ? (deltaX >= 0 ? 1 : -1)

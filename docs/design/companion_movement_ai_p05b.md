@@ -128,3 +128,19 @@ high-level movement reach without changing the saved companion level.
 - If companions feel too eager to chase enemies, add type-specific target
   eagerness timers without changing effect strength.
 - Future UI could mention that higher companion levels improve movement reach.
+
+## P05c Smoothing Update
+
+P05c supersedes the P05b direct-position interpolation for active movement.
+
+- Companions now keep a velocity vector.
+- Target pursuit uses per-companion max speed, pursuit speed, acceleration, and deceleration.
+- Arrival radius and slow radius prevent overlap and sudden stops.
+- Target pursuit and return motion use the `move` animation state.
+- The stronger action frames are reserved for the actual action phase.
+- Debug output now includes movement state, target type, speed, distance, radius, and facing.
+- P05c also aligns facing with the final displayed movement after follow-radius
+  clamping, so player movement cannot visually drag a left-facing companion to
+  the right.
+
+Detailed notes: `docs/design/companion_movement_smoothing_p05c.md`.

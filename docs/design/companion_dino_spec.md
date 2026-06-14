@@ -322,3 +322,16 @@ healing, pickup value, or EXP value.
 - `debugCompanion=1` shows the current movement radius and facing.
 
 Detailed notes: `docs/design/companion_movement_ai_p05b.md`.
+
+## MVP-P05c movement smoothing
+
+P05c refines P05b target pursuit.
+
+- Companion movement now uses velocity, acceleration, deceleration, slow radius, and arrival radius.
+- `raptorling` and `compy_pack` move faster, while `tricera_calf`, `stego_calf`, and `rex_hatchling` keep heavier movement.
+- Target pursuit and return movement now show the `move` animation state instead of sliding in action frames.
+- Action frames are reserved for the actual action pulse.
+- Facing is driven by movement velocity with the existing dead zone.
+- P04f fixed display-size handling and P04j sprite references are unchanged.
+
+Detailed notes: `docs/design/companion_movement_smoothing_p05c.md`.

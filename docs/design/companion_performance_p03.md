@@ -144,3 +144,14 @@ P05b adds role-based movement targeting, but keeps the search bounded.
 Expected runtime impact is limited to lightweight per-frame target selection for
 the single active companion. `debugPerformance=1` should show no persistent
 companion object growth from movement alone.
+
+## MVP-P05c movement smoothing performance
+
+P05c adds only scalar velocity math to the P05b movement path.
+
+- No new containers or spawned entity lists are added.
+- No new projectile, effect, pickup, or damage text objects are created by movement.
+- Existing companion action effects remain capped and pooled.
+- The per-frame cost is still limited to one active companion.
+
+`debugCompanion=1` exposes movement state, target type, speed, and distance for QA without changing normal runtime UI.
