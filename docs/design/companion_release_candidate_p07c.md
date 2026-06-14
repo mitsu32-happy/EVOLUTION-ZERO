@@ -263,3 +263,22 @@ Reason:
 6. Complete smartphone viewport QA.
 7. Complete controller / virtual mouse QA.
 8. Run mandatory checks successfully.
+
+## P07d follow-up
+
+P07d addressed the ZERO performance blocker found in this document.
+
+Summary:
+
+- The original `Game loop stalled for 2535ms` snapshot had low object counts and no WebGL context loss.
+- The debug ticker-stall guard now records a single `>2500ms` heartbeat gap without immediately showing the crash screen.
+- Severe or repeated stalls still show crash diagnostics.
+- Companion target acquisition now uses short cache intervals and single-pass selection instead of per-frame temporary arrays and sorting.
+- `debugPerformance` now exposes `compFx` and `compScan` in the body summary.
+- ZERO high-load with `rex_hatchling` survived beyond the previous failure point, reaching `t=226.87` with app console error/warn `0`.
+- ENDLESS high-load with `exp_chaser` also passed a post-hotfix 100s route with app console error/warn `0`.
+
+Updated judgment:
+
+- The specific P07c ZERO high-load blocker is considered mitigated by P07d.
+- The overall `main統合保留` decision remains until the remaining P07c non-performance QA items are completed: natural no-debug flow, production-like existing save compatibility, smartphone viewport QA, and controller / virtual mouse QA.

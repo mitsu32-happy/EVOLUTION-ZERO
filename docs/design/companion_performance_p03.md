@@ -172,3 +172,40 @@ classes.
 
 P05d QA should confirm repeated companion actions do not grow
 `companionEffects`, pool usage, or container child counts.
+
+## MVP-P07d performance hotfix
+
+P07d investigated the P07c ZERO high-load ticker-stall diagnostics screen.
+
+Findings:
+
+- The failing P07c snapshot had low object counts: enemy `104`, effect `1`,
+  damage text `5`, pickup `0`, children `127`, and load shedding `0`.
+- No WebGL context lost was recorded.
+- Companion effect growth was not the cause.
+- The debug ticker-stall guard was too eager: one `>2500ms` heartbeat gap
+  immediately showed the crash diagnostics screen.
+- Companion target acquisition also had avoidable per-frame work because enemy
+  and pickup candidate lists were allocated and sorted.
+
+Hotfix:
+
+- Ticker stall diagnostics now warn/dump on a single `>2500ms` heartbeat gap,
+  but only show the crash diagnostics screen on a severe `>=6500ms` stall or
+  repeated consecutive stalls.
+- Companion target acquisition now uses a short cache interval.
+- Enemy and pickup target selection now uses a single-pass best-candidate scan
+  instead of `filter/map/sort`.
+- Boss-type companions can cache non-boss fallback targets when no boss is
+  present.
+- `debugPerformance` now exposes companion effect and scan information via
+  `compFx` and `compScan`.
+
+P07d QA:
+
+- ZERO high-load with `rex_hatchling` reached `t=226.87` with no crash screen
+  and app console error/warn `0`.
+- ENDLESS high-load with `exp_chaser` passed a 100s post-hotfix route with no
+  crash screen and app console error/warn `0`.
+- Companion effect count stayed low (`0-1`) and container children stayed in
+  the expected low hundreds.

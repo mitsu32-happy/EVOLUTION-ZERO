@@ -57,12 +57,17 @@ const COMPANION_SCREEN_MARGIN = 42;
 const COMPANION_FACING_DEAD_ZONE = 5.5;
 const COMPANION_DEFAULT_ARRIVAL_RADIUS = 24;
 const COMPANION_DEFAULT_SLOW_RADIUS = 96;
+const COMPANION_TARGET_REFRESH_INTERVAL = 0.18;
+const COMPANION_PICKUP_TARGET_REFRESH_INTERVAL = 0.28;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
 const LOAD_SHEDDING_SOFT_OBJECTS = 520;
 const LOAD_SHEDDING_HARD_OBJECTS = 760;
 const PERFORMANCE_SNAPSHOT_LIMIT = 90;
+const TICKER_STALL_WARN_MS = 2500;
+const TICKER_STALL_FATAL_MS = 6500;
+const TICKER_STALL_FATAL_CONSECUTIVE = 2;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
 const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
@@ -660,10 +665,26 @@ export class PlayScene {
     this.companionEffectTextureCache = new Map();
     this.companionEffectAnimationCache = new Map();
     this.companionPickupEffectTimer = 0;
+    this.companionTargetCache = {
+      type: null,
+      target: null,
+      refreshTimer: 0,
+      scans: 0,
+      lastScanSize: 0,
+    };
+    this.companionPerfStats = {
+      targetScans: 0,
+      pickupScans: 0,
+      lastEnemyScanSize: 0,
+      lastPickupScanSize: 0,
+      effectSpawns: 0,
+      effectSuppressed: 0,
+    };
     this.debugStatsTimer = 0;
     this.debugFpsEstimate = 0;
     this.debugPerformanceEnabled = isDebugPerformanceEnabled();
     this.performanceLoadSheddingLevel = 0;
+    this.performanceHeartbeatSuspectCount = 0;
     this.frameCount = 0;
     this.lastUpdateTimestamp = 0;
     this.performanceSnapshots = [];
@@ -1232,6 +1253,7 @@ export class PlayScene {
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
       `dmg ${stats.damageNumbers}/${stats.caps.damageNumbers} pool ${stats.damageNumberPoolFree}/${stats.caps.damageNumberPool}`,
       `pickup ${stats.pickups}/${stats.caps.pickups}`,
+      `comp fx ${stats.companionEffects}/${stats.caps.companionEffects} scan e${stats.companion?.targetScans ?? 0}/p${stats.companion?.pickupScans ?? 0}`,
       `pool ep ${stats.enemyProjectilePoolFree}/${stats.caps.enemyProjectilePool}`,
       `audio ${stats.audioInstances ?? '-'}`,
     ];
@@ -1239,7 +1261,7 @@ export class PlayScene {
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 234, 150, 8)
+      .roundRect(8, 80, 286, 164, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -1269,13 +1291,19 @@ export class PlayScene {
         const last = this.lastUpdateTimestamp || now;
         const stallMs = now - last;
 
-        if (stallMs > 2500) {
+        if (stallMs > TICKER_STALL_WARN_MS) {
           this.performanceDiagnostics.tickerStalls += 1;
+          this.performanceHeartbeatSuspectCount += 1;
           this.showPerformanceDomFallback('Game loop stalled. Performance snapshot saved.');
           this.dumpPerformanceSnapshots('ticker-stalled', { stallMs: Math.round(stallMs) });
-          showCrashDiagnostics('ticker-stall', {
-            message: `Game loop stalled for ${Math.round(stallMs)}ms`,
-          }, () => this.getCrashDiagnosticsContext('ticker-stall'));
+
+          if (stallMs >= TICKER_STALL_FATAL_MS || this.performanceHeartbeatSuspectCount >= TICKER_STALL_FATAL_CONSECUTIVE) {
+            showCrashDiagnostics('ticker-stall', {
+              message: `Game loop stalled for ${Math.round(stallMs)}ms`,
+            }, () => this.getCrashDiagnosticsContext('ticker-stall'));
+          }
+        } else if (stallMs < TICKER_STALL_WARN_MS * 0.5) {
+          this.performanceHeartbeatSuspectCount = 0;
         }
       }, 1000);
     }
@@ -1384,6 +1412,18 @@ export class PlayScene {
       spawnBudget: spawnStats.spawnBudget ?? null,
       activeAudioCount: this.audioManager?.activeAudios?.size ?? null,
       activeAudioBufferCount: this.audioManager?.activeBufferRecords?.size ?? null,
+      companion: {
+        active: Boolean(this.activeCompanion),
+        id: this.activeCompanion?.id ?? null,
+        effects: this.companionEffects.length,
+        effectPoolFree: this.companionEffectPool.length,
+        targetScans: this.companionPerfStats?.targetScans ?? 0,
+        pickupScans: this.companionPerfStats?.pickupScans ?? 0,
+        lastEnemyScanSize: this.companionPerfStats?.lastEnemyScanSize ?? 0,
+        lastPickupScanSize: this.companionPerfStats?.lastPickupScanSize ?? 0,
+        effectSpawns: this.companionPerfStats?.effectSpawns ?? 0,
+        effectSuppressed: this.companionPerfStats?.effectSuppressed ?? 0,
+      },
       pools: {
         damageTextFree: combatStats.damageNumberPoolFree ?? 0,
         graphicsFree: combatStats.graphicsPoolFree ?? 0,
@@ -1431,6 +1471,8 @@ export class PlayScene {
         `enemy=${snapshot.enemyCount}`,
         `pickup=${snapshot.pickupCount}`,
         `children=${snapshot.containerChildrenTotal}`,
+        `compFx=${snapshot.companion?.effects ?? 0}`,
+        `compScan=${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
         `shed=${snapshot.loadSheddingLevel}`,
         `stress=${snapshot.debugStressKillEnabled ? 1 : 0}`,
         `ctx=${snapshot.diagnostics?.contextLost ?? 0}`,
@@ -1556,6 +1598,16 @@ export class PlayScene {
       pickupPopups: this.pickupPopups.length,
       companionEffects: this.companionEffects.length,
       companionEffectPoolFree: this.companionEffectPool.length,
+      companion: {
+        active: Boolean(this.activeCompanion),
+        id: this.activeCompanion?.id ?? null,
+        targetScans: this.companionPerfStats?.targetScans ?? 0,
+        pickupScans: this.companionPerfStats?.pickupScans ?? 0,
+        lastEnemyScanSize: this.companionPerfStats?.lastEnemyScanSize ?? 0,
+        lastPickupScanSize: this.companionPerfStats?.lastPickupScanSize ?? 0,
+        effectSpawns: this.companionPerfStats?.effectSpawns ?? 0,
+        effectSuppressed: this.companionPerfStats?.effectSuppressed ?? 0,
+      },
       pickups: this.pickups.length,
       effectChildren: this.effectLayer.children.length,
       gimmickChildren: this.gimmickLayer.children.length,
@@ -3034,6 +3086,21 @@ export class PlayScene {
     this.companionMovementState = 'idle';
     this.companionMovementTargetType = 'none';
     this.companionTargetDistance = 0;
+    this.companionTargetCache = {
+      type: null,
+      target: null,
+      refreshTimer: 0,
+      scans: 0,
+      lastScanSize: 0,
+    };
+    this.companionPerfStats = {
+      targetScans: 0,
+      pickupScans: 0,
+      lastEnemyScanSize: 0,
+      lastPickupScanSize: 0,
+      effectSpawns: 0,
+      effectSuppressed: 0,
+    };
     this.setCompanionDisplayPosition(this.companionView, this.companionPosition.x, this.companionPosition.y);
 
     if (!companion) {
@@ -3544,31 +3611,60 @@ export class PlayScene {
       return null;
     }
 
+    this.companionPerfStats.targetScans += 1;
+    this.companionPerfStats.lastEnemyScanSize = this.enemies.length;
     const searchRadius = Math.max(radius + 120, behavior.range ?? 200);
-    const candidates = this.enemies
-      .filter((enemy) => enemy && !enemy.isDead && enemy.position)
-      .map((enemy) => ({
-        enemy,
-        distanceFromPlayer: CollisionSystem.distanceSquared(this.player.position, enemy.position),
-      }))
-      .filter((entry) => entry.distanceFromPlayer <= searchRadius * searchRadius || (type === 'boss' && entry.enemy.isBoss))
-      .sort((a, b) => {
-        if (type === 'boss') {
-          return Number(Boolean(b.enemy.isBoss)) - Number(Boolean(a.enemy.isBoss)) || a.distanceFromPlayer - b.distanceFromPlayer;
+    const searchDistanceSquared = searchRadius * searchRadius;
+    let bestEnemy = null;
+    let bestDistance = type === 'ranged' ? -Infinity : Infinity;
+    let bestHp = Infinity;
+    let bestBossScore = -1;
+
+    for (const enemy of this.enemies) {
+      if (!enemy || enemy.isDead || !enemy.position) {
+        continue;
+      }
+
+      const distanceFromPlayer = CollisionSystem.distanceSquared(this.player.position, enemy.position);
+      if (distanceFromPlayer > searchDistanceSquared && !(type === 'boss' && enemy.isBoss)) {
+        continue;
+      }
+
+      if (type === 'boss') {
+        const bossScore = enemy.isBoss ? 1 : 0;
+        if (bossScore > bestBossScore || (bossScore === bestBossScore && distanceFromPlayer < bestDistance)) {
+          bestEnemy = enemy;
+          bestBossScore = bossScore;
+          bestDistance = distanceFromPlayer;
         }
+        continue;
+      }
 
-        if (type === 'swarm') {
-          return (a.enemy.hp ?? 99999) - (b.enemy.hp ?? 99999) || a.distanceFromPlayer - b.distanceFromPlayer;
+      if (type === 'swarm') {
+        const hp = enemy.hp ?? 99999;
+        if (hp < bestHp || (hp === bestHp && distanceFromPlayer < bestDistance)) {
+          bestEnemy = enemy;
+          bestHp = hp;
+          bestDistance = distanceFromPlayer;
         }
+        continue;
+      }
 
-        if (type === 'ranged') {
-          return b.distanceFromPlayer - a.distanceFromPlayer;
+      if (type === 'ranged') {
+        if (distanceFromPlayer > bestDistance) {
+          bestEnemy = enemy;
+          bestDistance = distanceFromPlayer;
         }
+        continue;
+      }
 
-        return a.distanceFromPlayer - b.distanceFromPlayer;
-      });
+      if (distanceFromPlayer < bestDistance) {
+        bestEnemy = enemy;
+        bestDistance = distanceFromPlayer;
+      }
+    }
 
-    return candidates[0]?.enemy ?? null;
+    return bestEnemy;
   }
 
   findCompanionPickupTarget(expOnly = false, radius = COMPANION_BASE_FOLLOW_RADIUS) {
@@ -3576,18 +3672,66 @@ export class PlayScene {
       return null;
     }
 
+    this.companionPerfStats.pickupScans += 1;
+    this.companionPerfStats.lastPickupScanSize = this.pickups.length;
     const searchRadius = Math.max(radius + 90, 150);
-    const candidates = this.pickups
-      .filter((pickup) => pickup && !pickup.isCollected && pickup.type !== 'companion_egg')
-      .filter((pickup) => !expOnly || pickup.type === 'exp')
-      .map((pickup) => ({
-        pickup,
-        distanceFromPlayer: CollisionSystem.distanceSquared(this.player.position, pickup.position),
-      }))
-      .filter((entry) => entry.distanceFromPlayer <= searchRadius * searchRadius)
-      .sort((a, b) => a.distanceFromPlayer - b.distanceFromPlayer);
+    const searchDistanceSquared = searchRadius * searchRadius;
+    let bestPickup = null;
+    let bestDistance = Infinity;
 
-    return candidates[0]?.pickup ?? null;
+    for (const pickup of this.pickups) {
+      if (!pickup || pickup.isCollected || pickup.type === 'companion_egg') {
+        continue;
+      }
+
+      if (expOnly && pickup.type !== 'exp') {
+        continue;
+      }
+
+      const distanceFromPlayer = CollisionSystem.distanceSquared(this.player.position, pickup.position);
+      if (distanceFromPlayer <= searchDistanceSquared && distanceFromPlayer < bestDistance) {
+        bestPickup = pickup;
+        bestDistance = distanceFromPlayer;
+      }
+    }
+
+    return bestPickup;
+  }
+
+  isCompanionCachedTargetUsable(target, targetType, radius) {
+    if (!target?.position) {
+      return false;
+    }
+
+    if (target.isDead || target.isCollected) {
+      return false;
+    }
+
+    const distanceSquared = CollisionSystem.distanceSquared(this.player.position, target.position);
+    const maxDistance = Math.max(radius + 140, 240);
+    return distanceSquared <= maxDistance * maxDistance || (targetType === 'boss' && target.isBoss);
+  }
+
+  getCompanionCachedTarget(cacheType, factory, radius, refreshInterval) {
+    const cache = this.companionTargetCache ?? {};
+    const sameType = cache.type === cacheType;
+    const usable = sameType && cache.refreshTimer > 0 && this.isCompanionCachedTargetUsable(cache.target, cacheType, radius);
+
+    if (usable) {
+      return cache.target;
+    }
+
+    const target = factory();
+    this.companionTargetCache = {
+      type: cacheType,
+      target,
+      refreshTimer: refreshInterval,
+      scans: (cache.scans ?? 0) + 1,
+      lastScanSize: cacheType === 'pickup' || cacheType === 'exp'
+        ? this.pickups.length
+        : this.enemies.length,
+    };
+    return target;
   }
 
   getCompanionDesiredTarget(radius) {
@@ -3605,7 +3749,12 @@ export class PlayScene {
     }
 
     if (['attack', 'area', 'ranged', 'swarm', 'boss', 'synergy'].includes(type)) {
-      const enemy = this.findCompanionEnemyTarget(type, behavior, radius);
+      const enemy = this.getCompanionCachedTarget(
+        type === 'boss' ? 'boss' : 'enemy',
+        () => this.findCompanionEnemyTarget(type, behavior, radius),
+        radius,
+        this.performanceLoadSheddingLevel >= 1 ? COMPANION_TARGET_REFRESH_INTERVAL * 1.7 : COMPANION_TARGET_REFRESH_INTERVAL,
+      );
       if (enemy?.position) {
         if (type === 'ranged') {
           const dx = enemy.position.x - this.player.position.x;
@@ -3623,7 +3772,12 @@ export class PlayScene {
     }
 
     if (type === 'pickup' || type === 'exp') {
-      const pickup = this.findCompanionPickupTarget(type === 'exp', radius);
+      const pickup = this.getCompanionCachedTarget(
+        type,
+        () => this.findCompanionPickupTarget(type === 'exp', radius),
+        radius,
+        this.performanceLoadSheddingLevel >= 1 ? COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * 1.8 : COMPANION_PICKUP_TARGET_REFRESH_INTERVAL,
+      );
       if (pickup?.position) {
         return { ...this.clampCompanionMovementPoint(pickup.position, radius), targetType: type === 'exp' ? 'exp' : 'pickup' };
       }
@@ -3693,6 +3847,9 @@ export class PlayScene {
 
     this.companionOrbitTime += delta;
     this.companionReturnTimer = Math.max(0, this.companionReturnTimer - delta);
+    if (this.companionTargetCache) {
+      this.companionTargetCache.refreshTimer = Math.max(0, (this.companionTargetCache.refreshTimer ?? 0) - delta);
+    }
     const profile = this.getCompanionAnimationProfile();
     const actionDuration = Math.max(0.001, this.companionActionDuration || COMPANION_ACTION_DURATION);
     const actionProgress = this.companionActionTimer > 0
@@ -3953,6 +4110,7 @@ export class PlayScene {
 
   spawnCompanionEffect(x, y, companion = this.activeCompanion, options = {}) {
     if (!companion?.effectAssetKey || this.performanceLoadSheddingLevel >= 2) {
+      this.companionPerfStats.effectSuppressed += 1;
       return;
     }
 
@@ -3984,6 +4142,7 @@ export class PlayScene {
     this.trimCompanionEffects(MAX_COMPANION_EFFECTS - 1);
     this.effectLayer.addChild(effect.view);
     this.companionEffects.push(effect);
+    this.companionPerfStats.effectSpawns += 1;
 
     const cachedTexture = this.companionEffectTextureCache.get(effect.key);
     if (cachedTexture) {
