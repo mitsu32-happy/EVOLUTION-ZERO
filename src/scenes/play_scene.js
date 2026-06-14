@@ -68,6 +68,9 @@ const PERFORMANCE_SNAPSHOT_LIMIT = 90;
 const TICKER_STALL_WARN_MS = 2500;
 const TICKER_STALL_FATAL_MS = 6500;
 const TICKER_STALL_FATAL_CONSECUTIVE = 2;
+const WHITEOUT_DUMP_STORAGE_KEY = 'EVOLUTION_ZERO_WHITEOUT_DUMP';
+const WHITEOUT_BOSS_CLEAR_OVERRUN_SECONDS = 0.85;
+const WHITEOUT_FLASH_ALPHA_LIMIT = 0.24;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
 const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
@@ -700,6 +703,12 @@ export class PlayScene {
       tickerStalls: 0,
       lastReason: null,
     };
+    this.whiteoutDiagnostics = {
+      dumpCount: 0,
+      lastReason: null,
+      lastSavedAt: 0,
+      bossClearOverruns: 0,
+    };
     this.runtimeInvalidCounts = {};
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
@@ -1256,12 +1265,13 @@ export class PlayScene {
       `comp fx ${stats.companionEffects}/${stats.caps.companionEffects} scan e${stats.companion?.targetScans ?? 0}/p${stats.companion?.pickupScans ?? 0}`,
       `pool ep ${stats.enemyProjectilePoolFree}/${stats.caps.enemyProjectilePool}`,
       `audio ${stats.audioInstances ?? '-'}`,
+      `whiteout ${stats.whiteout?.dumpCount ?? 0}:${stats.whiteout?.lastReason ?? '-'}`,
     ];
 
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 286, 164, 8)
+      .roundRect(8, 80, 286, 180, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -1329,6 +1339,7 @@ export class PlayScene {
       this.performanceDiagnostics.contextLost += 1;
       event?.preventDefault?.();
       this.showPerformanceDomFallback('WebGL context lost. Reload the page if the screen does not recover.');
+      this.saveWhiteoutDump('webgl-context-lost');
       this.dumpPerformanceSnapshots('webgl-context-lost');
       showCrashDiagnostics('webgl-context-lost', {
         message: 'WebGL context lost',
@@ -1525,6 +1536,131 @@ export class PlayScene {
     return dump;
   }
 
+  getOverlayDiagnostics() {
+    const describe = (label, view) => {
+      if (!view) {
+        return null;
+      }
+
+      const scale = view.scale ?? {};
+      const position = view.position ?? {};
+      return {
+        label,
+        visible: Boolean(view.visible),
+        renderable: view.renderable !== false,
+        alpha: Number.isFinite(view.alpha) ? Number(view.alpha.toFixed(3)) : null,
+        children: Array.isArray(view.children) ? view.children.length : null,
+        x: Number.isFinite(position.x) ? Math.round(position.x) : null,
+        y: Number.isFinite(position.y) ? Math.round(position.y) : null,
+        scaleX: Number.isFinite(scale.x) ? Number(scale.x.toFixed(3)) : null,
+        scaleY: Number.isFinite(scale.y) ? Number(scale.y.toFixed(3)) : null,
+        filters: Array.isArray(view.filters) ? view.filters.length : 0,
+      };
+    };
+
+    return [
+      describe('bossDefeatFxLayer', this.bossDefeatFxLayer),
+      describe('damageFlash', this.damageFlash),
+      describe('visibilityBackgroundLift', this.visibilityBackgroundLift),
+      describe('visibilityGuideLayer', this.visibilityGuideLayer),
+      describe('zeroPhaseLayer', this.zeroPhaseLayer),
+      describe('bossWarningLayer', this.bossWarningLayer),
+      describe('evolutionWarningLayer', this.evolutionWarningLayer),
+      describe('ultimateOverlay', this.ultimateSystem?.overlay),
+      describe('hud', this.hud?.view),
+      describe('levelUpUi', this.levelUpUi?.view),
+      describe('pauseUi', this.pauseUi?.view),
+      describe('resultUi', this.resultUi?.view),
+    ].filter(Boolean);
+  }
+
+  buildWhiteoutDump(reason = 'whiteout-suspected', extra = null) {
+    const snapshot = this.buildPerformanceSnapshot(reason);
+    const overlayDiagnostics = this.getOverlayDiagnostics();
+    const activeFilters = overlayDiagnostics.reduce((total, entry) => total + (entry.filters ?? 0), 0);
+    const fullscreenGraphics = overlayDiagnostics
+      .filter((entry) => entry.visible && ['bossDefeatFxLayer', 'damageFlash', 'visibilityBackgroundLift', 'zeroPhaseLayer'].includes(entry.label))
+      .map((entry) => entry.label);
+    const canvasRect = this.canvas?.getBoundingClientRect?.();
+
+    return {
+      reason,
+      timestamp: new Date().toISOString(),
+      stage: this.gameState?.selectedStage ?? '-',
+      mode: this.gameState?.selectedMode ?? '-',
+      difficulty: this.gameState?.selectedDifficulty ?? '-',
+      elapsedTime: snapshot.elapsedTime,
+      enemyCount: snapshot.enemyCount,
+      projectileCount: snapshot.projectileCount,
+      hazardCount: snapshot.hazardCount,
+      warningGuideCount: snapshot.warningGuideCount,
+      effectCount: snapshot.effectCount,
+      damageTextCount: snapshot.damageTextCount,
+      criticalTextCount: snapshot.criticalTextCount,
+      pickupCount: snapshot.pickupCount,
+      compFx: snapshot.companion?.effects ?? 0,
+      compScan: `${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
+      renderer: {
+        canvasWidth: this.canvas?.width ?? null,
+        canvasHeight: this.canvas?.height ?? null,
+        clientWidth: canvasRect ? Math.round(canvasRect.width) : null,
+        clientHeight: canvasRect ? Math.round(canvasRect.height) : null,
+      },
+      stageChildren: {
+        root: this.view?.children?.length ?? null,
+        world: this.world?.children?.length ?? null,
+        ...snapshot.containerChildren,
+      },
+      activeFilters,
+      activeFullscreenGraphics: fullscreenGraphics,
+      webglContextLost: (snapshot.diagnostics?.contextLost ?? 0) > 0,
+      loadSheddingLevel: snapshot.loadSheddingLevel,
+      bossClearSequence: this.bossClearSequence ? {
+        age: Number((this.bossClearSequence.age ?? 0).toFixed(3)),
+        duration: Number((this.bossClearSequence.duration ?? 0).toFixed(3)),
+        zeroFinal: Boolean(this.bossClearSequence.zeroFinal),
+        completed: Boolean(this.bossClearSequence.completed),
+      } : null,
+      overlays: overlayDiagnostics,
+      latestSnapshot: snapshot,
+      extra,
+    };
+  }
+
+  saveWhiteoutDump(reason = 'whiteout-suspected', extra = null) {
+    const now = Date.now();
+    if (now - (this.whiteoutDiagnostics?.lastSavedAt ?? 0) < 750) {
+      return typeof window !== 'undefined' ? (window.__EVOLUTION_ZERO_WHITEOUT_DUMP__ ?? null) : null;
+    }
+
+    const dump = this.buildWhiteoutDump(reason, extra);
+    this.whiteoutDiagnostics.dumpCount += 1;
+    this.whiteoutDiagnostics.lastReason = reason;
+    this.whiteoutDiagnostics.lastSavedAt = now;
+
+    try {
+      const json = JSON.stringify(dump);
+      localStorage.setItem(WHITEOUT_DUMP_STORAGE_KEY, json);
+      window.__EVOLUTION_ZERO_WHITEOUT_DUMP__ = dump;
+      document?.body?.setAttribute?.('data-ez-whiteout-dump', json);
+      document?.body?.setAttribute?.('data-ez-whiteout-summary', [
+        `reason=${reason}`,
+        `stage=${dump.stage}`,
+        `mode=${dump.mode}`,
+        `t=${dump.elapsedTime}`,
+        `enemy=${dump.enemyCount}`,
+        `fx=${dump.effectCount}`,
+        `compFx=${dump.compFx}`,
+        `children=${dump.latestSnapshot?.containerChildrenTotal ?? '-'}`,
+        `ctx=${dump.webglContextLost ? 1 : 0}`,
+      ].join(' '));
+    } catch {
+      // Whiteout diagnostics must never affect gameplay.
+    }
+
+    return dump;
+  }
+
   getCrashDiagnosticsContext(reason = 'manual') {
     const snapshot = this.buildPerformanceSnapshot(reason);
     this.recordPerformanceSnapshot(snapshot);
@@ -1620,6 +1756,11 @@ export class PlayScene {
       loadSheddingLevel: this.performanceLoadSheddingLevel ?? 0,
       spawn: spawnStats,
       invalidRemoved: { ...(this.runtimeInvalidCounts ?? {}) },
+      whiteout: {
+        dumpCount: this.whiteoutDiagnostics?.dumpCount ?? 0,
+        lastReason: this.whiteoutDiagnostics?.lastReason ?? null,
+        bossClearOverruns: this.whiteoutDiagnostics?.bossClearOverruns ?? 0,
+      },
       caps: {
         enemies: this.spawnSystem?.getEnemyCap?.(this.gameState) ?? null,
         enemyProjectiles: MAX_ENEMY_PROJECTILES,
@@ -5611,21 +5752,50 @@ export class PlayScene {
     if (!this.bossClearSequence) {
       if (this.bossDefeatFxLayer) {
         this.bossDefeatFxLayer.clear();
+        this.bossDefeatFxLayer.visible = false;
       }
       this.hideBossDeathSprites();
       return;
     }
 
     const sequence = this.bossClearSequence;
-    sequence.age += delta;
-    const progress = Math.min(1, sequence.age / sequence.duration);
+    sequence.age += Number.isFinite(delta) ? Math.max(0, delta) : 0;
+    const duration = Number.isFinite(sequence.duration) && sequence.duration > 0 ? sequence.duration : 0.001;
+
+    if (sequence.age > duration + WHITEOUT_BOSS_CLEAR_OVERRUN_SECONDS) {
+      this.whiteoutDiagnostics.bossClearOverruns += 1;
+      this.saveWhiteoutDump('boss-clear-sequence-overrun', {
+        age: Number((sequence.age ?? 0).toFixed(3)),
+        duration: Number(duration.toFixed(3)),
+        zeroFinal: Boolean(sequence.zeroFinal),
+      });
+      this.completeBossClearSequence(sequence, 'overrun');
+      return;
+    }
+
+    const progress = Math.min(1, sequence.age / duration);
     const fade = 1 - progress;
     const pulse = Math.sin(progress * Math.PI * (sequence.zeroFinal ? 7 : 5));
     const corePulse = 0.72 + Math.max(0, pulse) * 0.34;
     const screenPoint = this.worldToScreenPoint(sequence.bossX, sequence.bossY);
     const radius = sequence.radius * (0.55 + progress * (sequence.zeroFinal ? 1.45 : 1.05));
-    const flashAlpha = (sequence.zeroFinal ? 0.32 : 0.22) * fade;
+    const flashAlpha = Math.min(WHITEOUT_FLASH_ALPHA_LIMIT, (sequence.zeroFinal ? 0.28 : 0.2) * fade);
     const fragmentCount = sequence.zeroFinal ? 9 : 6;
+
+    if (!Number.isFinite(progress)
+      || !Number.isFinite(screenPoint.x)
+      || !Number.isFinite(screenPoint.y)
+      || !Number.isFinite(radius)
+      || radius <= 0) {
+      this.saveWhiteoutDump('boss-clear-sequence-invalid', {
+        progress,
+        screenPoint,
+        radius,
+        zeroFinal: Boolean(sequence.zeroFinal),
+      });
+      this.completeBossClearSequence(sequence, 'invalid');
+      return;
+    }
 
     const explosionTexture = this.bossDeathTextures.get('explosion');
     const shockwaveTexture = this.bossDeathTextures.get('shockwave');
@@ -5651,6 +5821,7 @@ export class PlayScene {
       rotation: progress * 0.42,
     });
 
+    this.bossDefeatFxLayer.visible = true;
     this.bossDefeatFxLayer.clear()
       .rect(0, 0, this.width, this.height)
       .fill({ color: sequence.zeroFinal ? 0xb9f8ff : 0xfff0b0, alpha: flashAlpha });
@@ -5678,15 +5849,26 @@ export class PlayScene {
       .fill({ color: sequence.zeroFinal ? 0xe8fbff : 0xfff0b0, alpha: 0.56 * fade });
 
     if (progress >= 1 && !sequence.completed) {
+      this.completeBossClearSequence(sequence, 'complete');
+    }
+  }
+
+  completeBossClearSequence(sequence, reason = 'complete') {
+    if (sequence) {
       sequence.completed = true;
-      this.bossDefeatFxLayer.clear();
-      this.hideBossDeathSprites();
-      this.bossClearSequence = null;
-      if (sequence.zeroFinal) {
-        this.completeZeroRun();
-      } else {
-        this.completeStageByBossClear();
-      }
+    }
+
+    this.bossDefeatFxLayer?.clear();
+    if (this.bossDefeatFxLayer) {
+      this.bossDefeatFxLayer.visible = false;
+    }
+    this.hideBossDeathSprites();
+    this.bossClearSequence = null;
+
+    if (sequence?.zeroFinal) {
+      this.completeZeroRun();
+    } else if (reason === 'complete' || reason === 'overrun' || reason === 'invalid') {
+      this.completeStageByBossClear();
     }
   }
 
@@ -7000,6 +7182,8 @@ export class PlayScene {
 
   createBossDeathEffectLayer() {
     this.bossDefeatAssetLayer.eventMode = 'none';
+    this.bossDefeatFxLayer.visible = false;
+    this.bossDefeatFxLayer.eventMode = 'none';
     [
       this.bossDeathShockwaveSprite,
       this.bossDeathExplosionSprite,
@@ -7095,7 +7279,14 @@ export class PlayScene {
       return;
     }
 
-    if (!texture || texture === Texture.EMPTY || alpha <= 0) {
+    if (!texture
+      || texture === Texture.EMPTY
+      || alpha <= 0
+      || !Number.isFinite(position?.x)
+      || !Number.isFinite(position?.y)
+      || !Number.isFinite(scale)
+      || scale <= 0
+      || scale > 12) {
       sprite.visible = false;
       sprite.alpha = 0;
       return;
@@ -7818,6 +8009,9 @@ export class PlayScene {
     this.resultSoundPlayed = false;
     this.bossClearSequence = null;
     this.bossDefeatFxLayer?.clear();
+    if (this.bossDefeatFxLayer) {
+      this.bossDefeatFxLayer.visible = false;
+    }
     this.hideBossDeathSprites();
     this.pickupModifiers = {
       magnetRadiusMultiplier: 1,
