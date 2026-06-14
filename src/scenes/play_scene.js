@@ -428,6 +428,7 @@ export class PlayScene {
     this.companionUtilityTimer = 0;
     this.companionMoveSpeedBonus = 0;
     this.companionExpMultiplier = 1;
+    this.companionTutorialSuppressed = false;
     this.companionLastAction = 'idle';
     this.companionLastTarget = '-';
     this.companionActionTimer = 0;
@@ -3196,7 +3197,7 @@ export class PlayScene {
     this.activeCompanionLevel = companion
       ? Math.max(1, Math.min(companion.maxLevel ?? 5, debugLevel ?? state?.levels?.[companion.id] ?? 1))
       : 1;
-    this.companionView.visible = !!companion;
+    this.companionView.visible = Boolean(companion) && !this.companionTutorialSuppressed;
     this.companionView.alpha = 1;
     this.companionView.sortableChildren = true;
     this.companionSprite.visible = false;
@@ -3266,6 +3267,13 @@ export class PlayScene {
       this.updateCompanionDebugLabel('fallback');
     });
     this.updateCompanionDebugLabel('loading');
+  }
+
+  setCompanionTutorialSuppressed(suppressed = false) {
+    this.companionTutorialSuppressed = Boolean(suppressed);
+    if (this.companionView) {
+      this.companionView.visible = Boolean(this.activeCompanion) && !this.companionTutorialSuppressed;
+    }
   }
 
   drawCompanionFallback() {
@@ -3982,6 +3990,13 @@ export class PlayScene {
   }
 
   updateCompanion(delta) {
+    if (this.companionTutorialSuppressed) {
+      if (this.companionView) {
+        this.companionView.visible = false;
+      }
+      return;
+    }
+
     if (!this.activeCompanion || !this.companionView.visible) {
       return;
     }

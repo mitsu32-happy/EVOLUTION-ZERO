@@ -983,6 +983,12 @@ export class ResearchScreen {
     this.flashHatchEffect();
 
     if (result.companion) {
+      const ownedCount = result.data?.companion?.ownedIds?.length
+        ?? this.saveManager?.getData?.()?.companion?.ownedIds?.length
+        ?? 0;
+      if (ownedCount <= 1) {
+        this.saveManager?.markTutorialIncomplete?.('companionHomeViewed');
+      }
       const companion = result.companion;
       const typeLabel = COMPANION_TYPES[companion.type]?.label ?? '補助型';
       this.confirmDialog.show({

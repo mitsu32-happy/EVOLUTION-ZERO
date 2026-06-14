@@ -260,6 +260,19 @@ export class SaveManager {
     return this.save();
   }
 
+  markTutorialIncomplete(id) {
+    if (!id) {
+      return this.getData();
+    }
+
+    this.data.tutorialFlags = {
+      ...this.normalizeTutorialFlags(this.data.tutorialFlags),
+      [id]: false,
+    };
+
+    return this.save();
+  }
+
   resetTutorialFlags() {
     this.data.tutorialFlags = this.normalizeTutorialFlags({});
     return this.save();
