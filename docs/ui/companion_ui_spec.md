@@ -183,3 +183,20 @@ UI frames with polished dark-SF research-terminal assets.
   readability.
 
 Detailed polish notes: `docs/design/companion_ui_polish_p06c.md`.
+
+## MVP-P06d Production UI Assets
+
+P06d keeps the P06c interaction and layout model, but replaces the active
+companion management PNGs with production illustrated assets:
+
+- home companion frame
+- companion selection modal, card, and button
+- companion research / unknown tab icons
+- egg incubator and hatch button
+- owned-companion research panel
+- upgrade card and button
+
+Runtime text remains separate from the bitmaps. The generated assets reserve
+dark, low-noise text-safe areas and keep border decoration at the edges.
+
+Detailed asset notes: `docs/design/companion_ui_asset_generation_p06d.md`.

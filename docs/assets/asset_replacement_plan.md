@@ -3999,3 +3999,32 @@ Generation rules:
 - cyan/teal base with gold action accents
 - transparent PNG with text-safe interiors
 - phone-width readability preserved by runtime labels
+
+## MVP-P06d Companion Production UI Illustration Assets
+
+P06d supersedes the P06c companion management UI assets for active runtime use.
+The P06c files remain as references, but `asset_manifest.js`, `home_screen.js`,
+and `research_screen.js` now point to P06d assets.
+
+New active UI assets:
+
+- `public/assets/ui/companions/home_companion_frame_p06d.png`
+- `public/assets/ui/companions/companion_select_panel_p06d.png`
+- `public/assets/ui/companions/companion_select_card_p06d.png`
+- `public/assets/ui/companions/companion_select_button_p06d.png`
+- `public/assets/ui/research/icons/icon_companion_tab_p06d.png`
+- `public/assets/ui/research/icons/icon_companion_unknown_p06d.png`
+- `public/assets/ui/companions/egg_incubator_p06d.png`
+- `public/assets/ui/companions/hatch_button_p06d.png`
+- `public/assets/ui/companions/owned_companion_panel_p06d.png`
+- `public/assets/ui/companions/upgrade_card_p06d.png`
+- `public/assets/ui/companions/upgrade_button_p06d.png`
+- `docs/assets/p06d_companion_ui_asset_contact.png`
+
+Generation rules:
+
+- no baked text
+- dark sci-fi biological research facility style
+- cyan / teal emission with restrained gold accents
+- low-noise text-safe interiors
+- transparent PNG output derived from a chroma-key generation sheet

@@ -93,3 +93,12 @@ rechecked on iPhone-width screens.
 - Final physical phone QA after localization cleanup.
 - If movement/effect/speed become independent upgrade tracks, add a real save
   migration and replace the current level-derived display labels.
+
+## P06d Production Asset Follow-up
+
+P06d supersedes the P06c bitmap frames for active runtime use. The P06c layout,
+owned-only display rules, and controller focus routing remain the baseline, but
+the simple generated PNGs are replaced by production illustrated dark-SF
+research-terminal assets.
+
+See `docs/design/companion_ui_asset_generation_p06d.md`.

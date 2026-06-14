@@ -32,11 +32,11 @@ const RESEARCH_ASSET_PATHS = {
   cardCompleted: 'assets/ui/research/research_card_done_a12b.png',
   costBadge: 'assets/ui/research/research_button_study_a12b.png',
   analysisConvertPanel: 'assets/ui/research/analysis_convert_panel.png',
-  companionOwnedPanel: 'assets/ui/companions/companion_owned_panel_p06c.png',
-  companionHatchDevice: 'assets/ui/companions/companion_hatch_device_p06c.png',
-  companionHatchButton: 'assets/ui/companions/companion_hatch_button_p06c.png',
-  companionUpgradeCard: 'assets/ui/companions/companion_upgrade_card_p06c.png',
-  companionUpgradeButton: 'assets/ui/companions/companion_upgrade_button_p06c.png',
+  companionOwnedPanel: 'assets/ui/companions/owned_companion_panel_p06d.png',
+  companionHatchDevice: 'assets/ui/companions/egg_incubator_p06d.png',
+  companionHatchButton: 'assets/ui/companions/hatch_button_p06d.png',
+  companionUpgradeCard: 'assets/ui/companions/upgrade_card_p06d.png',
+  companionUpgradeButton: 'assets/ui/companions/upgrade_button_p06d.png',
 };
 
 const RESEARCH_ICON_PATHS = {
@@ -59,8 +59,8 @@ const RESEARCH_ICON_PATHS = {
   skillAccelBlades: 'assets/ui/skills/icon_accel_blades.png',
   skillPredatorMark: 'assets/ui/skills/icon_predator_mark.png',
   skillFlameBreath: 'assets/ui/skills/icon_flame_breath.png',
-  companionResearch: 'assets/ui/research/icons/icon_companion_research_p06c.png',
-  companionUnknown: 'assets/ui/research/icons/icon_companion_unknown_p06c.png',
+  companionResearch: 'assets/ui/research/icons/icon_companion_tab_p06d.png',
+  companionUnknown: 'assets/ui/research/icons/icon_companion_unknown_p06d.png',
 };
 
 const CORE_PANEL = { x: 8, y: 102, width: 374, height: 88 };
