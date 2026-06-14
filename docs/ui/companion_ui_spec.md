@@ -156,6 +156,19 @@ see after selecting a companion.
 
 P06b moves companion management into production-facing UI surfaces.
 
+## MVP-P06e Text and Tutorial Polish
+
+- Locked companion research copy no longer reveals the egg unlock condition.
+  It uses mystery-safe wording: "conditions will unlock this area."
+- Companion selection uses P06e panel/card assets with darker low-noise text
+  regions for owned companion descriptions.
+- Research companion upgrades require a confirmation dialog showing companion
+  name, upgrade summary, `Lv current -> next`, DNA cost, execute, and cancel.
+- Companion UI tutorials are split into research unlock, first companion tab
+  view, and first home companion panel view.
+- The combat warning guide tutorial is disabled and marked complete for save
+  compatibility.
+
 - Home companion entry moved under the top-left logo and is visible only when
   at least one companion is owned.
 - Home selection modal now shows owned companions only and no longer exposes

@@ -66,3 +66,16 @@ rules, gameplay AI, damage, healing, pickup behavior, or balance values.
   again if the modal gains more dense rows.
 - If hover / active button states become required, generate dedicated state
   variants instead of tinting one bitmap.
+
+## MVP-P06e Follow-up
+
+- Companion selection panel/card were replaced with P06e readability-tuned
+  variants:
+  - `public/assets/ui/companions/companion_select_panel_p06e.png`
+  - `public/assets/ui/companions/companion_select_card_p06e.png`
+- P06e keeps the P06d production style but darkens text-safe areas and removes
+  edge contamination from the generated PNGs.
+- Research companion upgrades now use a confirmation dialog before spending
+  DNA.
+- Companion research/home tutorials were added, and the warning guide tutorial
+  was disabled because it interrupted play at awkward times.

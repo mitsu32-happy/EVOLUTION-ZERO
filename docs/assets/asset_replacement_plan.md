@@ -4028,3 +4028,21 @@ Generation rules:
 - cyan / teal emission with restrained gold accents
 - low-noise text-safe interiors
 - transparent PNG output derived from a chroma-key generation sheet
+## MVP-P06e Companion UI Asset Replacement
+
+- Replaced P06d companion selection panel/card runtime references with P06e
+  readability variants:
+  - `public/assets/ui/companions/companion_select_panel_p06e.png`
+  - `public/assets/ui/companions/companion_select_card_p06e.png`
+- P06e variants preserve the production dark sci-fi style while reducing
+  texture noise behind runtime text.
+- Edge contamination from generated green artifacts was removed before
+  connection.
+- Other P06d companion UI assets remain active:
+  - home frame
+  - selection button
+  - research tab icons
+  - egg incubator
+  - hatch button
+  - owned panel
+  - upgrade card/button

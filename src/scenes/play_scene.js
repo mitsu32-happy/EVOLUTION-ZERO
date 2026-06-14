@@ -2216,15 +2216,8 @@ export class PlayScene {
   }
 
   showWarningGuideTutorialIfNeeded({ force = false } = {}) {
-    return this.showPlayEventTutorialIfNeeded('warningGuide', [
-      {
-        title: '警告ガイド',
-        body: '赤い範囲は危険です。\n敵やギミックの攻撃範囲なので、表示されたら離れましょう。',
-        target: '警告表示',
-        targetId: 'play.warning',
-        tooltipPosition: 'bottom',
-      },
-    ], { force });
+    this.saveManager?.markTutorialComplete?.('warningGuide');
+    return false;
   }
 
   isEvolutionReadySequenceActive() {

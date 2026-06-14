@@ -93,6 +93,9 @@ const DEFAULT_SAVE = {
     companionEggResearch: false,
     companionObtained: false,
     companionSet: false,
+    companionResearchUnlocked: false,
+    companionTabViewed: false,
+    companionHomeViewed: false,
   },
   audioSettings: {
     masterVolume: 0.8,

@@ -191,6 +191,33 @@ const TUTORIAL_PAGES = {
       highlight: { x: 28, y: 292, width: 334, height: 112 },
     },
   ],
+  companionEggResearch: [
+    {
+      title: 'お供研究',
+      body: '新しい研究領域が解放されました。\nお供タブから詳細を確認できます。',
+      target: 'お供タブ',
+      targetId: 'research.companionTab',
+      tooltipPosition: 'bottom',
+    },
+  ],
+  companionTabViewed: [
+    {
+      title: 'お供タブ',
+      body: '所持お供の確認と卵の孵化を切り替えられます。\n強化にはDNAを消費します。',
+      target: 'お供研究',
+      targetId: 'research.companionPanel',
+      tooltipPosition: 'top',
+    },
+  ],
+  companionHomeViewed: [
+    {
+      title: 'お供恐竜',
+      body: 'セット中のお供恐竜はここに表示されます。\nタップするとお供を切り替えられます。',
+      target: 'お供',
+      targetId: 'home.companion',
+      tooltipPosition: 'bottom',
+    },
+  ],
 };
 
 export class ScreenManager {
@@ -328,6 +355,7 @@ export class ScreenManager {
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
       onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
       onApplyUpdate: () => this.applyPwaUpdate(),
+      onCompanionHomeVisible: () => this.showTutorial('companionHomeViewed'),
     }));
 
     this.homeScreen.setPwaUpdateInfo?.(this.getVisiblePwaUpdateInfo('home'));
@@ -349,6 +377,8 @@ export class ScreenManager {
       onResearch: () => this.withUiClick(() => this.showResearch()),
       onCodex: () => this.withUiClick(() => this.showCodex()),
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
+      onCompanionResearchUnlocked: () => this.showTutorial('companionEggResearch'),
+      onCompanionTabViewed: () => this.showTutorial('companionTabViewed'),
     }));
 
     return this.researchScreen;
@@ -915,7 +945,12 @@ export class ScreenManager {
         'home.codex': { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.title': { x: Math.round(width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
         'home.news': { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+        'home.companion': { x: 38, y: 188, width: 136, height: 44, radius: 12 },
         'home.options': { x: 286, y: bottomNavY, width: 78, height: 72, radius: 12 },
+      },
+      research: {
+        'research.companionTab': { x: Math.round(width / 2 - 34), y: 218, width: 68, height: 58, radius: 10 },
+        'research.companionPanel': { x: 18, y: 394, width: 354, height: 292, radius: 14 },
       },
       sortie: {
         'stage.cards': { x: 22, y: 116, width: width - 44, height: 145, radius: 14 },

@@ -2999,8 +2999,8 @@ export const ASSET_MANIFEST = {
   },
   companionUi: {
     homeFrame: { path: 'assets/ui/companions/home_companion_frame_p06d.png', uiAsset: true, note: 'MVP-P06d production illustrated compact home companion frame. Text is drawn separately.' },
-    selectPanel: { path: 'assets/ui/companions/companion_select_panel_p06d.png', uiAsset: true, note: 'MVP-P06d production illustrated companion selection panel frame.' },
-    selectCard: { path: 'assets/ui/companions/companion_select_card_p06d.png', uiAsset: true, note: 'MVP-P06d production illustrated owned companion selection card frame.' },
+    selectPanel: { path: 'assets/ui/companions/companion_select_panel_p06e.png', uiAsset: true, note: 'MVP-P06e readability-tuned companion selection panel frame.' },
+    selectCard: { path: 'assets/ui/companions/companion_select_card_p06e.png', uiAsset: true, note: 'MVP-P06e readability-tuned owned companion selection card frame.' },
     selectButton: { path: 'assets/ui/companions/companion_select_button_p06d.png', uiAsset: true, note: 'MVP-P06d production illustrated companion select button frame.' },
     ownedPanel: { path: 'assets/ui/companions/owned_companion_panel_p06d.png', uiAsset: true, note: 'MVP-P06d production illustrated research owned-companion panel frame.' },
     hatchDevice: { path: 'assets/ui/companions/egg_incubator_p06d.png', uiAsset: true, note: 'MVP-P06d production illustrated egg incubation device without text.' },

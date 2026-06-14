@@ -101,7 +101,18 @@ const CATEGORY_COLORS = {
 };
 
 export class ResearchScreen {
-  constructor({ width, height, saveManager, assetLoader = null, onHome, onResearch, onCodex, onOptions }) {
+  constructor({
+    width,
+    height,
+    saveManager,
+    assetLoader = null,
+    onHome,
+    onResearch,
+    onCodex,
+    onOptions,
+    onCompanionResearchUnlocked,
+    onCompanionTabViewed,
+  }) {
     this.width = width;
     this.height = height;
     this.saveManager = saveManager;
@@ -110,6 +121,8 @@ export class ResearchScreen {
     this.onResearch = onResearch;
     this.onCodex = onCodex;
     this.onOptions = onOptions;
+    this.onCompanionResearchUnlocked = onCompanionResearchUnlocked;
+    this.onCompanionTabViewed = onCompanionTabViewed;
     this.selectedCategory = RESEARCH_CATEGORY_IDS.bodyEnhancement;
     this.textures = new Map();
 
@@ -157,6 +170,8 @@ export class ResearchScreen {
     this.companionResearchMode = 'owned';
     this.companionOwnedPage = 0;
     this.companionFocusIndex = 0;
+    this.companionUnlockTutorialQueued = false;
+    this.companionTabTutorialQueued = false;
     this.gamepadFocusArea = 'card';
     this.gamepadFocusIndex = 0;
     this.gamepadScrollAccumulator = 0;
@@ -451,7 +466,7 @@ export class ResearchScreen {
     const modeOwned = makeToggle('所持お供', 84, 'owned');
     const modeHatch = makeToggle('卵孵化', 210, 'hatch');
     const unknownTitle = this.createText('未解析の研究領域', 18, '#fff0b4', 280);
-    const unknownBody = this.createText('プレイ中に卵を入手すると、お供恐竜の研究を開始できます。', 11, '#cbe0da', 300);
+    const unknownBody = this.createText('進化研究を進めることで詳細が判明します。', 11, '#cbe0da', 300);
     unknownTitle.position.set(52, 430);
     unknownBody.position.set(52, 466);
 
@@ -1339,7 +1354,7 @@ export class ResearchScreen {
         shortName: '???',
         iconName: 'companionUnknown',
         material: '未解析',
-        role: 'まだ解析されていない研究領域です。卵を入手すると開示されます。',
+        role: 'まだ解析されていない研究領域です。条件を満たすと解放されます。',
       };
     }
 
@@ -1369,6 +1384,8 @@ export class ResearchScreen {
     const ui = this.companionResearchView;
     const unlocked = this.isCompanionResearchUnlocked(data);
     const panelTexture = this.textures.get('companionOwnedPanel');
+
+    this.queueCompanionResearchTutorials(unlocked);
 
     ui.view.visible = true;
     ui.panel.texture = panelTexture ?? Texture.EMPTY;
@@ -1428,6 +1445,30 @@ export class ResearchScreen {
       this.renderCompanionHatchPanel(data);
     } else {
       this.renderCompanionOwnedPanel(data);
+    }
+  }
+
+  queueCompanionResearchTutorials(unlocked) {
+    if (!unlocked) {
+      return;
+    }
+
+    if (
+      !this.companionUnlockTutorialQueued
+      && !this.saveManager?.isTutorialComplete?.('companionEggResearch')
+    ) {
+      this.companionUnlockTutorialQueued = true;
+      queueMicrotask(() => this.onCompanionResearchUnlocked?.());
+      return;
+    }
+
+    if (
+      !this.companionTabTutorialQueued
+      && this.saveManager?.isTutorialComplete?.('companionEggResearch')
+      && !this.saveManager?.isTutorialComplete?.('companionTabViewed')
+    ) {
+      this.companionTabTutorialQueued = true;
+      queueMicrotask(() => this.onCompanionTabViewed?.());
     }
   }
 
@@ -1595,6 +1636,39 @@ export class ResearchScreen {
   }
 
   upgradeResearchCompanion(companionId) {
+    if (!companionId) {
+      return;
+    }
+
+    const data = this.saveManager.getData();
+    const companion = getCompanionById(companionId);
+    const level = data.companion?.levels?.[companionId] ?? 1;
+    const cost = getCompanionUpgradeCost(companionId, level);
+
+    if (!companion || !cost) {
+      this.noticeText.text = '強化できません';
+      return;
+    }
+
+    if ((data.ownedDna ?? 0) < cost) {
+      this.noticeText.text = 'DNAが不足しています';
+      return;
+    }
+
+    this.confirmDialog.show({
+      title: 'お供強化',
+      message: `${companion.displayName}を強化しますか？`,
+      detail: `強化項目: 移動範囲 / 効果 / 速度\nLv ${level} -> ${level + 1}\n消費DNA ${cost}`,
+      confirmLabel: '実行',
+      cancelLabel: 'キャンセル',
+      onConfirm: () => this.executeCompanionUpgrade(companionId),
+      onCancel: () => {
+        this.noticeText.text = '強化をキャンセルしました';
+      },
+    });
+  }
+
+  executeCompanionUpgrade(companionId) {
     if (!companionId) {
       return;
     }

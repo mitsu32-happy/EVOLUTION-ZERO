@@ -47,8 +47,8 @@ const HOME_ASSET_PATHS = {
   newsBadgeUpdate: 'assets/ui/home/news_badge_update_a07d.png',
   newsBadgeNormal: 'assets/ui/home/news_badge_update_a07d.png',
   companionHomeFrame: 'assets/ui/companions/home_companion_frame_p06d.png',
-  companionSelectPanel: 'assets/ui/companions/companion_select_panel_p06d.png',
-  companionSelectCard: 'assets/ui/companions/companion_select_card_p06d.png',
+  companionSelectPanel: 'assets/ui/companions/companion_select_panel_p06e.png',
+  companionSelectCard: 'assets/ui/companions/companion_select_card_p06e.png',
   companionSelectButton: 'assets/ui/companions/companion_select_button_p06d.png',
   titleFrames: {
     normal_clear_frame: 'assets/ui/titles/title_frame_normal.png',
@@ -203,6 +203,7 @@ export class HomeScreen {
     onOptions,
     onUiFeedback,
     onApplyUpdate,
+    onCompanionHomeVisible,
   }) {
     this.width = width;
     this.height = height;
@@ -216,6 +217,8 @@ export class HomeScreen {
     this.onOptions = onOptions;
     this.onUiFeedback = onUiFeedback;
     this.onApplyUpdate = onApplyUpdate;
+    this.onCompanionHomeVisible = onCompanionHomeVisible;
+    this.companionHomeTutorialShownForVisit = false;
     this.textures = new Map();
     this.activeHomeInfoTab = 'daily';
     this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
@@ -759,6 +762,14 @@ export class HomeScreen {
     this.companionName.anchor.set(0, 0.5);
     this.companionName.position.set(x + 58, y + 38);
     this.companionName.style.fill = '#fff0b4';
+
+    if (!this.companionHomeTutorialShownForVisit && !this.saveManager?.isTutorialComplete?.('companionHomeViewed')) {
+      if (!this.saveManager?.isTutorialComplete?.('home')) {
+        return;
+      }
+      this.companionHomeTutorialShownForVisit = true;
+      queueMicrotask(() => this.onCompanionHomeVisible?.());
+    }
   }
 
   updateEquippedTitle(data) {

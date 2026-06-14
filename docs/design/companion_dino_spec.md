@@ -381,3 +381,15 @@ P06c does not change companion data, save ownership, or gameplay balance.
 - Smartphone text is shortened around hatch status, costs, and upgrade labels.
 
 See `docs/design/companion_ui_polish_p06c.md`.
+## MVP-P06e Companion UI Behavior
+
+- Unknown companion research state avoids direct egg spoilers and describes the
+  area as not yet analyzed.
+- Companion research upgrades require confirmation before DNA is consumed.
+- Confirmation uses the existing dialog path and then calls the existing
+  companion upgrade save method.
+- New companion tutorial flags are normalized for old saves:
+  - `companionEggResearch`
+  - `companionTabViewed`
+  - `companionHomeViewed`
+- The warning guide tutorial is intentionally suppressed and marked complete.
