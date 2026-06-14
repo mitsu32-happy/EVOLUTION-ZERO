@@ -164,6 +164,8 @@ Build note:
 
 ## Main merge judgment
 
+P07e judgment before P07f:
+
 `main integration: hold`
 
 Reason:
@@ -178,3 +180,17 @@ Recommended next step:
 - Run one final manual QA on a clean browser/device save without debug parameters until egg acquisition, hatch, set, upgrade, unset, and restart restore are confirmed.
 - Run one physical controller pass for companion selection, research companion tab, upgrade item selection, confirm/cancel, and modal close behavior.
 - If those pass without new issues, the branch can be reconsidered for `main integration: pass`.
+
+## P07f update
+
+P07f resolved the remaining blockers under the revised scope.
+
+- Physical controller QA is no longer a blocker.
+- Escape now closes the companion upgrade item modal and companion upgrade confirmation modal through the shared cancel path.
+- A DEV-only `qaCleanSave=1` route was added for deterministic clean-save QA without exposing a normal user reset path.
+- Clean-save companion flow was confirmed through egg possession, tutorial display, companion tab unlock, hatch, obtain, home tutorial, upgrade, set解除, reload, and restored owned/Lv2/unset state.
+- Home companion tutorial target bounds were updated to match the current top-left companion panel.
+
+Updated judgment after P07f:
+
+`main integration: pass`

@@ -118,3 +118,11 @@ P06b adds `companion.eggDiscovered` for research tab reveal control.
   for old UI/debug compatibility.
 - `selectedId: null` remains valid even when owned companions exist, enabling
   the new set解除 flow.
+
+## MVP-P07f Clean Save QA Route
+
+- `qaCleanSave=1` was added as a DEV-only QA route.
+- On boot, it resets the current app save through `SaveManager.debugResetAll()`.
+- This route is not exposed in normal UI and does not run in non-DEV builds.
+- P07f used it to verify clean-save companion flow without manually editing browser storage.
+- Existing save normalization and migration behavior is unchanged.

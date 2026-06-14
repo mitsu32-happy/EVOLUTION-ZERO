@@ -265,6 +265,11 @@ export class SaveManager {
     return this.save();
   }
 
+  debugResetAll() {
+    this.data = this.normalize({});
+    return this.save();
+  }
+
   updateAudioSettings(settings) {
     this.data.audioSettings = {
       ...DEFAULT_SAVE.audioSettings,

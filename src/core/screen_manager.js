@@ -232,6 +232,7 @@ export class ScreenManager {
     this.titleCuePlayedForVisit = false;
     this.audioManager = new AudioManager();
     this.saveManager = new SaveManager();
+    this.applyQaCleanSave();
     this.applyDebugTutorialReset();
     this.applyDebugResearchPt();
     this.applyDebugDna();
@@ -308,6 +309,7 @@ export class ScreenManager {
       this.gamepadDebugText,
     );
     this.setupGamepadOverlay();
+    this.installKeyboardCancelShortcut();
     this.installTitleShortcuts();
     this.installTitleCueUnlock();
     this.installPwaUpdateListener();
@@ -322,6 +324,31 @@ export class ScreenManager {
         this.showPlay();
       }, 0);
     }
+  }
+
+  applyQaCleanSave() {
+    if (!import.meta.env.DEV || getDebugParams().get('qaCleanSave') !== '1') {
+      return;
+    }
+
+    this.saveManager.debugResetAll?.();
+  }
+
+  installKeyboardCancelShortcut() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (this.handleKeyboardCancel()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
   }
 
   registerScreen(name, screen) {
@@ -575,6 +602,25 @@ export class ScreenManager {
     if (actions.cancelPressed) {
       this.handleDefaultGamepadCancel();
     }
+  }
+
+  handleKeyboardCancel() {
+    if (this.tutorialUi.view?.visible) {
+      return this.tutorialUi.handleGamepadAction?.({ cancelPressed: true }) ?? false;
+    }
+
+    if (this.currentScreen === 'play' && this.playScene) {
+      this.playScene.handleGamepadActions?.({ cancelPressed: true }, this.gamepadManager);
+      return true;
+    }
+
+    const screen = this.screens[this.currentScreen];
+    if (screen?.handleGamepadAction?.({ cancelPressed: true, pausePressed: true }, this.gamepadManager)) {
+      return true;
+    }
+
+    this.handleDefaultGamepadCancel();
+    return true;
   }
 
   handleGamepadVirtualMouse(actions, gamepadManager) {
@@ -945,7 +991,7 @@ export class ScreenManager {
         'home.codex': { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.title': { x: Math.round(width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
         'home.news': { x: 226, y: 114, width: 130, height: 44, radius: 12 },
-        'home.companion': { x: 38, y: 188, width: 136, height: 44, radius: 12 },
+        'home.companion': { x: 18, y: 92, width: 168, height: 58, radius: 12 },
         'home.options': { x: 286, y: bottomNavY, width: 78, height: 72, radius: 12 },
       },
       research: {
