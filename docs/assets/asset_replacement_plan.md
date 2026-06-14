@@ -3654,3 +3654,408 @@ No new image/audio asset generation is required for this MVP.
 - No new visual assets were generated.
 - S01-S03 performance stabilization assets, pools, and debug overlays are unchanged.
 - Ability upgrade card values and `適応強化理論` display text were updated through code-side Text rendering.
+# MVP-P01 お供恐竜アセット
+
+- `public/assets/companions/companion_egg_p01.png`: 卵ピックアップ/孵化UI用アイコン。
+- `public/assets/companions/raptorling_sprite_p01.png`: P01代表お供恐竜スプライト。
+- `public/assets/companions/raptorling_icon_p01.png`: P01代表お供恐竜アイコン。
+- `public/assets/companions/hatch_effect_p01.png`: 孵化演出用の汎用発光。
+- P01では10種類データを先行定義し、個別スプライト/アイコン/スキル演出はP02以降で差し替える。
+- 簡易Graphicsのみで完了扱いにせず、画面表示は上記PNGアセットを優先する。
+## MVP-P02 Companion Dino Assets
+
+- P02 adds individual transparent PNG assets for all 10 companion dinos.
+- Each companion has:
+  - `public/assets/companions/{id}_sprite_p02.png`
+  - `public/assets/companions/{id}_icon_p02.png`
+  - `public/assets/companions/{id}_effect_p02.png`
+- Added IDs: `raptorling`, `spino_pup`, `medic_saur`, `ptera_chick`, `tricera_calf`, `para_juvenile`, `stego_calf`, `rex_hatchling`, `compy_pack`, `exp_chaser`.
+- The P01 representative raptorling paths now resolve to the P02 raptorling assets in `asset_manifest.js`.
+- Contact sheet: `docs/assets/p02_companion_asset_contact.png`.
+- These are project PNG assets, not runtime-only placeholder Graphics.
+
+## MVP-P04 Companion Dino Production Assets
+
+- P04 adds production transparent PNG assets for all 10 companion dinos.
+- Each companion now has:
+  - `public/assets/companions/{id}_icon_p04.png`
+  - `public/assets/companions/{id}_sprite_p04.png`
+  - `public/assets/companions/{id}_effect_p04.png`
+- `src/data/asset_manifest.js` now points companion icon/sprite/effect keys to the P04 assets.
+- Existing P02 assets are preserved for comparison and rollback.
+- Contact sheet: `docs/assets/p04_companion_asset_contact.png`.
+- Generation report: `docs/assets/p04_companion_asset_report.json`.
+- P04 connects companion `effectAssetKey` in PlayScene with capped/pool-managed short-lived Sprite effects.
+
+## MVP-P05 お供恐竜行動アセット利用
+
+P05ではP04で追加した10種類の `effect` PNGを、各お供の行動時に接続しました。
+
+- 攻撃型/範囲型/遠距離型/雑魚処理型/ボス特化型/シナジー補助型: 命中位置へeffectを表示。
+- 回復型: プレイヤー位置に回復effectを表示。
+- 防御型: プレイヤー位置にバリアeffectを表示。
+- 回収型/EXP補助型: お供位置に吸引/補助effectを表示。
+
+今回は新規アセット生成は行っていません。P04アセットを本挙動へ接続する作業に限定しています。
+
+## MVP-P06 卵・孵化UIアセット利用
+
+P06では新規大量生成は行わず、既存/P04アセットを活用しました。
+
+- `public/assets/companions/companion_egg_p01.png`: 研究画面の孵化カード、ホーム卵状態、pickup表示に継続利用。
+- `public/assets/companions/hatch_effect_p01.png`: 孵化完了時の短時間演出に利用。
+- `public/assets/companions/*_icon_p04.png`: ホームのお供モーダル10種類一覧と取得結果表示に利用。
+
+P07以降で検討:
+
+- 専用の孵化完了パネル。
+- レアリティ別の孵化演出差分。
+- お供強化専用ボタン/フレーム。
+
+## MVP-P07 merge readiness note
+
+P07で追加生成したアセットはありません。P04の本番icon/sprite/effect、P01の卵icon/孵化effectを継続利用しています。
+
+main統合前の確認対象:
+- P04 contact sheetとmanifest keyの再確認。
+- 10種類のicon/sprite/effectが404/fallbackにならないこと。
+- スマホ幅でiconが小さすぎないこと。
+
+## MVP-P07b asset / animation note
+
+P07bで新規生成したアセットはありません。
+P04のicon/sprite/effectを継続利用しています。
+
+ただし、本リリース品質としては静止sprite中心の見え方が不足です。
+P04bでidle/follow/attack/heal/supportの軽量アニメーションまたは同等の演出強化が必要です。
+## MVP-P04b Companion Animation Pass
+
+- No new raster assets were generated.
+- P04b uses the existing production companion sprite/effect assets:
+  - `public/assets/companions/{id}_sprite_p04.png`
+  - `public/assets/companions/{id}_effect_p04.png`
+- Runtime animation is implemented in code through bob, tilt, squash/stretch, lunge, trail, aura, sonar, guard, shockwave, and support pulse overlays.
+- Future P04b/P08 polish may still generate true sprite sheets if procedural animation is not enough for final release quality.
+
+## MVP-P04c Companion Animation Assets
+
+- P04c adds generated transparent PNG sheets derived from the P04 production companion art.
+- New sprite sheets:
+  - `public/assets/companions/{id}_sprite_sheet_p04c.png`
+  - 4 columns x 3 rows, 320 x 320 per frame
+  - rows: `idle`, `move`, `action`
+- New effect sheets:
+  - `public/assets/companions/{id}_effect_sheet_p04c.png`
+  - 4 columns x 1 row, 256 x 256 per frame
+  - row: `active`
+- Contact sheet: `docs/assets/p04c_companion_animation_contact.png`
+- Generation report: `docs/assets/p04c_companion_animation_report.json`
+- Existing P04 still PNGs are preserved for comparison/rollback.
+
+## MVP-P04d Companion Animation Asset Regeneration
+
+P04d supersedes P04c for active runtime use.
+
+- New sprite sheets:
+  - `public/assets/companions/{id}_sprite_sheet_p04d.png`
+  - 4 columns x 3 rows, 384 x 384 per frame
+  - rows: `idle`, `move`, `action`
+- New effect sheets:
+  - `public/assets/companions/{id}_effect_sheet_p04d.png`
+  - 4 columns x 1 row, 320 x 320 per frame
+  - row: `active`
+- Contact sheet: `docs/assets/p04d_companion_animation_contact.png`
+- Generation report: `docs/assets/p04d_companion_animation_report.json`
+- P04d fixes P04c cell edge risk, improves move/action frame readability, and increases in-play companion visibility.
+- P04c assets remain available only for comparison/rollback.
+
+## MVP-P04e Companion Asset Cleanup
+
+P04e supersedes P04d for active runtime use.
+
+- New sprite sheets:
+  - `public/assets/companions/{id}_sprite_sheet_p04e.png`
+  - 4 columns x 3 rows, 384 x 384 per frame
+- New effect sheets:
+  - `public/assets/companions/{id}_effect_sheet_p04e.png`
+  - 4 columns x 1 row, 320 x 320 per frame
+- Contact sheet: `docs/assets/p04e_companion_animation_contact.png`
+- Generation report: `docs/assets/p04e_companion_animation_report.json`
+- P04e starts from cleaned P04 single PNGs instead of P04c/P04d sheets.
+- Small isolated source fragments are removed before sheet generation.
+- P04d remains on disk for investigation/rollback, but manifest targets now point to P04e.
+
+## MVP-P04g Companion Move Row Regeneration
+
+P04g adds new active sprite sheets. They inherit P04e idle/action rows and regenerate only the `move` row from clean P04 single PNGs without additive foot markers, afterimages, or ghost-body layering.
+
+- `public/assets/companions/raptorling_sprite_sheet_p04g.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04g.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04g.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04g.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04g.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04g.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04g.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04g.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04g.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04g.png`
+
+The sheet layout stays `384 x 384`, `4 columns x 3 rows`. `src/data/asset_manifest.js` now points companion sprite keys to the P04g sheets.
+
+Generation helper:
+
+- `tools/generate_companion_walk_p04g.py`
+
+QA contact:
+
+- `docs/assets/p04g_companion_walk_contact.png`
+
+## MVP-P04h Companion True Walk Cycle
+
+P04h supersedes P04g for active runtime use. P04g remains available as fallback/reference.
+
+New active sprite sheets:
+
+- `public/assets/companions/raptorling_sprite_sheet_p04h.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04h.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04h.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04h.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04h.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04h.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04h.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04h.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04h.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04h.png`
+
+The sheet layout remains `384 x 384`, `4 columns x 3 rows`.
+
+Generation helper:
+
+- `tools/generate_companion_true_walk_p04h.py`
+
+QA contact:
+
+- `docs/assets/p04h_companion_true_walk_contact.png`
+
+## MVP-P04i Companion Generated-Pose Sprite Sheets
+
+P04i supersedes P04h for active runtime use. P04h remains available as
+fallback/reference.
+
+New active sprite sheets:
+
+- `public/assets/companions/raptorling_sprite_sheet_p04i.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04i.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04i.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04i.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04i.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04i.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04i.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04i.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04i.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04i.png`
+
+The sheet layout remains `384 x 384`, `4 columns x 3 rows`.
+
+Generation and processing rules:
+
+- source prompts use a fixed right-facing side-view direction
+- source prompts forbid unrelated dinosaurs or extra creatures
+- `medic_saur` healing frames are self-contained and do not include another dinosaur
+- source sheets use a flat `#ff00ff` chroma-key background
+- local processing removes chroma key and normalizes all frames into fixed cells
+- P04f runtime fixed-size rendering remains unchanged
+
+Generation helper:
+
+- `tools/process_companion_sprite_p04i.py`
+
+QA artifacts:
+
+- `docs/assets/p04i_companion_sprite_contact.png`
+- `docs/assets/p04i_companion_sprite_report.json`
+
+## MVP-P04j Companion Sprite Polish
+
+P04j supersedes P04i for active runtime use. P04i remains available as
+fallback/reference.
+
+New active sprite sheets:
+
+- `public/assets/companions/raptorling_sprite_sheet_p04j.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04j.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04j.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04j.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04j.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04j.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04j.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04j.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04j.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04j.png`
+
+The sheet layout remains `384 x 384`, `4 columns x 3 rows`.
+
+Generation and processing changes:
+
+- stricter right-facing prompts
+- no unrelated dinosaurs, animals, or support subjects
+- wider source-cell padding
+- `30px` safe inset before per-frame normalization
+- reduced normalized subject size for wider runtime margins
+- final chroma-key cleanup
+
+Generation helper:
+
+- `tools/process_companion_sprite_p04j.py`
+
+QA artifacts:
+
+- `docs/assets/p04j_companion_sprite_contact.png`
+- `docs/assets/p04j_companion_sprite_report.json`
+
+P04j also adds a reusable generation guide for future player and enemy assets:
+
+- `docs/design/sprite_sheet_asset_generation_guidelines.md`
+
+## MVP-P05d Companion Skill Effect Connection
+
+P05d does not add a new bitmap batch. The existing cleaned P04e effect sheets
+are now the connected production skill-effect assets for companion actions.
+
+Active effect sheets:
+
+- `public/assets/companions/raptorling_effect_sheet_p04e.png`
+- `public/assets/companions/spino_pup_effect_sheet_p04e.png`
+- `public/assets/companions/medic_saur_effect_sheet_p04e.png`
+- `public/assets/companions/ptera_chick_effect_sheet_p04e.png`
+- `public/assets/companions/tricera_calf_effect_sheet_p04e.png`
+- `public/assets/companions/para_juvenile_effect_sheet_p04e.png`
+- `public/assets/companions/stego_calf_effect_sheet_p04e.png`
+- `public/assets/companions/rex_hatchling_effect_sheet_p04e.png`
+- `public/assets/companions/compy_pack_effect_sheet_p04e.png`
+- `public/assets/companions/exp_chaser_effect_sheet_p04e.png`
+
+Runtime changes:
+
+- `src/data/asset_manifest.js` now labels the existing companion effect keys as
+  P05d dedicated skill effects.
+- `src/scenes/play_scene.js` applies per-companion effect profiles to make
+  those sheets carry the action feedback.
+- Normal-play simple `Graphics` action rings/lines are suppressed and remain
+  available only through `debugCompanionGuide`.
+
+Future replacement criteria:
+
+- create `{id}_effect_sheet_p05d.png` only if real-device QA finds a P04e sheet
+  too generic or too hard to read on phone screens
+- keep the same transparent PNG, `4 x 1`, `320 x 320` frame contract unless a
+  later runtime change explicitly revises it
+
+## MVP-P06b Companion UI Assets
+
+P06b adds production-facing UI frame assets for home, selection, research hatch,
+and research upgrade surfaces.
+
+New active UI assets:
+
+- `public/assets/ui/companions/home_companion_frame_p06b.png`
+- `public/assets/ui/companions/companion_select_panel_p06b.png`
+- `public/assets/ui/companions/companion_select_card_p06b.png`
+- `public/assets/ui/companions/companion_select_button_p06b.png`
+- `public/assets/ui/companions/companion_owned_panel_p06b.png`
+- `public/assets/ui/companions/companion_upgrade_card_p06b.png`
+- `public/assets/ui/companions/companion_upgrade_button_p06b.png`
+- `public/assets/ui/companions/companion_hatch_device_p06b.png`
+- `public/assets/ui/companions/companion_hatch_button_p06b.png`
+- `public/assets/ui/research/icons/icon_companion_research_p06b.png`
+- `public/assets/ui/research/icons/icon_companion_unknown_p06b.png`
+
+All labels remain runtime text so localization and width adjustments can be made
+without regenerating the bitmaps.
+
+## MVP-P06c Companion UI Asset Polish
+
+P06c supersedes the P06b UI frames for active runtime use. The P06b files remain
+available as references, but `asset_manifest.js` now points to P06c assets.
+
+New active UI assets:
+
+- `public/assets/ui/companions/home_companion_frame_p06c.png`
+- `public/assets/ui/companions/companion_select_panel_p06c.png`
+- `public/assets/ui/companions/companion_select_card_p06c.png`
+- `public/assets/ui/companions/companion_select_button_p06c.png`
+- `public/assets/ui/companions/companion_owned_panel_p06c.png`
+- `public/assets/ui/companions/companion_upgrade_card_p06c.png`
+- `public/assets/ui/companions/companion_upgrade_button_p06c.png`
+- `public/assets/ui/companions/companion_hatch_device_p06c.png`
+- `public/assets/ui/companions/companion_hatch_button_p06c.png`
+- `public/assets/ui/research/icons/icon_companion_research_p06c.png`
+- `public/assets/ui/research/icons/icon_companion_unknown_p06c.png`
+
+Generation rules:
+
+- no baked text
+- dark research-terminal frame language
+- cyan/teal base with gold action accents
+- transparent PNG with text-safe interiors
+- phone-width readability preserved by runtime labels
+
+## MVP-P06d Companion Production UI Illustration Assets
+
+P06d supersedes the P06c companion management UI assets for active runtime use.
+The P06c files remain as references, but `asset_manifest.js`, `home_screen.js`,
+and `research_screen.js` now point to P06d assets.
+
+New active UI assets:
+
+- `public/assets/ui/companions/home_companion_frame_p06d.png`
+- `public/assets/ui/companions/companion_select_panel_p06d.png`
+- `public/assets/ui/companions/companion_select_card_p06d.png`
+- `public/assets/ui/companions/companion_select_button_p06d.png`
+- `public/assets/ui/research/icons/icon_companion_tab_p06d.png`
+- `public/assets/ui/research/icons/icon_companion_unknown_p06d.png`
+- `public/assets/ui/companions/egg_incubator_p06d.png`
+- `public/assets/ui/companions/hatch_button_p06d.png`
+- `public/assets/ui/companions/owned_companion_panel_p06d.png`
+- `public/assets/ui/companions/upgrade_card_p06d.png`
+- `public/assets/ui/companions/upgrade_button_p06d.png`
+- `docs/assets/p06d_companion_ui_asset_contact.png`
+
+Generation rules:
+
+- no baked text
+- dark sci-fi biological research facility style
+- cyan / teal emission with restrained gold accents
+- low-noise text-safe interiors
+- transparent PNG output derived from a chroma-key generation sheet
+## MVP-P06e Companion UI Asset Replacement
+
+- Replaced P06d companion selection panel/card runtime references with P06e
+  readability variants:
+  - `public/assets/ui/companions/companion_select_panel_p06e.png`
+  - `public/assets/ui/companions/companion_select_card_p06e.png`
+- P06e variants preserve the production dark sci-fi style while reducing
+  texture noise behind runtime text.
+- Edge contamination from generated green artifacts was removed before
+  connection.
+- Other P06d companion UI assets remain active:
+  - home frame
+  - selection button
+  - research tab icons
+  - egg incubator
+  - hatch button
+  - owned panel
+  - upgrade card/button
+
+## MVP-P06f2 Companion Upgrade Selection Asset Reuse
+
+P06f2 does not add new bitmap files. The upgrade line selection modal now reuses
+existing production P06d UI assets so the surface no longer reads as a simple
+Graphics placeholder:
+
+- panel: `public/assets/ui/companions/owned_companion_panel_p06d.png`
+- option card: `public/assets/ui/companions/upgrade_card_p06d.png`
+- option button: `public/assets/ui/companions/upgrade_button_p06d.png`
+
+The home selection state label and research upgrade button label are runtime
+text overlays; no baked text is added to the images.

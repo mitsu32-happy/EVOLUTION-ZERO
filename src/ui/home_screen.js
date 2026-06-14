@@ -1,4 +1,4 @@
-﻿import { Assets, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
+﻿import { Assets, Container, Graphics, Rectangle, Sprite, Text, Texture } from 'pixi.js';
 import { ASSET_KEYS } from '../data/asset_manifest.js';
 import {
   getDiscoveredEvolutionCount as getSavedEvolutionCount,
@@ -10,6 +10,13 @@ import { getDinoConfig } from '../data/run_config.js';
 import { getTitleById, getTitleFrameById } from '../data/reward_titles.js';
 import { DAILY_MISSION_COUNT, formatDailyReward, getDailyMissionTemplate } from '../data/daily_missions.js';
 import { UPDATE_NEWS } from '../data/update_news.js';
+import {
+  COMPANION_DINOS,
+  COMPANION_TYPES,
+  getCompanionById,
+  getCompanionEffectSummary,
+  getCompanionUpgradeLevelsFromState,
+} from '../data/companion_dinos.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
 import { playPressFeedback } from './ui_feedback.js';
@@ -40,6 +47,10 @@ const HOME_ASSET_PATHS = {
   newsButtonBack: 'assets/ui/home/news_button_back_a07d.png',
   newsBadgeUpdate: 'assets/ui/home/news_badge_update_a07d.png',
   newsBadgeNormal: 'assets/ui/home/news_badge_update_a07d.png',
+  companionHomeFrame: 'assets/ui/companions/home_companion_frame_p06d.png',
+  companionSelectPanel: 'assets/ui/companions/companion_select_panel_p06e.png',
+  companionSelectCard: 'assets/ui/companions/companion_select_card_p06e.png',
+  companionSelectButton: 'assets/ui/companions/companion_select_button_p06d.png',
   titleFrames: {
     normal_clear_frame: 'assets/ui/titles/title_frame_normal.png',
     hard_clear_frame: 'assets/ui/titles/title_frame_hard.png',
@@ -132,6 +143,20 @@ const UNLOCK_PANEL = INFO_PANEL;
 const RECORD_PANEL = INFO_PANEL;
 const DAILY_PANEL = INFO_PANEL;
 const SELECTOR = { leftX: 86, pillX: 126, rightX: 270, y: 385 };
+const COMPANION_HOME_PANEL = { x: 18, y: 92, width: 168, height: 58 };
+
+const COMPANION_UI_DESCRIPTIONS = {
+  raptorling: '近くの敵を素早く自動攻撃',
+  spino_pup: '水弾で複数の敵を支援攻撃',
+  medic_saur: 'HPが減ると自動回復',
+  ptera_chick: '遠距離から小弾で牽制',
+  tricera_calf: '被ダメージを短く軽減',
+  para_juvenile: 'EXPやアイテム回収を補助',
+  stego_calf: '周囲の敵へ小範囲攻撃',
+  rex_hatchling: 'ボスへの攻撃を補助',
+  compy_pack: '弱った敵を素早く処理',
+  exp_chaser: 'EXP回収と成長を補助',
+};
 
 const UNLOCK_CONTENT = {
   titleX: INFO_PANEL.x + 26,
@@ -179,6 +204,7 @@ export class HomeScreen {
     onOptions,
     onUiFeedback,
     onApplyUpdate,
+    onCompanionHomeVisible,
   }) {
     this.width = width;
     this.height = height;
@@ -192,11 +218,14 @@ export class HomeScreen {
     this.onOptions = onOptions;
     this.onUiFeedback = onUiFeedback;
     this.onApplyUpdate = onApplyUpdate;
+    this.onCompanionHomeVisible = onCompanionHomeVisible;
+    this.companionHomeTutorialShownForVisit = false;
     this.textures = new Map();
     this.activeHomeInfoTab = 'daily';
-    this.gamepadFocusItems = ['deploy', 'title', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
+    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
     this.gamepadFocusIndex = 0;
     this.newsGamepadIndex = 0;
+    this.companionModalPage = 0;
 
     this.view = new Container();
     this.background = new Graphics();
@@ -220,6 +249,12 @@ export class HomeScreen {
     this.newsEntryFallback = new Graphics();
     this.newsEntryText = this.createText('お知らせ', 14, '#f2fffb', 122);
     this.newsModal = this.createNewsModal();
+    this.companionPanelFrame = new Sprite(Texture.EMPTY);
+    this.companionPanel = new Graphics();
+    this.companionIcon = new Sprite(Texture.EMPTY);
+    this.companionTitle = this.createText('お供', 10, '#7cf7d4', 70);
+    this.companionName = this.createText('お供なし', 11, '#fff0b4', 98);
+    this.companionModal = this.createCompanionModal();
     this.switchLeft = new Sprite(Texture.EMPTY);
     this.switchRight = new Sprite(Texture.EMPTY);
     this.switchFallback = new Graphics();
@@ -315,6 +350,11 @@ export class HomeScreen {
       this.newsEntryFallback,
       this.newsEntryFrame,
       this.newsEntryText,
+      this.companionPanelFrame,
+      this.companionPanel,
+      this.companionIcon,
+      this.companionTitle,
+      this.companionName,
       ...this.resourceTexts.flatMap((entry) => [entry.label, entry.value]),
       this.dinoName,
       this.dinoLine,
@@ -333,6 +373,7 @@ export class HomeScreen {
       this.bottomNav.view,
       this.titleSelectUi.view,
       this.newsModal.view,
+      this.companionModal.view,
     );
 
     this.drawStatic();
@@ -366,6 +407,9 @@ export class HomeScreen {
     this.equippedTitleText.eventMode = 'static';
     this.equippedTitleText.cursor = 'pointer';
     this.equippedTitleText.on('pointertap', () => this.openTitleSelect());
+    this.companionPanel.eventMode = 'static';
+    this.companionPanel.cursor = 'pointer';
+    this.companionPanel.on('pointertap', () => this.openCompanionModal());
     this.loadAssets();
     this.setSaveData(this.saveData, this.gameState);
   }
@@ -387,6 +431,10 @@ export class HomeScreen {
 
     if (this.newsModal?.view?.visible) {
       return this.handleNewsGamepadAction(actions);
+    }
+
+    if (this.companionModal?.view?.visible) {
+      return this.handleCompanionGamepadAction(actions);
     }
 
     if (actions.cancelPressed) {
@@ -434,7 +482,7 @@ export class HomeScreen {
   moveGamepadFocus(actions) {
     const current = this.getFocusedHomeItem();
     const rows = {
-      top: ['title', 'news'],
+      top: ['title', 'companion', 'news'],
       info: ['daily', 'record', 'unlock'],
       nav: ['home', 'research', 'codex', 'options'],
     };
@@ -449,7 +497,7 @@ export class HomeScreen {
       }
 
       if (current === 'deploy') {
-        this.focusHomeItem(actions.rightPressed ? 'news' : 'title');
+        this.focusHomeItem(actions.rightPressed ? 'companion' : 'title');
       }
       return;
     }
@@ -457,6 +505,7 @@ export class HomeScreen {
     if (actions.downPressed) {
       const downMap = {
         title: 'deploy',
+        companion: 'deploy',
         news: 'deploy',
         deploy: 'daily',
         daily: 'home',
@@ -474,6 +523,7 @@ export class HomeScreen {
     if (actions.upPressed) {
       const upMap = {
         title: 'title',
+        companion: 'companion',
         news: 'news',
         deploy: 'title',
         daily: 'deploy',
@@ -494,6 +544,8 @@ export class HomeScreen {
       this.handleDeployTap();
     } else if (id === 'title') {
       this.openTitleSelect();
+    } else if (id === 'companion') {
+      this.openCompanionModal();
     } else if (id === 'news') {
       this.openNewsModal();
     } else if (['daily', 'record', 'unlock'].includes(id)) {
@@ -541,7 +593,7 @@ export class HomeScreen {
   }
 
   getGamepadFocusBounds() {
-    if (this.titleSelectUi?.view?.visible || this.newsModal?.view?.visible) {
+    if (this.titleSelectUi?.view?.visible || this.newsModal?.view?.visible || this.companionModal?.view?.visible) {
       return null;
     }
 
@@ -553,6 +605,7 @@ export class HomeScreen {
       record: { x: 146, y: 520, width: 98, height: 44, radius: 12 },
       unlock: { x: 254, y: 520, width: 98, height: 44, radius: 12 },
       title: { x: Math.round(this.width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
+      companion: { ...COMPANION_HOME_PANEL, radius: 12 },
       news: { x: 226, y: 114, width: 130, height: 44, radius: 12 },
       home: { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
       research: { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
@@ -656,7 +709,68 @@ export class HomeScreen {
     this.applyTextures(homeDinoId, homeTarget.evolutionId);
     this.updateHomeInfoTabVisibility();
     this.updateEquippedTitle(data);
+    this.updateCompanionPanel(data);
     this.drawDynamic(dino);
+  }
+
+  updateCompanionPanel(data) {
+    const companionState = data.companion ?? {};
+    const ownedIds = Array.isArray(companionState.ownedIds) ? companionState.ownedIds : [];
+    const hasOwnedCompanion = ownedIds.length > 0;
+
+    this.companionPanelFrame.visible = hasOwnedCompanion;
+    this.companionPanel.visible = hasOwnedCompanion;
+    this.companionIcon.visible = hasOwnedCompanion;
+    this.companionTitle.visible = hasOwnedCompanion;
+    this.companionName.visible = hasOwnedCompanion;
+    this.companionPanel.eventMode = hasOwnedCompanion ? 'static' : 'none';
+    this.companionPanel.cursor = hasOwnedCompanion ? 'pointer' : 'default';
+
+    if (!hasOwnedCompanion) {
+      this.companionPanel.clear();
+      return;
+    }
+
+    const companion = getCompanionById(companionState.selectedId);
+    const iconTexture = companion
+      ? (this.textures.get(`companionIcon:${companion.id}`) ?? this.textures.get('companionIcon'))
+      : this.textures.get('companionIcon');
+    const { x, y, width, height } = COMPANION_HOME_PANEL;
+    const accent = companion ? (COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4) : 0x7cf7d4;
+    const frameTexture = this.textures.get('companionHomeFrame');
+
+    this.companionPanelFrame.texture = frameTexture ?? Texture.EMPTY;
+    this.companionPanelFrame.position.set(x, y);
+    this.companionPanelFrame.width = width;
+    this.companionPanelFrame.height = height;
+    this.companionPanelFrame.alpha = frameTexture ? 0.96 : 0;
+
+    this.companionPanel
+      .clear()
+      .roundRect(x, y, width, height, 12)
+      .fill({ color: 0x020708, alpha: frameTexture ? 0.12 : 0.66 })
+      .stroke({ color: accent, width: 1.2, alpha: frameTexture ? 0.2 : 0.78 });
+    this.companionIcon.texture = iconTexture ?? Texture.EMPTY;
+    this.companionIcon.visible = Boolean(this.companionIcon.texture && this.companionIcon.texture !== Texture.EMPTY);
+    this.companionIcon.anchor.set(0.5);
+    this.companionIcon.position.set(x + 31, y + 30);
+    this.companionIcon.width = 38;
+    this.companionIcon.height = 38;
+    this.companionTitle.text = 'お供';
+    this.companionTitle.anchor.set(0, 0.5);
+    this.companionTitle.position.set(x + 58, y + 20);
+    this.companionName.text = companion ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}` : '未セット';
+    this.companionName.anchor.set(0, 0.5);
+    this.companionName.position.set(x + 58, y + 38);
+    this.companionName.style.fill = '#fff0b4';
+
+    if (!this.companionHomeTutorialShownForVisit && !this.saveManager?.isTutorialComplete?.('companionHomeViewed')) {
+      if (!this.saveManager?.isTutorialComplete?.('home')) {
+        return;
+      }
+      this.companionHomeTutorialShownForVisit = true;
+      queueMicrotask(() => this.onCompanionHomeVisible?.());
+    }
   }
 
   updateEquippedTitle(data) {
@@ -754,6 +868,16 @@ export class HomeScreen {
   }
 
   getTutorialBounds(targetId) {
+    if (targetId === 'home.companion') {
+      return {
+        x: 38,
+        y: 188,
+        width: 136,
+        height: 44,
+        radius: 12,
+      };
+    }
+
     if (targetId !== 'home.title') {
       return null;
     }
@@ -1054,6 +1178,17 @@ export class HomeScreen {
       ['newsButtonBack', ASSET_KEYS.homeUi?.newsButtonBack, HOME_ASSET_PATHS.newsButtonBack],
       ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
       ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
+      ['companionHomeFrame', ASSET_KEYS.companionUi?.homeFrame, HOME_ASSET_PATHS.companionHomeFrame],
+      ['companionSelectPanel', ASSET_KEYS.companionUi?.selectPanel, HOME_ASSET_PATHS.companionSelectPanel],
+      ['companionSelectCard', ASSET_KEYS.companionUi?.selectCard, HOME_ASSET_PATHS.companionSelectCard],
+      ['companionSelectButton', ASSET_KEYS.companionUi?.selectButton, HOME_ASSET_PATHS.companionSelectButton],
+      ['companionIcon', ASSET_KEYS.companions?.raptorlingIcon, null],
+      ...COMPANION_DINOS.map((companion) => [
+        `companionIcon:${companion.id}`,
+        companion.iconAssetKey,
+        null,
+      ]),
+      ['companionEgg', ASSET_KEYS.companions?.eggIcon, null],
       ...Object.entries(HOME_ASSET_PATHS.titleFrames).map(([id, path]) => [
         `titleFrame:${id}`,
         ASSET_KEYS.titleFrames?.[id],
@@ -1555,6 +1690,321 @@ export class HomeScreen {
       detailBody,
       mode: 'list',
     };
+  }
+
+  createCompanionModal() {
+    const modal = {
+      view: new Container(),
+      overlay: new Graphics(),
+      panelFrame: new Sprite(Texture.EMPTY),
+      panel: new Graphics(),
+      title: this.createText('お供恐竜', 18, '#fff0b4', 260),
+      body: this.createText('', 11, '#d7fff2', 286),
+      selectedDetail: this.createText('', 9.5, '#cbe0da', 286),
+      rows: [],
+      pageText: this.createText('', 10, '#c8fbff', 84),
+      closeText: this.createText('範囲外で閉じる', 9, '#8da49e', 160),
+      clearButton: {
+        view: new Container(),
+        bg: new Graphics(),
+        text: this.createText('セット解除', 11, '#e7fff6', 86),
+      },
+    };
+
+    modal.view.visible = false;
+    modal.overlay
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x000000, alpha: 0.55 });
+    modal.overlay.eventMode = 'static';
+    modal.overlay.on('pointertap', () => this.closeCompanionModal());
+    modal.panel.position.set(34, 206);
+    modal.panel.eventMode = 'static';
+    modal.panel.on('pointertap', () => {});
+    modal.title.anchor.set(0.5, 0);
+    modal.title.position.set(this.width / 2, 222);
+    modal.body.position.set(56, 252);
+    modal.body.style.lineHeight = 15;
+    modal.selectedDetail.position.set(56, 278);
+    modal.selectedDetail.style.lineHeight = 13;
+    modal.closeText.anchor.set(0.5);
+    modal.closeText.position.set(this.width / 2, 624);
+    modal.pageText.anchor.set(0.5);
+    modal.pageText.position.set(this.width / 2, 566);
+    modal.panelFrame.position.set(34, 206);
+    modal.clearButton.view.position.set(252, 572);
+    modal.clearButton.view.hitArea = new Rectangle(0, 0, 96, 32);
+    modal.clearButton.view.eventMode = 'static';
+    modal.clearButton.view.cursor = 'pointer';
+    modal.clearButton.view.on('pointertap', () => this.clearSelectedCompanion());
+    modal.clearButton.text.anchor.set(0.5);
+    modal.clearButton.text.position.set(48, 16);
+    modal.clearButton.view.addChild(modal.clearButton.bg, modal.clearButton.text);
+    modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, modal.selectedDetail, modal.closeText, modal.pageText, modal.clearButton.view);
+
+    for (let index = 0; index < 5; index += 1) {
+      const row = {
+        view: new Container(),
+        frame: new Sprite(Texture.EMPTY),
+        bg: new Graphics(),
+        icon: new Sprite(Texture.EMPTY),
+        name: this.createText('', 12, '#ffffff', 140),
+        detail: this.createText('', 9, '#cbe0da', 184),
+        actionFrame: new Sprite(Texture.EMPTY),
+        action: this.createText('', 10, '#071015', 62),
+        companionId: null,
+      };
+      row.view.position.set(52, 318 + index * 46);
+      row.view.eventMode = 'static';
+      row.view.cursor = 'pointer';
+      row.view.on('pointertap', () => this.handleCompanionRow(row));
+      row.icon.anchor.set(0.5);
+      row.icon.position.set(20, 24);
+      row.icon.width = 34;
+      row.icon.height = 34;
+      row.name.position.set(44, 8);
+      row.detail.position.set(44, 26);
+      row.action.anchor.set(0.5);
+      row.action.position.set(246, 24);
+      row.actionFrame.position.set(216, 8);
+      row.actionFrame.width = 60;
+      row.actionFrame.height = 30;
+      row.view.addChild(row.frame, row.bg, row.icon, row.name, row.detail, row.actionFrame, row.action);
+      modal.rows.push(row);
+      modal.view.addChild(row.view);
+    }
+
+    modal.upgradeButton = {
+      view: new Container(),
+      bg: new Graphics(),
+      text: this.createText('強化', 12, '#071015', 64),
+    };
+    modal.upgradeButton.view.position.set(224, 572);
+    modal.upgradeButton.text.anchor.set(0.5);
+    modal.upgradeButton.text.position.set(42, 18);
+    modal.upgradeButton.view.eventMode = 'static';
+    modal.upgradeButton.view.cursor = 'pointer';
+    modal.upgradeButton.view.on('pointertap', () => this.upgradeSelectedCompanion());
+    modal.upgradeButton.view.addChild(modal.upgradeButton.bg, modal.upgradeButton.text);
+    modal.upgradeButton.view.visible = false;
+    modal.upgradeButton.view.eventMode = 'none';
+    modal.view.addChild(modal.upgradeButton.view);
+
+    modal.prevButton = this.createCompanionPageButton('前', 52, 572, () => this.changeCompanionModalPage(-1));
+    modal.nextButton = this.createCompanionPageButton('次', 128, 572, () => this.changeCompanionModalPage(1));
+    modal.view.addChild(modal.prevButton.view, modal.nextButton.view);
+
+    return modal;
+  }
+
+  createCompanionPageButton(label, x, y, onTap) {
+    const button = {
+      view: new Container(),
+      bg: new Graphics(),
+      text: this.createText(label, 11, '#e7fff6', 42),
+    };
+    button.view.position.set(x, y);
+    button.view.eventMode = 'static';
+    button.view.cursor = 'pointer';
+    button.view.on('pointertap', onTap);
+    button.text.anchor.set(0.5);
+    button.text.position.set(28, 16);
+    button.view.addChild(button.bg, button.text);
+    return button;
+  }
+
+  openCompanionModal() {
+    const owned = this.saveManager?.getCompanionState?.().ownedIds ?? [];
+    if (owned.length <= 0) {
+      return;
+    }
+    this.playUiFeedback('ui_select');
+    this.companionModalPage = 0;
+    this.companionModal.view.visible = true;
+    this.renderCompanionModal();
+  }
+
+  closeCompanionModal() {
+    this.companionModal.view.visible = false;
+  }
+
+  renderCompanionModal() {
+    const data = this.saveManager?.getData?.() ?? this.saveData ?? {};
+    const state = data.companion ?? {};
+    const ownedIds = new Set(state.ownedIds ?? []);
+    const ownedCompanions = COMPANION_DINOS.filter((companion) => ownedIds.has(companion.id));
+    const selected = getCompanionById(state.selectedId);
+    const fallbackIconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
+    const pageSize = this.companionModal.rows.length;
+    const maxPage = Math.max(0, Math.ceil(ownedCompanions.length / pageSize) - 1);
+    this.companionModalPage = Math.max(0, Math.min(maxPage, this.companionModalPage));
+    const pageStart = this.companionModalPage * pageSize;
+    const visibleCompanions = ownedCompanions.slice(pageStart, pageStart + pageSize);
+    const panelTexture = this.textures.get('companionSelectPanel');
+
+    this.companionModal.panelFrame.texture = panelTexture ?? Texture.EMPTY;
+    this.companionModal.panelFrame.visible = !!panelTexture;
+    this.companionModal.panelFrame.width = this.width - 68;
+    this.companionModal.panelFrame.height = 430;
+    this.companionModal.panelFrame.alpha = 0.96;
+    this.companionModal.panel
+      .clear()
+      .roundRect(0, 0, this.width - 68, 430, 14)
+      .fill({ color: 0x021114, alpha: panelTexture ? 0.16 : 0.92 })
+      .stroke({ color: 0x35d7ff, width: 1.8, alpha: panelTexture ? 0.16 : 0.74 })
+      .roundRect(8, 8, this.width - 84, 414, 11)
+      .stroke({ color: 0xffd36b, width: 0.8, alpha: panelTexture ? 0.08 : 0.28 });
+    const selectedLevels = selected ? getCompanionUpgradeLevelsFromState(state, selected.id) : null;
+    this.companionModal.body.text = ownedCompanions.length > 0
+      ? `セット中: ${selected?.displayName ?? 'お供なし'}`
+      : '所持しているお供恐竜はありません。';
+    this.companionModal.selectedDetail.text = selected
+      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n効果: ${getCompanionEffectSummary(selected.id, selectedLevels)}`
+      : ownedCompanions.length > 0
+        ? 'お供を選択すると、次の出撃から一緒に行動します。'
+        : '卵を孵化すると、ここでセットできます。';
+    this.companionModal.rows.forEach((row, index) => {
+      const companion = visibleCompanions[index] ?? null;
+      const level = companion ? state.levels?.[companion.id] ?? 1 : 1;
+      const isSelected = companion?.id === state.selectedId;
+      const accent = companion ? COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4 : 0x23434a;
+
+      row.view.visible = !!companion;
+      if (!companion) {
+        return;
+      }
+      row.companionId = companion.id;
+      const iconTexture = this.textures.get(`companionIcon:${companion.id}`) ?? fallbackIconTexture;
+      const cardTexture = this.textures.get('companionSelectCard');
+      row.frame.texture = cardTexture ?? Texture.EMPTY;
+      row.frame.visible = !!cardTexture;
+      row.frame.width = 286;
+      row.frame.height = 44;
+      row.frame.alpha = isSelected ? 1 : 0.82;
+      row.bg
+        .clear()
+        .roundRect(0, 0, 286, 44, 10)
+        .fill({ color: isSelected ? 0x08272f : 0x031216, alpha: cardTexture ? 0.1 : 0.86 })
+        .stroke({ color: accent, width: isSelected ? 1.8 : 1, alpha: isSelected ? 0.86 : cardTexture ? 0.18 : 0.44 });
+      row.icon.texture = iconTexture;
+      row.icon.visible = iconTexture !== Texture.EMPTY;
+      row.icon.alpha = 1;
+      row.name.text = `${companion.displayName} Lv${level}`;
+      row.name.style.fill = '#ffffff';
+      row.detail.text = COMPANION_UI_DESCRIPTIONS[companion.id] ?? getCompanionEffectSummary(companion.id, getCompanionUpgradeLevelsFromState(state, companion.id));
+      row.detail.style.fill = '#cbe0da';
+      row.actionFrame.texture = this.textures.get('companionSelectButton') ?? Texture.EMPTY;
+      row.actionFrame.visible = row.actionFrame.texture !== Texture.EMPTY;
+      row.actionFrame.alpha = isSelected ? 1 : 0.8;
+      row.action.text = isSelected ? 'セット中' : '選択';
+      row.action.style.fontSize = isSelected ? 8.5 : 10;
+      row.action.style.fill = '#e7fff6';
+      row.action.style.stroke = { color: 0x031216, width: 2 };
+    });
+    this.companionModal.pageText.text = ownedCompanions.length > pageSize ? `${this.companionModalPage + 1}/${maxPage + 1}` : '';
+    this.drawCompanionPageButton(this.companionModal.prevButton, this.companionModalPage > 0);
+    this.drawCompanionPageButton(this.companionModal.nextButton, this.companionModalPage < maxPage);
+    const clearVisible = ownedCompanions.length > 0 && Boolean(state.selectedId);
+    this.companionModal.clearButton.view.visible = clearVisible;
+    this.companionModal.clearButton.view.eventMode = clearVisible ? 'static' : 'none';
+    this.companionModal.clearButton.bg
+      .clear()
+      .roundRect(0, 0, 96, 32, 9)
+      .fill({ color: 0x08272f, alpha: 0.9 })
+      .stroke({ color: 0xffd36b, width: 1, alpha: 0.58 });
+    this.companionModal.upgradeButton.view.visible = false;
+  }
+
+  drawCompanionPageButton(button, enabled) {
+    if (!button) {
+      return;
+    }
+
+    button.view.visible = enabled;
+    button.bg
+      .clear()
+      .roundRect(0, 0, 56, 32, 9)
+      .fill({ color: enabled ? 0x08272f : 0x123035, alpha: enabled ? 0.9 : 0.32 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: enabled ? 0.64 : 0.18 });
+    button.text.style.fill = enabled ? '#e7fff6' : '#8da49e';
+  }
+
+  changeCompanionModalPage(delta) {
+    const state = this.saveManager?.getData?.()?.companion ?? this.saveData?.companion ?? {};
+    const owned = state.ownedIds ?? [];
+    const pageSize = this.companionModal.rows.length;
+    const maxPage = Math.max(0, Math.ceil(owned.length / pageSize) - 1);
+    const nextPage = Math.max(0, Math.min(maxPage, this.companionModalPage + delta));
+
+    if (nextPage === this.companionModalPage) {
+      return;
+    }
+
+    this.companionModalPage = nextPage;
+    this.playUiFeedback('ui_select');
+    this.renderCompanionModal();
+  }
+
+  handleCompanionRow(row) {
+    if (!row.companionId) {
+      return;
+    }
+
+    const companionState = this.saveManager?.getCompanionState?.() ?? {};
+    if (!companionState.ownedIds?.includes(row.companionId)) {
+      this.noticeText.text = '未所持のお供です。卵から入手できます';
+      return;
+    }
+
+    const result = this.saveManager?.setSelectedCompanion?.(row.companionId);
+    if (result?.success) {
+      this.saveManager.markTutorialComplete?.('companionSet');
+      this.saveData = result.data;
+      this.noticeText.text = 'お供恐竜をセットしました';
+      this.setSaveData(result.data, this.gameState);
+      this.renderCompanionModal();
+    }
+  }
+
+  clearSelectedCompanion() {
+    const result = this.saveManager?.setSelectedCompanion?.(null);
+    if (result?.success) {
+      this.saveData = result.data;
+      this.noticeText.text = 'お供を外しました';
+      this.setSaveData(result.data, this.gameState);
+      this.renderCompanionModal();
+    }
+  }
+
+  upgradeSelectedCompanion() {
+    const selectedId = this.saveManager?.getCompanionState?.().selectedId;
+    if (!selectedId) {
+      return;
+    }
+
+    const result = this.saveManager.upgradeCompanion(selectedId);
+    this.saveData = result.data;
+    this.noticeText.text = result.success ? 'お供恐竜を強化しました' : result.reason === 'insufficient' ? 'DNAが不足しています' : '強化できません';
+    this.setSaveData(result.data, this.gameState);
+    this.renderCompanionModal();
+  }
+
+  handleCompanionGamepadAction(actions) {
+    if (actions.cancelPressed || actions.pausePressed) {
+      this.closeCompanionModal();
+      return true;
+    }
+
+    if (actions.leftPressed || actions.previousPressed) {
+      this.changeCompanionModalPage(-1);
+      return true;
+    }
+
+    if (actions.rightPressed || actions.nextPressed) {
+      this.changeCompanionModalPage(1);
+      return true;
+    }
+
+    return true;
   }
 
   openNewsModal() {

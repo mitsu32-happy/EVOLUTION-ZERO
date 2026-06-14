@@ -1,0 +1,7110 @@
+{
+  "title": "MVP-P04j Companion Dino polished sprite sheets",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "cellSize": 384,
+    "safeInset": 30
+  },
+  "rules": [
+    "right-facing side-view source prompts",
+    "single subject per frame except compy_pack's intended three-compy group",
+    "no other dinosaurs or animals in support/action frames",
+    "source cells are inward-cropped before normalization to avoid neighbor-cell contamination",
+    "flat #ff00ff source background removed locally",
+    "runtime sheets normalized to fixed 384x384 cells",
+    "P04f fixed-size rendering remains unchanged"
+  ],
+  "companions": [
+    {
+      "id": "raptorling",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df6548b2c8191ab7dd49f72bae32a.png",
+      "output": "public\\assets\\companions\\raptorling_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1608,
+        978
+      ],
+      "removedMagentaPixels": 1405521,
+      "finalRemovedMagentaPixels": 2288,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing fast run with alternating contact and kick-off poses",
+      "actionNote": "right-facing leap, claw, bite, recovery poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            42,
+            116,
+            334,
+            266
+          ],
+          "scale": 0.9384,
+          "finalBbox": [
+            55,
+            171,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 171,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            804,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            774,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            32,
+            98,
+            289,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            63,
+            144,
+            320,
+            312
+          ],
+          "margins": {
+            "left": 63,
+            "top": 144,
+            "right": 64,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            0,
+            1206,
+            326
+          ],
+          "safeCrop": [
+            834,
+            30,
+            1176,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            9,
+            163,
+            292,
+            266
+          ],
+          "scale": 0.9682,
+          "finalBbox": [
+            55,
+            212,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 212,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            0,
+            1608,
+            326
+          ],
+          "safeCrop": [
+            1236,
+            30,
+            1578,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            91,
+            239,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            72,
+            137,
+            311,
+            312
+          ],
+          "margins": {
+            "left": 72,
+            "top": 137,
+            "right": 73,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            652
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            48,
+            94,
+            342,
+            239
+          ],
+          "scale": 0.932,
+          "finalBbox": [
+            55,
+            177,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 177,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            804,
+            652
+          ],
+          "safeCrop": [
+            432,
+            356,
+            774,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            19,
+            97,
+            323,
+            242
+          ],
+          "scale": 0.9013,
+          "finalBbox": [
+            55,
+            181,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 181,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            326,
+            1206,
+            652
+          ],
+          "safeCrop": [
+            834,
+            356,
+            1176,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            15,
+            102,
+            290,
+            242
+          ],
+          "scale": 0.9964,
+          "finalBbox": [
+            55,
+            173,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 173,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            326,
+            1608,
+            652
+          ],
+          "safeCrop": [
+            1236,
+            356,
+            1578,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            105,
+            295,
+            244
+          ],
+          "scale": 0.9288,
+          "finalBbox": [
+            55,
+            183,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 183,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            652,
+            402,
+            978
+          ],
+          "safeCrop": [
+            30,
+            682,
+            372,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            64,
+            28,
+            318,
+            205
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            65,
+            131,
+            319,
+            308
+          ],
+          "margins": {
+            "left": 65,
+            "top": 131,
+            "right": 65,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            652,
+            804,
+            978
+          ],
+          "safeCrop": [
+            432,
+            682,
+            774,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            44,
+            49,
+            315,
+            205
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            56,
+            152,
+            327,
+            308
+          ],
+          "margins": {
+            "left": 56,
+            "top": 152,
+            "right": 57,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            652,
+            1206,
+            978
+          ],
+          "safeCrop": [
+            834,
+            682,
+            1176,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            9,
+            31,
+            290,
+            210
+          ],
+          "scale": 0.9751,
+          "finalBbox": [
+            55,
+            133,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 133,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            652,
+            1608,
+            978
+          ],
+          "safeCrop": [
+            1236,
+            682,
+            1578,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            4,
+            77,
+            263,
+            210
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            62,
+            175,
+            321,
+            308
+          ],
+          "margins": {
+            "left": 62,
+            "top": 175,
+            "right": 63,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              171,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              171,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              63,
+              144,
+              320,
+              312
+            ],
+            "margins": [
+              63,
+              144,
+              64,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              55,
+              212,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              212,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              72,
+              137,
+              311,
+              312
+            ],
+            "margins": [
+              72,
+              137,
+              73,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              177,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              177,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              181,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              181,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              173,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              173,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              55,
+              183,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              183,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              65,
+              131,
+              319,
+              308
+            ],
+            "margins": [
+              65,
+              131,
+              65,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              56,
+              152,
+              327,
+              308
+            ],
+            "margins": [
+              56,
+              152,
+              57,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              133,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              133,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              62,
+              175,
+              321,
+              308
+            ],
+            "margins": [
+              62,
+              175,
+              63,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "spino_pup",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df6a5971c81919b588e10b57a3d41.png",
+      "output": "public\\assets\\companions\\spino_pup_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1608,
+        978
+      ],
+      "removedMagentaPixels": 1365623,
+      "finalRemovedMagentaPixels": 2038,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing heavy walk with sail, tail, and weight-shift poses",
+      "actionNote": "right-facing water shot and splash recoil poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            58,
+            127,
+            342,
+            266
+          ],
+          "scale": 0.9648,
+          "finalBbox": [
+            55,
+            178,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 178,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            804,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            774,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            36,
+            128,
+            322,
+            266
+          ],
+          "scale": 0.958,
+          "finalBbox": [
+            55,
+            180,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 180,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            0,
+            1206,
+            326
+          ],
+          "safeCrop": [
+            834,
+            30,
+            1176,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            7,
+            150,
+            276,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            57,
+            196,
+            326,
+            312
+          ],
+          "margins": {
+            "left": 57,
+            "top": 196,
+            "right": 58,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            0,
+            1608,
+            326
+          ],
+          "safeCrop": [
+            1236,
+            30,
+            1578,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            103,
+            224,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            80,
+            149,
+            304,
+            312
+          ],
+          "margins": {
+            "left": 80,
+            "top": 149,
+            "right": 80,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            652
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            48,
+            91,
+            342,
+            262
+          ],
+          "scale": 0.932,
+          "finalBbox": [
+            55,
+            153,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 153,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            804,
+            652
+          ],
+          "safeCrop": [
+            432,
+            356,
+            774,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            37,
+            107,
+            318,
+            262
+          ],
+          "scale": 0.9751,
+          "finalBbox": [
+            55,
+            161,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 161,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            326,
+            1206,
+            652
+          ],
+          "safeCrop": [
+            834,
+            356,
+            1176,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            20,
+            109,
+            286,
+            262
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            59,
+            159,
+            325,
+            312
+          ],
+          "margins": {
+            "left": 59,
+            "top": 159,
+            "right": 59,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            326,
+            1608,
+            652
+          ],
+          "safeCrop": [
+            1236,
+            356,
+            1578,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            128,
+            267,
+            261
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            58,
+            179,
+            325,
+            312
+          ],
+          "margins": {
+            "left": 58,
+            "top": 179,
+            "right": 59,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            652,
+            402,
+            978
+          ],
+          "safeCrop": [
+            30,
+            682,
+            372,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            65,
+            39,
+            342,
+            210
+          ],
+          "scale": 0.9892,
+          "finalBbox": [
+            55,
+            139,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 139,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            652,
+            804,
+            978
+          ],
+          "safeCrop": [
+            432,
+            682,
+            774,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            27,
+            51,
+            342,
+            210
+          ],
+          "scale": 0.8698,
+          "finalBbox": [
+            55,
+            170,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 170,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            652,
+            1206,
+            978
+          ],
+          "safeCrop": [
+            834,
+            682,
+            1176,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            15,
+            55,
+            281,
+            213
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            59,
+            150,
+            325,
+            308
+          ],
+          "margins": {
+            "left": 59,
+            "top": 150,
+            "right": 59,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            652,
+            1608,
+            978
+          ],
+          "safeCrop": [
+            1236,
+            682,
+            1578,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            51,
+            238,
+            211
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            73,
+            148,
+            311,
+            308
+          ],
+          "margins": {
+            "left": 73,
+            "top": 148,
+            "right": 73,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              178,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              178,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              55,
+              180,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              180,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              57,
+              196,
+              326,
+              312
+            ],
+            "margins": [
+              57,
+              196,
+              58,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              80,
+              149,
+              304,
+              312
+            ],
+            "margins": [
+              80,
+              149,
+              80,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              153,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              153,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              161,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              161,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              59,
+              159,
+              325,
+              312
+            ],
+            "margins": [
+              59,
+              159,
+              59,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              58,
+              179,
+              325,
+              312
+            ],
+            "margins": [
+              58,
+              179,
+              59,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              139,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              139,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              170,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              170,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              59,
+              150,
+              325,
+              308
+            ],
+            "margins": [
+              59,
+              150,
+              59,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              73,
+              148,
+              311,
+              308
+            ],
+            "margins": [
+              73,
+              148,
+              73,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "medic_saur",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df6eb66188191bf6fb94d755f7c7c.png",
+      "output": "public\\assets\\companions\\medic_saur_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1609,
+        978
+      ],
+      "removedMagentaPixels": 1300676,
+      "finalRemovedMagentaPixels": 3053,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing gentle walk with smaller contact changes",
+      "actionNote": "self-contained healing aura poses with no patient or extra dinosaur",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            33,
+            98,
+            328,
+            266
+          ],
+          "scale": 0.9288,
+          "finalBbox": [
+            55,
+            156,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 156,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            804,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            774,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            27,
+            85,
+            319,
+            266
+          ],
+          "scale": 0.9384,
+          "finalBbox": [
+            55,
+            142,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 142,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            0,
+            1207,
+            326
+          ],
+          "safeCrop": [
+            834,
+            30,
+            1177,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            109,
+            275,
+            266
+          ],
+          "scale": 0.9964,
+          "finalBbox": [
+            55,
+            156,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 156,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            0,
+            1609,
+            326
+          ],
+          "safeCrop": [
+            1237,
+            30,
+            1579,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            79,
+            235,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            74,
+            125,
+            309,
+            312
+          ],
+          "margins": {
+            "left": 74,
+            "top": 125,
+            "right": 75,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            652
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            28,
+            76,
+            322,
+            250
+          ],
+          "scale": 0.932,
+          "finalBbox": [
+            55,
+            150,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 150,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            804,
+            652
+          ],
+          "safeCrop": [
+            432,
+            356,
+            774,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            7,
+            83,
+            296,
+            250
+          ],
+          "scale": 0.9481,
+          "finalBbox": [
+            55,
+            154,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 154,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            326,
+            1207,
+            652
+          ],
+          "safeCrop": [
+            834,
+            356,
+            1177,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            80,
+            343,
+            250
+          ],
+          "scale": 0.7988,
+          "finalBbox": [
+            55,
+            176,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 176,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            326,
+            1609,
+            652
+          ],
+          "safeCrop": [
+            1237,
+            356,
+            1579,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            73,
+            227,
+            249
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            78,
+            136,
+            305,
+            312
+          ],
+          "margins": {
+            "left": 78,
+            "top": 136,
+            "right": 79,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            652,
+            402,
+            978
+          ],
+          "safeCrop": [
+            30,
+            682,
+            372,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            29,
+            23,
+            342,
+            209
+          ],
+          "scale": 0.8754,
+          "finalBbox": [
+            55,
+            145,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 145,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            652,
+            804,
+            978
+          ],
+          "safeCrop": [
+            432,
+            682,
+            774,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            17,
+            6,
+            304,
+            219
+          ],
+          "scale": 0.9547,
+          "finalBbox": [
+            55,
+            105,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 105,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            652,
+            1207,
+            978
+          ],
+          "safeCrop": [
+            834,
+            682,
+            1177,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            21,
+            274,
+            220
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            55,
+            109,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 109,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            652,
+            1609,
+            978
+          ],
+          "safeCrop": [
+            1237,
+            682,
+            1579,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            23,
+            226,
+            209
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            79,
+            122,
+            305,
+            308
+          ],
+          "margins": {
+            "left": 79,
+            "top": 122,
+            "right": 79,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              156,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              156,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              55,
+              142,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              142,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              55,
+              156,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              156,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              74,
+              125,
+              309,
+              312
+            ],
+            "margins": [
+              74,
+              125,
+              75,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              150,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              150,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              154,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              154,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              176,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              176,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              78,
+              136,
+              305,
+              312
+            ],
+            "margins": [
+              78,
+              136,
+              79,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              145,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              145,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              105,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              105,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              109,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              109,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              79,
+              122,
+              305,
+              308
+            ],
+            "margins": [
+              79,
+              122,
+              79,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ptera_chick",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df72d10d88191aa512694acd47308.png",
+      "output": "public\\assets\\companions\\ptera_chick_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1609,
+        977
+      ],
+      "removedMagentaPixels": 1429941,
+      "finalRemovedMagentaPixels": 1381,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing flap cycle with wing-up, wing-down, glide, and rise/sink poses",
+      "actionNote": "right-facing aerial aim, projectile, recoil, recovery poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            87,
+            91,
+            342,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            64,
+            63,
+            319,
+            238
+          ],
+          "margins": {
+            "left": 64,
+            "top": 63,
+            "right": 65,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            804,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            774,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            74,
+            96,
+            314,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            72,
+            68,
+            312,
+            238
+          ],
+          "margins": {
+            "left": 72,
+            "top": 68,
+            "right": 72,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            0,
+            1207,
+            326
+          ],
+          "safeCrop": [
+            834,
+            30,
+            1177,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            8,
+            133,
+            278,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            57,
+            105,
+            327,
+            238
+          ],
+          "margins": {
+            "left": 57,
+            "top": 105,
+            "right": 57,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            0,
+            1609,
+            326
+          ],
+          "safeCrop": [
+            1237,
+            30,
+            1579,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            137,
+            241,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            71,
+            109,
+            312,
+            238
+          ],
+          "margins": {
+            "left": 71,
+            "top": 109,
+            "right": 72,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            651
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            48,
+            79,
+            342,
+            215
+          ],
+          "scale": 0.932,
+          "finalBbox": [
+            55,
+            111,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 111,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            804,
+            651
+          ],
+          "safeCrop": [
+            432,
+            356,
+            774,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            51,
+            90,
+            342,
+            210
+          ],
+          "scale": 0.9416,
+          "finalBbox": [
+            55,
+            125,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 125,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            326,
+            1207,
+            651
+          ],
+          "safeCrop": [
+            834,
+            356,
+            1177,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            6,
+            109,
+            313,
+            222
+          ],
+          "scale": 0.8925,
+          "finalBbox": [
+            55,
+            137,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 137,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            326,
+            1609,
+            651
+          ],
+          "safeCrop": [
+            1237,
+            356,
+            1579,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            82,
+            251,
+            226
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            66,
+            94,
+            317,
+            238
+          ],
+          "margins": {
+            "left": 66,
+            "top": 94,
+            "right": 67,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            651,
+            402,
+            977
+          ],
+          "safeCrop": [
+            30,
+            681,
+            372,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            54,
+            48,
+            342,
+            194
+          ],
+          "scale": 0.9514,
+          "finalBbox": [
+            55,
+            95,
+            329,
+            234
+          ],
+          "margins": {
+            "left": 55,
+            "top": 95,
+            "right": 55,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            651,
+            804,
+            977
+          ],
+          "safeCrop": [
+            432,
+            681,
+            774,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            31,
+            36,
+            342,
+            189
+          ],
+          "scale": 0.881,
+          "finalBbox": [
+            55,
+            99,
+            329,
+            234
+          ],
+          "margins": {
+            "left": 55,
+            "top": 99,
+            "right": 55,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            651,
+            1207,
+            977
+          ],
+          "safeCrop": [
+            834,
+            681,
+            1177,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            13,
+            44,
+            268,
+            177
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            64,
+            101,
+            319,
+            234
+          ],
+          "margins": {
+            "left": 64,
+            "top": 101,
+            "right": 65,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            651,
+            1609,
+            977
+          ],
+          "safeCrop": [
+            1237,
+            681,
+            1579,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            86,
+            262,
+            194
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            61,
+            126,
+            323,
+            234
+          ],
+          "margins": {
+            "left": 61,
+            "top": 126,
+            "right": 61,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              64,
+              63,
+              319,
+              238
+            ],
+            "margins": [
+              64,
+              63,
+              65,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              72,
+              68,
+              312,
+              238
+            ],
+            "margins": [
+              72,
+              68,
+              72,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              57,
+              105,
+              327,
+              238
+            ],
+            "margins": [
+              57,
+              105,
+              57,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              71,
+              109,
+              312,
+              238
+            ],
+            "margins": [
+              71,
+              109,
+              72,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              111,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              111,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              125,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              125,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              137,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              137,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              66,
+              94,
+              317,
+              238
+            ],
+            "margins": [
+              66,
+              94,
+              67,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              95,
+              329,
+              234
+            ],
+            "margins": [
+              55,
+              95,
+              55,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              99,
+              329,
+              234
+            ],
+            "margins": [
+              55,
+              99,
+              55,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              64,
+              101,
+              319,
+              234
+            ],
+            "margins": [
+              64,
+              101,
+              65,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              61,
+              126,
+              323,
+              234
+            ],
+            "margins": [
+              61,
+              126,
+              61,
+              150
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "tricera_calf",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df77940708191b3e6c3b98af90294.png",
+      "output": "public\\assets\\companions\\tricera_calf_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1609,
+        977
+      ],
+      "removedMagentaPixels": 1253392,
+      "finalRemovedMagentaPixels": 3870,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing heavy quadruped walk with stomp and horn motion",
+      "actionNote": "self-contained guard and shield aura poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            61,
+            94,
+            342,
+            266
+          ],
+          "scale": 0.9751,
+          "finalBbox": [
+            55,
+            144,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 144,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            804,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            774,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            42,
+            93,
+            328,
+            266
+          ],
+          "scale": 0.958,
+          "finalBbox": [
+            55,
+            146,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 146,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            0,
+            1207,
+            326
+          ],
+          "safeCrop": [
+            834,
+            30,
+            1177,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            17,
+            104,
+            305,
+            266
+          ],
+          "scale": 0.9514,
+          "finalBbox": [
+            55,
+            158,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 158,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            0,
+            1609,
+            326
+          ],
+          "safeCrop": [
+            1237,
+            30,
+            1579,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            94,
+            281,
+            266
+          ],
+          "scale": 0.9751,
+          "finalBbox": [
+            55,
+            144,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 144,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            651
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            59,
+            65,
+            342,
+            242
+          ],
+          "scale": 0.9682,
+          "finalBbox": [
+            55,
+            141,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 141,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            804,
+            651
+          ],
+          "safeCrop": [
+            432,
+            356,
+            774,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            39,
+            70,
+            329,
+            244
+          ],
+          "scale": 0.9448,
+          "finalBbox": [
+            55,
+            148,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 148,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            326,
+            1207,
+            651
+          ],
+          "safeCrop": [
+            834,
+            356,
+            1177,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            15,
+            79,
+            312,
+            244
+          ],
+          "scale": 0.9226,
+          "finalBbox": [
+            55,
+            160,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 160,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            326,
+            1609,
+            651
+          ],
+          "safeCrop": [
+            1237,
+            356,
+            1579,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            74,
+            292,
+            245
+          ],
+          "scale": 0.9384,
+          "finalBbox": [
+            55,
+            152,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 152,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            651,
+            402,
+            977
+          ],
+          "safeCrop": [
+            30,
+            681,
+            372,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            48,
+            46,
+            342,
+            206
+          ],
+          "scale": 0.932,
+          "finalBbox": [
+            55,
+            159,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 159,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            651,
+            804,
+            977
+          ],
+          "safeCrop": [
+            432,
+            681,
+            774,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            38,
+            2,
+            309,
+            207
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            56,
+            103,
+            327,
+            308
+          ],
+          "margins": {
+            "left": 56,
+            "top": 103,
+            "right": 57,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            651,
+            1207,
+            977
+          ],
+          "safeCrop": [
+            834,
+            681,
+            1177,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            49,
+            317,
+            232
+          ],
+          "scale": 0.8644,
+          "finalBbox": [
+            55,
+            150,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 150,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1207,
+            651,
+            1609,
+            977
+          ],
+          "safeCrop": [
+            1237,
+            681,
+            1579,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            39,
+            279,
+            207
+          ],
+          "scale": 0.9821,
+          "finalBbox": [
+            55,
+            143,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 143,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              144,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              144,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              55,
+              146,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              146,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              55,
+              158,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              158,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              55,
+              144,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              144,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              141,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              141,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              148,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              148,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              160,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              160,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              55,
+              152,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              152,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              159,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              159,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              56,
+              103,
+              327,
+              308
+            ],
+            "margins": [
+              56,
+              103,
+              57,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              150,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              150,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              55,
+              143,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              143,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "para_juvenile",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df7c280308191a5d1f72f259144ed.png",
+      "output": "public\\assets\\companions\\para_juvenile_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1610,
+        977
+      ],
+      "removedMagentaPixels": 1369947,
+      "finalRemovedMagentaPixels": 2545,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing light walk with crest, head, and tail motion",
+      "actionNote": "self-contained sonar and pickup-guidance poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            39,
+            109,
+            307,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            58,
+            155,
+            326,
+            312
+          ],
+          "margins": {
+            "left": 58,
+            "top": 155,
+            "right": 58,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            805,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            775,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            46,
+            95,
+            276,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            77,
+            141,
+            307,
+            312
+          ],
+          "margins": {
+            "left": 77,
+            "top": 141,
+            "right": 77,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            805,
+            0,
+            1208,
+            326
+          ],
+          "safeCrop": [
+            835,
+            30,
+            1178,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            5,
+            133,
+            271,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            59,
+            179,
+            325,
+            312
+          ],
+          "margins": {
+            "left": 59,
+            "top": 179,
+            "right": 59,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1208,
+            0,
+            1610,
+            326
+          ],
+          "safeCrop": [
+            1238,
+            30,
+            1580,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            98,
+            238,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            73,
+            144,
+            311,
+            312
+          ],
+          "margins": {
+            "left": 73,
+            "top": 144,
+            "right": 73,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            651
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            21,
+            73,
+            318,
+            255
+          ],
+          "scale": 0.9226,
+          "finalBbox": [
+            55,
+            144,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 144,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            805,
+            651
+          ],
+          "safeCrop": [
+            432,
+            356,
+            775,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            20,
+            82,
+            286,
+            255
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            59,
+            139,
+            325,
+            312
+          ],
+          "margins": {
+            "left": 59,
+            "top": 139,
+            "right": 59,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            805,
+            326,
+            1208,
+            651
+          ],
+          "safeCrop": [
+            835,
+            356,
+            1178,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            6,
+            81,
+            257,
+            255
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            66,
+            138,
+            317,
+            312
+          ],
+          "margins": {
+            "left": 66,
+            "top": 138,
+            "right": 67,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1208,
+            326,
+            1610,
+            651
+          ],
+          "safeCrop": [
+            1238,
+            356,
+            1580,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            109,
+            295,
+            255
+          ],
+          "scale": 0.9288,
+          "finalBbox": [
+            55,
+            176,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 176,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            651,
+            402,
+            977
+          ],
+          "safeCrop": [
+            30,
+            681,
+            372,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            26,
+            49,
+            321,
+            230
+          ],
+          "scale": 0.9288,
+          "finalBbox": [
+            55,
+            140,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 140,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            651,
+            805,
+            977
+          ],
+          "safeCrop": [
+            432,
+            681,
+            775,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            10,
+            22,
+            300,
+            230
+          ],
+          "scale": 0.9448,
+          "finalBbox": [
+            55,
+            111,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 111,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            805,
+            651,
+            1208,
+            977
+          ],
+          "safeCrop": [
+            835,
+            681,
+            1178,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            50,
+            321,
+            230
+          ],
+          "scale": 0.8536,
+          "finalBbox": [
+            55,
+            154,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 154,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1208,
+            651,
+            1610,
+            977
+          ],
+          "safeCrop": [
+            1238,
+            681,
+            1580,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            47,
+            245,
+            230
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            69,
+            125,
+            314,
+            308
+          ],
+          "margins": {
+            "left": 69,
+            "top": 125,
+            "right": 70,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              58,
+              155,
+              326,
+              312
+            ],
+            "margins": [
+              58,
+              155,
+              58,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              77,
+              141,
+              307,
+              312
+            ],
+            "margins": [
+              77,
+              141,
+              77,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              59,
+              179,
+              325,
+              312
+            ],
+            "margins": [
+              59,
+              179,
+              59,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              73,
+              144,
+              311,
+              312
+            ],
+            "margins": [
+              73,
+              144,
+              73,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              144,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              144,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              59,
+              139,
+              325,
+              312
+            ],
+            "margins": [
+              59,
+              139,
+              59,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              66,
+              138,
+              317,
+              312
+            ],
+            "margins": [
+              66,
+              138,
+              67,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              55,
+              176,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              176,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              140,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              140,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              111,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              111,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              154,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              154,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              69,
+              125,
+              314,
+              308
+            ],
+            "margins": [
+              69,
+              125,
+              70,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "stego_calf",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df80591dc8191bf9344847a3d536f.png",
+      "output": "public\\assets\\companions\\stego_calf_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1610,
+        977
+      ],
+      "removedMagentaPixels": 1302852,
+      "finalRemovedMagentaPixels": 5429,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing heavy walk with plate and tail motion",
+      "actionNote": "self-contained plate charge and stomp shockwave poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            51,
+            92,
+            341,
+            266
+          ],
+          "scale": 0.9448,
+          "finalBbox": [
+            55,
+            148,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 148,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            805,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            775,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            31,
+            105,
+            304,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            55,
+            151,
+            328,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 151,
+            "right": 56,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            805,
+            0,
+            1208,
+            326
+          ],
+          "safeCrop": [
+            835,
+            30,
+            1178,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            15,
+            112,
+            292,
+            266
+          ],
+          "scale": 0.9892,
+          "finalBbox": [
+            55,
+            160,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 160,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1208,
+            0,
+            1610,
+            326
+          ],
+          "safeCrop": [
+            1238,
+            30,
+            1580,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            105,
+            250,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            67,
+            151,
+            317,
+            312
+          ],
+          "margins": {
+            "left": 67,
+            "top": 151,
+            "right": 67,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            651
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            45,
+            55,
+            342,
+            233
+          ],
+          "scale": 0.9226,
+          "finalBbox": [
+            55,
+            148,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 148,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            805,
+            651
+          ],
+          "safeCrop": [
+            432,
+            356,
+            775,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            16,
+            60,
+            322,
+            235
+          ],
+          "scale": 0.8954,
+          "finalBbox": [
+            55,
+            155,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 155,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            805,
+            326,
+            1208,
+            651
+          ],
+          "safeCrop": [
+            835,
+            356,
+            1178,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            64,
+            292,
+            236
+          ],
+          "scale": 0.9384,
+          "finalBbox": [
+            55,
+            151,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 151,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1208,
+            326,
+            1610,
+            651
+          ],
+          "safeCrop": [
+            1238,
+            356,
+            1580,
+            621
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            61,
+            267,
+            236
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            58,
+            137,
+            325,
+            312
+          ],
+          "margins": {
+            "left": 58,
+            "top": 137,
+            "right": 59,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            651,
+            402,
+            977
+          ],
+          "safeCrop": [
+            30,
+            681,
+            372,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            52,
+            0,
+            342,
+            211
+          ],
+          "scale": 0.9448,
+          "finalBbox": [
+            55,
+            109,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 109,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            651,
+            805,
+            977
+          ],
+          "safeCrop": [
+            432,
+            681,
+            775,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            23,
+            26,
+            339,
+            230
+          ],
+          "scale": 0.8671,
+          "finalBbox": [
+            55,
+            131,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 131,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            805,
+            651,
+            1208,
+            977
+          ],
+          "safeCrop": [
+            835,
+            681,
+            1178,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            26,
+            334,
+            238
+          ],
+          "scale": 0.8204,
+          "finalBbox": [
+            55,
+            134,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 134,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1208,
+            651,
+            1610,
+            977
+          ],
+          "safeCrop": [
+            1238,
+            681,
+            1580,
+            947
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            43,
+            258,
+            211
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            63,
+            140,
+            321,
+            308
+          ],
+          "margins": {
+            "left": 63,
+            "top": 140,
+            "right": 63,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              148,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              148,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              55,
+              151,
+              328,
+              312
+            ],
+            "margins": [
+              55,
+              151,
+              56,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              55,
+              160,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              160,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              67,
+              151,
+              317,
+              312
+            ],
+            "margins": [
+              67,
+              151,
+              67,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              148,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              148,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              155,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              155,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              151,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              151,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              58,
+              137,
+              325,
+              312
+            ],
+            "margins": [
+              58,
+              137,
+              59,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              109,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              109,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              131,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              131,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              134,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              134,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              63,
+              140,
+              321,
+              308
+            ],
+            "margins": [
+              63,
+              140,
+              63,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "rex_hatchling",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df84ba9108191a7ffd9522fcf21db.png",
+      "output": "public\\assets\\companions\\rex_hatchling_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1608,
+        978
+      ],
+      "removedMagentaPixels": 1373037,
+      "finalRemovedMagentaPixels": 2845,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing forceful small-run with head and tail counterbalance",
+      "actionNote": "right-facing charge, bite, impact, recovery poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            402,
+            326
+          ],
+          "safeCrop": [
+            30,
+            30,
+            372,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            37,
+            124,
+            329,
+            266
+          ],
+          "scale": 0.9384,
+          "finalBbox": [
+            55,
+            179,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 179,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            0,
+            804,
+            326
+          ],
+          "safeCrop": [
+            432,
+            30,
+            774,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            22,
+            135,
+            310,
+            266
+          ],
+          "scale": 0.9514,
+          "finalBbox": [
+            55,
+            187,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 187,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            0,
+            1206,
+            326
+          ],
+          "safeCrop": [
+            834,
+            30,
+            1176,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            24,
+            170,
+            295,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            56,
+            216,
+            327,
+            312
+          ],
+          "margins": {
+            "left": 56,
+            "top": 216,
+            "right": 57,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            0,
+            1608,
+            326
+          ],
+          "safeCrop": [
+            1236,
+            30,
+            1578,
+            296
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            94,
+            258,
+            266
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            63,
+            140,
+            321,
+            312
+          ],
+          "margins": {
+            "left": 63,
+            "top": 140,
+            "right": 63,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            326,
+            402,
+            652
+          ],
+          "safeCrop": [
+            30,
+            356,
+            372,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            17,
+            106,
+            342,
+            240
+          ],
+          "scale": 0.8431,
+          "finalBbox": [
+            55,
+            199,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 199,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            326,
+            804,
+            652
+          ],
+          "safeCrop": [
+            432,
+            356,
+            774,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            24,
+            97,
+            320,
+            235
+          ],
+          "scale": 0.9257,
+          "finalBbox": [
+            55,
+            184,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 184,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            326,
+            1206,
+            652
+          ],
+          "safeCrop": [
+            834,
+            356,
+            1176,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            118,
+            305,
+            248
+          ],
+          "scale": 0.8984,
+          "finalBbox": [
+            55,
+            195,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 195,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            326,
+            1608,
+            652
+          ],
+          "safeCrop": [
+            1236,
+            356,
+            1578,
+            622
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            113,
+            308,
+            236
+          ],
+          "scale": 0.8896,
+          "finalBbox": [
+            55,
+            203,
+            329,
+            312
+          ],
+          "margins": {
+            "left": 55,
+            "top": 203,
+            "right": 55,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            652,
+            402,
+            978
+          ],
+          "safeCrop": [
+            30,
+            682,
+            372,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            48,
+            58,
+            322,
+            207
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            55,
+            159,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 159,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            402,
+            652,
+            804,
+            978
+          ],
+          "safeCrop": [
+            432,
+            682,
+            774,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            24,
+            58,
+            342,
+            218
+          ],
+          "scale": 0.8616,
+          "finalBbox": [
+            55,
+            170,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 170,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            804,
+            652,
+            1206,
+            978
+          ],
+          "safeCrop": [
+            834,
+            682,
+            1176,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            24,
+            57,
+            342,
+            220
+          ],
+          "scale": 0.8616,
+          "finalBbox": [
+            55,
+            168,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 168,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1206,
+            652,
+            1608,
+            978
+          ],
+          "safeCrop": [
+            1236,
+            682,
+            1578,
+            948
+          ],
+          "missing": false,
+          "sourceBbox": [
+            5,
+            58,
+            279,
+            215
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            55,
+            151,
+            329,
+            308
+          ],
+          "margins": {
+            "left": 55,
+            "top": 151,
+            "right": 55,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 55,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              179,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              179,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              55,
+              187,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              187,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              56,
+              216,
+              327,
+              312
+            ],
+            "margins": [
+              56,
+              216,
+              57,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              63,
+              140,
+              321,
+              312
+            ],
+            "margins": [
+              63,
+              140,
+              63,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              199,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              199,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              184,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              184,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              195,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              195,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              55,
+              203,
+              329,
+              312
+            ],
+            "margins": [
+              55,
+              203,
+              55,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              55,
+              159,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              159,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              170,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              170,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              168,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              168,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              55,
+              151,
+              329,
+              308
+            ],
+            "margins": [
+              55,
+              151,
+              55,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "compy_pack",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df891072c819189b9fb61e0264734.png",
+      "output": "public\\assets\\companions\\compy_pack_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1428171,
+      "finalRemovedMagentaPixels": 881,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing three-compy pack run with offset foot timing",
+      "actionNote": "right-facing group lunge and bite flurry poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "safeCrop": [
+            30,
+            30,
+            354,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            3,
+            105,
+            289,
+            247
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            49,
+            170,
+            335,
+            312
+          ],
+          "margins": {
+            "left": 49,
+            "top": 170,
+            "right": 49,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "safeCrop": [
+            414,
+            30,
+            738,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            8,
+            103,
+            279,
+            254
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            56,
+            161,
+            327,
+            312
+          ],
+          "margins": {
+            "left": 56,
+            "top": 161,
+            "right": 57,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "safeCrop": [
+            798,
+            30,
+            1122,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            108,
+            276,
+            250
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            54,
+            170,
+            330,
+            312
+          ],
+          "margins": {
+            "left": 54,
+            "top": 170,
+            "right": 54,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "safeCrop": [
+            1182,
+            30,
+            1506,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            117,
+            269,
+            256
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            57,
+            173,
+            326,
+            312
+          ],
+          "margins": {
+            "left": 57,
+            "top": 173,
+            "right": 58,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "safeCrop": [
+            30,
+            371,
+            354,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            19,
+            77,
+            297,
+            211
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            53,
+            178,
+            331,
+            312
+          ],
+          "margins": {
+            "left": 53,
+            "top": 178,
+            "right": 53,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "safeCrop": [
+            414,
+            371,
+            738,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            4,
+            83,
+            303,
+            213
+          ],
+          "scale": 0.9766,
+          "finalBbox": [
+            46,
+            185,
+            338,
+            312
+          ],
+          "margins": {
+            "left": 46,
+            "top": 185,
+            "right": 46,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "safeCrop": [
+            798,
+            371,
+            1122,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            82,
+            302,
+            218
+          ],
+          "scale": 0.9669,
+          "finalBbox": [
+            46,
+            181,
+            338,
+            312
+          ],
+          "margins": {
+            "left": 46,
+            "top": 181,
+            "right": 46,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "safeCrop": [
+            1182,
+            371,
+            1506,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            83,
+            289,
+            221
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            47,
+            174,
+            336,
+            312
+          ],
+          "margins": {
+            "left": 47,
+            "top": 174,
+            "right": 48,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "safeCrop": [
+            30,
+            713,
+            354,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            35,
+            25,
+            276,
+            152
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            71,
+            181,
+            312,
+            308
+          ],
+          "margins": {
+            "left": 71,
+            "top": 181,
+            "right": 72,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "safeCrop": [
+            414,
+            713,
+            738,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            31,
+            292,
+            167
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            46,
+            172,
+            338,
+            308
+          ],
+          "margins": {
+            "left": 46,
+            "top": 172,
+            "right": 46,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "safeCrop": [
+            798,
+            713,
+            1122,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            14,
+            17,
+            281,
+            169
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            58,
+            156,
+            325,
+            308
+          ],
+          "margins": {
+            "left": 58,
+            "top": 156,
+            "right": 59,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "safeCrop": [
+            1182,
+            713,
+            1506,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            38,
+            277,
+            166
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            53,
+            180,
+            330,
+            308
+          ],
+          "margins": {
+            "left": 53,
+            "top": 180,
+            "right": 54,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 46,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              49,
+              170,
+              335,
+              312
+            ],
+            "margins": [
+              49,
+              170,
+              49,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              56,
+              161,
+              327,
+              312
+            ],
+            "margins": [
+              56,
+              161,
+              57,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              54,
+              170,
+              330,
+              312
+            ],
+            "margins": [
+              54,
+              170,
+              54,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              57,
+              173,
+              326,
+              312
+            ],
+            "margins": [
+              57,
+              173,
+              58,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              53,
+              178,
+              331,
+              312
+            ],
+            "margins": [
+              53,
+              178,
+              53,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              46,
+              185,
+              338,
+              312
+            ],
+            "margins": [
+              46,
+              185,
+              46,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              46,
+              181,
+              338,
+              312
+            ],
+            "margins": [
+              46,
+              181,
+              46,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              47,
+              174,
+              336,
+              312
+            ],
+            "margins": [
+              47,
+              174,
+              48,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              71,
+              181,
+              312,
+              308
+            ],
+            "margins": [
+              71,
+              181,
+              72,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              46,
+              172,
+              338,
+              308
+            ],
+            "margins": [
+              46,
+              172,
+              46,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              58,
+              156,
+              325,
+              308
+            ],
+            "margins": [
+              58,
+              156,
+              59,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              53,
+              180,
+              330,
+              308
+            ],
+            "margins": [
+              53,
+              180,
+              54,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "exp_chaser",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2df91a2b74819198f03142f5a91130.png",
+      "output": "public\\assets\\companions\\exp_chaser_sprite_sheet_p04j.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1353634,
+      "finalRemovedMagentaPixels": 3936,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing hover pursuit with rotation, chase tilt, and scan particles",
+      "actionNote": "self-contained EXP scan, particle attraction, and tracking beam poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "safeCrop": [
+            30,
+            30,
+            354,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            27,
+            110,
+            324,
+            279
+          ],
+          "scale": 0.9226,
+          "finalBbox": [
+            55,
+            82,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 82,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "safeCrop": [
+            414,
+            30,
+            738,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            11,
+            110,
+            288,
+            279
+          ],
+          "scale": 0.9892,
+          "finalBbox": [
+            55,
+            71,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 71,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "safeCrop": [
+            798,
+            30,
+            1122,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            147,
+            299,
+            281
+          ],
+          "scale": 0.9164,
+          "finalBbox": [
+            55,
+            115,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 115,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "safeCrop": [
+            1182,
+            30,
+            1506,
+            311
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            117,
+            262,
+            279
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            61,
+            76,
+            323,
+            238
+          ],
+          "margins": {
+            "left": 61,
+            "top": 76,
+            "right": 61,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "safeCrop": [
+            30,
+            371,
+            354,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            10,
+            85,
+            324,
+            225
+          ],
+          "scale": 0.8726,
+          "finalBbox": [
+            55,
+            116,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 116,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "safeCrop": [
+            414,
+            371,
+            738,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            3,
+            86,
+            317,
+            224
+          ],
+          "scale": 0.8726,
+          "finalBbox": [
+            55,
+            118,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 118,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "safeCrop": [
+            798,
+            371,
+            1122,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            12,
+            102,
+            324,
+            219
+          ],
+          "scale": 0.8782,
+          "finalBbox": [
+            55,
+            135,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 135,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "safeCrop": [
+            1182,
+            371,
+            1506,
+            653
+          ],
+          "missing": false,
+          "sourceBbox": [
+            4,
+            54,
+            299,
+            206
+          ],
+          "scale": 0.9288,
+          "finalBbox": [
+            55,
+            97,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 55,
+            "top": 97,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "safeCrop": [
+            30,
+            713,
+            354,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            24,
+            4,
+            294,
+            193
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            57,
+            45,
+            327,
+            234
+          ],
+          "margins": {
+            "left": 57,
+            "top": 45,
+            "right": 57,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "safeCrop": [
+            414,
+            713,
+            738,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            0,
+            299,
+            191
+          ],
+          "scale": 0.9164,
+          "finalBbox": [
+            55,
+            59,
+            329,
+            234
+          ],
+          "margins": {
+            "left": 55,
+            "top": 59,
+            "right": 55,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "safeCrop": [
+            798,
+            713,
+            1122,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            25,
+            324,
+            192
+          ],
+          "scale": 0.8457,
+          "finalBbox": [
+            55,
+            93,
+            329,
+            234
+          ],
+          "margins": {
+            "left": 55,
+            "top": 93,
+            "right": 55,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "safeCrop": [
+            1182,
+            713,
+            1506,
+            994
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            37,
+            300,
+            184
+          ],
+          "scale": 0.9133,
+          "finalBbox": [
+            55,
+            100,
+            329,
+            234
+          ],
+          "margins": {
+            "left": 55,
+            "top": 100,
+            "right": 55,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 45,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              55,
+              82,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              82,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              55,
+              71,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              71,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              55,
+              115,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              115,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              61,
+              76,
+              323,
+              238
+            ],
+            "margins": [
+              61,
+              76,
+              61,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              55,
+              116,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              116,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              55,
+              118,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              118,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              55,
+              135,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              135,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              55,
+              97,
+              329,
+              238
+            ],
+            "margins": [
+              55,
+              97,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              57,
+              45,
+              327,
+              234
+            ],
+            "margins": [
+              57,
+              45,
+              57,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              55,
+              59,
+              329,
+              234
+            ],
+            "margins": [
+              55,
+              59,
+              55,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              55,
+              93,
+              329,
+              234
+            ],
+            "margins": [
+              55,
+              93,
+              55,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              55,
+              100,
+              329,
+              234
+            ],
+            "margins": [
+              55,
+              100,
+              55,
+              150
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    }
+  ]
+}

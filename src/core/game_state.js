@@ -93,6 +93,10 @@ export class GameState {
     this.hasZeroEvolved = false;
     this.selectedEvolution = null;
     this.unlockedZeroRoutes = {};
+    this.companion = null;
+    this.selectedCompanionId = null;
+    this.companionEggDroppedThisRun = false;
+    this.companionEggCollected = false;
     this.selectedStage = 'jungle';
     this.selectedDifficulty = 'normal';
     this.selectedDino = 'velociraptor';

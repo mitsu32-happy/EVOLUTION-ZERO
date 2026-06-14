@@ -12,6 +12,18 @@ import { createBottomNav } from './bottom_nav.js';
 import { ConfirmDialog } from './confirm_dialog.js';
 import { playPressFeedback } from './ui_feedback.js';
 import { drawButtonFrame, drawPanel, drawScreenBackground, UI_COLORS } from './ui_theme.js';
+import {
+  COMPANION_DINOS,
+  COMPANION_BY_ID,
+  COMPANION_HATCH_CONFIG,
+  COMPANION_TYPES,
+  COMPANION_UPGRADE_TYPES,
+  COMPANION_UPGRADE_TYPE_IDS,
+  getCompanionById,
+  getCompanionEffectSummary,
+  getCompanionUpgradeCost,
+  getCompanionUpgradeLevelsFromState,
+} from '../data/companion_dinos.js';
 
 const RESEARCH_ASSET_PATHS = {
   researchBackground: 'assets/ui/research/research_background.png',
@@ -23,6 +35,14 @@ const RESEARCH_ASSET_PATHS = {
   cardCompleted: 'assets/ui/research/research_card_done_a12b.png',
   costBadge: 'assets/ui/research/research_button_study_a12b.png',
   analysisConvertPanel: 'assets/ui/research/analysis_convert_panel.png',
+  companionOwnedPanel: 'assets/ui/companions/owned_companion_panel_p06d.png',
+  companionHatchDevice: 'assets/ui/companions/egg_incubator_p06d.png',
+  companionHatchButton: 'assets/ui/companions/hatch_button_p06d.png',
+  companionUpgradeCard: 'assets/ui/companions/upgrade_card_p06d.png',
+  companionUpgradeButton: 'assets/ui/companions/upgrade_button_p06d.png',
+  companionUpgradeSelectPanel: 'assets/ui/companions/owned_companion_panel_p06d.png',
+  companionUpgradeOptionCard: 'assets/ui/companions/upgrade_card_p06d.png',
+  companionUpgradeOptionButton: 'assets/ui/companions/upgrade_button_p06d.png',
 };
 
 const RESEARCH_ICON_PATHS = {
@@ -45,6 +65,8 @@ const RESEARCH_ICON_PATHS = {
   skillAccelBlades: 'assets/ui/skills/icon_accel_blades.png',
   skillPredatorMark: 'assets/ui/skills/icon_predator_mark.png',
   skillFlameBreath: 'assets/ui/skills/icon_flame_breath.png',
+  companionResearch: 'assets/ui/research/icons/icon_companion_tab_p06d.png',
+  companionUnknown: 'assets/ui/research/icons/icon_companion_unknown_p06d.png',
 };
 
 const CORE_PANEL = { x: 8, y: 102, width: 374, height: 88 };
@@ -78,13 +100,25 @@ const CARD_LAYOUT = {
 const CATEGORY_COLORS = {
   [RESEARCH_CATEGORY_IDS.bodyEnhancement]: UI_COLORS.dna,
   [RESEARCH_CATEGORY_IDS.adaptationAbility]: UI_COLORS.gold,
+  [RESEARCH_CATEGORY_IDS.companion]: 0x7cf7d4,
   [RESEARCH_CATEGORY_IDS.specialMutation]: 0xff6b62,
   [RESEARCH_CATEGORY_IDS.unknownDomain]: 0x91a3b8,
   [RESEARCH_CATEGORY_IDS.analysisConversion]: 0xffb13b,
 };
 
 export class ResearchScreen {
-  constructor({ width, height, saveManager, assetLoader = null, onHome, onResearch, onCodex, onOptions }) {
+  constructor({
+    width,
+    height,
+    saveManager,
+    assetLoader = null,
+    onHome,
+    onResearch,
+    onCodex,
+    onOptions,
+    onCompanionResearchUnlocked,
+    onCompanionTabViewed,
+  }) {
     this.width = width;
     this.height = height;
     this.saveManager = saveManager;
@@ -93,6 +127,8 @@ export class ResearchScreen {
     this.onResearch = onResearch;
     this.onCodex = onCodex;
     this.onOptions = onOptions;
+    this.onCompanionResearchUnlocked = onCompanionResearchUnlocked;
+    this.onCompanionTabViewed = onCompanionTabViewed;
     this.selectedCategory = RESEARCH_CATEGORY_IDS.bodyEnhancement;
     this.textures = new Map();
 
@@ -118,6 +154,9 @@ export class ResearchScreen {
     this.bodyScrollTrack = new Graphics();
     this.bodyScrollThumb = new Graphics();
     this.noticeText = this.createText('', 12, '#ffd36b', 320);
+    this.hatchEffectSprite = new Sprite(Texture.EMPTY);
+    this.hatchEffectSprite.anchor.set(0.5);
+    this.hatchEffectSprite.visible = false;
     this.bottomNav = createBottomNav({
       width: this.width,
       height: this.height,
@@ -134,6 +173,14 @@ export class ResearchScreen {
     this.cards = [];
     this.bodyScrollOffset = 0;
     this.bodyScrollDrag = null;
+    this.companionResearchMode = 'owned';
+    this.companionOwnedPage = 0;
+    this.companionFocusIndex = 0;
+    this.companionUpgradeChoiceTargetId = null;
+    this.companionUpgradeChoiceFocusIndex = 0;
+    this.companionUpgradeChoiceShowFocus = false;
+    this.companionUnlockTutorialQueued = false;
+    this.companionTabTutorialQueued = false;
     this.gamepadFocusArea = 'card';
     this.gamepadFocusIndex = 0;
     this.gamepadScrollAccumulator = 0;
@@ -166,11 +213,17 @@ export class ResearchScreen {
       this.bodyScrollTrack,
       this.bodyScrollThumb,
       this.noticeText,
+      this.hatchEffectSprite,
       this.bottomNav.view,
     );
 
     this.createCategoryButtons();
     this.createCards();
+    this.companionResearchView = this.createCompanionResearchView();
+    this.companionUpgradeChoiceModal = this.createCompanionUpgradeChoiceModal();
+    this.view.addChild(this.companionResearchView.view);
+    this.view.addChild(this.hatchEffectSprite);
+    this.view.addChild(this.companionUpgradeChoiceModal.view);
     this.view.addChild(this.confirmDialog.view);
     this.drawStatic();
     this.loadAssets();
@@ -204,6 +257,20 @@ export class ResearchScreen {
       this.loadTexture(key, path).then((texture) => {
         if (texture) {
           this.textures.set(`icon:${name}`, texture);
+          this.applyTextures();
+          this.render();
+        }
+      });
+    });
+
+    [
+      ['companionEgg', ASSET_KEYS.companions?.eggIcon, 'assets/companions/companion_egg_p01.png'],
+      ['companionHatchEffect', ASSET_KEYS.companions?.hatchEffect, 'assets/companions/hatch_effect_p01.png'],
+      ...Object.values(COMPANION_BY_ID).map((companion) => [`companionIcon:${companion.id}`, companion.iconAssetKey, null]),
+    ].forEach(([name, key, path]) => {
+      this.loadTexture(key, path).then((texture) => {
+        if (texture) {
+          this.textures.set(name, texture);
           this.applyTextures();
           this.render();
         }
@@ -361,11 +428,154 @@ export class ResearchScreen {
     this.view.addChild(this.pageText);
   }
 
+  createCompanionResearchView() {
+    const makeToggle = (label, x, mode) => {
+      const button = {
+        view: new Container(),
+        bg: new Graphics(),
+        label: this.createText(label, 12, '#e7fff6', 76),
+        mode,
+      };
+      button.view.position.set(x, 350);
+      button.view.hitArea = new Rectangle(0, 0, 94, 34);
+      button.view.eventMode = 'static';
+      button.view.cursor = 'pointer';
+      button.label.anchor.set(0.5);
+      button.label.position.set(47, 17);
+      button.view.on('pointertap', () => {
+        this.companionResearchMode = mode;
+        this.noticeText.text = '';
+        this.render();
+      });
+      button.view.addChild(button.bg, button.label);
+      return button;
+    };
+
+    const makeActionButton = (label, x, y, width, onTap) => {
+      const button = {
+        view: new Container(),
+        sprite: new Sprite(Texture.EMPTY),
+        bg: new Graphics(),
+        label: this.createText(label, 12, '#071015', width - 10),
+      };
+      button.view.position.set(x, y);
+      button.view.hitArea = new Rectangle(0, 0, width, 34);
+      button.view.eventMode = 'static';
+      button.view.cursor = 'pointer';
+      button.label.anchor.set(0.5);
+      button.label.position.set(width / 2, 17);
+      button.view.on('pointertap', onTap);
+      button.view.addChild(button.sprite, button.bg, button.label);
+      return button;
+    };
+
+    const view = new Container();
+    view.visible = false;
+    const panel = new Sprite(Texture.EMPTY);
+    const panelFallback = new Graphics();
+    panel.position.set(18, 394);
+    const modeOwned = makeToggle('所持お供', 84, 'owned');
+    const modeHatch = makeToggle('卵孵化', 210, 'hatch');
+    const unknownTitle = this.createText('未解析の研究領域', 18, '#fff0b4', 280);
+    const unknownBody = this.createText('進化研究を進めることで詳細が判明します。', 11, '#cbe0da', 300);
+    unknownTitle.position.set(52, 430);
+    unknownBody.position.set(52, 466);
+
+    const hatchDevice = new Sprite(Texture.EMPTY);
+    hatchDevice.anchor.set(0.5);
+    hatchDevice.position.set(this.width / 2, 484);
+    const hatchTitle = this.createText('', 17, '#fff0b4', 280);
+    const hatchBody = this.createText('', 10.5, '#d7fff2', 300);
+    const hatchCost = this.createText('', 11, '#cbe0da', 300);
+    hatchTitle.anchor.set(0.5, 0);
+    hatchTitle.position.set(this.width / 2, 568);
+    hatchBody.position.set(48, 596);
+    hatchCost.position.set(48, 626);
+    const hatchButton = makeActionButton('孵化させる', 118, 650, 154, () => this.handleCompanionHatchDirect());
+
+    const ownedEmpty = this.createText('所持しているお供恐竜はありません。卵を孵化するとここに表示されます。', 11, '#cbe0da', 300);
+    ownedEmpty.position.set(48, 430);
+    const ownedRows = [];
+    for (let index = 0; index < 3; index += 1) {
+      const row = {
+        view: new Container(),
+        sprite: new Sprite(Texture.EMPTY),
+        bg: new Graphics(),
+        icon: new Sprite(Texture.EMPTY),
+        name: this.createText('', 12, '#ffffff', 134),
+        detail: this.createText('', 9.2, '#cbe0da', 186),
+        growth: this.createText('', 8.8, '#7cf7d4', 186),
+        button: null,
+        companionId: null,
+      };
+      row.view.position.set(26, 414 + index * 88);
+      row.icon.anchor.set(0.5);
+      row.icon.position.set(33, 38);
+      row.icon.width = 52;
+      row.icon.height = 52;
+      row.name.position.set(70, 10);
+      row.detail.position.set(70, 30);
+      row.growth.position.set(70, 52);
+      row.button = makeActionButton('強化', 260, 26, 76, () => this.upgradeResearchCompanion(row.companionId));
+      row.view.addChild(row.sprite, row.bg, row.icon, row.name, row.detail, row.growth, row.button.view);
+      ownedRows.push(row);
+    }
+    const pagePrev = makeActionButton('前', 88, 680, 64, () => this.changeCompanionOwnedPage(-1));
+    const pageNext = makeActionButton('次', 238, 680, 64, () => this.changeCompanionOwnedPage(1));
+    const pageText = this.createText('', 10, '#c8fbff', 70);
+    pageText.anchor.set(0.5);
+    pageText.position.set(this.width / 2, 697);
+
+    view.addChild(
+      panel,
+      panelFallback,
+      modeOwned.view,
+      modeHatch.view,
+      unknownTitle,
+      unknownBody,
+      hatchDevice,
+      hatchTitle,
+      hatchBody,
+      hatchCost,
+      hatchButton.view,
+      ownedEmpty,
+      ...ownedRows.map((row) => row.view),
+      pagePrev.view,
+      pageNext.view,
+      pageText,
+    );
+
+    return {
+      view,
+      panel,
+      panelFallback,
+      modeOwned,
+      modeHatch,
+      unknownTitle,
+      unknownBody,
+      hatchDevice,
+      hatchTitle,
+      hatchBody,
+      hatchCost,
+      hatchButton,
+      ownedEmpty,
+      ownedRows,
+      pagePrev,
+      pageNext,
+      pageText,
+    };
+  }
+
   handleCardAction(card) {
     const item = card.item;
 
     if (card.isConversion) {
       this.handleConversionAction(card);
+      return;
+    }
+
+    if (card.isCompanionHatch) {
+      this.handleCompanionHatchAction(card);
       return;
     }
 
@@ -515,6 +725,9 @@ export class ResearchScreen {
     if (this.confirmDialog.view.visible) {
       return this.confirmDialog.handleGamepadAction?.(actions) ?? false;
     }
+    if (this.companionUpgradeChoiceModal?.view.visible) {
+      return this.handleCompanionUpgradeChoiceGamepadAction(actions);
+    }
 
     if (this.handleGamepadScrollInput(gamepadManager)) {
       return true;
@@ -528,6 +741,10 @@ export class ResearchScreen {
     if (actions.previousPressed || actions.nextPressed) {
       this.moveCategory(actions.nextPressed ? 1 : -1);
       return true;
+    }
+
+    if (this.selectedCategory === RESEARCH_CATEGORY_IDS.companion) {
+      return this.handleCompanionResearchGamepadAction(actions);
     }
 
     if (actions.leftPressed || actions.rightPressed) {
@@ -565,6 +782,133 @@ export class ResearchScreen {
     return false;
   }
 
+  handleCompanionUpgradeChoiceGamepadAction(actions = {}) {
+    this.companionUpgradeChoiceShowFocus = true;
+    if (actions.cancelPressed || actions.pausePressed) {
+      this.closeCompanionUpgradeChoice();
+      return true;
+    }
+
+    if (actions.upPressed || actions.downPressed) {
+      const delta = actions.downPressed ? 1 : -1;
+      this.companionUpgradeChoiceFocusIndex = Math.max(0, Math.min(
+        COMPANION_UPGRADE_TYPE_IDS.length - 1,
+        this.companionUpgradeChoiceFocusIndex + delta,
+      ));
+      this.drawCompanionUpgradeChoiceModal();
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      this.confirmCompanionUpgradeChoice(COMPANION_UPGRADE_TYPE_IDS[this.companionUpgradeChoiceFocusIndex]);
+      return true;
+    }
+
+    return true;
+  }
+
+  handleCompanionResearchGamepadAction(actions = {}) {
+    if (actions.leftPressed || actions.rightPressed) {
+      this.companionResearchMode = this.companionResearchMode === 'owned' ? 'hatch' : 'owned';
+      this.companionFocusIndex = 0;
+      this.noticeText.text = '';
+      this.render();
+      return true;
+    }
+
+    if (actions.upPressed || actions.downPressed) {
+      const items = this.getCompanionGamepadItems();
+      if (items.length <= 0) {
+        return true;
+      }
+      const delta = actions.downPressed ? 1 : -1;
+      this.companionFocusIndex = Math.max(0, Math.min(items.length - 1, this.companionFocusIndex + delta));
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const items = this.getCompanionGamepadItems();
+      const item = items[this.companionFocusIndex] ?? items[0];
+      this.activateCompanionGamepadItem(item);
+      return true;
+    }
+
+    return false;
+  }
+
+  getCompanionGamepadItems() {
+    const data = this.saveManager.getData();
+    const unlocked = this.isCompanionResearchUnlocked(data);
+
+    if (!unlocked) {
+      return [];
+    }
+
+    const items = [
+      { type: 'mode', mode: 'owned', bounds: { x: 84, y: 350, width: 94, height: 34 } },
+      { type: 'mode', mode: 'hatch', bounds: { x: 210, y: 350, width: 94, height: 34 } },
+    ];
+
+    if (this.companionResearchMode === 'hatch') {
+      const item = this.getCompanionHatchEntry(data);
+      if (item) {
+        items.push({ type: 'hatch', bounds: { x: 118, y: 650, width: 154, height: 34 } });
+      }
+      return items;
+    }
+
+    this.companionResearchView.ownedRows.forEach((row) => {
+      if (row.view.visible && row.companionId) {
+        items.push({
+          type: 'upgrade',
+          companionId: row.companionId,
+          bounds: {
+            x: row.view.position.x + row.button.view.position.x,
+            y: row.view.position.y + row.button.view.position.y,
+            width: 76,
+            height: 34,
+          },
+        });
+      }
+    });
+
+    if (this.companionResearchView.pagePrev.view.visible) {
+      items.push({ type: 'page', delta: -1, bounds: { x: 88, y: 680, width: 64, height: 34 } });
+    }
+    if (this.companionResearchView.pageNext.view.visible) {
+      items.push({ type: 'page', delta: 1, bounds: { x: 238, y: 680, width: 64, height: 34 } });
+    }
+
+    return items;
+  }
+
+  activateCompanionGamepadItem(item) {
+    if (!item) {
+      return;
+    }
+
+    if (item.type === 'mode') {
+      this.companionResearchMode = item.mode;
+      this.companionFocusIndex = 0;
+      this.render();
+      return;
+    }
+
+    if (item.type === 'hatch') {
+      this.handleCompanionHatchDirect();
+      return;
+    }
+
+    if (item.type === 'upgrade') {
+      this.upgradeResearchCompanion(item.companionId, { showFocus: true });
+      return;
+    }
+
+    if (item.type === 'page') {
+      this.changeCompanionOwnedPage(item.delta);
+    }
+  }
+
   moveCategory(delta) {
     const currentIndex = RESEARCH_CATEGORIES.findIndex((category) => category.id === this.selectedCategory);
     const nextIndex = (currentIndex + delta + RESEARCH_CATEGORIES.length) % RESEARCH_CATEGORIES.length;
@@ -574,6 +918,119 @@ export class ResearchScreen {
     this.gamepadFocusIndex = 0;
     this.noticeText.text = '';
     this.render();
+  }
+
+  handleCompanionHatchAction(card) {
+    const item = card.item;
+
+    if (item.action === 'wait') {
+      this.noticeText.text = '孵化完了まで少し待ちましょう';
+      return;
+    }
+
+    if (!card.canBuy) {
+      this.noticeText.text = 'DNAまたは研究Ptが不足しています';
+      return;
+    }
+
+    if (item.action === 'claim') {
+      this.confirmDialog.show({
+        title: '孵化完了',
+        message: '卵からお供恐竜を受け取りますか？',
+        detail: '未所持のお供恐竜からランダムで加入します。',
+        confirmLabel: '受け取る',
+        cancelLabel: 'あとで',
+        onConfirm: () => {
+          const result = this.saveManager.completeCompanionEggIncubation({ force: true });
+          const name = result.companion?.displayName ?? (result.duplicateReward ? 'DNA報酬' : 'お供恐竜');
+          this.noticeText.text = result.success ? `${name}を獲得しました` : '受け取りできませんでした';
+          this.saveManager.markTutorialComplete?.('companionObtained');
+          if (result.success) {
+            this.showCompanionHatchResult(result);
+          }
+          this.render();
+        },
+      });
+      return;
+    }
+
+    this.confirmDialog.show({
+      title: '卵を孵化',
+      message: 'DNAと研究Ptを使って卵を孵化しますか？',
+      detail: `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost}\n必要研究Pt ${COMPANION_HATCH_CONFIG.researchPtCost}`,
+      confirmLabel: '孵化',
+      cancelLabel: 'やめる',
+      onConfirm: () => {
+        const instant = this.getDebugFlag('debugCompanionInstantHatch') || this.getDebugFlag('debugCompanionHatchNow');
+        const result = this.saveManager.startCompanionEggIncubation({ instant });
+        if (instant && result.success) {
+          const hatch = this.saveManager.completeCompanionEggIncubation({ force: true });
+          this.noticeText.text = hatch.companion ? `${hatch.companion.displayName}を獲得しました` : '孵化が完了しました';
+          if (hatch.success) {
+            this.showCompanionHatchResult(hatch);
+          }
+        } else {
+          this.noticeText.text = result.success ? '孵化を開始しました' : '孵化できませんでした';
+        }
+        this.saveManager.markTutorialComplete?.('companionEggResearch');
+        this.render();
+      },
+    });
+
+  }
+
+  showCompanionHatchResult(result) {
+    this.flashHatchEffect();
+
+    if (result.companion) {
+      const companion = result.companion;
+      const typeLabel = COMPANION_TYPES[companion.type]?.label ?? '補助型';
+      this.confirmDialog.show({
+        title: 'お供恐竜を入手',
+        message: `${companion.displayName}が仲間になりました。`,
+        detail: `${typeLabel}\n${getCompanionEffectSummary(companion.id, 1)}\nホームでセットできます。`,
+        confirmLabel: 'OK',
+        cancelLabel: '閉じる',
+      });
+      return;
+    }
+
+    if (result.duplicateReward) {
+      this.confirmDialog.show({
+        title: '代替報酬',
+        message: 'すべてのお供恐竜を入手済みです。',
+        detail: `ボーナスDNA +${result.duplicateReward.dna ?? 0}`,
+        confirmLabel: 'OK',
+        cancelLabel: '閉じる',
+      });
+    }
+  }
+
+  flashHatchEffect() {
+    const texture = this.textures.get('companionHatchEffect');
+    if (!texture) {
+      return;
+    }
+
+    this.hatchEffectSprite.texture = texture;
+    this.hatchEffectSprite.visible = true;
+    this.hatchEffectSprite.alpha = 0.92;
+    this.hatchEffectSprite.scale.set(0.7);
+    this.hatchEffectSprite.position.set(this.width / 2, 410);
+
+    window.setTimeout?.(() => {
+      if (this.hatchEffectSprite) {
+        this.hatchEffectSprite.visible = false;
+      }
+    }, 1100);
+  }
+
+  getDebugFlag(name) {
+    if (typeof window === 'undefined' || !import.meta.env.DEV) {
+      return false;
+    }
+
+    return new URLSearchParams(window.location.search).get(name) === '1';
   }
 
   moveCardFocus(delta) {
@@ -662,6 +1119,12 @@ export class ResearchScreen {
     if (!this.view.visible || this.confirmDialog.view.visible) {
       return null;
     }
+    if (this.companionUpgradeChoiceModal?.view.visible) {
+      const row = this.companionUpgradeChoiceModal.rows[this.companionUpgradeChoiceFocusIndex];
+      return row
+        ? { x: row.view.position.x, y: row.view.position.y, width: 292, height: 64 }
+        : null;
+    }
 
     if (this.gamepadFocusArea === 'category') {
       const categoryIndex = RESEARCH_CATEGORIES.findIndex((category) => category.id === this.selectedCategory);
@@ -675,6 +1138,11 @@ export class ResearchScreen {
       };
     }
 
+    if (this.selectedCategory === RESEARCH_CATEGORY_IDS.companion) {
+      const item = this.getCompanionGamepadItems()[this.companionFocusIndex];
+      return item?.bounds ?? null;
+    }
+
     const card = this.getVisibleGamepadCards()[this.gamepadFocusIndex];
     if (!card) {
       return null;
@@ -685,6 +1153,149 @@ export class ResearchScreen {
       width: card.layout?.width ?? CARD_LAYOUT.width,
       height: CARD.height,
     };
+  }
+
+  createCompanionUpgradeChoiceModal() {
+    const modal = {
+      view: new Container(),
+      overlay: new Graphics(),
+      panelFrame: new Sprite(Texture.EMPTY),
+      panel: new Graphics(),
+      title: this.createText('強化項目を選択', 18, '#fff0b4', 260),
+      body: this.createText('', 10.5, '#d7fff2', 300),
+      rows: [],
+      cancel: {
+        view: new Container(),
+        bg: new Graphics(),
+        label: this.createText('キャンセル', 11, '#e7fff6', 84),
+      },
+    };
+
+    modal.view.visible = false;
+    modal.overlay
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x000000, alpha: 0.58 });
+    modal.overlay.eventMode = 'static';
+    modal.overlay.on('pointertap', () => this.closeCompanionUpgradeChoice());
+    modal.panel.position.set(30, 220);
+    modal.title.anchor.set(0.5, 0);
+    modal.title.position.set(this.width / 2, 244);
+    modal.body.position.set(54, 282);
+    modal.body.style.lineHeight = 14;
+
+    COMPANION_UPGRADE_TYPE_IDS.forEach((typeId, index) => {
+      const row = {
+        typeId,
+        view: new Container(),
+        frame: new Sprite(Texture.EMPTY),
+        bg: new Graphics(),
+        name: this.createText('', 13, '#ffffff', 88),
+        level: this.createText('', 10, '#fff0b4', 88),
+        desc: this.createText('', 9.5, '#cbe0da', 148),
+        cost: this.createText('', 10, '#d7fff2', 70),
+        buttonFrame: new Sprite(Texture.EMPTY),
+        button: this.createText('選択', 11, '#071015', 54),
+      };
+      row.view.position.set(50, 324 + index * 76);
+      row.view.hitArea = new Rectangle(0, 0, 292, 64);
+      row.view.eventMode = 'static';
+      row.view.cursor = 'pointer';
+      row.view.on('pointertap', () => this.confirmCompanionUpgradeChoice(typeId));
+      row.name.position.set(16, 8);
+      row.level.position.set(16, 30);
+      row.desc.position.set(104, 9);
+      row.desc.style.lineHeight = 12;
+      row.cost.position.set(104, 42);
+      row.buttonFrame.position.set(232, 17);
+      row.buttonFrame.width = 52;
+      row.buttonFrame.height = 30;
+      row.button.anchor.set(0.5);
+      row.button.position.set(258, 32);
+      row.view.addChild(row.frame, row.bg, row.name, row.level, row.desc, row.cost, row.buttonFrame, row.button);
+      modal.rows.push(row);
+    });
+
+    modal.cancel.view.position.set(144, 560);
+    modal.cancel.view.hitArea = new Rectangle(0, 0, 104, 34);
+    modal.cancel.view.eventMode = 'static';
+    modal.cancel.view.cursor = 'pointer';
+    modal.cancel.view.on('pointertap', () => this.closeCompanionUpgradeChoice());
+    modal.cancel.label.anchor.set(0.5);
+    modal.cancel.label.position.set(52, 17);
+    modal.cancel.view.addChild(modal.cancel.bg, modal.cancel.label);
+
+    modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, ...modal.rows.map((row) => row.view), modal.cancel.view);
+    return modal;
+  }
+
+  drawCompanionUpgradeChoiceModal() {
+    const modal = this.companionUpgradeChoiceModal;
+    if (!modal?.view.visible) {
+      return;
+    }
+
+    const data = this.saveManager.getData();
+    const companion = getCompanionById(this.companionUpgradeChoiceTargetId);
+    const state = data.companion ?? {};
+    const levels = getCompanionUpgradeLevelsFromState(state, companion?.id);
+    const panelTexture = this.textures.get('companionUpgradeSelectPanel');
+    const optionTexture = this.textures.get('companionUpgradeOptionCard');
+    const buttonTexture = this.textures.get('companionUpgradeOptionButton');
+
+    modal.panelFrame.texture = panelTexture ?? Texture.EMPTY;
+    modal.panelFrame.visible = !!panelTexture;
+    modal.panelFrame.position.set(30, 220);
+    modal.panelFrame.width = this.width - 60;
+    modal.panelFrame.height = 382;
+    modal.panelFrame.alpha = 0.94;
+    modal.panel
+      .clear()
+      .roundRect(0, 0, this.width - 60, 382, 18)
+      .fill({ color: 0x031216, alpha: panelTexture ? 0.2 : 0.96 })
+      .stroke({ color: 0x7cf7d4, width: 2, alpha: panelTexture ? 0.18 : 0.72 })
+      .roundRect(8, 8, this.width - 76, 366, 14)
+      .stroke({ color: 0xffd36b, width: 1, alpha: panelTexture ? 0.1 : 0.34 });
+    modal.body.text = companion
+      ? `${companion.displayName}を個別に強化します。`
+      : '強化するお供を選択してください。';
+
+    modal.rows.forEach((row, index) => {
+      const type = COMPANION_UPGRADE_TYPES[row.typeId];
+      const level = levels[row.typeId] ?? 1;
+      const cost = companion ? getCompanionUpgradeCost(companion.id, level, row.typeId) : null;
+      const canUpgrade = Boolean(cost && (data.ownedDna ?? 0) >= cost);
+      const focused = Boolean(this.companionUpgradeChoiceShowFocus) && index === this.companionUpgradeChoiceFocusIndex;
+      row.frame.texture = optionTexture ?? Texture.EMPTY;
+      row.frame.visible = !!optionTexture;
+      row.frame.width = 292;
+      row.frame.height = 64;
+      row.frame.alpha = focused ? 1 : 0.84;
+      row.bg
+        .clear()
+        .roundRect(0, 0, 292, 64, 12)
+        .fill({ color: focused ? 0x0b3038 : 0x06191d, alpha: optionTexture ? 0.24 : 0.94 })
+        .stroke({ color: focused ? 0xffd36b : 0x35d7ff, width: focused ? 2 : 1, alpha: focused ? 0.82 : optionTexture ? 0.16 : 0.42 })
+        .roundRect(232, 17, 52, 30, 9)
+        .fill({ color: canUpgrade ? 0xffd36b : 0x28464c, alpha: buttonTexture ? 0.12 : 0.92 });
+      row.buttonFrame.texture = buttonTexture ?? Texture.EMPTY;
+      row.buttonFrame.visible = !!buttonTexture;
+      row.buttonFrame.alpha = canUpgrade ? 1 : 0.48;
+      row.name.text = type.label;
+      row.level.text = cost ? `Lv ${level} -> ${level + 1}` : `Lv ${level} MAX`;
+      row.desc.text = type.description;
+      row.cost.text = cost ? `DNA ${cost}` : 'MAX';
+      row.button.text = cost ? '選択' : 'MAX';
+      row.button.style.fill = canUpgrade ? '#e7fff6' : '#8da49e';
+      row.button.style.stroke = { color: 0x031216, width: 2 };
+      row.view.eventMode = cost ? 'static' : 'none';
+      row.view.cursor = cost ? 'pointer' : 'default';
+    });
+
+    modal.cancel.bg
+      .clear()
+      .roundRect(0, 0, 104, 34, 10)
+      .fill({ color: 0x08272f, alpha: 0.92 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: 0.64 });
   }
 
   drawStatic() {
@@ -713,6 +1324,9 @@ export class ResearchScreen {
     this.summaryBody.position.set(SUMMARY_PANEL.x + 16, SUMMARY_PANEL.y + 34);
     this.noticeText.anchor.set(0.5);
     this.noticeText.position.set(this.width / 2, NOTICE_Y);
+    this.hatchEffectSprite.position.set(this.width / 2, 410);
+    this.hatchEffectSprite.width = 180;
+    this.hatchEffectSprite.height = 180;
   }
 
   applyTextures() {
@@ -731,27 +1345,31 @@ export class ResearchScreen {
     const data = this.saveManager.getData();
     const researchPt = data.researchPt ?? Math.floor((data.totalExpGained ?? 0) * 0.12);
     const selected = RESEARCH_CATEGORIES.find((category) => category.id === this.selectedCategory) ?? RESEARCH_CATEGORIES[0];
+    const categoryView = this.getCategoryView(selected, data);
 
     this.dnaText.text = `DNA ${this.formatNumber(data.ownedDna ?? 0)}`;
     this.researchPtText.text = `研究Pt ${this.formatNumber(researchPt)}`;
-    this.categoryTitle.text = selected.name;
-    this.categoryNote.text = selected.material;
-    this.summaryTitle.text = selected.name;
-    this.summaryBody.text = this.truncate(selected.role, 34);
+    this.categoryTitle.text = categoryView.name;
+    this.categoryNote.text = categoryView.material;
+    this.summaryTitle.text = categoryView.name;
+    this.summaryBody.text = this.truncate(categoryView.role, 34);
     this.scrollHintText.text = '';
     this.renderBodyScrollBar(selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement);
 
     this.drawSummary(selected);
     this.renderCategoryButtons();
     this.renderCards(selected, data);
+    this.drawCompanionUpgradeChoiceModal();
   }
 
   renderCategoryButtons() {
+    const data = this.saveManager.getData();
     this.categoryButtons.forEach((button) => {
       const selected = button.category.id === this.selectedCategory;
       const color = CATEGORY_COLORS[button.category.id] ?? UI_COLORS.dna;
       const texture = selected ? this.textures.get('categoryTabSelected') : this.textures.get('categoryTab');
-      const iconTexture = this.textures.get(`icon:${button.category.iconName}`) ?? null;
+      const viewModel = this.getCategoryView(button.category, data);
+      const iconTexture = this.textures.get(`icon:${viewModel.iconName}`) ?? null;
 
       button.sprite.texture = texture ?? Texture.EMPTY;
       button.sprite.visible = !!texture;
@@ -773,11 +1391,24 @@ export class ResearchScreen {
           radius: 8,
         });
       }
+      button.label.text = viewModel.shortName;
       button.label.style.fill = selected ? '#ffffff' : '#cbe0da';
     });
   }
 
   renderCards(selected, data) {
+    if (selected.id === RESEARCH_CATEGORY_IDS.companion) {
+      this.cards.forEach((card) => {
+        card.view.visible = false;
+      });
+      this.renderPageControls(0);
+      this.renderBodyScrollBar(false);
+      this.renderCompanionResearch(data);
+      return;
+    }
+
+    this.companionResearchView.view.visible = false;
+
     if (selected.id === RESEARCH_CATEGORY_IDS.analysisConversion) {
       this.renderConversionCards();
       return;
@@ -785,8 +1416,9 @@ export class ResearchScreen {
 
     const allItems = getResearchItemsByCategory(selected.id);
     const isBodyCategory = selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement;
-    const items = isBodyCategory ? allItems : allItems.slice(0, 3);
-    const maxScroll = this.getBodyMaxScroll(allItems.length);
+    const bodyItems = allItems;
+    const items = isBodyCategory ? bodyItems : allItems.slice(0, 3);
+    const maxScroll = this.getBodyMaxScroll(bodyItems.length);
 
     this.bodyScrollOffset = isBodyCategory ? Math.min(this.bodyScrollOffset, maxScroll) : 0;
     this.renderBodyScrollBar(isBodyCategory);
@@ -809,6 +1441,11 @@ export class ResearchScreen {
         return;
       }
 
+      if (item.isCompanionHatch) {
+        this.renderCompanionHatchCard(card, item, data);
+        return;
+      }
+
       const level = data.researchLevels?.[item.id] ?? 0;
       const cost = getResearchCostDetail(item, level);
       const isMax = item.maxLevel ? level >= item.maxLevel : false;
@@ -826,6 +1463,7 @@ export class ResearchScreen {
 
       card.item = item;
       card.isConversion = false;
+      card.isCompanionHatch = false;
       card.conversionRate = null;
       card.isMax = isMax;
       card.isLocked = isLocked;
@@ -893,6 +1531,505 @@ export class ResearchScreen {
     });
   }
 
+  getCategoryView(category, data) {
+    if (category.id !== RESEARCH_CATEGORY_IDS.companion) {
+      return category;
+    }
+
+    if (!this.isCompanionResearchUnlocked(data)) {
+      return {
+        ...category,
+        name: '???',
+        shortName: '???',
+        iconName: 'companionUnknown',
+        material: '未解析',
+        role: 'まだ解析されていない研究領域です。条件を満たすと解放されます。',
+      };
+    }
+
+    return {
+      ...category,
+      name: 'お供研究',
+      shortName: 'お供',
+      iconName: 'companionResearch',
+      material: 'DNA + 研究Pt',
+      role: '卵の孵化と所持お供恐竜の強化を行います。',
+    };
+  }
+
+  isCompanionResearchUnlocked(data) {
+    const companion = data?.companion ?? {};
+
+    return Boolean(
+      companion.eggDiscovered
+      || companion.eggPending
+      || companion.eggIncubating
+      || companion.lastHatchedId
+      || (Array.isArray(companion.ownedIds) && companion.ownedIds.length > 0),
+    );
+  }
+
+  renderCompanionResearch(data) {
+    const ui = this.companionResearchView;
+    const unlocked = this.isCompanionResearchUnlocked(data);
+    const panelTexture = this.textures.get('companionOwnedPanel');
+
+    this.queueCompanionResearchTutorials(unlocked);
+
+    ui.view.visible = true;
+    ui.panel.texture = panelTexture ?? Texture.EMPTY;
+    ui.panel.visible = !!panelTexture;
+    ui.panel.position.set(18, 394);
+    ui.panel.width = 354;
+    ui.panel.height = 292;
+    ui.panel.alpha = 0.96;
+    ui.panelFallback.clear();
+    if (!panelTexture) {
+      drawPanel(ui.panelFallback, 18, 394, 354, 292, {
+        accent: CATEGORY_COLORS[RESEARCH_CATEGORY_IDS.companion],
+        alpha: 0.72,
+        strokeAlpha: 0.5,
+        radius: 10,
+      });
+    }
+
+    this.drawCompanionModeToggle(ui.modeOwned, this.companionResearchMode === 'owned', unlocked);
+    this.drawCompanionModeToggle(ui.modeHatch, this.companionResearchMode === 'hatch', unlocked);
+    ui.modeOwned.view.visible = unlocked;
+    ui.modeHatch.view.visible = unlocked;
+    ui.unknownTitle.visible = !unlocked;
+    ui.unknownBody.visible = !unlocked;
+
+    if (!unlocked) {
+      ui.hatchDevice.visible = false;
+      ui.hatchTitle.visible = false;
+      ui.hatchBody.visible = false;
+      ui.hatchCost.visible = false;
+      ui.hatchButton.view.visible = false;
+      ui.ownedEmpty.visible = false;
+      ui.ownedRows.forEach((row) => {
+        row.view.visible = false;
+      });
+      ui.pagePrev.view.visible = false;
+      ui.pageNext.view.visible = false;
+      ui.pageText.visible = false;
+      return;
+    }
+
+    const isHatchMode = this.companionResearchMode === 'hatch';
+    ui.hatchDevice.visible = isHatchMode;
+    ui.hatchTitle.visible = isHatchMode;
+    ui.hatchBody.visible = isHatchMode;
+    ui.hatchCost.visible = isHatchMode;
+    ui.hatchButton.view.visible = isHatchMode;
+    ui.ownedEmpty.visible = !isHatchMode;
+    ui.ownedRows.forEach((row) => {
+      row.view.visible = false;
+    });
+    ui.pagePrev.view.visible = false;
+    ui.pageNext.view.visible = false;
+    ui.pageText.visible = false;
+
+    if (isHatchMode) {
+      this.renderCompanionHatchPanel(data);
+    } else {
+      this.renderCompanionOwnedPanel(data);
+    }
+  }
+
+  queueCompanionResearchTutorials(unlocked) {
+    if (!unlocked) {
+      return;
+    }
+
+    if (
+      !this.companionUnlockTutorialQueued
+      && !this.saveManager?.isTutorialComplete?.('companionEggResearch')
+    ) {
+      this.companionUnlockTutorialQueued = true;
+      queueMicrotask(() => this.onCompanionResearchUnlocked?.());
+      return;
+    }
+
+    if (
+      !this.companionTabTutorialQueued
+      && this.saveManager?.isTutorialComplete?.('companionEggResearch')
+      && !this.saveManager?.isTutorialComplete?.('companionTabViewed')
+    ) {
+      this.companionTabTutorialQueued = true;
+      queueMicrotask(() => this.onCompanionTabViewed?.());
+    }
+  }
+
+  drawCompanionModeToggle(button, selected, enabled) {
+    button.view.eventMode = enabled ? 'static' : 'none';
+    button.view.cursor = enabled ? 'pointer' : 'default';
+    button.bg
+      .clear()
+      .roundRect(0, 0, 94, 34, 10)
+      .fill({ color: selected ? 0x0b3338 : 0x031216, alpha: enabled ? 0.88 : 0.34 })
+      .stroke({ color: selected ? 0xffd36b : 0x35d7ff, width: selected ? 1.5 : 1, alpha: enabled ? 0.7 : 0.2 });
+    button.label.style.fill = enabled ? (selected ? '#fff0b4' : '#d7fff2') : '#8da49e';
+  }
+
+  renderCompanionHatchPanel(data) {
+    const ui = this.companionResearchView;
+    const companion = data.companion ?? {};
+    const hatchEntry = this.getCompanionHatchEntry(data);
+    const completeAt = Date.parse(companion.hatchCompleteAt ?? '');
+    const hatchTexture = this.textures.get('companionHatchDevice');
+    const buttonTexture = this.textures.get('companionHatchButton');
+    const hasEgg = companion.eggPending || companion.eggIncubating;
+    const isReady = hatchEntry?.action === 'claim';
+    const canStart = hatchEntry?.action === 'start'
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
+      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+    const canUse = Boolean(isReady || canStart);
+
+    ui.hatchDevice.texture = hatchTexture ?? this.textures.get('companionEgg') ?? Texture.EMPTY;
+    ui.hatchDevice.width = hatchTexture ? 168 : 88;
+    ui.hatchDevice.height = hatchTexture ? 142 : 88;
+    ui.hatchTitle.text = isReady ? '孵化完了' : companion.eggIncubating ? '孵化中' : hasEgg ? '卵を孵化' : '卵はありません';
+    ui.hatchBody.text = isReady
+      ? '新しいお供恐竜を受け取れます。'
+      : companion.eggIncubating
+        ? `残り時間: ${Number.isFinite(completeAt) ? this.formatHatchRemain(completeAt) : 'まもなく'}`
+        : hasEgg
+          ? 'DNAと研究Ptを消費して、卵を1個ずつ孵化します。'
+          : 'プレイ中に卵を入手すると、ここで孵化できます。';
+    ui.hatchCost.text = `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost} / 必要研究Pt ${COMPANION_HATCH_CONFIG.researchPtCost}\n孵化時間 ${this.formatHatchDuration(COMPANION_HATCH_CONFIG.durationMs)}`;
+    ui.hatchButton.sprite.texture = buttonTexture ?? Texture.EMPTY;
+    ui.hatchButton.sprite.visible = !!buttonTexture;
+    ui.hatchButton.sprite.width = 154;
+    ui.hatchButton.sprite.height = 34;
+    ui.hatchButton.bg.clear();
+    if (!buttonTexture) {
+      ui.hatchButton.bg
+        .roundRect(0, 0, 154, 34, 10)
+        .fill({ color: canUse ? 0xffd36b : 0x23434a, alpha: 0.88 })
+        .stroke({ color: 0xffffff, width: 1, alpha: canUse ? 0.42 : 0.18 });
+    }
+    ui.hatchButton.label.text = isReady ? '受け取る' : companion.eggIncubating ? '孵化中' : '孵化させる';
+    ui.hatchButton.label.style.fill = canUse ? '#071015' : '#8da49e';
+    ui.hatchButton.view.eventMode = canUse ? 'static' : 'none';
+    ui.hatchButton.view.cursor = canUse ? 'pointer' : 'default';
+  }
+
+  renderCompanionOwnedPanel(data) {
+    const ui = this.companionResearchView;
+    const state = data.companion ?? {};
+    const ownedCompanions = COMPANION_DINOS.filter((companion) => state.ownedIds?.includes(companion.id));
+    const pageSize = ui.ownedRows.length;
+    const maxPage = Math.max(0, Math.ceil(ownedCompanions.length / pageSize) - 1);
+    const fallbackIcon = this.textures.get('companionEgg') ?? Texture.EMPTY;
+
+    this.companionOwnedPage = Math.max(0, Math.min(maxPage, this.companionOwnedPage));
+    const visibleCompanions = ownedCompanions.slice(this.companionOwnedPage * pageSize, this.companionOwnedPage * pageSize + pageSize);
+    ui.ownedEmpty.visible = ownedCompanions.length <= 0;
+    ui.ownedEmpty.text = ownedCompanions.length <= 0
+      ? '所持しているお供恐竜はありません。卵を孵化するとここに表示されます。'
+      : '';
+
+    ui.ownedRows.forEach((row, index) => {
+      const companion = visibleCompanions[index] ?? null;
+      row.view.visible = !!companion;
+      if (!companion) {
+        return;
+      }
+      const levels = getCompanionUpgradeLevelsFromState(state, companion.id);
+      const level = state.levels?.[companion.id] ?? Math.max(levels.range, levels.effect, levels.speed);
+      const nextCosts = COMPANION_UPGRADE_TYPE_IDS
+        .map((typeId) => getCompanionUpgradeCost(companion.id, levels[typeId], typeId))
+        .filter((value) => value);
+      const minCost = nextCosts.length > 0 ? Math.min(...nextCosts) : null;
+      const canUpgrade = Boolean(minCost && (data.ownedDna ?? 0) >= minCost);
+      const cardTexture = this.textures.get('companionUpgradeCard');
+      const buttonTexture = this.textures.get('companionUpgradeButton');
+      row.companionId = companion.id;
+      row.sprite.texture = cardTexture ?? Texture.EMPTY;
+      row.sprite.visible = !!cardTexture;
+      row.sprite.width = 338;
+      row.sprite.height = 78;
+      row.bg.clear();
+      if (!cardTexture) {
+        row.bg
+          .roundRect(0, 0, 338, 78, 10)
+          .fill({ color: 0x031216, alpha: 0.84 })
+          .stroke({ color: COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4, width: 1, alpha: 0.52 });
+      }
+      row.icon.texture = this.textures.get(`companionIcon:${companion.id}`) ?? fallbackIcon;
+      row.icon.visible = row.icon.texture !== Texture.EMPTY;
+      row.name.text = `${companion.displayName} Lv${level} / ${companion.maxLevel}`;
+      row.detail.text = getCompanionEffectSummary(companion.id, levels);
+      row.growth.text = `範囲Lv${levels.range} 効果Lv${levels.effect} 速度Lv${levels.speed}${minCost ? ` / DNA${minCost}〜` : ' / MAX'}`;
+      row.button.sprite.texture = buttonTexture ?? Texture.EMPTY;
+      row.button.sprite.visible = !!buttonTexture;
+      row.button.sprite.width = 76;
+      row.button.sprite.height = 34;
+      row.button.bg.clear();
+      if (!buttonTexture) {
+        row.button.bg
+          .roundRect(0, 0, 76, 34, 9)
+          .fill({ color: canUpgrade ? 0xffd36b : 0x23434a, alpha: 0.88 })
+          .stroke({ color: 0xffffff, width: 1, alpha: canUpgrade ? 0.42 : 0.18 });
+      }
+      row.button.label.text = minCost ? '強化' : 'MAX';
+      row.button.label.style.fontSize = 12;
+      row.button.label.style.fill = minCost ? '#e7fff6' : '#8da49e';
+      row.button.label.style.stroke = { color: 0x031216, width: 2 };
+      row.button.view.eventMode = minCost ? 'static' : 'none';
+      row.button.view.cursor = minCost ? 'pointer' : 'default';
+    });
+
+    this.drawCompanionPager(ui.pagePrev, this.companionOwnedPage > 0);
+    this.drawCompanionPager(ui.pageNext, this.companionOwnedPage < maxPage);
+    ui.pageText.visible = maxPage > 0;
+    ui.pageText.text = maxPage > 0 ? `${this.companionOwnedPage + 1}/${maxPage + 1}` : '';
+  }
+
+  drawCompanionPager(button, enabled) {
+    button.view.visible = enabled;
+    button.view.eventMode = enabled ? 'static' : 'none';
+    button.bg
+      .clear()
+      .roundRect(0, 0, 64, 34, 10)
+      .fill({ color: enabled ? 0x08272f : 0x123035, alpha: enabled ? 0.9 : 0.32 })
+      .stroke({ color: 0x35d7ff, width: 1, alpha: enabled ? 0.64 : 0.18 });
+    button.label.style.fill = enabled ? '#e7fff6' : '#8da49e';
+  }
+
+  changeCompanionOwnedPage(delta) {
+    const data = this.saveManager.getData();
+    const ownedCount = data.companion?.ownedIds?.length ?? 0;
+    const pageSize = this.companionResearchView.ownedRows.length;
+    const maxPage = Math.max(0, Math.ceil(ownedCount / pageSize) - 1);
+    const nextPage = Math.max(0, Math.min(maxPage, this.companionOwnedPage + delta));
+
+    if (nextPage === this.companionOwnedPage) {
+      return;
+    }
+
+    this.companionOwnedPage = nextPage;
+    this.render();
+  }
+
+  handleCompanionHatchDirect() {
+    const data = this.saveManager.getData();
+    const item = this.getCompanionHatchEntry(data);
+
+    if (!item) {
+      this.noticeText.text = '孵化できる卵がありません';
+      return;
+    }
+
+    const canStart = item.action === 'start'
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
+      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+
+    this.handleCompanionHatchAction({ item, canBuy: item.action === 'claim' || canStart });
+  }
+
+  upgradeResearchCompanion(companionId, options = {}) {
+    if (!companionId) {
+      return;
+    }
+
+    const data = this.saveManager.getData();
+    const companion = getCompanionById(companionId);
+
+    if (!companion || !data.companion?.ownedIds?.includes(companionId)) {
+      this.noticeText.text = '強化できません';
+      return;
+    }
+
+    this.companionUpgradeChoiceTargetId = companionId;
+    this.companionUpgradeChoiceFocusIndex = 0;
+    this.companionUpgradeChoiceShowFocus = Boolean(options.showFocus);
+    this.companionUpgradeChoiceModal.view.visible = true;
+    this.drawCompanionUpgradeChoiceModal();
+  }
+
+  closeCompanionUpgradeChoice() {
+    if (!this.companionUpgradeChoiceModal?.view.visible) {
+      return;
+    }
+
+    this.companionUpgradeChoiceModal.view.visible = false;
+    this.companionUpgradeChoiceTargetId = null;
+    this.companionUpgradeChoiceShowFocus = false;
+  }
+
+  confirmCompanionUpgradeChoice(upgradeType) {
+    const data = this.saveManager.getData();
+    const companion = getCompanionById(this.companionUpgradeChoiceTargetId);
+    const type = COMPANION_UPGRADE_TYPES[upgradeType];
+    const levels = getCompanionUpgradeLevelsFromState(data.companion, companion?.id);
+    const level = levels[upgradeType] ?? 1;
+    const cost = companion ? getCompanionUpgradeCost(companion.id, level, upgradeType) : null;
+
+    if (!companion || !type || !cost) {
+      this.noticeText.text = '強化できません';
+      return;
+    }
+
+    if ((data.ownedDna ?? 0) < cost) {
+      this.noticeText.text = 'DNAが不足しています';
+      return;
+    }
+
+    this.companionUpgradeChoiceModal.view.visible = false;
+    this.confirmDialog.show({
+      title: 'お供強化',
+      message: `${companion.displayName}を強化しますか？`,
+      detail: `${type.label}: Lv ${level} -> ${level + 1}\n消費DNA ${cost}`,
+      confirmLabel: '実行',
+      cancelLabel: 'キャンセル',
+      onConfirm: () => this.executeCompanionUpgrade(companion.id, upgradeType),
+      onCancel: () => {
+        this.noticeText.text = '強化をキャンセルしました';
+        this.companionUpgradeChoiceTargetId = null;
+      },
+    });
+  }
+
+  executeCompanionUpgrade(companionId, upgradeType = 'effect') {
+    if (!companionId) {
+      return;
+    }
+
+    const result = this.saveManager.upgradeCompanion(companionId, upgradeType);
+    this.noticeText.text = result.success
+      ? 'お供恐竜を強化しました'
+      : result.reason === 'insufficient'
+        ? 'DNAが不足しています'
+        : '強化できません';
+    this.companionUpgradeChoiceTargetId = null;
+    this.render();
+  }
+
+  getCompanionHatchEntry(data) {
+    const companion = data.companion;
+
+    if (!companion?.eggPending && !companion?.eggIncubating) {
+      return null;
+    }
+
+    const completeAt = Date.parse(companion.hatchCompleteAt ?? '');
+    const isReady = companion.eggIncubating && (!Number.isFinite(completeAt) || Date.now() >= completeAt);
+
+    return {
+      id: 'companion_hatch',
+      isCompanionHatch: true,
+      name: isReady ? '卵の孵化完了' : companion.eggIncubating ? '卵を孵化中' : '卵を孵化',
+      description: isReady
+        ? '新しいお供恐竜を受け取れます。'
+        : companion.eggIncubating
+          ? '時間経過で孵化します。'
+          : 'DNAと研究Ptでお供恐竜の卵を孵化します。',
+      action: isReady ? 'claim' : companion.eggIncubating ? 'wait' : 'start',
+      category: RESEARCH_CATEGORY_IDS.companion,
+    };
+  }
+
+  renderCompanionHatchCard(card, item, data) {
+    const layout = this.getCardLayout();
+    const color = UI_COLORS.gold;
+    const completeAt = Date.parse(data.companion?.hatchCompleteAt ?? '');
+    const isReady = item.action === 'claim';
+    const canStart = item.action === 'start'
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
+      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+    const canBuy = isReady || canStart;
+
+    card.item = item;
+    card.isConversion = false;
+    card.isCompanionHatch = true;
+    card.isMax = false;
+    card.isLocked = false;
+    card.canBuy = canBuy;
+    this.applyCardLayout(card, layout);
+    this.drawCardFrame(card, isReady ? 'cardCompleted' : 'cardFrame', color, isReady, layout);
+    const eggTexture = this.textures.get('companionEgg');
+    card.iconSprite.texture = eggTexture ?? Texture.EMPTY;
+    card.iconSprite.visible = !!eggTexture;
+    card.iconFallback.visible = !eggTexture;
+    card.iconFallback.clear();
+    if (!eggTexture) {
+      this.drawCardIcon(card.iconFallback, RESEARCH_CATEGORY_IDS.bodyEnhancement, color, false, layout);
+    }
+    this.drawProgress(card.progress, isReady ? 1 : 0, 1, color, layout);
+    this.hideAdaptationUnlockSupplements(card);
+    card.name.text = item.name;
+    card.desc.text = item.action === 'start'
+      ? 'DNAと研究Ptで孵化を開始'
+      : item.action === 'wait'
+        ? 'オフライン中も時間が進みます'
+        : '新しいお供恐竜を受け取り';
+    card.effect.text = isReady
+      ? '未所持からランダム取得'
+      : item.action === 'wait'
+        ? `完了 ${Number.isFinite(completeAt) ? this.formatHatchRemain(completeAt) : 'まもなく'}`
+        : `孵化時間 ${this.formatHatchDuration(COMPANION_HATCH_CONFIG.durationMs)}`;
+    card.step.text = item.action === 'start'
+      ? '必要'
+      : 'お供恐竜';
+    card.status.text = isReady
+      ? '受取'
+      : item.action === 'wait'
+        ? '孵化中'
+        : canStart ? '孵化' : this.getInsufficientLabel({
+          dna: COMPANION_HATCH_CONFIG.dnaCost,
+          researchPt: COMPANION_HATCH_CONFIG.researchPtCost,
+        }, data);
+    card.status.style.fill = canBuy ? '#e7fff6' : '#ffaaa2';
+    card.costBadge.visible = !!this.textures.get('costBadge');
+    card.button.visible = true;
+    card.buttonBg.visible = !card.costBadge.visible;
+    this.drawBadgeFallback(card.buttonBg, color, isReady, layout);
+    const dnaIcon = this.textures.get('icon:dnaResource');
+    const ptIcon = this.textures.get('icon:researchPt');
+    card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
+    card.costPtIcon.texture = ptIcon ?? Texture.EMPTY;
+    card.costDnaIcon.visible = item.action === 'start' && !!dnaIcon;
+    card.costPtIcon.visible = item.action === 'start' && !!ptIcon;
+    card.costDnaText.visible = item.action === 'start';
+    card.costPtText.visible = item.action === 'start';
+    card.costDnaText.text = `${COMPANION_HATCH_CONFIG.dnaCost}`;
+    card.costPtText.text = `${COMPANION_HATCH_CONFIG.researchPtCost}`;
+    card.costDnaIcon.position.set(layout.badgeX - 6, 36);
+    card.costDnaText.position.set(layout.badgeX + 12, 35);
+    card.costPtIcon.position.set(layout.badgeX + 48, 36);
+    card.costPtText.position.set(layout.badgeX + 66, 35);
+  }
+
+  formatHatchDuration(ms) {
+    const totalMinutes = Math.max(1, Math.round(ms / 60000));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    if (hours > 0) {
+      return minutes > 0 ? `${hours}時間${minutes}分` : `${hours}時間`;
+    }
+
+    return `${totalMinutes}分`;
+  }
+
+  formatHatchRemain(completeAt) {
+    const remain = Math.max(0, Math.ceil((completeAt - Date.now()) / 1000));
+
+    if (remain <= 0) {
+      return '受取可能';
+    }
+
+    const hours = Math.floor(remain / 3600);
+    const minutes = Math.floor((remain % 3600) / 60);
+    if (hours > 0) {
+      return `あと${hours}時間${minutes}分`;
+    }
+
+    return `あと${Math.max(1, minutes)}分`;
+  }
+
   renderPageControls(maxPage) {
     const visible = maxPage > 0;
     [this.pagePrev, this.pageNext].forEach((button) => {
@@ -932,6 +2069,7 @@ export class ResearchScreen {
       card.item = null;
       card.conversionRate = rate;
       card.isConversion = true;
+      card.isCompanionHatch = false;
       card.isMax = false;
       card.isLocked = false;
       card.canBuy = canBuy;
@@ -961,6 +2099,10 @@ export class ResearchScreen {
     return Math.max(0, contentHeight - viewportHeight);
   }
 
+  getBodyResearchRenderCount() {
+    return getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length;
+  }
+
   isBodyScrollTarget(event) {
     if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
       return false;
@@ -972,7 +2114,7 @@ export class ResearchScreen {
   }
 
   setBodyScrollOffset(value) {
-    const maxScroll = this.getBodyMaxScroll(getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length);
+    const maxScroll = this.getBodyMaxScroll(this.getBodyResearchRenderCount());
     const rowHeight = CARD.height + CARD.gap;
     const clamped = Math.max(0, Math.min(maxScroll, value));
     const next = Math.max(0, Math.min(maxScroll, Math.round(clamped / rowHeight) * rowHeight));
@@ -993,7 +2135,7 @@ export class ResearchScreen {
       return;
     }
 
-    const itemCount = getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length;
+    const itemCount = this.getBodyResearchRenderCount();
     const maxScroll = this.getBodyMaxScroll(itemCount);
 
     if (maxScroll <= 0) {
@@ -1227,6 +2369,8 @@ export class ResearchScreen {
       graphics.moveTo(28, 19).lineTo(40, 19).moveTo(34, 13).lineTo(34, 25);
     } else if (categoryId === RESEARCH_CATEGORY_IDS.adaptationAbility) {
       graphics.moveTo(27, 25).lineTo(40, 13).moveTo(31, 26).lineTo(43, 16);
+    } else if (categoryId === RESEARCH_CATEGORY_IDS.companion) {
+      graphics.circle(34, 20, 10).moveTo(27, 27).lineTo(41, 27);
     } else if (categoryId === RESEARCH_CATEGORY_IDS.specialMutation) {
       graphics.circle(29, 18, 3).circle(39, 17, 3).circle(34, 26, 3);
     } else if (categoryId === RESEARCH_CATEGORY_IDS.unknownDomain) {

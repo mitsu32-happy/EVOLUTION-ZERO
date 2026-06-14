@@ -1,0 +1,6387 @@
+{
+  "title": "MVP-P04i Companion Dino regenerated animation-ready sprite sheets",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "cellSize": 384
+  },
+  "rules": [
+    "right-facing side-view source prompts",
+    "single subject per frame except compy_pack's intended three-compy group",
+    "flat #ff00ff source background removed locally",
+    "runtime sheets normalized to fixed 384x384 cells",
+    "P04f fixed-size rendering remains unchanged"
+  ],
+  "companions": [
+    {
+      "id": "raptorling",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dcf6240f88191b79706a43b658de6.png",
+      "output": "public\\assets\\companions\\raptorling_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1322972,
+      "finalRemovedMagentaPixels": 4172,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing fast run with alternating contact and kick-off poses",
+      "actionNote": "right-facing leap, claw, bite, recovery poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            33,
+            112,
+            369,
+            327
+          ],
+          "scale": 0.9464,
+          "finalBbox": [
+            33,
+            109,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 109,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            21,
+            106,
+            328,
+            329
+          ],
+          "scale": 1.0358,
+          "finalBbox": [
+            33,
+            81,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 81,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            33,
+            125,
+            384,
+            329
+          ],
+          "scale": 0.906,
+          "finalBbox": [
+            33,
+            127,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 127,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            145,
+            319,
+            329
+          ],
+          "scale": 0.9969,
+          "finalBbox": [
+            33,
+            129,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 129,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            28,
+            92,
+            358,
+            273
+          ],
+          "scale": 0.9636,
+          "finalBbox": [
+            33,
+            138,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 138,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            20,
+            101,
+            345,
+            272
+          ],
+          "scale": 0.9785,
+          "finalBbox": [
+            33,
+            145,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 145,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            11,
+            97,
+            360,
+            267
+          ],
+          "scale": 0.9112,
+          "finalBbox": [
+            33,
+            157,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 157,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            23,
+            125,
+            353,
+            260
+          ],
+          "scale": 0.9636,
+          "finalBbox": [
+            33,
+            182,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 182,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            44,
+            0,
+            372,
+            208
+          ],
+          "scale": 0.9695,
+          "finalBbox": [
+            33,
+            106,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 106,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            13,
+            65,
+            358,
+            249
+          ],
+          "scale": 0.9217,
+          "finalBbox": [
+            33,
+            138,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 138,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            6,
+            50,
+            334,
+            254
+          ],
+          "scale": 0.9695,
+          "finalBbox": [
+            33,
+            110,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 110,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            5,
+            84,
+            322,
+            257
+          ],
+          "scale": 1.0032,
+          "finalBbox": [
+            33,
+            134,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 134,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "raptorling"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              109,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              109,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              81,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              81,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              127,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              127,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              129,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              129,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              138,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              138,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              145,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              145,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              157,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              157,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              182,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              182,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              106,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              106,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              138,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              138,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              110,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              110,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              134,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              134,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "spino_pup",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dcf998aa48191b13b0d3636649fdc.png",
+      "output": "public\\assets\\companions\\spino_pup_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1272682,
+      "finalRemovedMagentaPixels": 4977,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing heavy walk with sail, tail, and weight-shift poses",
+      "actionNote": "right-facing water shot and splash recoil poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            36,
+            88,
+            384,
+            313
+          ],
+          "scale": 0.9138,
+          "finalBbox": [
+            33,
+            106,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 106,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            110,
+            370,
+            317
+          ],
+          "scale": 0.8595,
+          "finalBbox": [
+            33,
+            134,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 134,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            15,
+            140,
+            353,
+            316
+          ],
+          "scale": 0.9408,
+          "finalBbox": [
+            33,
+            146,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 146,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            88,
+            323,
+            317
+          ],
+          "scale": 0.9845,
+          "finalBbox": [
+            33,
+            87,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 87,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            28,
+            91,
+            384,
+            294
+          ],
+          "scale": 0.8933,
+          "finalBbox": [
+            33,
+            131,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 131,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            114,
+            384,
+            294
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            163,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 163,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            117,
+            363,
+            291
+          ],
+          "scale": 0.955,
+          "finalBbox": [
+            33,
+            146,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 146,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            7,
+            134,
+            359,
+            288
+          ],
+          "scale": 0.9034,
+          "finalBbox": [
+            33,
+            173,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 173,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            36,
+            44,
+            384,
+            252
+          ],
+          "scale": 0.9138,
+          "finalBbox": [
+            33,
+            118,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 118,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            56,
+            384,
+            255
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            143,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 143,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            77,
+            341,
+            257
+          ],
+          "scale": 0.9326,
+          "finalBbox": [
+            33,
+            140,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 140,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            4,
+            61,
+            335,
+            254
+          ],
+          "scale": 0.9607,
+          "finalBbox": [
+            33,
+            123,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 123,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "spino_pup"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              106,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              106,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              134,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              134,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              146,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              146,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              87,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              87,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              131,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              131,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              163,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              163,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              146,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              146,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              173,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              173,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              118,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              118,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              143,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              143,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              140,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              140,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              123,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              123,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "medic_saur",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dcfd5cf9481918fa5bb572084fc65.png",
+      "output": "public\\assets\\companions\\medic_saur_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1227325,
+      "finalRemovedMagentaPixels": 4876,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing gentle walk with smaller contact changes",
+      "actionNote": "self-contained healing aura poses with no patient or extra dinosaur",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            33,
+            78,
+            360,
+            295
+          ],
+          "scale": 0.9725,
+          "finalBbox": [
+            33,
+            101,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 101,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            37,
+            67,
+            354,
+            295
+          ],
+          "scale": 1.0032,
+          "finalBbox": [
+            33,
+            83,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 83,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            10,
+            95,
+            342,
+            295
+          ],
+          "scale": 0.9578,
+          "finalBbox": [
+            33,
+            120,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 120,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            19,
+            61,
+            327,
+            295
+          ],
+          "scale": 1.0325,
+          "finalBbox": [
+            33,
+            70,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 70,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            31,
+            69,
+            360,
+            271
+          ],
+          "scale": 0.9666,
+          "finalBbox": [
+            33,
+            117,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 117,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            26,
+            72,
+            357,
+            271
+          ],
+          "scale": 0.9607,
+          "finalBbox": [
+            33,
+            121,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 121,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            10,
+            71,
+            384,
+            271
+          ],
+          "scale": 0.8503,
+          "finalBbox": [
+            33,
+            142,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 142,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            91,
+            339,
+            271
+          ],
+          "scale": 0.9381,
+          "finalBbox": [
+            33,
+            143,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 143,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            45,
+            377,
+            266
+          ],
+          "scale": 0.9164,
+          "finalBbox": [
+            33,
+            105,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 105,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            35,
+            45,
+            361,
+            277
+          ],
+          "scale": 0.9755,
+          "finalBbox": [
+            33,
+            82,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 82,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            14,
+            54,
+            324,
+            267
+          ],
+          "scale": 1.0258,
+          "finalBbox": [
+            33,
+            90,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 90,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            8,
+            61,
+            322,
+            267
+          ],
+          "scale": 1.0127,
+          "finalBbox": [
+            33,
+            99,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 99,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "medic_saur"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              101,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              101,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              83,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              83,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              120,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              120,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              70,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              70,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              117,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              117,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              121,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              121,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              142,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              142,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              143,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              143,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              105,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              105,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              82,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              82,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              90,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              90,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              99,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              99,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ptera_chick",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd01ac564819183407001d2262a21.png",
+      "output": "public\\assets\\companions\\ptera_chick_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1375563,
+      "finalRemovedMagentaPixels": 3313,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing flap cycle with wing-up, wing-down, glide, and rise/sink poses",
+      "actionNote": "right-facing aerial aim, projectile, recoil, recovery poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            74,
+            80,
+            376,
+            323
+          ],
+          "scale": 1.053,
+          "finalBbox": [
+            33,
+            18,
+            351,
+            274
+          ],
+          "margins": {
+            "left": 33,
+            "top": 18,
+            "right": 33,
+            "bottom": 110
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            40,
+            180,
+            348,
+            317
+          ],
+          "scale": 1.0325,
+          "finalBbox": [
+            33,
+            97,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 97,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            66,
+            84,
+            384,
+            329
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            33,
+            18,
+            351,
+            263
+          ],
+          "margins": {
+            "left": 33,
+            "top": 18,
+            "right": 33,
+            "bottom": 121
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            218,
+            324,
+            320
+          ],
+          "scale": 0.9815,
+          "finalBbox": [
+            33,
+            138,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 138,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            29,
+            109,
+            378,
+            290
+          ],
+          "scale": 0.9112,
+          "finalBbox": [
+            33,
+            73,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 73,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            40,
+            132,
+            351,
+            268
+          ],
+          "scale": 1.0225,
+          "finalBbox": [
+            33,
+            99,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 99,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            19,
+            147,
+            375,
+            250
+          ],
+          "scale": 0.8933,
+          "finalBbox": [
+            33,
+            146,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 146,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            34,
+            77,
+            289,
+            270
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            54,
+            30,
+            329,
+            238
+          ],
+          "margins": {
+            "left": 54,
+            "top": 30,
+            "right": 55,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            61,
+            61,
+            372,
+            238
+          ],
+          "scale": 1.0225,
+          "finalBbox": [
+            33,
+            53,
+            351,
+            234
+          ],
+          "margins": {
+            "left": 33,
+            "top": 53,
+            "right": 33,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            74,
+            384,
+            230
+          ],
+          "scale": 0.8983,
+          "finalBbox": [
+            33,
+            94,
+            351,
+            234
+          ],
+          "margins": {
+            "left": 33,
+            "top": 94,
+            "right": 33,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            26,
+            384,
+            235
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            61,
+            351,
+            234
+          ],
+          "margins": {
+            "left": 33,
+            "top": 61,
+            "right": 33,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            140,
+            295,
+            235
+          ],
+          "scale": 1.078,
+          "finalBbox": [
+            33,
+            132,
+            351,
+            234
+          ],
+          "margins": {
+            "left": 33,
+            "top": 132,
+            "right": 33,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "ptera_chick"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 18,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              18,
+              351,
+              273
+            ],
+            "margins": [
+              33,
+              18,
+              33,
+              111
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              97,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              97,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              18,
+              351,
+              263
+            ],
+            "margins": [
+              33,
+              18,
+              33,
+              121
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              138,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              138,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              73,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              73,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              99,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              99,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              146,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              146,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              54,
+              30,
+              329,
+              238
+            ],
+            "margins": [
+              54,
+              30,
+              55,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              53,
+              351,
+              234
+            ],
+            "margins": [
+              33,
+              53,
+              33,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              94,
+              351,
+              234
+            ],
+            "margins": [
+              33,
+              94,
+              33,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              61,
+              351,
+              234
+            ],
+            "margins": [
+              33,
+              61,
+              33,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              132,
+              351,
+              234
+            ],
+            "margins": [
+              33,
+              132,
+              33,
+              150
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "tricera_calf",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd060fa2c81919adad625cc6bfc87.png",
+      "output": "public\\assets\\companions\\tricera_calf_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1166655,
+      "finalRemovedMagentaPixels": 4665,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing heavy quadruped walk with stomp and horn motion",
+      "actionNote": "self-contained guard and shield aura poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            100,
+            384,
+            313
+          ],
+          "scale": 0.8983,
+          "finalBbox": [
+            33,
+            121,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 121,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            98,
+            346,
+            313
+          ],
+          "scale": 0.9191,
+          "finalBbox": [
+            33,
+            114,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 114,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            12,
+            121,
+            332,
+            312
+          ],
+          "scale": 0.9938,
+          "finalBbox": [
+            33,
+            122,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 122,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            4,
+            98,
+            310,
+            313
+          ],
+          "scale": 1.0392,
+          "finalBbox": [
+            33,
+            89,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 89,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            100,
+            384,
+            287
+          ],
+          "scale": 0.8983,
+          "finalBbox": [
+            33,
+            144,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 144,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            104,
+            381,
+            286
+          ],
+          "scale": 0.8346,
+          "finalBbox": [
+            33,
+            160,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 160,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            23,
+            101,
+            357,
+            287
+          ],
+          "scale": 0.9521,
+          "finalBbox": [
+            33,
+            135,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 135,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            4,
+            107,
+            335,
+            289
+          ],
+          "scale": 0.9607,
+          "finalBbox": [
+            33,
+            137,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 137,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            85,
+            384,
+            257
+          ],
+          "scale": 0.8983,
+          "finalBbox": [
+            33,
+            153,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 153,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            31,
+            344,
+            257
+          ],
+          "scale": 0.9244,
+          "finalBbox": [
+            33,
+            99,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 99,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            2,
+            74,
+            365,
+            271
+          ],
+          "scale": 0.876,
+          "finalBbox": [
+            33,
+            135,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 135,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            10,
+            60,
+            346,
+            257
+          ],
+          "scale": 0.9464,
+          "finalBbox": [
+            33,
+            122,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 122,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "tricera_calf"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              121,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              121,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              114,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              114,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              122,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              122,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              89,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              89,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              144,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              144,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              160,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              160,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              135,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              135,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              137,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              137,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              153,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              153,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              99,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              99,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              135,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              135,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              122,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              122,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "para_juvenile",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd09b08f081919d3501c963f16d9d.png",
+      "output": "public\\assets\\companions\\para_juvenile_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1327954,
+      "finalRemovedMagentaPixels": 4159,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing light walk with crest, head, and tail motion",
+      "actionNote": "self-contained sonar and pickup-guidance poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            59,
+            96,
+            358,
+            315
+          ],
+          "scale": 1.0635,
+          "finalBbox": [
+            33,
+            79,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 79,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            52,
+            73,
+            313,
+            315
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            51,
+            51,
+            333,
+            312
+          ],
+          "margins": {
+            "left": 51,
+            "top": 51,
+            "right": 51,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            1,
+            108,
+            384,
+            315
+          ],
+          "scale": 0.8303,
+          "finalBbox": [
+            33,
+            140,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 140,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            87,
+            316,
+            315
+          ],
+          "scale": 1.0063,
+          "finalBbox": [
+            33,
+            83,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 83,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            46,
+            90,
+            346,
+            292
+          ],
+          "scale": 1.06,
+          "finalBbox": [
+            33,
+            98,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 98,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            19,
+            92,
+            325,
+            289
+          ],
+          "scale": 1.0392,
+          "finalBbox": [
+            33,
+            107,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 107,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            11,
+            97,
+            384,
+            292
+          ],
+          "scale": 0.8525,
+          "finalBbox": [
+            33,
+            146,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 146,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            107,
+            305,
+            290
+          ],
+          "scale": 1.0426,
+          "finalBbox": [
+            33,
+            121,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 121,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            34,
+            55,
+            351,
+            246
+          ],
+          "scale": 1.0032,
+          "finalBbox": [
+            33,
+            116,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 116,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            7,
+            57,
+            384,
+            247
+          ],
+          "scale": 0.8435,
+          "finalBbox": [
+            33,
+            148,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 148,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            53,
+            384,
+            249
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            146,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 146,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            60,
+            293,
+            249
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            34,
+            104,
+            350,
+            308
+          ],
+          "margins": {
+            "left": 34,
+            "top": 104,
+            "right": 34,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "para_juvenile"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              79,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              79,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              51,
+              51,
+              333,
+              312
+            ],
+            "margins": [
+              51,
+              51,
+              51,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              140,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              140,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              83,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              83,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              98,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              98,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              107,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              107,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              146,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              146,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              121,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              121,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              116,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              116,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              148,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              148,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              146,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              146,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              34,
+              104,
+              350,
+              308
+            ],
+            "margins": [
+              34,
+              104,
+              34,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "stego_calf",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd0d826c08191a395d26247303ad7.png",
+      "output": "public\\assets\\companions\\stego_calf_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1208530,
+      "finalRemovedMagentaPixels": 7335,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing heavy walk with plate and tail motion",
+      "actionNote": "self-contained plate charge and stomp shockwave poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            30,
+            107,
+            379,
+            335
+          ],
+          "scale": 0.9112,
+          "finalBbox": [
+            33,
+            104,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 104,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            18,
+            112,
+            384,
+            334
+          ],
+          "scale": 0.8689,
+          "finalBbox": [
+            33,
+            119,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 119,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            115,
+            384,
+            333
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            131,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 131,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            113,
+            319,
+            334
+          ],
+          "scale": 0.9969,
+          "finalBbox": [
+            33,
+            92,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 92,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            40,
+            83,
+            376,
+            292
+          ],
+          "scale": 0.9464,
+          "finalBbox": [
+            33,
+            114,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 114,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            14,
+            87,
+            384,
+            293
+          ],
+          "scale": 0.8595,
+          "finalBbox": [
+            33,
+            135,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 135,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            93,
+            384,
+            294
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            146,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 146,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            92,
+            310,
+            296
+          ],
+          "scale": 1.0258,
+          "finalBbox": [
+            33,
+            103,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 103,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            43,
+            26,
+            369,
+            260
+          ],
+          "scale": 0.9755,
+          "finalBbox": [
+            33,
+            80,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 80,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            17,
+            55,
+            384,
+            280
+          ],
+          "scale": 0.8665,
+          "finalBbox": [
+            33,
+            113,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 113,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            54,
+            383,
+            290
+          ],
+          "scale": 0.8303,
+          "finalBbox": [
+            33,
+            112,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 112,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            12,
+            64,
+            339,
+            265
+          ],
+          "scale": 0.9725,
+          "finalBbox": [
+            33,
+            113,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 113,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "stego_calf"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              104,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              104,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              119,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              119,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              131,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              131,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              92,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              92,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              114,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              114,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              135,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              135,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              146,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              146,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              103,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              103,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              80,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              80,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              113,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              113,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              112,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              112,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              113,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              113,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "rex_hatchling",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd115b1988191bf3bc6cb0b6fad2e.png",
+      "output": "public\\assets\\companions\\rex_hatchling_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1282104,
+      "finalRemovedMagentaPixels": 3560,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing forceful small-run with head and tail counterbalance",
+      "actionNote": "right-facing charge, bite, impact, recovery poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            38,
+            125,
+            384,
+            341
+          ],
+          "scale": 0.9191,
+          "finalBbox": [
+            33,
+            113,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 113,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            122,
+            360,
+            341
+          ],
+          "scale": 0.8833,
+          "finalBbox": [
+            33,
+            119,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 119,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            21,
+            171,
+            341,
+            341
+          ],
+          "scale": 0.9938,
+          "finalBbox": [
+            33,
+            143,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 143,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            3,
+            95,
+            321,
+            341
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            33,
+            66,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 66,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            31,
+            117,
+            384,
+            283
+          ],
+          "scale": 0.9008,
+          "finalBbox": [
+            33,
+            162,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 162,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            111,
+            364,
+            284
+          ],
+          "scale": 0.8736,
+          "finalBbox": [
+            33,
+            161,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 161,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            18,
+            113,
+            384,
+            280
+          ],
+          "scale": 0.8689,
+          "finalBbox": [
+            33,
+            167,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 167,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            0,
+            350,
+            271
+          ],
+          "scale": 0.9086,
+          "finalBbox": [
+            33,
+            66,
+            351,
+            312
+          ],
+          "margins": {
+            "left": 33,
+            "top": 66,
+            "right": 33,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            48,
+            80,
+            363,
+            244
+          ],
+          "scale": 1.0095,
+          "finalBbox": [
+            33,
+            142,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 142,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            34,
+            39,
+            384,
+            244
+          ],
+          "scale": 0.9086,
+          "finalBbox": [
+            33,
+            122,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 122,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            60,
+            384,
+            261
+          ],
+          "scale": 0.8281,
+          "finalBbox": [
+            33,
+            142,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 142,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            76,
+            328,
+            250
+          ],
+          "scale": 0.9695,
+          "finalBbox": [
+            33,
+            139,
+            351,
+            308
+          ],
+          "margins": {
+            "left": 33,
+            "top": 139,
+            "right": 33,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "rex_hatchling"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 33,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              33,
+              113,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              113,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              33,
+              119,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              119,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              33,
+              143,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              143,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              33,
+              66,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              66,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              33,
+              162,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              162,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              33,
+              161,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              161,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              167,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              167,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              66,
+              351,
+              312
+            ],
+            "margins": [
+              33,
+              66,
+              33,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              33,
+              142,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              142,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              33,
+              122,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              122,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              142,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              142,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              33,
+              139,
+              351,
+              308
+            ],
+            "margins": [
+              33,
+              139,
+              33,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "compy_pack",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd1560908819188897df5c61fa007.png",
+      "output": "public\\assets\\companions\\compy_pack_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1346920,
+      "finalRemovedMagentaPixels": 6942,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing three-compy pack run with offset foot timing",
+      "actionNote": "right-facing group lunge and bite flurry poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            43,
+            122,
+            375,
+            326
+          ],
+          "scale": 1.0,
+          "finalBbox": [
+            26,
+            108,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 108,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            36,
+            127,
+            341,
+            327
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            27,
+            96,
+            356,
+            312
+          ],
+          "margins": {
+            "left": 27,
+            "top": 96,
+            "right": 28,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            9,
+            148,
+            384,
+            321
+          ],
+          "scale": 0.8853,
+          "finalBbox": [
+            26,
+            159,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 159,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            138,
+            340,
+            326
+          ],
+          "scale": 0.9765,
+          "finalBbox": [
+            26,
+            128,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 128,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            38,
+            104,
+            358,
+            286
+          ],
+          "scale": 1.0375,
+          "finalBbox": [
+            26,
+            123,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 123,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            26,
+            116,
+            361,
+            274
+          ],
+          "scale": 0.991,
+          "finalBbox": [
+            26,
+            155,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 155,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            12,
+            104,
+            349,
+            283
+          ],
+          "scale": 0.9852,
+          "finalBbox": [
+            26,
+            136,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 136,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            6,
+            114,
+            358,
+            287
+          ],
+          "scale": 0.9432,
+          "finalBbox": [
+            26,
+            149,
+            358,
+            312
+          ],
+          "margins": {
+            "left": 26,
+            "top": 149,
+            "right": 26,
+            "bottom": 72
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            35,
+            56,
+            365,
+            211
+          ],
+          "scale": 1.0061,
+          "finalBbox": [
+            26,
+            152,
+            358,
+            308
+          ],
+          "margins": {
+            "left": 26,
+            "top": 152,
+            "right": 26,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            34,
+            54,
+            335,
+            218
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            29,
+            131,
+            354,
+            308
+          ],
+          "margins": {
+            "left": 29,
+            "top": 131,
+            "right": 30,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            10,
+            44,
+            384,
+            214
+          ],
+          "scale": 0.8877,
+          "finalBbox": [
+            26,
+            157,
+            358,
+            308
+          ],
+          "margins": {
+            "left": 26,
+            "top": 157,
+            "right": 26,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            0,
+            79,
+            344,
+            221
+          ],
+          "scale": 0.9651,
+          "finalBbox": [
+            26,
+            171,
+            358,
+            308
+          ],
+          "margins": {
+            "left": 26,
+            "top": 171,
+            "right": 26,
+            "bottom": 76
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "compy_pack"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 26,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              26,
+              108,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              108,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              27,
+              96,
+              356,
+              312
+            ],
+            "margins": [
+              27,
+              96,
+              28,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              26,
+              159,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              159,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              26,
+              128,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              128,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              26,
+              123,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              123,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              26,
+              155,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              155,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              26,
+              136,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              136,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              26,
+              149,
+              358,
+              312
+            ],
+            "margins": [
+              26,
+              149,
+              26,
+              72
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              26,
+              152,
+              358,
+              308
+            ],
+            "margins": [
+              26,
+              152,
+              26,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              29,
+              131,
+              354,
+              308
+            ],
+            "margins": [
+              29,
+              131,
+              30,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              26,
+              157,
+              358,
+              308
+            ],
+            "margins": [
+              26,
+              157,
+              26,
+              76
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              26,
+              171,
+              358,
+              308
+            ],
+            "margins": [
+              26,
+              171,
+              26,
+              76
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "exp_chaser",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_09bf6931d79ad6d0016a2dd1a546dc8191aaac15349860c72b.png",
+      "output": "public\\assets\\companions\\exp_chaser_sprite_sheet_p04i.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "removedMagentaPixels": 1291034,
+      "finalRemovedMagentaPixels": 4776,
+      "columns": 4,
+      "rows": 3,
+      "cellSize": 384,
+      "moveNote": "right-facing hover pursuit with rotation, chase tilt, and scan particles",
+      "actionNote": "self-contained EXP scan, particle attraction, and tracking beam poses",
+      "frames": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            0,
+            384,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            115,
+            105,
+            307,
+            302
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            88,
+            25,
+            295,
+            238
+          ],
+          "margins": {
+            "left": 88,
+            "top": 25,
+            "right": 89,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            0,
+            768,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            98,
+            98,
+            286,
+            337
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            90,
+            18,
+            293,
+            276
+          ],
+          "margins": {
+            "left": 90,
+            "top": 18,
+            "right": 91,
+            "bottom": 108
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            0,
+            1152,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            85,
+            120,
+            282,
+            309
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            85,
+            34,
+            298,
+            238
+          ],
+          "margins": {
+            "left": 85,
+            "top": 34,
+            "right": 86,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            0,
+            1536,
+            341
+          ],
+          "missing": false,
+          "sourceBbox": [
+            73,
+            123,
+            257,
+            333
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            92,
+            18,
+            291,
+            245
+          ],
+          "margins": {
+            "left": 92,
+            "top": 18,
+            "right": 93,
+            "bottom": 139
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            341,
+            384,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            58,
+            110,
+            321,
+            261
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            50,
+            75,
+            334,
+            238
+          ],
+          "margins": {
+            "left": 50,
+            "top": 75,
+            "right": 50,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            341,
+            768,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            62,
+            14,
+            312,
+            259
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            57,
+            18,
+            327,
+            283
+          ],
+          "margins": {
+            "left": 57,
+            "top": 18,
+            "right": 57,
+            "bottom": 101
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            341,
+            1152,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            25,
+            115,
+            372,
+            273
+          ],
+          "scale": 0.9164,
+          "finalBbox": [
+            33,
+            93,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 93,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            341,
+            1536,
+            683
+          ],
+          "missing": false,
+          "sourceBbox": [
+            12,
+            124,
+            314,
+            268
+          ],
+          "scale": 1.053,
+          "finalBbox": [
+            33,
+            86,
+            351,
+            238
+          ],
+          "margins": {
+            "left": 33,
+            "top": 86,
+            "right": 33,
+            "bottom": 146
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCrop": [
+            0,
+            683,
+            384,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            58,
+            32,
+            310,
+            257
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            56,
+            18,
+            328,
+            261
+          ],
+          "margins": {
+            "left": 56,
+            "top": 18,
+            "right": 56,
+            "bottom": 123
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCrop": [
+            384,
+            683,
+            768,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            33,
+            53,
+            325,
+            238
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            34,
+            34,
+            349,
+            234
+          ],
+          "margins": {
+            "left": 34,
+            "top": 34,
+            "right": 35,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCrop": [
+            768,
+            683,
+            1152,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            42,
+            79,
+            375,
+            244
+          ],
+          "scale": 0.955,
+          "finalBbox": [
+            33,
+            76,
+            351,
+            234
+          ],
+          "margins": {
+            "left": 33,
+            "top": 76,
+            "right": 33,
+            "bottom": 150
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCrop": [
+            1152,
+            683,
+            1536,
+            1024
+          ],
+          "missing": false,
+          "sourceBbox": [
+            97,
+            56,
+            256,
+            262
+          ],
+          "scale": 1.08,
+          "finalBbox": [
+            106,
+            18,
+            278,
+            240
+          ],
+          "margins": {
+            "left": 106,
+            "top": 18,
+            "right": 106,
+            "bottom": 144
+          },
+          "components": {
+            "mode": "prompt-isolated-single-subject",
+            "companionId": "exp_chaser"
+          }
+        }
+      ],
+      "qa": {
+        "missingFrames": 0,
+        "frameEdgeIssues": 0,
+        "minFrameMarginPx": 18,
+        "frames": [
+          {
+            "row": 0,
+            "column": 0,
+            "bbox": [
+              88,
+              25,
+              295,
+              238
+            ],
+            "margins": [
+              88,
+              25,
+              89,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "bbox": [
+              90,
+              18,
+              293,
+              276
+            ],
+            "margins": [
+              90,
+              18,
+              91,
+              108
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "bbox": [
+              85,
+              34,
+              298,
+              238
+            ],
+            "margins": [
+              85,
+              34,
+              86,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "bbox": [
+              92,
+              18,
+              291,
+              245
+            ],
+            "margins": [
+              92,
+              18,
+              93,
+              139
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "bbox": [
+              50,
+              75,
+              334,
+              238
+            ],
+            "margins": [
+              50,
+              75,
+              50,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "bbox": [
+              58,
+              18,
+              327,
+              283
+            ],
+            "margins": [
+              58,
+              18,
+              57,
+              101
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "bbox": [
+              33,
+              93,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              93,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "bbox": [
+              33,
+              86,
+              351,
+              238
+            ],
+            "margins": [
+              33,
+              86,
+              33,
+              146
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "bbox": [
+              56,
+              18,
+              328,
+              261
+            ],
+            "margins": [
+              56,
+              18,
+              56,
+              123
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "bbox": [
+              34,
+              34,
+              349,
+              234
+            ],
+            "margins": [
+              34,
+              34,
+              35,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "bbox": [
+              33,
+              76,
+              351,
+              234
+            ],
+            "margins": [
+              33,
+              76,
+              33,
+              150
+            ],
+            "edgeIssue": false
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "bbox": [
+              106,
+              18,
+              278,
+              240
+            ],
+            "margins": [
+              106,
+              18,
+              106,
+              144
+            ],
+            "edgeIssue": false
+          }
+        ]
+      }
+    }
+  ]
+}

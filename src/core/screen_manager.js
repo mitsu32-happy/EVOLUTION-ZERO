@@ -101,6 +101,13 @@ const TUTORIAL_PAGES = {
       tooltipPosition: 'bottom',
     },
     {
+      title: 'お供恐竜',
+      body: '入手したお供恐竜をセットできます。\n一緒に出撃してプレイヤーを支援します。',
+      target: 'お供',
+      targetId: 'home.companion',
+      tooltipPosition: 'bottom',
+    },
+    {
       title: 'お知らせ',
       body: 'アップデート内容を確認できます。\n追加や修正の内容はここにまとまります。',
       target: 'お知らせ',
@@ -184,6 +191,33 @@ const TUTORIAL_PAGES = {
       highlight: { x: 28, y: 292, width: 334, height: 112 },
     },
   ],
+  companionEggResearch: [
+    {
+      title: 'お供研究',
+      body: '新しい研究領域が解放されました。\nお供タブから詳細を確認できます。',
+      target: 'お供タブ',
+      targetId: 'research.companionTab',
+      tooltipPosition: 'bottom',
+    },
+  ],
+  companionTabViewed: [
+    {
+      title: 'お供タブ',
+      body: '所持お供の確認と卵の孵化を切り替えられます。\n強化にはDNAを消費します。',
+      target: 'お供研究',
+      targetId: 'research.companionPanel',
+      tooltipPosition: 'top',
+    },
+  ],
+  companionHomeViewed: [
+    {
+      title: 'お供恐竜',
+      body: 'セット中のお供恐竜はここに表示されます。\nタップするとお供を切り替えられます。',
+      target: 'お供',
+      targetId: 'home.companion',
+      tooltipPosition: 'bottom',
+    },
+  ],
 };
 
 export class ScreenManager {
@@ -198,8 +232,11 @@ export class ScreenManager {
     this.titleCuePlayedForVisit = false;
     this.audioManager = new AudioManager();
     this.saveManager = new SaveManager();
+    this.applyQaCleanSave();
     this.applyDebugTutorialReset();
     this.applyDebugResearchPt();
+    this.applyDebugDna();
+    this.applyDebugCompanion();
     this.applyDebugStageProgress();
     this.applyDebugTitleRewards();
     this.applyDebugDailyMissions();
@@ -272,6 +309,7 @@ export class ScreenManager {
       this.gamepadDebugText,
     );
     this.setupGamepadOverlay();
+    this.installKeyboardCancelShortcut();
     this.installTitleShortcuts();
     this.installTitleCueUnlock();
     this.installPwaUpdateListener();
@@ -286,6 +324,31 @@ export class ScreenManager {
         this.showPlay();
       }, 0);
     }
+  }
+
+  applyQaCleanSave() {
+    if (!import.meta.env.DEV || getDebugParams().get('qaCleanSave') !== '1') {
+      return;
+    }
+
+    this.saveManager.debugResetAll?.();
+  }
+
+  installKeyboardCancelShortcut() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (this.handleKeyboardCancel()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
   }
 
   registerScreen(name, screen) {
@@ -319,6 +382,7 @@ export class ScreenManager {
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
       onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
       onApplyUpdate: () => this.applyPwaUpdate(),
+      onCompanionHomeVisible: () => this.showTutorial('companionHomeViewed'),
     }));
 
     this.homeScreen.setPwaUpdateInfo?.(this.getVisiblePwaUpdateInfo('home'));
@@ -340,6 +404,8 @@ export class ScreenManager {
       onResearch: () => this.withUiClick(() => this.showResearch()),
       onCodex: () => this.withUiClick(() => this.showCodex()),
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
+      onCompanionResearchUnlocked: () => this.showTutorial('companionEggResearch'),
+      onCompanionTabViewed: () => this.showTutorial('companionTabViewed'),
     }));
 
     return this.researchScreen;
@@ -536,6 +602,25 @@ export class ScreenManager {
     if (actions.cancelPressed) {
       this.handleDefaultGamepadCancel();
     }
+  }
+
+  handleKeyboardCancel() {
+    if (this.tutorialUi.view?.visible) {
+      return this.tutorialUi.handleGamepadAction?.({ cancelPressed: true }) ?? false;
+    }
+
+    if (this.currentScreen === 'play' && this.playScene) {
+      this.playScene.handleGamepadActions?.({ cancelPressed: true }, this.gamepadManager);
+      return true;
+    }
+
+    const screen = this.screens[this.currentScreen];
+    if (screen?.handleGamepadAction?.({ cancelPressed: true, pausePressed: true }, this.gamepadManager)) {
+      return true;
+    }
+
+    this.handleDefaultGamepadCancel();
+    return true;
   }
 
   handleGamepadVirtualMouse(actions, gamepadManager) {
@@ -906,7 +991,12 @@ export class ScreenManager {
         'home.codex': { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.title': { x: Math.round(width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
         'home.news': { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+        'home.companion': { x: 18, y: 92, width: 168, height: 58, radius: 12 },
         'home.options': { x: 286, y: bottomNavY, width: 78, height: 72, radius: 12 },
+      },
+      research: {
+        'research.companionTab': { x: Math.round(width / 2 - 34), y: 218, width: 68, height: 58, radius: 10 },
+        'research.companionPanel': { x: 18, y: 394, width: 354, height: 292, radius: 14 },
       },
       sortie: {
         'stage.cards': { x: 22, y: 116, width: width - 44, height: 145, radius: 14 },
@@ -1211,6 +1301,60 @@ export class ScreenManager {
     }
 
     this.saveManager.data.researchPt = Math.max(this.saveManager.data.researchPt ?? 0, value);
+  }
+
+  applyDebugDna() {
+    if (!import.meta.env.DEV) {
+      return;
+    }
+
+    const value = Number(getDebugParams().get('debugDna'));
+    if (!Number.isFinite(value) || value <= 0) {
+      return;
+    }
+
+    this.saveManager.data.ownedDna = Math.max(this.saveManager.data.ownedDna ?? 0, Math.floor(value));
+  }
+
+  applyDebugCompanion() {
+    if (!import.meta.env.DEV) {
+      return;
+    }
+
+    const params = getDebugParams();
+    if (params.get('debugCompanionClear') === '1') {
+      this.saveManager.debugResetCompanion?.();
+    }
+
+    if (params.get('debugCompanionEgg') === '1' || params.get('debugCompanionGrantEgg') === '1') {
+      this.saveManager.grantCompanionEgg?.('debug');
+    }
+
+    if (params.get('debugCompanionIncubating') === '1') {
+      this.saveManager.grantCompanionEgg?.('debug');
+      this.saveManager.startCompanionEggIncubation?.({ instant: false });
+    }
+
+    if (params.get('debugCompanionHatchReady') === '1') {
+      this.saveManager.grantCompanionEgg?.('debug');
+      this.saveManager.startCompanionEggIncubation?.({ instant: true });
+    }
+
+    if (params.get('debugUnlockCompanions') === '1' || params.get('debugCompanionAllOwned') === '1') {
+      this.saveManager.debugUnlockCompanions?.();
+    }
+
+    const companionId = params.get('debugSelectCompanion')
+      ?? params.get('debugCompanionId')
+      ?? params.get('debugCompanionOwned');
+    if (companionId) {
+      if (params.has('debugSelectCompanion') || params.has('debugCompanionId')) {
+        this.saveManager.debugSelectCompanion?.(companionId);
+        return;
+      }
+
+      this.saveManager.debugGrantCompanion?.(companionId);
+    }
   }
 
   applyDebugStageProgress() {
