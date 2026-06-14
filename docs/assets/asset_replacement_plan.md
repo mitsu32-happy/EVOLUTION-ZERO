@@ -3972,3 +3972,30 @@ New active UI assets:
 
 All labels remain runtime text so localization and width adjustments can be made
 without regenerating the bitmaps.
+
+## MVP-P06c Companion UI Asset Polish
+
+P06c supersedes the P06b UI frames for active runtime use. The P06b files remain
+available as references, but `asset_manifest.js` now points to P06c assets.
+
+New active UI assets:
+
+- `public/assets/ui/companions/home_companion_frame_p06c.png`
+- `public/assets/ui/companions/companion_select_panel_p06c.png`
+- `public/assets/ui/companions/companion_select_card_p06c.png`
+- `public/assets/ui/companions/companion_select_button_p06c.png`
+- `public/assets/ui/companions/companion_owned_panel_p06c.png`
+- `public/assets/ui/companions/companion_upgrade_card_p06c.png`
+- `public/assets/ui/companions/companion_upgrade_button_p06c.png`
+- `public/assets/ui/companions/companion_hatch_device_p06c.png`
+- `public/assets/ui/companions/companion_hatch_button_p06c.png`
+- `public/assets/ui/research/icons/icon_companion_research_p06c.png`
+- `public/assets/ui/research/icons/icon_companion_unknown_p06c.png`
+
+Generation rules:
+
+- no baked text
+- dark research-terminal frame language
+- cyan/teal base with gold action accents
+- transparent PNG with text-safe interiors
+- phone-width readability preserved by runtime labels

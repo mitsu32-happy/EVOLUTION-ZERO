@@ -169,3 +169,17 @@ P06b moves companion management into production-facing UI surfaces.
   as movement range, effect, and speed growth without changing save structure.
 
 Detailed implementation notes: `docs/design/companion_home_research_ui_p06b.md`.
+
+## MVP-P06c UI Polish
+
+P06c keeps the P06b home / research structure and replaces the initial simple
+UI frames with polished dark-SF research-terminal assets.
+
+- Active UI assets now use `*_p06c.png`.
+- The hatch device is presented as a central bio-capsule.
+- Research companion subview has minimum gamepad focus routing for mode switch,
+  hatch, upgrade, and page actions.
+- Hatch button placement and short labels were adjusted for phone-height
+  readability.
+
+Detailed polish notes: `docs/design/companion_ui_polish_p06c.md`.

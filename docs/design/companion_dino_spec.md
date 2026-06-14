@@ -371,3 +371,13 @@ surfaces.
   separate save fields for movement/effect/speed tracks.
 
 See `docs/design/companion_home_research_ui_p06b.md`.
+
+## MVP-P06c UI Polish
+
+P06c does not change companion data, save ownership, or gameplay balance.
+
+- P06b companion UI bitmap frames are superseded by P06c regenerated assets.
+- Research companion tab receives minimum controller/virtual-mouse focus routing.
+- Smartphone text is shortened around hatch status, costs, and upgrade labels.
+
+See `docs/design/companion_ui_polish_p06c.md`.

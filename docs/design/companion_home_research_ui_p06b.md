@@ -1,5 +1,9 @@
 # MVP-P06b Companion Home / Research UI
 
+> P06c note: the P06b layout remains the baseline, but the bitmap UI frames and
+> companion research focus handling were polished in
+> `docs/design/companion_ui_polish_p06c.md`.
+
 ## Scope
 
 P06b moves Companion Dino management toward release UI quality without changing
@@ -115,3 +119,15 @@ Old saves without `companion` still normalize to the default companion state.
 - Final phone-width QA for all localized text lengths.
 - Future save migration if separate movement/effect/speed upgrade tracks become
   real independent progression.
+
+## P06c Polish Follow-up
+
+P06c replaces the P06b UI bitmaps with regenerated `*_p06c.png` assets and adds
+minimum controller/virtual-mouse routing for the companion research subview:
+
+- left/right switches `所持お供` and `卵孵化`
+- up/down moves between available actions
+- confirm activates hatch, upgrade, or page controls
+
+The P06b `*_p06b.png` files remain in the repository as historical references,
+but active manifest entries now point to P06c assets.

@@ -32,11 +32,11 @@ const RESEARCH_ASSET_PATHS = {
   cardCompleted: 'assets/ui/research/research_card_done_a12b.png',
   costBadge: 'assets/ui/research/research_button_study_a12b.png',
   analysisConvertPanel: 'assets/ui/research/analysis_convert_panel.png',
-  companionOwnedPanel: 'assets/ui/companions/companion_owned_panel_p06b.png',
-  companionHatchDevice: 'assets/ui/companions/companion_hatch_device_p06b.png',
-  companionHatchButton: 'assets/ui/companions/companion_hatch_button_p06b.png',
-  companionUpgradeCard: 'assets/ui/companions/companion_upgrade_card_p06b.png',
-  companionUpgradeButton: 'assets/ui/companions/companion_upgrade_button_p06b.png',
+  companionOwnedPanel: 'assets/ui/companions/companion_owned_panel_p06c.png',
+  companionHatchDevice: 'assets/ui/companions/companion_hatch_device_p06c.png',
+  companionHatchButton: 'assets/ui/companions/companion_hatch_button_p06c.png',
+  companionUpgradeCard: 'assets/ui/companions/companion_upgrade_card_p06c.png',
+  companionUpgradeButton: 'assets/ui/companions/companion_upgrade_button_p06c.png',
 };
 
 const RESEARCH_ICON_PATHS = {
@@ -59,8 +59,8 @@ const RESEARCH_ICON_PATHS = {
   skillAccelBlades: 'assets/ui/skills/icon_accel_blades.png',
   skillPredatorMark: 'assets/ui/skills/icon_predator_mark.png',
   skillFlameBreath: 'assets/ui/skills/icon_flame_breath.png',
-  companionResearch: 'assets/ui/research/icons/icon_companion_research_p06b.png',
-  companionUnknown: 'assets/ui/research/icons/icon_companion_unknown_p06b.png',
+  companionResearch: 'assets/ui/research/icons/icon_companion_research_p06c.png',
+  companionUnknown: 'assets/ui/research/icons/icon_companion_unknown_p06c.png',
 };
 
 const CORE_PANEL = { x: 8, y: 102, width: 374, height: 88 };
@@ -156,6 +156,7 @@ export class ResearchScreen {
     this.bodyScrollDrag = null;
     this.companionResearchMode = 'owned';
     this.companionOwnedPage = 0;
+    this.companionFocusIndex = 0;
     this.gamepadFocusArea = 'card';
     this.gamepadFocusIndex = 0;
     this.gamepadScrollAccumulator = 0;
@@ -713,6 +714,10 @@ export class ResearchScreen {
       return true;
     }
 
+    if (this.selectedCategory === RESEARCH_CATEGORY_IDS.companion) {
+      return this.handleCompanionResearchGamepadAction(actions);
+    }
+
     if (actions.leftPressed || actions.rightPressed) {
       if (this.gamepadFocusArea === 'category') {
         this.moveCategory(actions.rightPressed ? 1 : -1);
@@ -746,6 +751,108 @@ export class ResearchScreen {
     }
 
     return false;
+  }
+
+  handleCompanionResearchGamepadAction(actions = {}) {
+    if (actions.leftPressed || actions.rightPressed) {
+      this.companionResearchMode = this.companionResearchMode === 'owned' ? 'hatch' : 'owned';
+      this.companionFocusIndex = 0;
+      this.noticeText.text = '';
+      this.render();
+      return true;
+    }
+
+    if (actions.upPressed || actions.downPressed) {
+      const items = this.getCompanionGamepadItems();
+      if (items.length <= 0) {
+        return true;
+      }
+      const delta = actions.downPressed ? 1 : -1;
+      this.companionFocusIndex = Math.max(0, Math.min(items.length - 1, this.companionFocusIndex + delta));
+      return true;
+    }
+
+    if (actions.confirmPressed) {
+      const items = this.getCompanionGamepadItems();
+      const item = items[this.companionFocusIndex] ?? items[0];
+      this.activateCompanionGamepadItem(item);
+      return true;
+    }
+
+    return false;
+  }
+
+  getCompanionGamepadItems() {
+    const data = this.saveManager.getData();
+    const unlocked = this.isCompanionResearchUnlocked(data);
+
+    if (!unlocked) {
+      return [];
+    }
+
+    const items = [
+      { type: 'mode', mode: 'owned', bounds: { x: 84, y: 350, width: 94, height: 34 } },
+      { type: 'mode', mode: 'hatch', bounds: { x: 210, y: 350, width: 94, height: 34 } },
+    ];
+
+    if (this.companionResearchMode === 'hatch') {
+      const item = this.getCompanionHatchEntry(data);
+      if (item) {
+        items.push({ type: 'hatch', bounds: { x: 118, y: 650, width: 154, height: 34 } });
+      }
+      return items;
+    }
+
+    this.companionResearchView.ownedRows.forEach((row) => {
+      if (row.view.visible && row.companionId) {
+        items.push({
+          type: 'upgrade',
+          companionId: row.companionId,
+          bounds: {
+            x: row.view.position.x + row.button.view.position.x,
+            y: row.view.position.y + row.button.view.position.y,
+            width: 76,
+            height: 34,
+          },
+        });
+      }
+    });
+
+    if (this.companionResearchView.pagePrev.view.visible) {
+      items.push({ type: 'page', delta: -1, bounds: { x: 88, y: 680, width: 64, height: 34 } });
+    }
+    if (this.companionResearchView.pageNext.view.visible) {
+      items.push({ type: 'page', delta: 1, bounds: { x: 238, y: 680, width: 64, height: 34 } });
+    }
+
+    return items;
+  }
+
+  activateCompanionGamepadItem(item) {
+    if (!item) {
+      return;
+    }
+
+    if (item.type === 'mode') {
+      this.companionResearchMode = item.mode;
+      this.companionFocusIndex = 0;
+      this.render();
+      return;
+    }
+
+    if (item.type === 'hatch') {
+      this.handleCompanionHatchDirect();
+      return;
+    }
+
+    if (item.type === 'upgrade') {
+      this.upgradeResearchCompanion(item.companionId);
+      return;
+    }
+
+    if (item.type === 'page') {
+      this.changeCompanionOwnedPage(item.delta);
+    }
   }
 
   moveCategory(delta) {
@@ -969,6 +1076,11 @@ export class ResearchScreen {
         width: CATEGORY_TAB.width,
         height: CATEGORY_TAB.height,
       };
+    }
+
+    if (this.selectedCategory === RESEARCH_CATEGORY_IDS.companion) {
+      const item = this.getCompanionGamepadItems()[this.companionFocusIndex];
+      return item?.bounds ?? null;
     }
 
     const card = this.getVisibleGamepadCards()[this.gamepadFocusIndex];
