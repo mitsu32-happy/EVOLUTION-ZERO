@@ -142,3 +142,13 @@ P04b is mostly a PlayScene presentation pass.
 - The UI still uses the existing companion icon/sprite/effect assets from P04.
 - Smartphone UI readability should be rechecked after the animation pass, especially because stronger in-play feedback can change perceived visual density.
 - Controller/virtual mouse modal close behavior remains a required release QA item before main integration.
+
+## MVP-P05b movement feedback
+
+P05b does not add new UI controls, but it changes the in-play behavior players
+see after selecting a companion.
+
+- Higher companion levels increase movement reach around the player.
+- The current upgrade UI remains focused on effect values; movement reach is not surfaced as a separate stat yet.
+- Future UI polish may add a short "行動範囲" line if player testing shows the level-based movement growth is not discoverable.
+- `debugCompanion=1` shows movement radius and facing for QA only.

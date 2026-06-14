@@ -307,3 +307,18 @@ QA artifacts:
 - `docs/assets/p04j_companion_sprite_report.json`
 
 Detailed notes: `docs/design/companion_sprite_polish_p04j.md`.
+
+## MVP-P05b movement AI
+
+P05b improves companion movement behavior without changing save data, damage,
+healing, pickup value, or EXP value.
+
+- Companions now move within a level-based radius around the player.
+- Level 1 companions stay near the player, and higher levels can move farther.
+- Movement radius is clamped by visible screen bounds so companions do not leave the play area.
+- Attack, ranged, boss, swarm, pickup, EXP, heal, and defense companions each choose role-appropriate movement targets.
+- After action frames finish, companions briefly return to player-side wander instead of sticking to the last target.
+- Right-facing P04j sprites flip horizontally when moving left.
+- `debugCompanion=1` shows the current movement radius and facing.
+
+Detailed notes: `docs/design/companion_movement_ai_p05b.md`.

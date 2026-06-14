@@ -48,6 +48,12 @@ const MAX_COMPANION_EFFECTS = 24;
 const COMPANION_ACTION_DURATION = 0.46;
 const COMPANION_BASE_WIDTH = 92;
 const COMPANION_BASE_HEIGHT = 74;
+const COMPANION_BASE_FOLLOW_RADIUS = 82;
+const COMPANION_RADIUS_PER_LEVEL = 30;
+const COMPANION_MAX_FOLLOW_RADIUS = 230;
+const COMPANION_MIN_DISTANCE_FROM_PLAYER = 48;
+const COMPANION_SCREEN_MARGIN = 42;
+const COMPANION_FACING_DEAD_ZONE = 5.5;
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -251,6 +257,19 @@ function getDebugCompanionId() {
   return params.get('debugSelectCompanion') ?? params.get('debugCompanionId') ?? null;
 }
 
+function getDebugCompanionLevel() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const value = Number(new URLSearchParams(window.location.search).get('debugCompanionLevel'));
+  if (!Number.isFinite(value) || value <= 0) {
+    return null;
+  }
+
+  return Math.max(1, Math.floor(value));
+}
+
 function isDebugPerformanceEnabled() {
   return getDebugFlag('debugPerformance');
 }
@@ -379,6 +398,7 @@ export class PlayScene {
     this.companionActionDuration = COMPANION_ACTION_DURATION;
     this.companionActionKind = 'idle';
     this.companionActionTarget = null;
+    this.companionReturnTimer = 0;
     this.companionBaseScaleX = 1;
     this.companionBaseScaleY = 1;
     this.companionFacing = 1;
@@ -2949,7 +2969,10 @@ export class PlayScene {
     this.gameState.companion = state;
     this.gameState.selectedCompanionId = companion?.id ?? null;
     this.activeCompanion = companion;
-    this.activeCompanionLevel = companion ? Math.max(1, state?.levels?.[companion.id] ?? 1) : 1;
+    const debugLevel = getDebugCompanionLevel();
+    this.activeCompanionLevel = companion
+      ? Math.max(1, Math.min(companion.maxLevel ?? 5, debugLevel ?? state?.levels?.[companion.id] ?? 1))
+      : 1;
     this.companionView.visible = !!companion;
     this.companionView.alpha = 1;
     this.companionView.sortableChildren = true;
@@ -3157,6 +3180,7 @@ export class PlayScene {
     this.companionActionTarget = target && Number.isFinite(target.x) && Number.isFinite(target.y)
       ? { x: target.x, y: target.y }
       : null;
+    this.companionReturnTimer = 0;
 
     if (this.companionActionTarget) {
       this.companionFacing = this.companionActionTarget.x >= this.companionPosition.x ? 1 : -1;
@@ -3291,12 +3315,13 @@ export class PlayScene {
     const anchorText = this.companionSprite?.anchor
       ? `${Number(this.companionSprite.anchor.x).toFixed(2)},${Number(this.companionSprite.anchor.y).toFixed(2)}`
       : '-';
+    const radius = Math.round(this.getCompanionMovementRadius());
     this.companionDebugLabel.text = [
       `${this.activeCompanion.id} Lv${this.activeCompanionLevel}`,
       `${source} s:${spriteVisible} f:${fallbackVisible}`,
       `${this.companionAnimationState} #${this.companionAnimationFrame} tex ${frameText}`,
       `size ${sizeText} sc ${scaleText} a ${anchorText}`,
-      `cd ${attackCooldown}/${utilityCooldown} fx ${this.companionEffects?.length ?? 0}`,
+      `cd ${attackCooldown}/${utilityCooldown} fx ${this.companionEffects?.length ?? 0} r${radius} face${this.companionFacing}`,
       `${this.companionLastAction ?? 'idle'} ${this.companionLastTarget ?? '-'}`,
       `${x},${y}`,
     ].join('\n');
@@ -3367,28 +3392,220 @@ export class PlayScene {
     return false;
   }
 
+  getCompanionMovementRadius() {
+    const level = Math.max(1, Math.min(this.activeCompanion?.maxLevel ?? 5, this.activeCompanionLevel ?? 1));
+    const rawRadius = COMPANION_BASE_FOLLOW_RADIUS + (level - 1) * COMPANION_RADIUS_PER_LEVEL;
+    const visibleLimit = Math.max(
+      COMPANION_MIN_DISTANCE_FROM_PLAYER + 12,
+      Math.min(
+        COMPANION_MAX_FOLLOW_RADIUS,
+        (this.camera?.visibleWidth ?? COMPANION_MAX_FOLLOW_RADIUS * 2) / 2 - COMPANION_SCREEN_MARGIN,
+        (this.camera?.visibleHeight ?? COMPANION_MAX_FOLLOW_RADIUS * 2) / 2 - COMPANION_SCREEN_MARGIN,
+      ),
+    );
+
+    return Math.max(
+      COMPANION_MIN_DISTANCE_FROM_PLAYER,
+      Math.min(rawRadius, COMPANION_MAX_FOLLOW_RADIUS, visibleLimit),
+    );
+  }
+
+  clampCompanionPointToScreen(point) {
+    const margin = COMPANION_SCREEN_MARGIN;
+    const minX = Math.max(STAGE_BOUNDS.left + margin, (this.camera?.x ?? STAGE_BOUNDS.left) + margin);
+    const maxX = Math.min(
+      STAGE_BOUNDS.right - margin,
+      (this.camera?.x ?? STAGE_BOUNDS.left) + (this.camera?.visibleWidth ?? (STAGE_BOUNDS.right - STAGE_BOUNDS.left)) - margin,
+    );
+    const minY = Math.max(STAGE_BOUNDS.top + margin, (this.camera?.y ?? STAGE_BOUNDS.top) + margin);
+    const maxY = Math.min(
+      STAGE_BOUNDS.bottom - margin,
+      (this.camera?.y ?? STAGE_BOUNDS.top) + (this.camera?.visibleHeight ?? (STAGE_BOUNDS.bottom - STAGE_BOUNDS.top)) - margin,
+    );
+
+    return {
+      x: this.clamp(point.x, Math.min(minX, maxX), Math.max(minX, maxX)),
+      y: this.clamp(point.y, Math.min(minY, maxY), Math.max(minY, maxY)),
+    };
+  }
+
+  clampCompanionPointToPlayerRadius(point, radius) {
+    const playerX = this.player.position.x;
+    const playerY = this.player.position.y;
+    let dx = point.x - playerX;
+    let dy = point.y - playerY;
+    let distance = Math.hypot(dx, dy);
+
+    if (distance > radius) {
+      const scale = radius / Math.max(1, distance);
+      dx *= scale;
+      dy *= scale;
+      distance = radius;
+    }
+
+    if (distance < COMPANION_MIN_DISTANCE_FROM_PLAYER) {
+      const angle = distance > 1
+        ? Math.atan2(dy, dx)
+        : this.companionOrbitTime * 0.85 + 0.8;
+      dx = Math.cos(angle) * COMPANION_MIN_DISTANCE_FROM_PLAYER;
+      dy = Math.sin(angle) * COMPANION_MIN_DISTANCE_FROM_PLAYER;
+    }
+
+    return {
+      x: playerX + dx,
+      y: playerY + dy,
+    };
+  }
+
+  clampCompanionMovementPoint(point, radius) {
+    const leashed = this.clampCompanionPointToPlayerRadius(point, radius);
+    const screened = this.clampCompanionPointToScreen(leashed);
+    return this.clampCompanionPointToPlayerRadius(screened, radius);
+  }
+
+  getCompanionWanderTarget(radius) {
+    const type = this.activeCompanion?.type;
+    const baseAngle = this.companionOrbitTime * (type === 'swarm' ? 1.45 : 0.92)
+      + (this.activeCompanion?.id?.length ?? 1) * 0.37;
+    const orbitRadius = Math.max(
+      COMPANION_MIN_DISTANCE_FROM_PLAYER,
+      Math.min(radius * (type === 'ranged' || type === 'exp' ? 0.74 : 0.58), radius - 6),
+    );
+    const x = this.player.position.x
+      + Math.cos(baseAngle) * orbitRadius
+      + Math.cos(this.companionOrbitTime * 0.43) * Math.min(34, radius * 0.22);
+    const y = this.player.position.y
+      + Math.sin(baseAngle * 1.18) * Math.min(radius * 0.42, 74)
+      + (type === 'ranged' || type === 'exp' ? -18 : 24);
+
+    return this.clampCompanionMovementPoint({ x, y }, radius);
+  }
+
+  findCompanionEnemyTarget(type, behavior, radius) {
+    if (!this.enemies?.length) {
+      return null;
+    }
+
+    const searchRadius = Math.max(radius + 120, behavior.range ?? 200);
+    const candidates = this.enemies
+      .filter((enemy) => enemy && !enemy.isDead && enemy.position)
+      .map((enemy) => ({
+        enemy,
+        distanceFromPlayer: CollisionSystem.distanceSquared(this.player.position, enemy.position),
+      }))
+      .filter((entry) => entry.distanceFromPlayer <= searchRadius * searchRadius || (type === 'boss' && entry.enemy.isBoss))
+      .sort((a, b) => {
+        if (type === 'boss') {
+          return Number(Boolean(b.enemy.isBoss)) - Number(Boolean(a.enemy.isBoss)) || a.distanceFromPlayer - b.distanceFromPlayer;
+        }
+
+        if (type === 'swarm') {
+          return (a.enemy.hp ?? 99999) - (b.enemy.hp ?? 99999) || a.distanceFromPlayer - b.distanceFromPlayer;
+        }
+
+        if (type === 'ranged') {
+          return b.distanceFromPlayer - a.distanceFromPlayer;
+        }
+
+        return a.distanceFromPlayer - b.distanceFromPlayer;
+      });
+
+    return candidates[0]?.enemy ?? null;
+  }
+
+  findCompanionPickupTarget(expOnly = false, radius = COMPANION_BASE_FOLLOW_RADIUS) {
+    if (!this.pickups?.length) {
+      return null;
+    }
+
+    const searchRadius = Math.max(radius + 90, 150);
+    const candidates = this.pickups
+      .filter((pickup) => pickup && !pickup.isCollected && pickup.type !== 'companion_egg')
+      .filter((pickup) => !expOnly || pickup.type === 'exp')
+      .map((pickup) => ({
+        pickup,
+        distanceFromPlayer: CollisionSystem.distanceSquared(this.player.position, pickup.position),
+      }))
+      .filter((entry) => entry.distanceFromPlayer <= searchRadius * searchRadius)
+      .sort((a, b) => a.distanceFromPlayer - b.distanceFromPlayer);
+
+    return candidates[0]?.pickup ?? null;
+  }
+
+  getCompanionDesiredTarget(radius) {
+    const type = this.activeCompanion?.type;
+    const behavior = getCompanionScaledBehavior(this.activeCompanion?.id, this.activeCompanionLevel)
+      ?? this.activeCompanion?.behavior
+      ?? {};
+
+    if (this.companionReturnTimer > 0) {
+      return this.getCompanionWanderTarget(radius);
+    }
+
+    if (this.companionActionTimer > 0 && this.companionActionTarget) {
+      return this.clampCompanionMovementPoint(this.companionActionTarget, radius);
+    }
+
+    if (['attack', 'area', 'ranged', 'swarm', 'boss', 'synergy'].includes(type)) {
+      const enemy = this.findCompanionEnemyTarget(type, behavior, radius);
+      if (enemy?.position) {
+        if (type === 'ranged') {
+          const dx = enemy.position.x - this.player.position.x;
+          const dy = enemy.position.y - this.player.position.y;
+          const angle = Math.atan2(dy, dx);
+          const distance = Math.min(radius, Math.max(COMPANION_MIN_DISTANCE_FROM_PLAYER + 20, radius * 0.78));
+          return this.clampCompanionMovementPoint({
+            x: this.player.position.x + Math.cos(angle) * distance,
+            y: this.player.position.y + Math.sin(angle) * distance,
+          }, radius);
+        }
+
+        return this.clampCompanionMovementPoint(enemy.position, radius);
+      }
+    }
+
+    if (type === 'pickup' || type === 'exp') {
+      const pickup = this.findCompanionPickupTarget(type === 'exp', radius);
+      if (pickup?.position) {
+        return this.clampCompanionMovementPoint(pickup.position, radius);
+      }
+    }
+
+    if (type === 'heal' || type === 'defense') {
+      const offset = type === 'heal' ? { x: -54, y: 36 } : { x: 54, y: 42 };
+      return this.clampCompanionMovementPoint({
+        x: this.player.position.x + offset.x + Math.cos(this.companionOrbitTime * 0.8) * 18,
+        y: this.player.position.y + offset.y + Math.sin(this.companionOrbitTime * 0.9) * 18,
+      }, radius);
+    }
+
+    return this.getCompanionWanderTarget(radius);
+  }
+
   updateCompanion(delta) {
     if (!this.activeCompanion || !this.companionView.visible) {
       return;
     }
 
     this.companionOrbitTime += delta;
+    this.companionReturnTimer = Math.max(0, this.companionReturnTimer - delta);
     const profile = this.getCompanionAnimationProfile();
     const actionDuration = Math.max(0.001, this.companionActionDuration || COMPANION_ACTION_DURATION);
     const actionProgress = this.companionActionTimer > 0
       ? this.clamp(1 - (this.companionActionTimer / actionDuration), 0, 1)
       : 0;
     const actionWave = actionProgress > 0 ? Math.sin(actionProgress * Math.PI) : 0;
-    const orbitX = Math.cos(this.companionOrbitTime * 1.4) * 52 + 92;
-    const orbitY = Math.sin(this.companionOrbitTime * 1.8) * 22 + 38;
-    const targetX = this.player.position.x + orbitX;
-    const targetY = this.player.position.y + orbitY;
-    const follow = Math.min(1, delta * 5.4);
+    const movementRadius = this.getCompanionMovementRadius();
+    const desiredTarget = this.getCompanionDesiredTarget(movementRadius);
+    const follow = Math.min(1, delta * (4.3 + Math.min(2, this.activeCompanionLevel * 0.18)));
     const previousX = this.companionPosition.x;
     const previousY = this.companionPosition.y;
 
-    this.companionPosition.x += (targetX - this.companionPosition.x) * follow;
-    this.companionPosition.y += (targetY - this.companionPosition.y) * follow;
+    this.companionPosition.x += (desiredTarget.x - this.companionPosition.x) * follow;
+    this.companionPosition.y += (desiredTarget.y - this.companionPosition.y) * follow;
+    const clampedPosition = this.clampCompanionMovementPoint(this.companionPosition, movementRadius);
+    this.companionPosition.x = clampedPosition.x;
+    this.companionPosition.y = clampedPosition.y;
     const movement = Math.hypot(this.companionPosition.x - previousX, this.companionPosition.y - previousY);
     const moveIntensity = this.clamp(movement / Math.max(1, delta * 280), 0, 1);
     const animationState = actionWave > 0.02 ? 'action' : moveIntensity > 0.08 ? 'move' : 'idle';
@@ -3405,10 +3622,12 @@ export class PlayScene {
     }
 
     this.companionView.zIndex = this.companionPosition.y + 1.2;
-    const flip = targetX >= this.player.position.x ? 1 : -1;
+    const deltaX = this.companionPosition.x - previousX;
     this.companionFacing = actionWave > 0 && this.companionActionTarget
       ? (this.companionActionTarget.x >= this.companionPosition.x ? 1 : -1)
-      : flip;
+      : Math.abs(deltaX) > COMPANION_FACING_DEAD_ZONE
+        ? (deltaX >= 0 ? 1 : -1)
+        : this.companionFacing;
     this.updateCompanionSpriteAnimation(animationState, delta);
     const squash = Math.sin(this.companionOrbitTime * profile.bobSpeed + 0.7) * 0.022;
     const actionScale = 1 + actionWave * ((profile.actionScale ?? 1.1) - 1);
@@ -3419,7 +3638,12 @@ export class PlayScene {
     this.companionSprite.rotation = (Math.sin(this.companionOrbitTime * profile.bobSpeed * 0.72) * profile.tilt) + this.companionFacing * actionWave * 0.08;
     this.companionFallback.rotation = this.companionSprite.rotation;
     this.drawCompanionMotionOverlays(profile, actionProgress, moveIntensity);
+    const previousActionTimer = this.companionActionTimer;
     this.companionActionTimer = Math.max(0, this.companionActionTimer - delta);
+    if (previousActionTimer > 0 && this.companionActionTimer <= 0) {
+      this.companionActionTarget = null;
+      this.companionReturnTimer = Math.max(this.companionReturnTimer, 0.55);
+    }
     this.updateCompanionDebugLabel(this.companionSprite.visible ? 'sprite' : 'fallback');
 
     this.updateCompanionSupportAttack(delta);

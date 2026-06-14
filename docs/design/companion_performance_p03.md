@@ -130,3 +130,17 @@ Performance QA priority after P04d:
 - Confirm larger sheets do not create missing texture or frame-slicing errors.
 - Confirm ZERO/ENDLESS high-density scenes do not show companion effect growth.
 - Confirm the larger companion display does not obscure warning guides or boss projectiles.
+
+## MVP-P05b movement AI performance
+
+P05b adds role-based movement targeting, but keeps the search bounded.
+
+- Enemy target search uses the existing `enemies` list and nearby candidates only.
+- Pickup target search uses the existing `pickups` list and ignores companion eggs.
+- Target positions are clamped to the level-based movement radius and visible screen.
+- Movement itself creates no projectiles, effects, damage text, pickups, or save-state arrays.
+- Existing companion action effects still use `companionEffects`, `companionEffectPool`, and `MAX_COMPANION_EFFECTS`.
+
+Expected runtime impact is limited to lightweight per-frame target selection for
+the single active companion. `debugPerformance=1` should show no persistent
+companion object growth from movement alone.
