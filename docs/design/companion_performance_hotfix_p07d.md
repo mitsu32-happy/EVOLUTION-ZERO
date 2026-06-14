@@ -211,3 +211,46 @@ The P07c ZERO blocker was addressed enough to pass the high-load route beyond th
 3. Smartphone viewport QA.
 4. Controller / virtual mouse QA.
 5. Final build and runtime console checks after all fixes.
+
+## P07e performance recheck
+
+P07e reran the high-load routes after this hotfix.
+
+### ZERO maxSpawn
+
+Route:
+
+`debugIntroSeen=1&debugAutoPlay=1&debugPerformance=1&debugInvincible=1&debugMaxSpawn=1&debugNoPickupCollect=1&debugCompanionId=rex_hatchling&debugCompanionLevel=5&debugDino=spinosaurus&debugUnlockDino=spinosaurus&debugUnlockZeroRoute=spinosaurus_zero&debugStage=volcano&debugMode=zero&debugDifficulty=expert`
+
+Observed:
+
+- Elapsed `03:01`
+- FPS display `120`
+- enemy `104/-`
+- children about `130`
+- `compFx 1/24`
+- `compScan e995/p0`
+- Crash diagnostics screen not shown
+- App console error/warn `0`
+
+### ENDLESS maxSpawn
+
+Route:
+
+`debugIntroSeen=1&debugAutoPlay=1&debugPerformance=1&debugInvincible=1&debugMaxSpawn=1&debugNoPickupCollect=1&debugCompanionId=exp_chaser&debugCompanionLevel=5&debugDino=velociraptor&debugStage=jungle&debugMode=endless&debugDifficulty=expert`
+
+Observed:
+
+- Elapsed `03:20`
+- FPS display `120`
+- enemy `112/-`
+- children about `132`
+- `compFx 0/24`
+- `compScan e0/p0`
+- Crash diagnostics screen not shown
+- App console error/warn `0`
+
+Result:
+
+- The P07d performance mitigation remains effective in P07e high-load rechecks.
+- No Companion effect/projectile/pickup growth leak was observed.

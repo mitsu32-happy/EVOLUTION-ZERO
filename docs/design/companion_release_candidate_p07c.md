@@ -278,6 +278,17 @@ Summary:
 - ZERO high-load with `rex_hatchling` survived beyond the previous failure point, reaching `t=226.87` with app console error/warn `0`.
 - ENDLESS high-load with `exp_chaser` also passed a post-hotfix 100s route with app console error/warn `0`.
 
+P07e follow-up:
+
+- Evidence: `docs/design/companion_release_final_qa_p07e.md`
+- ZERO maxSpawn with `rex_hatchling` reached `03:01` with app console error/warn `0` and no crash diagnostics screen.
+- ENDLESS maxSpawn with `exp_chaser` reached `03:20` with app console error/warn `0` and no crash diagnostics screen.
+- Existing-save compatibility was verified through SaveManager using missing companion state, legacy `levels` only, partial `upgradeLevels`, egg-discovery backfill, null selected companion, invalid selected id, and over-max legacy level cases.
+- Smartphone viewport QA at `390x844` covered home, unknown research tab, all-owned companion selection modal, companion research owned list, and upgrade item selection.
+- Virtual pointer/touch QA confirmed modal open/page/cancel flows. `Escape` did not close the upgrade item modal, and physical controller hardware was not available.
+- No-debug title -> intro skip -> START -> home was verified with app console error/warn `0`, but a full clean no-debug egg drop -> hatch -> set -> upgrade -> restart flow was not completed in the browser.
+- Updated judgment: `main integration: hold`. P07d performance blocker is mitigated; remaining hold reasons are full clean no-debug natural egg/hatch flow and physical controller QA.
+
 Updated judgment:
 
 - The specific P07c ZERO high-load blocker is considered mitigated by P07d.
