@@ -287,3 +287,23 @@ QA artifacts:
 - `docs/assets/p04i_companion_sprite_report.json`
 
 Detailed notes: `docs/design/companion_sprite_sheet_regeneration_p04i.md`.
+
+## MVP-P04j sprite polish
+
+P04j supersedes P04i for active companion sprite sheets.
+
+- Active paths are now `public/assets/companions/{id}_sprite_sheet_p04j.png`.
+- Cell size remains `384 x 384`; sheet layout remains `4 x 3`.
+- The source generation rules now require stronger cell padding and clearer dinosaur/ancient-creature silhouettes.
+- `ptera_chick`, `medic_saur`, `compy_pack`, and `exp_chaser` were regenerated with stricter species/role wording so they do not read as bird, mammal, small animal, or abstract support object.
+- Post-processing crops each source cell inward before normalization to reduce adjacent-cell contamination risk.
+- Runtime companion baseline size is reduced from `124 x 98` to `92 x 74`, keeping companions near 80% of the player while preserving per-companion variation.
+- P04f fixed-size texture switching remains unchanged.
+- P04i sheets remain available as fallback/reference.
+
+QA artifacts:
+
+- `docs/assets/p04j_companion_sprite_contact.png`
+- `docs/assets/p04j_companion_sprite_report.json`
+
+Detailed notes: `docs/design/companion_sprite_polish_p04j.md`.

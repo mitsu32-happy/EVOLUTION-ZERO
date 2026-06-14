@@ -2766,8 +2766,8 @@ export const ASSET_MANIFEST = {
       note: 'MVP-P01 companion hatch glow effect.',
     },
     raptorlingSprite: {
-      path: 'assets/companions/raptorling_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose attack companion raptorling sprite sheet.',
+      path: 'assets/companions/raptorling_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose attack companion raptorling sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2788,8 +2788,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
     },
     spinoPupSprite: {
-      path: 'assets/companions/spino_pup_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose area companion spino pup sprite sheet.',
+      path: 'assets/companions/spino_pup_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose area companion spino pup sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2810,8 +2810,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
     },
     medicSaurSprite: {
-      path: 'assets/companions/medic_saur_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose healing companion sprite sheet.',
+      path: 'assets/companions/medic_saur_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose healing companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2832,8 +2832,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     pteraChickSprite: {
-      path: 'assets/companions/ptera_chick_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose ranged flying companion sprite sheet.',
+      path: 'assets/companions/ptera_chick_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose ranged flying companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2854,8 +2854,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 14, loop: false } },
     },
     triceraCalfSprite: {
-      path: 'assets/companions/tricera_calf_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose defense companion sprite sheet.',
+      path: 'assets/companions/tricera_calf_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose defense companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2876,8 +2876,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     paraJuvenileSprite: {
-      path: 'assets/companions/para_juvenile_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose pickup companion sprite sheet.',
+      path: 'assets/companions/para_juvenile_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose pickup companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2898,8 +2898,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     stegoCalfSprite: {
-      path: 'assets/companions/stego_calf_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose area/synergy companion sprite sheet.',
+      path: 'assets/companions/stego_calf_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose area/synergy companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2920,8 +2920,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     rexHatchlingSprite: {
-      path: 'assets/companions/rex_hatchling_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose boss-focused companion sprite sheet.',
+      path: 'assets/companions/rex_hatchling_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose boss-focused companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2942,8 +2942,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 12, loop: false } },
     },
     compyPackSprite: {
-      path: 'assets/companions/compy_pack_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose swarm companion sprite sheet.',
+      path: 'assets/companions/compy_pack_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose swarm companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {
@@ -2964,8 +2964,8 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3], fps: 16, loop: false } },
     },
     expChaserSprite: {
-      path: 'assets/companions/exp_chaser_sprite_sheet_p04i.png',
-      note: 'MVP-P04i right-facing generated-pose EXP support companion sprite sheet.',
+      path: 'assets/companions/exp_chaser_sprite_sheet_p04j.png',
+      note: 'MVP-P04j polished right-facing generated-pose EXP support companion sprite sheet.',
       spriteSheet: true,
       sheet: { columns: 4, rows: 3, frameWidth: 384, frameHeight: 384 },
       animations: {

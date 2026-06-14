@@ -3874,3 +3874,45 @@ QA artifacts:
 
 - `docs/assets/p04i_companion_sprite_contact.png`
 - `docs/assets/p04i_companion_sprite_report.json`
+
+## MVP-P04j Companion Sprite Polish
+
+P04j supersedes P04i for active runtime use. P04i remains available as
+fallback/reference.
+
+New active sprite sheets:
+
+- `public/assets/companions/raptorling_sprite_sheet_p04j.png`
+- `public/assets/companions/spino_pup_sprite_sheet_p04j.png`
+- `public/assets/companions/medic_saur_sprite_sheet_p04j.png`
+- `public/assets/companions/ptera_chick_sprite_sheet_p04j.png`
+- `public/assets/companions/tricera_calf_sprite_sheet_p04j.png`
+- `public/assets/companions/para_juvenile_sprite_sheet_p04j.png`
+- `public/assets/companions/stego_calf_sprite_sheet_p04j.png`
+- `public/assets/companions/rex_hatchling_sprite_sheet_p04j.png`
+- `public/assets/companions/compy_pack_sprite_sheet_p04j.png`
+- `public/assets/companions/exp_chaser_sprite_sheet_p04j.png`
+
+The sheet layout remains `384 x 384`, `4 columns x 3 rows`.
+
+Generation and processing changes:
+
+- stricter right-facing prompts
+- no unrelated dinosaurs, animals, or support subjects
+- wider source-cell padding
+- `30px` safe inset before per-frame normalization
+- reduced normalized subject size for wider runtime margins
+- final chroma-key cleanup
+
+Generation helper:
+
+- `tools/process_companion_sprite_p04j.py`
+
+QA artifacts:
+
+- `docs/assets/p04j_companion_sprite_contact.png`
+- `docs/assets/p04j_companion_sprite_report.json`
+
+P04j also adds a reusable generation guide for future player and enemy assets:
+
+- `docs/design/sprite_sheet_asset_generation_guidelines.md`

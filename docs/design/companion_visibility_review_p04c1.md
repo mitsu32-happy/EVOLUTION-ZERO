@@ -125,3 +125,19 @@ P04e changes:
 - P04e cleaned sheets replace P04d active manifest references
 
 This keeps the goal of better visibility while avoiding companion images that feel larger than the player or unstable during animation.
+
+## P04j Size Rebalance
+
+P04j reduces the runtime display baseline after P04i/P04j real-device review
+showed companions were close to the player size.
+
+P04j changes:
+
+- display baseline reduced from `124 x 98` to `92 x 74`
+- existing per-companion `displayScale` remains active
+- large companions still read slightly larger, but do not exceed the player target
+- P04f fixed-size texture switching remains unchanged
+- normal guide/ring display remains hidden
+
+This targets roughly 80% of the player display size while preserving enough
+visibility for action and movement frames.

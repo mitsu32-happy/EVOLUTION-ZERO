@@ -99,3 +99,30 @@ but final art still needs live gameplay review on device:
 - inspect each companion during actual attack/support triggers
 - decide whether future P04j/P08 work should use a dedicated artist pass or
   model-native transparent generation for even cleaner edges
+
+## P04j Supersession
+
+P04j supersedes P04i for active runtime use.
+
+P04j keeps the P04i direction:
+
+- right-facing generated poses
+- no unrelated dinosaurs or support subjects
+- fixed `384 x 384` runtime cells
+- P04f fixed-size rendering unchanged
+
+P04j improves:
+
+- stricter source prompts for dinosaur/ancient-creature readability
+- wider generated-source padding
+- `30px` inward source-cell crop before normalization
+- smaller normalized subject scale to preserve runtime margins
+- active runtime display baseline reduced to about 80% of player size
+
+New QA artifacts:
+
+- `docs/assets/p04j_companion_sprite_contact.png`
+- `docs/assets/p04j_companion_sprite_report.json`
+
+The P04j report records `0` missing frames, `0` edge issues, and minimum frame
+margins of `45px` or greater.
