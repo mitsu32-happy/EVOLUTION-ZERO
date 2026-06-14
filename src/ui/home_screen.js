@@ -764,7 +764,11 @@ export class HomeScreen {
     this.companionName.position.set(x + 58, y + 38);
     this.companionName.style.fill = '#fff0b4';
 
-    if (!this.companionHomeTutorialShownForVisit && !this.saveManager?.isTutorialComplete?.('companionHomeViewed')) {
+    const shouldShowCompanionHomeTutorial = Boolean(companionState.lastHatchedId)
+      && !this.companionHomeTutorialShownForVisit
+      && !this.saveManager?.isTutorialComplete?.('companionHomeViewed');
+
+    if (shouldShowCompanionHomeTutorial) {
       if (!this.saveManager?.isTutorialComplete?.('home')) {
         return;
       }

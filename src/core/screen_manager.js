@@ -101,13 +101,6 @@ const TUTORIAL_PAGES = {
       tooltipPosition: 'bottom',
     },
     {
-      title: 'お供恐竜',
-      body: '入手したお供恐竜をセットできます。\n一緒に出撃してプレイヤーを支援します。',
-      target: 'お供',
-      targetId: 'home.companion',
-      tooltipPosition: 'bottom',
-    },
-    {
       title: 'お知らせ',
       body: 'アップデート内容を確認できます。\n追加や修正の内容はここにまとまります。',
       target: 'お知らせ',
@@ -954,11 +947,13 @@ export class ScreenManager {
     const shouldPausePlay = id === 'play' && this.currentScreen === 'play' && this.playScene?.gameState;
     if (shouldPausePlay) {
       this.playScene.isTutorialPaused = true;
+      this.playScene.setCompanionTutorialSuppressed?.(true);
     }
 
     const finish = (tutorialId) => {
       if (shouldPausePlay && this.playScene?.gameState) {
         this.playScene.isTutorialPaused = false;
+        this.playScene.setCompanionTutorialSuppressed?.(false);
       }
       this.saveManager.markTutorialComplete(tutorialId);
     };
