@@ -152,3 +152,20 @@ see after selecting a companion.
 - The current upgrade UI remains focused on effect values; movement reach is not surfaced as a separate stat yet.
 - Future UI polish may add a short "行動範囲" line if player testing shows the level-based movement growth is not discoverable.
 - `debugCompanion=1` shows movement radius and facing for QA only.
+## MVP-P06b Home / Research UI Implementation
+
+P06b moves companion management into production-facing UI surfaces.
+
+- Home companion entry moved under the top-left logo and is visible only when
+  at least one companion is owned.
+- Home selection modal now shows owned companions only and no longer exposes
+  upgrade controls.
+- Research replaces the unused mutation slot with a companion research tab.
+- Before the first egg is discovered, the research tab is displayed as `???`.
+- After egg discovery, the tab becomes `お供` and contains two subviews:
+  `所持お供` and `卵孵化`.
+- Companion upgrades are performed in the research `所持お供` view.
+- The P06b upgrade UI keeps the existing single companion level and presents it
+  as movement range, effect, and speed growth without changing save structure.
+
+Detailed implementation notes: `docs/design/companion_home_research_ui_p06b.md`.

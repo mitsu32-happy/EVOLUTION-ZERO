@@ -15,7 +15,6 @@ import {
   COMPANION_TYPES,
   getCompanionById,
   getCompanionEffectSummary,
-  getCompanionUpgradeCost,
 } from '../data/companion_dinos.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
@@ -47,6 +46,10 @@ const HOME_ASSET_PATHS = {
   newsButtonBack: 'assets/ui/home/news_button_back_a07d.png',
   newsBadgeUpdate: 'assets/ui/home/news_badge_update_a07d.png',
   newsBadgeNormal: 'assets/ui/home/news_badge_update_a07d.png',
+  companionHomeFrame: 'assets/ui/companions/home_companion_frame_p06b.png',
+  companionSelectPanel: 'assets/ui/companions/companion_select_panel_p06b.png',
+  companionSelectCard: 'assets/ui/companions/companion_select_card_p06b.png',
+  companionSelectButton: 'assets/ui/companions/companion_select_button_p06b.png',
   titleFrames: {
     normal_clear_frame: 'assets/ui/titles/title_frame_normal.png',
     hard_clear_frame: 'assets/ui/titles/title_frame_hard.png',
@@ -139,6 +142,20 @@ const UNLOCK_PANEL = INFO_PANEL;
 const RECORD_PANEL = INFO_PANEL;
 const DAILY_PANEL = INFO_PANEL;
 const SELECTOR = { leftX: 86, pillX: 126, rightX: 270, y: 385 };
+const COMPANION_HOME_PANEL = { x: 18, y: 92, width: 168, height: 58 };
+
+const COMPANION_UI_DESCRIPTIONS = {
+  raptorling: '近くの敵を素早く自動攻撃',
+  spino_pup: '水弾で複数の敵を支援攻撃',
+  medic_saur: 'HPが減ると自動回復',
+  ptera_chick: '遠距離から小弾で牽制',
+  tricera_calf: '被ダメージを短く軽減',
+  para_juvenile: 'EXPやアイテム回収を補助',
+  stego_calf: '周囲の敵へ小範囲攻撃',
+  rex_hatchling: 'ボスへの攻撃を補助',
+  compy_pack: '弱った敵を素早く処理',
+  exp_chaser: 'EXP回収と成長を補助',
+};
 
 const UNLOCK_CONTENT = {
   titleX: INFO_PANEL.x + 26,
@@ -228,6 +245,7 @@ export class HomeScreen {
     this.newsEntryFallback = new Graphics();
     this.newsEntryText = this.createText('お知らせ', 14, '#f2fffb', 122);
     this.newsModal = this.createNewsModal();
+    this.companionPanelFrame = new Sprite(Texture.EMPTY);
     this.companionPanel = new Graphics();
     this.companionIcon = new Sprite(Texture.EMPTY);
     this.companionTitle = this.createText('お供', 10, '#7cf7d4', 70);
@@ -328,6 +346,7 @@ export class HomeScreen {
       this.newsEntryFallback,
       this.newsEntryFrame,
       this.newsEntryText,
+      this.companionPanelFrame,
       this.companionPanel,
       this.companionIcon,
       this.companionTitle,
@@ -582,7 +601,7 @@ export class HomeScreen {
       record: { x: 146, y: 520, width: 98, height: 44, radius: 12 },
       unlock: { x: 254, y: 520, width: 98, height: 44, radius: 12 },
       title: { x: Math.round(this.width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
-      companion: { x: 38, y: 188, width: 136, height: 44, radius: 12 },
+      companion: { ...COMPANION_HOME_PANEL, radius: 12 },
       news: { x: 226, y: 114, width: 130, height: 44, radius: 12 },
       home: { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
       research: { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
@@ -692,42 +711,54 @@ export class HomeScreen {
 
   updateCompanionPanel(data) {
     const companionState = data.companion ?? {};
-    const companion = getCompanionById(companionState.selectedId);
-    const eggTexture = this.textures.get('companionEgg');
+    const ownedIds = Array.isArray(companionState.ownedIds) ? companionState.ownedIds : [];
+    const hasOwnedCompanion = ownedIds.length > 0;
+
+    this.companionPanelFrame.visible = hasOwnedCompanion;
+    this.companionPanel.visible = hasOwnedCompanion;
+    this.companionIcon.visible = hasOwnedCompanion;
+    this.companionTitle.visible = hasOwnedCompanion;
+    this.companionName.visible = hasOwnedCompanion;
+    this.companionPanel.eventMode = hasOwnedCompanion ? 'static' : 'none';
+    this.companionPanel.cursor = hasOwnedCompanion ? 'pointer' : 'default';
+
+    if (!hasOwnedCompanion) {
+      this.companionPanel.clear();
+      return;
+    }
+
+    const companion = getCompanionById(companionState.selectedId) ?? getCompanionById(ownedIds[0]);
     const iconTexture = companion
       ? (this.textures.get(`companionIcon:${companion.id}`) ?? this.textures.get('companionIcon'))
       : this.textures.get('companionIcon');
-    const hasEgg = companionState.eggPending || companionState.eggIncubating;
-    const x = 38;
-    const y = 188;
-    const width = 136;
-    const height = 44;
-    const accent = companion ? (COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4) : hasEgg ? 0xfff0b4 : 0x23434a;
+    const { x, y, width, height } = COMPANION_HOME_PANEL;
+    const accent = companion ? (COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4) : 0x7cf7d4;
+    const frameTexture = this.textures.get('companionHomeFrame');
+
+    this.companionPanelFrame.texture = frameTexture ?? Texture.EMPTY;
+    this.companionPanelFrame.position.set(x, y);
+    this.companionPanelFrame.width = width;
+    this.companionPanelFrame.height = height;
+    this.companionPanelFrame.alpha = frameTexture ? 0.96 : 0;
 
     this.companionPanel
       .clear()
       .roundRect(x, y, width, height, 12)
-      .fill({ color: 0x020708, alpha: 0.66 })
-      .stroke({ color: accent, width: 1.4, alpha: companion || hasEgg ? 0.78 : 0.45 })
-      .roundRect(x + 5, y + 5, width - 10, height - 10, 9)
-      .stroke({ color: 0x6cf7ff, width: 0.7, alpha: 0.16 });
-    this.companionIcon.texture = (companion ? iconTexture : hasEgg ? eggTexture : iconTexture) ?? Texture.EMPTY;
+      .fill({ color: 0x020708, alpha: frameTexture ? 0.12 : 0.66 })
+      .stroke({ color: accent, width: 1.2, alpha: frameTexture ? 0.2 : 0.78 });
+    this.companionIcon.texture = iconTexture ?? Texture.EMPTY;
     this.companionIcon.visible = Boolean(this.companionIcon.texture && this.companionIcon.texture !== Texture.EMPTY);
     this.companionIcon.anchor.set(0.5);
-    this.companionIcon.position.set(x + 24, y + 22);
-    this.companionIcon.width = 30;
-    this.companionIcon.height = 30;
+    this.companionIcon.position.set(x + 31, y + 30);
+    this.companionIcon.width = 38;
+    this.companionIcon.height = 38;
     this.companionTitle.text = 'お供';
     this.companionTitle.anchor.set(0, 0.5);
-    this.companionTitle.position.set(x + 46, y + 14);
-    this.companionName.text = companion
-      ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}`
-      : hasEgg
-        ? (companionState.eggIncubating ? '孵化中' : '卵あり')
-        : 'お供なし';
+    this.companionTitle.position.set(x + 58, y + 20);
+    this.companionName.text = companion ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}` : '';
     this.companionName.anchor.set(0, 0.5);
-    this.companionName.position.set(x + 46, y + 30);
-    this.companionName.style.fill = companion || hasEgg ? '#fff0b4' : '#8da49e';
+    this.companionName.position.set(x + 58, y + 38);
+    this.companionName.style.fill = '#fff0b4';
   }
 
   updateEquippedTitle(data) {
@@ -1135,6 +1166,10 @@ export class HomeScreen {
       ['newsButtonBack', ASSET_KEYS.homeUi?.newsButtonBack, HOME_ASSET_PATHS.newsButtonBack],
       ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
       ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
+      ['companionHomeFrame', ASSET_KEYS.companionUi?.homeFrame, HOME_ASSET_PATHS.companionHomeFrame],
+      ['companionSelectPanel', ASSET_KEYS.companionUi?.selectPanel, HOME_ASSET_PATHS.companionSelectPanel],
+      ['companionSelectCard', ASSET_KEYS.companionUi?.selectCard, HOME_ASSET_PATHS.companionSelectCard],
+      ['companionSelectButton', ASSET_KEYS.companionUi?.selectButton, HOME_ASSET_PATHS.companionSelectButton],
       ['companionIcon', ASSET_KEYS.companions?.raptorlingIcon, null],
       ...COMPANION_DINOS.map((companion) => [
         `companionIcon:${companion.id}`,
@@ -1649,6 +1684,7 @@ export class HomeScreen {
     const modal = {
       view: new Container(),
       overlay: new Graphics(),
+      panelFrame: new Sprite(Texture.EMPTY),
       panel: new Graphics(),
       title: this.createText('お供恐竜', 18, '#fff0b4', 260),
       body: this.createText('', 11, '#d7fff2', 286),
@@ -1677,15 +1713,18 @@ export class HomeScreen {
     modal.closeText.position.set(this.width / 2, 624);
     modal.pageText.anchor.set(0.5);
     modal.pageText.position.set(this.width / 2, 566);
-    modal.view.addChild(modal.overlay, modal.panel, modal.title, modal.body, modal.selectedDetail, modal.closeText, modal.pageText);
+    modal.panelFrame.position.set(34, 206);
+    modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, modal.selectedDetail, modal.closeText, modal.pageText);
 
     for (let index = 0; index < 5; index += 1) {
       const row = {
         view: new Container(),
+        frame: new Sprite(Texture.EMPTY),
         bg: new Graphics(),
         icon: new Sprite(Texture.EMPTY),
         name: this.createText('', 12, '#ffffff', 140),
         detail: this.createText('', 9, '#cbe0da', 184),
+        actionFrame: new Sprite(Texture.EMPTY),
         action: this.createText('', 10, '#071015', 62),
         companionId: null,
       };
@@ -1701,7 +1740,10 @@ export class HomeScreen {
       row.detail.position.set(44, 26);
       row.action.anchor.set(0.5);
       row.action.position.set(246, 24);
-      row.view.addChild(row.bg, row.icon, row.name, row.detail, row.action);
+      row.actionFrame.position.set(216, 8);
+      row.actionFrame.width = 60;
+      row.actionFrame.height = 30;
+      row.view.addChild(row.frame, row.bg, row.icon, row.name, row.detail, row.actionFrame, row.action);
       modal.rows.push(row);
       modal.view.addChild(row.view);
     }
@@ -1718,6 +1760,8 @@ export class HomeScreen {
     modal.upgradeButton.view.cursor = 'pointer';
     modal.upgradeButton.view.on('pointertap', () => this.upgradeSelectedCompanion());
     modal.upgradeButton.view.addChild(modal.upgradeButton.bg, modal.upgradeButton.text);
+    modal.upgradeButton.view.visible = false;
+    modal.upgradeButton.view.eventMode = 'none';
     modal.view.addChild(modal.upgradeButton.view);
 
     modal.prevButton = this.createCompanionPageButton('前', 56, 572, () => this.changeCompanionModalPage(-1));
@@ -1744,6 +1788,10 @@ export class HomeScreen {
   }
 
   openCompanionModal() {
+    const owned = this.saveManager?.getCompanionState?.().ownedIds ?? [];
+    if (owned.length <= 0) {
+      return;
+    }
     this.playUiFeedback('ui_select');
     this.companionModalPage = 0;
     this.companionModal.view.visible = true;
@@ -1757,37 +1805,39 @@ export class HomeScreen {
   renderCompanionModal() {
     const data = this.saveManager?.getData?.() ?? this.saveData ?? {};
     const state = data.companion ?? {};
-    const selected = getCompanionById(state.selectedId);
     const ownedIds = new Set(state.ownedIds ?? []);
+    const ownedCompanions = COMPANION_DINOS.filter((companion) => ownedIds.has(companion.id));
+    const selected = getCompanionById(state.selectedId) ?? ownedCompanions[0] ?? null;
     const fallbackIconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
     const pageSize = this.companionModal.rows.length;
-    const maxPage = Math.max(0, Math.ceil(COMPANION_DINOS.length / pageSize) - 1);
+    const maxPage = Math.max(0, Math.ceil(ownedCompanions.length / pageSize) - 1);
     this.companionModalPage = Math.max(0, Math.min(maxPage, this.companionModalPage));
     const pageStart = this.companionModalPage * pageSize;
-    const visibleCompanions = COMPANION_DINOS.slice(pageStart, pageStart + pageSize);
+    const visibleCompanions = ownedCompanions.slice(pageStart, pageStart + pageSize);
+    const panelTexture = this.textures.get('companionSelectPanel');
 
+    this.companionModal.panelFrame.texture = panelTexture ?? Texture.EMPTY;
+    this.companionModal.panelFrame.visible = !!panelTexture;
+    this.companionModal.panelFrame.width = this.width - 68;
+    this.companionModal.panelFrame.height = 430;
+    this.companionModal.panelFrame.alpha = 0.96;
     this.companionModal.panel
       .clear()
       .roundRect(0, 0, this.width - 68, 430, 14)
-      .fill({ color: 0x021114, alpha: 0.92 })
-      .stroke({ color: 0x35d7ff, width: 1.8, alpha: 0.74 })
+      .fill({ color: 0x021114, alpha: panelTexture ? 0.16 : 0.92 })
+      .stroke({ color: 0x35d7ff, width: 1.8, alpha: panelTexture ? 0.16 : 0.74 })
       .roundRect(8, 8, this.width - 84, 414, 11)
-      .stroke({ color: 0xffd36b, width: 0.8, alpha: 0.28 });
+      .stroke({ color: 0xffd36b, width: 0.8, alpha: panelTexture ? 0.08 : 0.28 });
     const selectedLevel = selected ? state.levels?.[selected.id] ?? 1 : 1;
-    const selectedCost = selected ? getCompanionUpgradeCost(selected.id, selectedLevel) : null;
-    const selectedNext = selected && selectedCost ? getCompanionEffectSummary(selected.id, selectedLevel + 1) : null;
-    this.companionModal.body.text = ownedIds.size > 0
+    this.companionModal.body.text = ownedCompanions.length > 0
       ? `セット中: ${selected?.displayName ?? 'お供なし'}`
-      : state.eggPending || state.eggIncubating
-        ? '研究画面で卵を孵化すると、お供恐竜を入手できます。'
-        : 'まだお供恐竜を所持していません。プレイ中に卵を探しましょう。';
+      : '所持しているお供恐竜はありません。';
     this.companionModal.selectedDetail.text = selected
-      ? `現在: ${getCompanionEffectSummary(selected.id, selectedLevel)}\n${selectedCost ? `次: ${selectedNext} / 必要DNA ${selectedCost}` : '最大Lvです'}`
-      : '卵を孵化すると、ここでセットと強化ができます。';
+      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n効果: ${getCompanionEffectSummary(selected.id, selectedLevel)}`
+      : '卵を孵化すると、ここでセットできます。';
     this.companionModal.rows.forEach((row, index) => {
       const companion = visibleCompanions[index] ?? null;
       const level = companion ? state.levels?.[companion.id] ?? 1 : 1;
-      const isOwned = companion ? ownedIds.has(companion.id) : false;
       const isSelected = companion?.id === state.selectedId;
       const accent = companion ? COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4 : 0x23434a;
 
@@ -1797,33 +1847,34 @@ export class HomeScreen {
       }
       row.companionId = companion.id;
       const iconTexture = this.textures.get(`companionIcon:${companion.id}`) ?? fallbackIconTexture;
+      const cardTexture = this.textures.get('companionSelectCard');
+      row.frame.texture = cardTexture ?? Texture.EMPTY;
+      row.frame.visible = !!cardTexture;
+      row.frame.width = 286;
+      row.frame.height = 44;
+      row.frame.alpha = isSelected ? 1 : 0.82;
       row.bg
         .clear()
         .roundRect(0, 0, 286, 44, 10)
-        .fill({ color: isSelected ? 0x08272f : isOwned ? 0x031216 : 0x020708, alpha: isOwned ? 0.86 : 0.58 })
-        .stroke({ color: accent, width: isSelected ? 1.8 : 1, alpha: isSelected ? 0.86 : isOwned ? 0.44 : 0.18 });
+        .fill({ color: isSelected ? 0x08272f : 0x031216, alpha: cardTexture ? 0.1 : 0.86 })
+        .stroke({ color: accent, width: isSelected ? 1.8 : 1, alpha: isSelected ? 0.86 : cardTexture ? 0.18 : 0.44 });
       row.icon.texture = iconTexture;
       row.icon.visible = iconTexture !== Texture.EMPTY;
-      row.icon.alpha = isOwned ? 1 : 0.42;
-      row.name.text = isOwned ? `${companion.displayName} Lv${level}` : `${companion.displayName} 未所持`;
-      row.name.style.fill = isOwned ? '#ffffff' : '#8da49e';
-      row.detail.text = `${COMPANION_TYPES[companion.type]?.label ?? '補助'} / ${getCompanionEffectSummary(companion.id, level)}`;
-      row.detail.style.fill = isOwned ? '#cbe0da' : '#6f8580';
-      row.action.text = isSelected ? 'SET' : isOwned ? '選択' : '未所持';
-      row.action.style.fill = isSelected ? '#071015' : isOwned ? '#e7fff6' : '#8da49e';
+      row.icon.alpha = 1;
+      row.name.text = `${companion.displayName} Lv${level}`;
+      row.name.style.fill = '#ffffff';
+      row.detail.text = COMPANION_UI_DESCRIPTIONS[companion.id] ?? getCompanionEffectSummary(companion.id, level);
+      row.detail.style.fill = '#cbe0da';
+      row.actionFrame.texture = this.textures.get('companionSelectButton') ?? Texture.EMPTY;
+      row.actionFrame.visible = row.actionFrame.texture !== Texture.EMPTY;
+      row.actionFrame.alpha = isSelected ? 1 : 0.8;
+      row.action.text = isSelected ? 'SET' : '選択';
+      row.action.style.fill = isSelected ? '#071015' : '#e7fff6';
     });
-    const hasEnoughDna = selectedCost ? (data.ownedDna ?? 0) >= selectedCost : false;
-    this.companionModal.pageText.text = COMPANION_DINOS.length > pageSize ? `${this.companionModalPage + 1}/${maxPage + 1}` : '';
+    this.companionModal.pageText.text = ownedCompanions.length > pageSize ? `${this.companionModalPage + 1}/${maxPage + 1}` : '';
     this.drawCompanionPageButton(this.companionModal.prevButton, this.companionModalPage > 0);
     this.drawCompanionPageButton(this.companionModal.nextButton, this.companionModalPage < maxPage);
-    this.companionModal.upgradeButton.view.visible = !!selected;
-    this.companionModal.upgradeButton.bg
-      .clear()
-      .roundRect(0, 0, 84, 36, 10)
-      .fill({ color: selectedCost && hasEnoughDna ? 0xffd36b : 0x23434a, alpha: selectedCost ? 0.82 : 0.62 })
-      .stroke({ color: 0xffffff, width: 1, alpha: selectedCost && hasEnoughDna ? 0.42 : 0.18 });
-    this.companionModal.upgradeButton.text.text = selectedCost ? `強化 ${selectedCost}` : 'MAX';
-    this.companionModal.upgradeButton.text.style.fill = selectedCost && hasEnoughDna ? '#071015' : '#8da49e';
+    this.companionModal.upgradeButton.view.visible = false;
   }
 
   drawCompanionPageButton(button, enabled) {

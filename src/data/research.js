@@ -3,6 +3,7 @@
 export const RESEARCH_CATEGORY_IDS = {
   bodyEnhancement: 'body_enhancement',
   adaptationAbility: 'adaptation_ability',
+  companion: 'companion',
   specialMutation: 'special_mutation',
   unknownDomain: 'unknown_domain',
   analysisConversion: 'analysis_conversion',
@@ -28,13 +29,13 @@ export const RESEARCH_CATEGORIES = [
     unlockTarget: '裂爪衝撃波、毒胞子散布、骨片スパイクなど',
   },
   {
-    id: RESEARCH_CATEGORY_IDS.specialMutation,
-    name: '特殊変異',
-    shortName: '変異',
-    iconName: 'specialMutation',
+    id: RESEARCH_CATEGORY_IDS.companion,
+    name: 'お供研究',
+    shortName: 'お供',
+    iconName: 'companionResearch',
     material: 'DNA + 研究Pt',
-    role: '適応タグの組み合わせから分岐進化の候補を増やす枠',
-    unlockTarget: '未知進化の解析、特殊な進化ルート解放',
+    role: '卵の孵化とお供恐竜の強化を行う専用枠',
+    unlockTarget: 'お供恐竜の孵化、セット前の強化確認、成長管理',
   },
   {
     id: RESEARCH_CATEGORY_IDS.unknownDomain,

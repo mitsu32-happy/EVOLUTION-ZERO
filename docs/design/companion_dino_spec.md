@@ -354,3 +354,20 @@ P05d makes the dedicated companion effect sheets the primary action feedback.
   `MAX_COMPANION_EFFECTS`.
 
 Detailed notes: `docs/design/companion_skill_effect_assets_p05d.md`.
+## MVP-P06b Home / Research UI
+
+P06b keeps companion gameplay behavior unchanged and upgrades the management
+surfaces.
+
+- `companion.eggDiscovered` is added as a normalized release flag for opening
+  the companion research domain.
+- Home shows the companion entry only after a companion is owned.
+- Home companion selection is selection-only and hides unowned companions.
+- Research category slot `companion` is shown as `???` until egg discovery, then
+  as `お供`.
+- The companion research tab contains an owned companion upgrade view and an
+  egg hatch view.
+- Upgrades still use the existing single `levels[id]` model; P06b does not add
+  separate save fields for movement/effect/speed tracks.
+
+See `docs/design/companion_home_research_ui_p06b.md`.

@@ -3950,3 +3950,25 @@ Future replacement criteria:
   too generic or too hard to read on phone screens
 - keep the same transparent PNG, `4 x 1`, `320 x 320` frame contract unless a
   later runtime change explicitly revises it
+
+## MVP-P06b Companion UI Assets
+
+P06b adds production-facing UI frame assets for home, selection, research hatch,
+and research upgrade surfaces.
+
+New active UI assets:
+
+- `public/assets/ui/companions/home_companion_frame_p06b.png`
+- `public/assets/ui/companions/companion_select_panel_p06b.png`
+- `public/assets/ui/companions/companion_select_card_p06b.png`
+- `public/assets/ui/companions/companion_select_button_p06b.png`
+- `public/assets/ui/companions/companion_owned_panel_p06b.png`
+- `public/assets/ui/companions/companion_upgrade_card_p06b.png`
+- `public/assets/ui/companions/companion_upgrade_button_p06b.png`
+- `public/assets/ui/companions/companion_hatch_device_p06b.png`
+- `public/assets/ui/companions/companion_hatch_button_p06b.png`
+- `public/assets/ui/research/icons/icon_companion_research_p06b.png`
+- `public/assets/ui/research/icons/icon_companion_unknown_p06b.png`
+
+All labels remain runtime text so localization and width adjustments can be made
+without regenerating the bitmaps.

@@ -428,6 +428,7 @@ export class SaveManager {
     }
 
     companion.eggPending = true;
+    companion.eggDiscovered = true;
     companion.lastEggSource = source;
     this.data.companion = companion;
     return { success: true, data: this.save() };
@@ -451,6 +452,7 @@ export class SaveManager {
     this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) - dnaCost);
     this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt) - researchPtCost);
     companion.eggPending = false;
+    companion.eggDiscovered = true;
     companion.eggIncubating = true;
     companion.hatchStartedAt = new Date(now).toISOString();
     companion.hatchCompleteAt = new Date(now + (instant ? 0 : COMPANION_HATCH_CONFIG.durationMs)).toISOString();
@@ -473,6 +475,7 @@ export class SaveManager {
 
     const hatched = pickRandomUnownedCompanion(companion);
     companion.eggIncubating = false;
+    companion.eggDiscovered = true;
     companion.hatchStartedAt = null;
     companion.hatchCompleteAt = null;
 
@@ -550,6 +553,7 @@ export class SaveManager {
 
     this.data.companion = normalizeCompanionState(this.data.companion);
     const companion = this.data.companion;
+    companion.eggDiscovered = true;
     companion.ownedIds = [...new Set([...(companion.ownedIds ?? []), config.id])];
     companion.levels = {
       ...(companion.levels ?? {}),
