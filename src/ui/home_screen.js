@@ -870,10 +870,7 @@ export class HomeScreen {
   getTutorialBounds(targetId) {
     if (targetId === 'home.companion') {
       return {
-        x: 38,
-        y: 188,
-        width: 136,
-        height: 44,
+        ...COMPANION_HOME_PANEL,
         radius: 12,
       };
     }

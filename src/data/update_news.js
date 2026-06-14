@@ -1,5 +1,20 @@
 export const UPDATE_NEWS = [
   {
+    id: 'companion-dino-p08-2026-06-14',
+    date: '2026/06/14',
+    category: '大型アップデート',
+    title: 'お供恐竜を追加しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・プレイ中に一緒に行動するお供恐竜を追加しました。',
+      '・卵を入手し、研究画面で孵化できるようになりました。',
+      '・入手したお供恐竜はホームでセットできます。',
+      '・DNAを使ってお供恐竜を強化できます。',
+      '・10種類のお供恐竜を追加しました。',
+    ],
+  },
+  {
     id: 'hotfix-intro-audio-safari-2026-06-11',
     date: '2026/06/11',
     category: 'HOTFIX',
