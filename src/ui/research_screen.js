@@ -490,8 +490,8 @@ export class ResearchScreen {
     hatchTitle.anchor.set(0.5, 0);
     hatchTitle.position.set(this.width / 2, 568);
     hatchBody.position.set(48, 596);
-    hatchCost.position.set(48, 626);
-    const hatchButton = makeActionButton('孵化させる', 118, 650, 154, () => this.handleCompanionHatchDirect());
+    hatchCost.position.set(48, 620);
+    const hatchButton = makeActionButton('孵化させる', 118, 642, 154, () => this.handleCompanionHatchDirect());
 
     const ownedEmpty = this.createText('所持しているお供恐竜はありません。卵を孵化するとここに表示されます。', 11, '#cbe0da', 300);
     ownedEmpty.position.set(48, 430);
@@ -852,7 +852,7 @@ export class ResearchScreen {
     if (this.companionResearchMode === 'hatch') {
       const item = this.getCompanionHatchEntry(data);
       if (item) {
-        items.push({ type: 'hatch', bounds: { x: 118, y: 650, width: 154, height: 34 } });
+        items.push({ type: 'hatch', bounds: { x: 118, y: 642, width: 154, height: 34 } });
       }
       return items;
     }
@@ -1702,15 +1702,20 @@ export class ResearchScreen {
     ui.hatchButton.sprite.visible = !!buttonTexture;
     ui.hatchButton.sprite.width = 154;
     ui.hatchButton.sprite.height = 34;
+    ui.hatchButton.sprite.alpha = hasEgg ? (canUse ? 1 : 0.72) : 0.46;
     ui.hatchButton.bg.clear();
-    if (!buttonTexture) {
-      ui.hatchButton.bg
-        .roundRect(0, 0, 154, 34, 10)
-        .fill({ color: canUse ? 0xffd36b : 0x23434a, alpha: 0.88 })
-        .stroke({ color: 0xffffff, width: 1, alpha: canUse ? 0.42 : 0.18 });
-    }
-    ui.hatchButton.label.text = isReady ? '受け取る' : companion.eggIncubating ? '孵化中' : '孵化させる';
-    ui.hatchButton.label.style.fill = canUse ? '#071015' : '#8da49e';
+    ui.hatchButton.bg
+      .roundRect(0, 0, 154, 34, 10)
+      .fill({ color: canUse ? 0x082b30 : 0x031216, alpha: buttonTexture ? 0.24 : 0.88 })
+      .stroke({ color: canUse ? 0xffd36b : 0x35d7ff, width: canUse ? 1.4 : 1, alpha: hasEgg ? 0.82 : 0.36 });
+    ui.hatchButton.label.text = isReady
+      ? '受け取る'
+      : companion.eggIncubating
+        ? '孵化中'
+        : hasEgg
+          ? '孵化させる'
+          : '卵なし';
+    ui.hatchButton.label.style.fill = canUse ? '#fff0b4' : hasEgg ? '#b7d8d1' : '#718a8f';
     ui.hatchButton.view.eventMode = canUse ? 'static' : 'none';
     ui.hatchButton.view.cursor = canUse ? 'pointer' : 'default';
   }
