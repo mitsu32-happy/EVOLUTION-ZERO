@@ -1896,8 +1896,9 @@ export class HomeScreen {
       row.actionFrame.visible = row.actionFrame.texture !== Texture.EMPTY;
       row.actionFrame.alpha = isSelected ? 1 : 0.8;
       row.action.text = isSelected ? 'セット中' : '選択';
-      row.action.style.fontSize = isSelected ? 9 : 10;
-      row.action.style.fill = isSelected ? '#071015' : '#e7fff6';
+      row.action.style.fontSize = isSelected ? 8.5 : 10;
+      row.action.style.fill = '#e7fff6';
+      row.action.style.stroke = { color: 0x031216, width: 2 };
     });
     this.companionModal.pageText.text = ownedCompanions.length > pageSize ? `${this.companionModalPage + 1}/${maxPage + 1}` : '';
     this.drawCompanionPageButton(this.companionModal.prevButton, this.companionModalPage > 0);

@@ -40,6 +40,9 @@ const RESEARCH_ASSET_PATHS = {
   companionHatchButton: 'assets/ui/companions/hatch_button_p06d.png',
   companionUpgradeCard: 'assets/ui/companions/upgrade_card_p06d.png',
   companionUpgradeButton: 'assets/ui/companions/upgrade_button_p06d.png',
+  companionUpgradeSelectPanel: 'assets/ui/companions/owned_companion_panel_p06d.png',
+  companionUpgradeOptionCard: 'assets/ui/companions/upgrade_card_p06d.png',
+  companionUpgradeOptionButton: 'assets/ui/companions/upgrade_button_p06d.png',
 };
 
 const RESEARCH_ICON_PATHS = {
@@ -1154,6 +1157,7 @@ export class ResearchScreen {
     const modal = {
       view: new Container(),
       overlay: new Graphics(),
+      panelFrame: new Sprite(Texture.EMPTY),
       panel: new Graphics(),
       title: this.createText('強化項目を選択', 18, '#fff0b4', 260),
       body: this.createText('', 10.5, '#d7fff2', 300),
@@ -1181,11 +1185,13 @@ export class ResearchScreen {
       const row = {
         typeId,
         view: new Container(),
+        frame: new Sprite(Texture.EMPTY),
         bg: new Graphics(),
         name: this.createText('', 13, '#ffffff', 88),
         level: this.createText('', 10, '#fff0b4', 88),
         desc: this.createText('', 9.5, '#cbe0da', 148),
         cost: this.createText('', 10, '#d7fff2', 70),
+        buttonFrame: new Sprite(Texture.EMPTY),
         button: this.createText('選択', 11, '#071015', 54),
       };
       row.view.position.set(50, 324 + index * 76);
@@ -1198,9 +1204,12 @@ export class ResearchScreen {
       row.desc.position.set(104, 9);
       row.desc.style.lineHeight = 12;
       row.cost.position.set(104, 42);
+      row.buttonFrame.position.set(232, 17);
+      row.buttonFrame.width = 52;
+      row.buttonFrame.height = 30;
       row.button.anchor.set(0.5);
       row.button.position.set(258, 32);
-      row.view.addChild(row.bg, row.name, row.level, row.desc, row.cost, row.button);
+      row.view.addChild(row.frame, row.bg, row.name, row.level, row.desc, row.cost, row.buttonFrame, row.button);
       modal.rows.push(row);
     });
 
@@ -1213,7 +1222,7 @@ export class ResearchScreen {
     modal.cancel.label.position.set(52, 17);
     modal.cancel.view.addChild(modal.cancel.bg, modal.cancel.label);
 
-    modal.view.addChild(modal.overlay, modal.panel, modal.title, modal.body, ...modal.rows.map((row) => row.view), modal.cancel.view);
+    modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, ...modal.rows.map((row) => row.view), modal.cancel.view);
     return modal;
   }
 
@@ -1227,14 +1236,23 @@ export class ResearchScreen {
     const companion = getCompanionById(this.companionUpgradeChoiceTargetId);
     const state = data.companion ?? {};
     const levels = getCompanionUpgradeLevelsFromState(state, companion?.id);
+    const panelTexture = this.textures.get('companionUpgradeSelectPanel');
+    const optionTexture = this.textures.get('companionUpgradeOptionCard');
+    const buttonTexture = this.textures.get('companionUpgradeOptionButton');
 
+    modal.panelFrame.texture = panelTexture ?? Texture.EMPTY;
+    modal.panelFrame.visible = !!panelTexture;
+    modal.panelFrame.position.set(30, 220);
+    modal.panelFrame.width = this.width - 60;
+    modal.panelFrame.height = 382;
+    modal.panelFrame.alpha = 0.94;
     modal.panel
       .clear()
       .roundRect(0, 0, this.width - 60, 382, 18)
-      .fill({ color: 0x031216, alpha: 0.96 })
-      .stroke({ color: 0x7cf7d4, width: 2, alpha: 0.72 })
+      .fill({ color: 0x031216, alpha: panelTexture ? 0.2 : 0.96 })
+      .stroke({ color: 0x7cf7d4, width: 2, alpha: panelTexture ? 0.18 : 0.72 })
       .roundRect(8, 8, this.width - 76, 366, 14)
-      .stroke({ color: 0xffd36b, width: 1, alpha: 0.34 });
+      .stroke({ color: 0xffd36b, width: 1, alpha: panelTexture ? 0.1 : 0.34 });
     modal.body.text = companion
       ? `${companion.displayName}を個別に強化します。`
       : '強化するお供を選択してください。';
@@ -1245,19 +1263,28 @@ export class ResearchScreen {
       const cost = companion ? getCompanionUpgradeCost(companion.id, level, row.typeId) : null;
       const canUpgrade = Boolean(cost && (data.ownedDna ?? 0) >= cost);
       const focused = index === this.companionUpgradeChoiceFocusIndex;
+      row.frame.texture = optionTexture ?? Texture.EMPTY;
+      row.frame.visible = !!optionTexture;
+      row.frame.width = 292;
+      row.frame.height = 64;
+      row.frame.alpha = focused ? 1 : 0.84;
       row.bg
         .clear()
         .roundRect(0, 0, 292, 64, 12)
-        .fill({ color: focused ? 0x0b3038 : 0x06191d, alpha: 0.94 })
-        .stroke({ color: focused ? 0xffd36b : 0x35d7ff, width: focused ? 2 : 1, alpha: focused ? 0.82 : 0.42 })
+        .fill({ color: focused ? 0x0b3038 : 0x06191d, alpha: optionTexture ? 0.24 : 0.94 })
+        .stroke({ color: focused ? 0xffd36b : 0x35d7ff, width: focused ? 2 : 1, alpha: focused ? 0.82 : optionTexture ? 0.16 : 0.42 })
         .roundRect(232, 17, 52, 30, 9)
-        .fill({ color: canUpgrade ? 0xffd36b : 0x28464c, alpha: 0.92 });
+        .fill({ color: canUpgrade ? 0xffd36b : 0x28464c, alpha: buttonTexture ? 0.12 : 0.92 });
+      row.buttonFrame.texture = buttonTexture ?? Texture.EMPTY;
+      row.buttonFrame.visible = !!buttonTexture;
+      row.buttonFrame.alpha = canUpgrade ? 1 : 0.48;
       row.name.text = type.label;
       row.level.text = cost ? `Lv ${level} -> ${level + 1}` : `Lv ${level} MAX`;
       row.desc.text = type.description;
       row.cost.text = cost ? `DNA ${cost}` : 'MAX';
       row.button.text = cost ? '選択' : 'MAX';
-      row.button.style.fill = canUpgrade ? '#071015' : '#8da49e';
+      row.button.style.fill = canUpgrade ? '#e7fff6' : '#8da49e';
+      row.button.style.stroke = { color: 0x031216, width: 2 };
       row.view.eventMode = cost ? 'static' : 'none';
       row.view.cursor = cost ? 'pointer' : 'default';
     });
@@ -1746,7 +1773,8 @@ export class ResearchScreen {
       }
       row.button.label.text = minCost ? '強化' : 'MAX';
       row.button.label.style.fontSize = 12;
-      row.button.label.style.fill = canUpgrade ? '#071015' : '#8da49e';
+      row.button.label.style.fill = minCost ? '#e7fff6' : '#8da49e';
+      row.button.label.style.stroke = { color: 0x031216, width: 2 };
       row.button.view.eventMode = minCost ? 'static' : 'none';
       row.button.view.cursor = minCost ? 'pointer' : 'default';
     });

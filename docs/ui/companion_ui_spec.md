@@ -223,3 +223,15 @@ Detailed asset notes: `docs/design/companion_ui_asset_generation_p06d.md`.
 - Home selection cards show `セット中` or `選択` in the right action area.
 - `セット解除` saves an owned-but-unselected state; the home panel shows
   `未セット` so the route back to selection stays visible.
+
+## MVP-P06f2 Upgrade Selection Polish
+
+- Home companion select cards must always show a right-side action label.
+  `セット中` is reserved for the currently selected companion; `選択` is used
+  for every other owned companion, including the unset state.
+- The research companion owned-list upgrade button uses runtime text `強化` on
+  the production P06d button asset and must remain readable on phone widths.
+- The upgrade line selection modal uses the P06d owned panel, upgrade card, and
+  upgrade button assets as its visual base. Text remains code-rendered.
+- The three upgrade options remain `移動範囲`, `効果`, and `速度`, each with a
+  compact level, DNA, and description line.

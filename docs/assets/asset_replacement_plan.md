@@ -4046,3 +4046,16 @@ Generation rules:
   - hatch button
   - owned panel
   - upgrade card/button
+
+## MVP-P06f2 Companion Upgrade Selection Asset Reuse
+
+P06f2 does not add new bitmap files. The upgrade line selection modal now reuses
+existing production P06d UI assets so the surface no longer reads as a simple
+Graphics placeholder:
+
+- panel: `public/assets/ui/companions/owned_companion_panel_p06d.png`
+- option card: `public/assets/ui/companions/upgrade_card_p06d.png`
+- option button: `public/assets/ui/companions/upgrade_button_p06d.png`
+
+The home selection state label and research upgrade button label are runtime
+text overlays; no baked text is added to the images.

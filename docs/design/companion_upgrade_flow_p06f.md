@@ -92,3 +92,16 @@ balance increase was added.
 - Home selection cards are never blank on the right side.
 - `セット解除` persists and PlayScene starts with no companion.
 - Old saves with only `levels` continue to normalize correctly.
+
+## MVP-P06f2 Hotfix Notes
+
+- Home companion selection cards now force a readable right-side state label:
+  selected cards show `セット中`, and all other owned cards show `選択`.
+- The selected-state label uses light text with a dark stroke so it remains
+  visible on the P06d selection button asset.
+- The research companion upgrade row keeps the runtime `強化` label on the
+  P06d upgrade button asset.
+- The upgrade line selection modal now reuses P06d production assets for the
+  panel, option cards, and action buttons instead of relying on simple
+  `Graphics` shapes as the primary appearance.
+- Detailed UI notes: `docs/design/companion_upgrade_select_ui_p06f2.md`.
