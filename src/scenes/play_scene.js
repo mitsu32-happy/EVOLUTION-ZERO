@@ -49,6 +49,19 @@ const MAX_COMPANION_EFFECTS = 24;
 const COMPANION_ACTION_DURATION = 0.46;
 const COMPANION_BASE_WIDTH = 92;
 const COMPANION_BASE_HEIGHT = 74;
+const COMPANION_EGG_BASE_DROP_CHANCE = 0.00025;
+const COMPANION_EGG_FIRST_DISCOVERY_MULTIPLIER = 1.15;
+const COMPANION_EGG_DROP_CHANCE_CAP = 0.002;
+const COMPANION_EGG_DIFFICULTY_MULTIPLIERS = {
+  normal: 1,
+  hard: 1.25,
+  expert: 1.5,
+};
+const COMPANION_EGG_MODE_MULTIPLIERS = {
+  standard: 1,
+  endless: 1.35,
+  zero: 3,
+};
 const COMPANION_BASE_FOLLOW_RADIUS = 82;
 const COMPANION_RADIUS_PER_LEVEL = 30;
 const COMPANION_MAX_FOLLOW_RADIUS = 230;
@@ -90,7 +103,7 @@ const COMPANION_ANIMATION_PROFILES = {
   stego_calf: { displayScale: 1.02, bob: 2.2, bobSpeed: 4.8, tilt: 0.045, action: 'shockwave', actionScale: 1.12, trail: 0xffb04d },
   rex_hatchling: { displayScale: 1.1, bob: 2.2, bobSpeed: 4.5, tilt: 0.06, action: 'heavyBite', actionScale: 1.18, trail: 0xfff0b4 },
   compy_pack: { displayScale: 0.9, bob: 4.2, bobSpeed: 9.2, tilt: 0.13, action: 'swarmDash', actionScale: 1.14, trail: 0xff9f38 },
-  exp_chaser: { displayScale: 0.94, bob: 4.8, bobSpeed: 6.8, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff },
+  exp_chaser: { displayScale: 0.94, bob: 3.2, bobSpeed: 6.2, tilt: 0.09, action: 'expTrace', actionScale: 1.09, trail: 0xd9b4ff, spriteOffsetY: 10 },
 };
 const COMPANION_MOVEMENT_PROFILES = {
   raptorling: { maxSpeed: 224, pursuitSpeed: 246, acceleration: 8.4, deceleration: 9.6, arrivalRadius: 24, slowRadius: 92 },
@@ -4077,6 +4090,9 @@ export class PlayScene {
     const actionScale = 1 + actionWave * ((profile.actionScale ?? 1.1) - 1);
     const scaleX = this.companionBaseScaleX * actionScale * (1 + squash) * this.companionFacing;
     const scaleY = this.companionBaseScaleY * (1 - squash * 0.55) * (1 + actionWave * 0.04);
+    const spriteOffsetY = profile.spriteOffsetY ?? 0;
+    this.companionSprite.position.set(0, spriteOffsetY);
+    this.companionFallback.position.set(0, spriteOffsetY);
     this.setCompanionDisplayScale(this.companionSprite, scaleX, scaleY);
     this.setCompanionDisplayScale(this.companionFallback, this.companionFacing * actionScale, 1 + actionWave * 0.04);
     this.companionSprite.rotation = (Math.sin(this.companionOrbitTime * profile.bobSpeed * 0.72) * profile.tilt) + this.companionFacing * actionWave * 0.08;
@@ -6534,6 +6550,20 @@ export class PlayScene {
     this.depthLayer.addChild(pickup.view);
   }
 
+  getCompanionEggDropChance({ hasOwnedCompanion = false } = {}) {
+    const difficultyMultiplier = COMPANION_EGG_DIFFICULTY_MULTIPLIERS[this.gameState.selectedDifficulty] ?? 1;
+    const modeMultiplier = COMPANION_EGG_MODE_MULTIPLIERS[this.gameState.selectedMode] ?? 1;
+    const firstDiscoveryMultiplier = hasOwnedCompanion ? 1 : COMPANION_EGG_FIRST_DISCOVERY_MULTIPLIER;
+
+    return Math.min(
+      COMPANION_EGG_DROP_CHANCE_CAP,
+      COMPANION_EGG_BASE_DROP_CHANCE
+        * difficultyMultiplier
+        * modeMultiplier
+        * firstDiscoveryMultiplier,
+    );
+  }
+
   maybeDropCompanionEgg(enemy) {
     if (this.gameState.companionEggDroppedThisRun || this.gameState.companionEggCollected) {
       return;
@@ -6546,11 +6576,9 @@ export class PlayScene {
 
     const debugForced = getDebugFlag('debugCompanionEggDrop') || getDebugFlag('debugCompanionEgg');
     const hasOwnedCompanion = (companion?.ownedIds?.length ?? 0) > 0;
-    const defeated = this.gameState.defeatedCount ?? 0;
-    const firstEggPity = !hasOwnedCompanion && defeated >= 18;
-    const chance = hasOwnedCompanion ? 0.0025 : 0.018;
+    const chance = this.getCompanionEggDropChance({ hasOwnedCompanion });
 
-    if (!debugForced && !firstEggPity && Math.random() > chance) {
+    if (!debugForced && Math.random() > chance) {
       return;
     }
 
