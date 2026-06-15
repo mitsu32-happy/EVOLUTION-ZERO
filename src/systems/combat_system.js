@@ -46,6 +46,7 @@ export class CombatSystem {
       attack: 0,
     };
     this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
+    this.companionSynergy = null;
     this.adaptationSkillStates = new Map();
     this.projectiles = [];
     this.performancePressureLevel = 0;
@@ -160,6 +161,41 @@ export class CombatSystem {
     this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
   }
 
+  setCompanionSynergy(synergy = null) {
+    this.companionSynergy = synergy?.enabled ? synergy : null;
+  }
+
+  getCompanionSynergyValue(effectType) {
+    if (!this.companionSynergy || this.companionSynergy.effectType !== effectType) {
+      return 0;
+    }
+
+    const value = Number(this.companionSynergy.value ?? 0);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  applyPlayerAttackDamage(baseDamage, target, options = {}) {
+    let damage = Number.isFinite(baseDamage) ? baseDamage : 0;
+
+    if (target?.isBoss) {
+      damage *= 1 + Math.max(0, this.getCompanionSynergyValue('bossDamage'));
+    }
+
+    let critical = options.critical === true;
+    if (options.allowCritical !== false && options.critical == null) {
+      const critRate = Math.max(0, Math.min(0.75, this.getCompanionSynergyValue('critRate')));
+      critical = critRate > 0 && Math.random() < critRate;
+      if (critical) {
+        damage *= 1.5;
+      }
+    }
+
+    return {
+      damage: Math.max(1, Math.round(damage)),
+      critical,
+    };
+  }
+
   applyUpgrade(upgradeId, level, modifiers = {}) {
     if (upgradeId === 'attack_speed_up' || upgradeId === 'attack_range_up') {
       return;
@@ -260,6 +296,7 @@ export class CombatSystem {
     this.evolutionNormalAttackEffectId = null;
     this.adaptationDamageMultiplier = 1;
     this.setAdaptationSynergy();
+    this.setCompanionSynergy();
     this.adaptationSkillStates.clear();
     this.currentEnemies = null;
     this.effects.forEach((effect) => this.releasePooledView(effect.view));
@@ -599,8 +636,9 @@ export class CombatSystem {
     const damage = damageResult.damage;
 
     targets.forEach((enemy, index) => {
-      enemy.takeDamage(damage, { from: player.position, strength: 10 });
-      this.spawnDamageNumber(effectLayer, enemy, damage, 0xb8fbff, (index - 0.5) * 10, { critical: damageResult.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: damageResult.critical, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: player.position, strength: 10 });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, 0xb8fbff, (index - 0.5) * 10, { critical: hit.critical });
     });
 
     for (let index = 0; index < slashCount; index += 1) {
@@ -646,8 +684,9 @@ export class CombatSystem {
 
         hitSet.add(enemy);
         targets.push(enemy);
-        enemy.takeDamage(damage, { from: player.position, strength: 8 + level });
-        this.spawnDamageNumber(effectLayer, enemy, damage, 0xb8fbff, (bladeIndex - 1) * 8, { critical: damageResult.critical });
+        const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: damageResult.critical, allowCritical: false });
+        enemy.takeDamage(hit.damage, { from: player.position, strength: 8 + level });
+        this.spawnDamageNumber(effectLayer, enemy, hit.damage, 0xb8fbff, (bladeIndex - 1) * 8, { critical: hit.critical });
       });
 
       const visualTarget = this.createFacingTarget(player, direction, 172 + bladeIndex * 6);
@@ -731,8 +770,9 @@ export class CombatSystem {
     const damage = damageResult.damage;
 
     targets.forEach((enemy, index) => {
-      enemy.takeDamage(damage, { from: player.position, strength: 24 + level * 2 });
-      this.spawnDamageNumber(effectLayer, enemy, damage, 0xff9a62, (index - 1) * 10, { critical: damageResult.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: damageResult.critical, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: player.position, strength: 24 + level * 2 });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, 0xff9a62, (index - 1) * 10, { critical: hit.critical });
     });
 
     this.spawnAdaptationSpriteEffect(state, player, visualTarget, effectLayer, {
@@ -777,8 +817,9 @@ export class CombatSystem {
     const damageResult = this.getAdaptationDamageResult(state, 0.88);
     const damage = damageResult.damage;
     targets.forEach((enemy, index) => {
-      enemy.takeDamage(damage, { from: player.position, strength: 8 + level });
-      this.spawnDamageNumber(effectLayer, enemy, damage, 0x9effff, (index - (targets.length - 1) / 2) * 8, { critical: damageResult.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: damageResult.critical, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: player.position, strength: 8 + level });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, 0x9effff, (index - (targets.length - 1) / 2) * 8, { critical: hit.critical });
     });
 
     this.spawnAdaptationAreaEffect(state, player, effectLayer, {
@@ -805,8 +846,9 @@ export class CombatSystem {
     const damageResult = this.getAdaptationDamageResult(state, 1.18);
     const damage = damageResult.damage;
     targets.forEach((enemy, index) => {
-      enemy.takeDamage(damage, { from: player.position, strength: 12 });
-      this.spawnDamageNumber(effectLayer, enemy, damage, 0xffd36b, index * 8, { critical: damageResult.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: damageResult.critical, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: player.position, strength: 12 });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, 0xffd36b, index * 8, { critical: hit.critical });
       this.spawnAdaptationSpriteEffect(state, player, enemy, effectLayer, {
         width: (126 + level * 5) * rangeMultiplier,
         height: (126 + level * 5) * rangeMultiplier,
@@ -835,8 +877,9 @@ export class CombatSystem {
     const damage = damageResult.damage;
 
     targets.forEach((enemy, index) => {
-      enemy.takeDamage(damage, { from: player.position, strength: 18 + level * 2 });
-      this.spawnDamageNumber(effectLayer, enemy, damage, 0xffa05a, (index - 1) * 9, { critical: damageResult.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: damageResult.critical, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: player.position, strength: 18 + level * 2 });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, 0xffa05a, (index - 1) * 9, { critical: hit.critical });
     });
 
     this.spawnAdaptationSpriteEffect(state, player, visualTarget, effectLayer, {
@@ -865,7 +908,7 @@ export class CombatSystem {
       * (1 + (level - 1) * (scaling + 0.035))
       * this.adaptationDamageMultiplier
       * (synergy.damageMultiplier ?? 1);
-    const critRate = synergy.critRate ?? 0;
+    const critRate = Math.max(0, Math.min(0.75, (synergy.critRate ?? 0) + this.getCompanionSynergyValue('critRate')));
     const critical = critRate > 0 && Math.random() < critRate;
     const critMultiplier = critical ? synergy.critDamageMultiplier ?? 1.5 : 1;
 
@@ -879,11 +922,12 @@ export class CombatSystem {
     const attack = this.normalAttackDefinition;
 
     if (!attack) {
-      target.takeDamage(this.damage, {
+      const hit = this.applyPlayerAttackDamage(this.damage, target);
+      target.takeDamage(hit.damage, {
         from: player.position,
         strength: this.knockback,
       });
-      this.spawnDamageNumber(effectLayer, target, this.damage, this.effectGlowColor);
+      this.spawnDamageNumber(effectLayer, target, hit.damage, this.effectGlowColor, 0, { critical: hit.critical });
       this.applyHitStatuses(target);
       this.spawnSlashEffect(player, target, effectLayer, {
         style: 'normal',
@@ -896,15 +940,15 @@ export class CombatSystem {
 
     const facing = this.getAttackFacing(player, target);
     const hitTargets = this.findNormalAttackTargets(player, enemies, attack, facing, target);
-    const damage = Math.max(1, Math.round(this.damage));
     const knockback = this.knockback;
 
     hitTargets.forEach((enemy, index) => {
-      enemy.takeDamage(damage, {
+      const hit = this.applyPlayerAttackDamage(this.damage, enemy);
+      enemy.takeDamage(hit.damage, {
         from: player.position,
         strength: knockback,
       });
-      this.spawnDamageNumber(effectLayer, enemy, damage, this.getNormalAttackColor(attack), (index - (hitTargets.length - 1) / 2) * 12);
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, this.getNormalAttackColor(attack), (index - (hitTargets.length - 1) / 2) * 12, { critical: hit.critical });
       this.applyHitStatuses(enemy);
     });
 
@@ -926,11 +970,12 @@ export class CombatSystem {
     ];
 
     hits.forEach((hit) => {
-      target.takeDamage(hitDamage, {
+      const hitResult = this.applyPlayerAttackDamage(hitDamage, target);
+      target.takeDamage(hitResult.damage, {
         from: player.position,
         strength: 7,
       });
-      this.spawnDamageNumber(effectLayer, target, hitDamage, this.effectGlowColor, hit.side * 12);
+      this.spawnDamageNumber(effectLayer, target, hitResult.damage, this.effectGlowColor, hit.side * 12, { critical: hitResult.critical });
       this.applyHitStatuses(target);
       this.spawnSlashEffect(player, target, effectLayer, {
         style: 'speed',
@@ -951,11 +996,12 @@ export class CombatSystem {
     const hitTargets = targets.length > 0 ? targets : [];
 
     hitTargets.forEach((enemy) => {
-      enemy.takeDamage(Math.max(1, Math.round(this.damage * 0.78)), {
+      const hit = this.applyPlayerAttackDamage(Math.max(1, Math.round(this.damage * 0.78)), enemy);
+      enemy.takeDamage(hit.damage, {
         from: player.position,
         strength: this.knockback,
       });
-      this.spawnDamageNumber(effectLayer, enemy, Math.max(1, Math.round(this.damage * 0.78)), this.effectGlowColor);
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, this.effectGlowColor, 0, { critical: hit.critical });
       this.applyHitStatuses(enemy);
     });
 
@@ -975,12 +1021,12 @@ export class CombatSystem {
   }
 
   performHeavyAttack(player, target, effectLayer) {
-    const damage = Math.max(1, Math.round(this.damage * 0.86));
-    target.takeDamage(damage, {
+    const hit = this.applyPlayerAttackDamage(Math.max(1, Math.round(this.damage * 0.86)), target);
+    target.takeDamage(hit.damage, {
       from: player.position,
       strength: this.knockback,
     });
-    this.spawnDamageNumber(effectLayer, target, damage, this.effectGlowColor);
+    this.spawnDamageNumber(effectLayer, target, hit.damage, this.effectGlowColor, 0, { critical: hit.critical });
     this.applyHitStatuses(target);
     this.spawnSlashEffect(player, target, effectLayer, {
       style: 'attack',
@@ -1575,11 +1621,12 @@ export class CombatSystem {
       }
 
       if (distance <= projectile.hitRadius + (projectile.target.radius ?? 0)) {
-        projectile.target.takeDamage(projectile.damage, {
+        const hit = this.applyPlayerAttackDamage(projectile.damage, projectile.target, { critical: projectile.critical, allowCritical: false });
+        projectile.target.takeDamage(hit.damage, {
           from: projectile.view.position,
           strength: 12 + (projectile.state.level ?? 1),
         });
-        this.spawnDamageNumber(projectile.effectLayer, projectile.target, projectile.damage, projectile.color, 0, { critical: projectile.critical });
+        this.spawnDamageNumber(projectile.effectLayer, projectile.target, hit.damage, projectile.color, 0, { critical: hit.critical });
         this.spawnAdaptationSpriteEffect(projectile.state, {
           position: {
             x: projectile.view.position.x - nx * 20,
@@ -1637,8 +1684,9 @@ export class CombatSystem {
       }
 
       targets.push(enemy);
-      enemy.takeDamage(damage, { from: center, strength: options.knockback ?? 10 });
-      this.spawnDamageNumber(effectLayer, enemy, damage, options.color ?? 0xffd36b, (targets.length - 2) * 8, { critical: options.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: options.critical === true, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: center, strength: options.knockback ?? 10 });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, options.color ?? 0xffd36b, (targets.length - 2) * 8, { critical: hit.critical });
     });
 
     return targets;
@@ -1674,8 +1722,9 @@ export class CombatSystem {
       }
 
       targets.push(enemy);
-      enemy.takeDamage(damage, { from: origin, strength: options.knockback ?? 10 });
-      this.spawnDamageNumber(effectLayer, enemy, damage, options.color ?? 0xffd36b, (index - (enemies.length - 1) / 2) * 8, { critical: options.critical });
+      const hit = this.applyPlayerAttackDamage(damage, enemy, { critical: options.critical === true, allowCritical: false });
+      enemy.takeDamage(hit.damage, { from: origin, strength: options.knockback ?? 10 });
+      this.spawnDamageNumber(effectLayer, enemy, hit.damage, options.color ?? 0xffd36b, (index - (enemies.length - 1) / 2) * 8, { critical: hit.critical });
     });
 
     return targets;

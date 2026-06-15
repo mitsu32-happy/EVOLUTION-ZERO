@@ -311,3 +311,36 @@ CS02では将来追加を想定した仮IDとして以下を定義した。
 ### セーブ変更
 
 セーブ構造の変更はなし。共存シナジーは現在の `selectedDino` と `selectedCompanionId` から都度判定する。
+
+## CS03 実装メモ
+
+CS03では、enabled の第1弾4組だけをプレイ中効果へ接続した。UI表示はまだ未実装で、セーブ構造も変更していない。
+
+### 作成/更新ファイル
+
+- `src/systems/combat_system.js`
+- `src/scenes/play_scene.js`
+- `docs/design/companion_synergy_effects_cs03.md`
+
+### 反映した効果
+
+| 組み合わせ | 効果量 | 反映箇所 |
+| --- | --- | --- |
+| `tyrannosaurus` x `rex_hatchling` | ボスへのプレイヤー与ダメージ +12% | `CombatSystem.applyPlayerAttackDamage()` |
+| `velociraptor` x `raptorling` | プレイヤー攻撃のクリティカル率 +6% | `CombatSystem.getAdaptationDamageResult()` / `applyPlayerAttackDamage()` |
+| `spinosaurus` x `spino_pup` | `spino_pup` の支援攻撃ダメージ +12% | `PlayScene.updateCompanionSupportAttack()` |
+| `triceratops` x `tricera_calf` | プレイヤー被ダメージ -10% | `PlayScene.applyRunModifiers()` |
+
+### 未反映箇所
+
+- UIでの相性表示はCS04以降。
+- disabled の将来予約6組はデータ参照のみで、効果は発動しない。
+- `spinosaurus x spino_pup` は追加弾ではなく、性能・負荷が安定しやすいダメージ倍率のみ。
+- `tyrannosaurus x rex_hatchling` は通常敵には適用しない。
+
+### バランス注意点
+
+- 効果量はCS02データの `value` を参照し、既存バランスを壊さないよう控えめにしている。
+- クリティカル率は暴走防止のため `75%` 上限にclampしている。
+- 被ダメージ倍率はこのhookでは最低 `0.25` までにclampし、`debugInvincible` は従来どおり最終的に `0` を優先する。
+- CS03では新規projectile/effectを増やしていないため、性能影響は小さい。
