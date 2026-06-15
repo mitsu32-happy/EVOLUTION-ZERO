@@ -120,7 +120,7 @@ function getCompanionSynergyStatusText(synergy, active) {
   }
 
   if (!synergy.enabled) {
-    return '将来解放予定';
+    return '';
   }
 
   return active ? '発動中' : '未発動';
@@ -134,7 +134,11 @@ function getCompanionSynergyResearchSummary(companionId, dinoId) {
 
   const active = isCompanionSynergyActive({ dinoId, companionId });
   const partner = synergy.publicPlayerDinoName ?? '未発見の恐竜';
-  const name = synergy.enabled ? synergy.name : '将来解放予定';
+  if (!synergy.enabled) {
+    return `相性:${partner}`;
+  }
+
+  const name = synergy.name;
   const status = getCompanionSynergyStatusText(synergy, active);
   return `相性:${partner} ${name} / ${status}`;
 }

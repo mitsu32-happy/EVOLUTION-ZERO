@@ -168,7 +168,7 @@ function getCompanionSynergyStatusText(synergy, active) {
   }
 
   if (!synergy.enabled) {
-    return '将来解放予定';
+    return '';
   }
 
   return active ? '発動中' : '未発動';
@@ -190,12 +190,31 @@ function getCompanionSynergySummary(companionId, dinoId) {
   const active = isCompanionSynergyActive({ dinoId, companionId });
   return {
     active,
+    enabled: synergy.enabled,
     partner: synergy.publicPlayerDinoName ?? '未発見の恐竜',
-    name: synergy.enabled ? synergy.name : '将来解放予定',
-    detail: synergy.enabled ? synergy.shortLabel : '将来のアップデートで解放予定',
+    name: synergy.enabled ? synergy.name : '',
+    detail: synergy.enabled ? synergy.shortLabel : '',
     status: getCompanionSynergyStatusText(synergy, active),
     homeText: active ? `${synergy.shortLabel} 発動中` : '',
   };
+}
+
+function formatCompanionSynergyLine(synergy) {
+  if (!synergy) {
+    return '相性: -';
+  }
+
+  return synergy.enabled
+    ? `相性: ${synergy.partner} / ${synergy.name}`
+    : `相性: ${synergy.partner}`;
+}
+
+function formatCompanionSynergyDetail(synergy) {
+  if (!synergy?.enabled) {
+    return '';
+  }
+
+  return `${synergy.detail} / ${synergy.status}`;
 }
 
 const UNLOCK_CONTENT = {
@@ -1911,7 +1930,7 @@ export class HomeScreen {
       ? `セット中: ${selected?.displayName ?? 'お供なし'}`
       : '所持しているお供恐竜はありません。';
     this.companionModal.selectedDetail.text = selected
-      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n相性: ${selectedSynergy.partner} / ${selectedSynergy.name} ${selectedSynergy.status}`
+      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n${formatCompanionSynergyLine(selectedSynergy)}${selectedSynergy?.enabled ? ` ${selectedSynergy.status}` : ''}`
       : ownedCompanions.length > 0
         ? 'お供を選択すると、次の出撃から一緒に行動します。'
         : '卵を孵化すると、ここでセットできます。';
@@ -1944,10 +1963,10 @@ export class HomeScreen {
       row.icon.alpha = 1;
       row.name.text = `${companion.displayName} Lv${level}`;
       row.name.style.fill = '#ffffff';
-      row.detail.text = `相性: ${synergy.partner} / ${synergy.name}`;
+      row.detail.text = formatCompanionSynergyLine(synergy);
       row.detail.style.fill = '#cbe0da';
-      row.synergy.text = `${synergy.detail} / ${synergy.status}`;
-      row.synergy.style.fill = synergy.active ? '#7cf7d4' : synergy.status === '将来解放予定' ? '#8da49e' : '#ffd36b';
+      row.synergy.text = formatCompanionSynergyDetail(synergy);
+      row.synergy.style.fill = synergy.active ? '#7cf7d4' : '#ffd36b';
       row.actionFrame.texture = this.textures.get('companionSelectButton') ?? Texture.EMPTY;
       row.actionFrame.visible = row.actionFrame.texture !== Texture.EMPTY;
       row.actionFrame.alpha = isSelected ? 1 : 0.8;

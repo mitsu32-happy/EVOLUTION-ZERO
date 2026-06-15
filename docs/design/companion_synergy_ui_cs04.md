@@ -16,18 +16,22 @@ If no active synergy exists, no extra text is shown in the compact home panel to
 
 ### Companion Selection Modal
 
-Owned companion cards now show:
+Owned companion cards show:
 
-- `相性: {publicPlayerDinoName} / {synergyName}`
-- `{shortLabel or future notice} / {発動中|未発動|将来解放予定}`
+- Enabled synergy: `相性: {publicPlayerDinoName} / {synergyName}`
+- Enabled synergy detail: `{shortLabel} / {発動中|未発動}`
+- Disabled future synergy: `相性: 未発見の恐竜`
 
-The selected companion detail area also shows the current pair's synergy state.
+Disabled future synergies do not show a synergy name, effect description, or future-update notice in normal UI.
+
+The selected companion detail area follows the same rule.
 
 ### Research Companion Owned Panel
 
-Owned companion rows now show a compact synergy line:
+Owned companion rows show a compact synergy line:
 
-- `相性:{publicPlayerDinoName} {synergyName} / {status}`
+- Enabled synergy: `相性:{publicPlayerDinoName} {synergyName} / {発動中|未発動}`
+- Disabled future synergy: `相性:未発見の恐竜`
 
 This is intentionally short so the row remains readable on mobile width.
 
@@ -37,18 +41,21 @@ This is intentionally short so the row remains readable on mobile width.
 | --- | --- |
 | Enabled synergy and current dino matches | `発動中` |
 | Enabled synergy but current dino does not match | `未発動` |
-| Disabled future synergy | `将来解放予定` |
-| No synergy data | `共存シナジーなし` or omitted in compact surfaces |
+| Disabled future synergy | `相性: 未発見の恐竜` only |
+| No synergy data | Omitted or `共存シナジー: なし` depending on surface |
 
 ## Future Dino Names
 
 Disabled future synergies use `publicPlayerDinoName`, which is `未発見の恐竜` for normal UI. The internal future dino IDs and names remain documented in `companion_synergy_design_v1.md`, but normal UI does not expose those names.
 
+CS04b tightened this further: normal UI also hides future-update wording such as `将来解放予定` and `将来のアップデートで解放予定`.
+
 ## Text Policy
 
 - Numeric effect values are not shown in CS04.
-- UI uses short labels like `ボス特化`, `連撃`, and `防御補助`.
-- Cards use two compact lines to avoid overflowing on mobile.
+- UI uses short labels like `ボス特化`, `連撃`, `水弾支援`, and `防御補助`.
+- Disabled future synergies are intentionally minimal to avoid over-explaining unreleased content.
+- Cards use compact lines to avoid overflowing on mobile.
 
 ## Verification Notes
 
