@@ -135,6 +135,19 @@ Recommended adjustment: none for CS05. Revisit values only after longer live bal
 - UI text is acceptable in checked surfaces, but final mobile release QA should still include direct visual review on an actual device.
 - Future disabled synergies remain design-only and should stay inactive until their player dinos exist.
 
+## CS05b In-Play HUD Follow-Up
+
+CS05b adds a small PlayScene HUD indicator for active Companion Synergy.
+
+- Active synergy pairing: shows `共存: {synergyName}` and `{shortLabel}`.
+- Non-synergy pairing: hidden.
+- Disabled future synergy: hidden.
+- No companion: hidden.
+- Level-up / evolution / ZERO phase notice / adaptation notice: hidden to avoid overlap.
+- Placement: left side under existing HUD, shifted down when Adaptation Synergy HUD is visible and moved right during branch display.
+
+See `docs/design/companion_synergy_hud_cs05b.md` for detailed placement and overlap rules.
+
 ## Main Integration Judgment
 
 main統合可.

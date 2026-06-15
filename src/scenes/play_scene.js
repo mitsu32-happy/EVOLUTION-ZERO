@@ -805,6 +805,22 @@ export class PlayScene {
         dropShadowBlur: 3,
       },
     });
+    this.companionSynergyHudBg = new Graphics();
+    this.companionSynergyHudText = new Text({
+      text: '',
+      style: {
+        fill: '#e3fff7',
+        fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
+        fontSize: 10.5,
+        fontWeight: '800',
+        letterSpacing: 0,
+        align: 'left',
+        lineHeight: 13,
+        dropShadow: true,
+        dropShadowColor: '#01070a',
+        dropShadowBlur: 3,
+      },
+    });
     this.performanceDebugBg = new Graphics();
     this.performanceDebugText = new Text({
       text: '',
@@ -871,6 +887,7 @@ export class PlayScene {
     this.uiLayer.addChild(this.hud.view);
     this.createGamepadNotice();
     this.createAdaptationSynergyHud();
+    this.createCompanionSynergyHud();
     this.createPerformanceDebugOverlay();
     this.bindPerformanceDiagnostics();
     this.bindInput();
@@ -878,6 +895,7 @@ export class PlayScene {
     this.updateMap(true);
     this.applyDebugEvolutionReadyIfRequested();
     this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+    this.updateCompanionSynergyHud();
     this.triggerZeroStartNotice();
     this.playDebugEvolutionDemoIfRequested();
   }
@@ -925,6 +943,7 @@ export class PlayScene {
       this.updateMap(false);
       this.updateJoystick();
       this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+      this.updateCompanionSynergyHud();
       return;
     }
 
@@ -933,6 +952,7 @@ export class PlayScene {
       this.updateEvolutionWarning(delta);
       this.updateBossWarning(delta);
       this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+      this.updateCompanionSynergyHud();
       return;
     }
 
@@ -941,6 +961,7 @@ export class PlayScene {
       this.updateEvolutionWarning(delta);
       this.updateBossWarning(delta);
       this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+      this.updateCompanionSynergyHud();
       return;
     }
 
@@ -949,6 +970,7 @@ export class PlayScene {
       this.updateEvolutionWarning(delta);
       this.updateBossWarning(delta);
       this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+      this.updateCompanionSynergyHud();
       return;
     }
 
@@ -1013,6 +1035,7 @@ export class PlayScene {
     this.updateMap(false);
     this.updateJoystick();
     this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+    this.updateCompanionSynergyHud();
     this.updatePauseUi();
     this.updateResultUi();
     this.updateEvolutionWarning(delta);
@@ -1962,6 +1985,7 @@ export class PlayScene {
       includeDisabled: false,
     });
     this.combatSystem?.setCompanionSynergy?.(this.activeCompanionSynergy);
+    this.updateCompanionSynergyHud?.();
     return this.activeCompanionSynergy;
   }
 
@@ -2782,6 +2806,15 @@ export class PlayScene {
     this.updateAdaptationSynergyHud();
   }
 
+  createCompanionSynergyHud() {
+    this.companionSynergyHudBg.visible = false;
+    this.companionSynergyHudText.visible = false;
+    this.companionSynergyHudBg.eventMode = 'none';
+    this.companionSynergyHudText.eventMode = 'none';
+    this.uiLayer.addChild(this.companionSynergyHudBg, this.companionSynergyHudText);
+    this.updateCompanionSynergyHud();
+  }
+
   showAdaptationSynergyNotice(detection) {
     this.adaptationSynergyNoticeTimer = 2.7;
     this.adaptationSynergyNoticeText.text = getAdaptationSynergyNoticeText(detection.tag, detection.tier);
@@ -2852,6 +2885,58 @@ export class PlayScene {
       .fill({ color: 0x031018, alpha: 0.72 })
       .stroke({ color: 0x35d7ff, width: 1, alpha: 0.48 });
     this.adaptationSynergyHudText.position.set(x + 12, y + 7);
+  }
+
+  getCompanionSynergyHudText() {
+    const synergy = this.activeCompanionSynergy;
+    if (!synergy?.enabled || !this.activeCompanion) {
+      return '';
+    }
+
+    const name = synergy.name ?? '';
+    const label = synergy.shortLabel ?? '';
+    return label ? `共存: ${name}\n${label}` : `共存: ${name}`;
+  }
+
+  updateCompanionSynergyHud() {
+    if (!this.companionSynergyHudText || !this.companionSynergyHudBg) {
+      return;
+    }
+
+    const blocked = this.gameState?.isGameOver
+      || this.gameState?.isPaused
+      || this.isLevelUpSequenceActive()
+      || this.isEvolutionReadySequenceActive()
+      || this.evolutionFeedbackTimer > 0
+      || this.gamepadNoticeTimer > 0
+      || this.adaptationSynergyNoticeTimer > 0
+      || (this.zeroPhaseTimer > 0 && this.zeroPhaseLayer?.visible);
+    const text = blocked ? '' : this.getCompanionSynergyHudText();
+    const visible = Boolean(text);
+    this.companionSynergyHudText.text = text;
+    this.companionSynergyHudBg.visible = visible;
+    this.companionSynergyHudText.visible = visible;
+
+    if (!visible) {
+      this.companionSynergyHudBg.clear();
+      return;
+    }
+
+    const hasAdaptationHud = Boolean(this.adaptationSynergyHudBg?.visible);
+    const branchActive = Boolean(this.gameState?.selectedEvolution);
+    const width = Math.max(112, Math.min(202, this.companionSynergyHudText.width + 24));
+    const height = Math.max(28, Math.min(44, this.companionSynergyHudText.height + 13));
+    const x = branchActive ? Math.max(16, this.width - width - 18) : 16;
+    const y = branchActive ? 168 : hasAdaptationHud ? 160 : 126;
+
+    this.companionSynergyHudBg
+      .clear()
+      .roundRect(x, y, width, height, 8)
+      .fill({ color: 0x021417, alpha: 0.74 })
+      .stroke({ color: 0x7cf7d4, width: 1, alpha: 0.56 })
+      .roundRect(x + 5, y + 5, width - 10, height - 10, 6)
+      .stroke({ color: 0xffd36b, width: 0.65, alpha: 0.28 });
+    this.companionSynergyHudText.position.set(x + 12, y + 6);
   }
 
   handleGamepadConnection(gamepad, connected) {
@@ -8164,6 +8249,7 @@ export class PlayScene {
     this.updateCamera(1);
     this.updateMap(true);
     this.hud.update(this.gameState, this.getActiveBoss(), this.getHudLayoutOptions());
+    this.updateCompanionSynergyHud();
     this.triggerZeroStartNotice();
     this.updateResultUi();
     this.updateRunInfoLabel();
