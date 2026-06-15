@@ -17,6 +17,10 @@ import {
   getCompanionEffectSummary,
   getCompanionUpgradeLevelsFromState,
 } from '../data/companion_dinos.js';
+import {
+  getCompanionSynergyForCompanion,
+  isCompanionSynergyActive,
+} from '../data/companion_synergy.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
 import { playPressFeedback } from './ui_feedback.js';
@@ -143,7 +147,7 @@ const UNLOCK_PANEL = INFO_PANEL;
 const RECORD_PANEL = INFO_PANEL;
 const DAILY_PANEL = INFO_PANEL;
 const SELECTOR = { leftX: 86, pillX: 126, rightX: 270, y: 385 };
-const COMPANION_HOME_PANEL = { x: 18, y: 92, width: 168, height: 58 };
+const COMPANION_HOME_PANEL = { x: 18, y: 92, width: 168, height: 66 };
 
 const COMPANION_UI_DESCRIPTIONS = {
   raptorling: '近くの敵を素早く自動攻撃',
@@ -157,6 +161,42 @@ const COMPANION_UI_DESCRIPTIONS = {
   compy_pack: '弱った敵を素早く処理',
   exp_chaser: 'EXP回収と成長を補助',
 };
+
+function getCompanionSynergyStatusText(synergy, active) {
+  if (!synergy) {
+    return '共存シナジーなし';
+  }
+
+  if (!synergy.enabled) {
+    return '将来解放予定';
+  }
+
+  return active ? '発動中' : '未発動';
+}
+
+function getCompanionSynergySummary(companionId, dinoId) {
+  const synergy = getCompanionSynergyForCompanion(companionId);
+  if (!synergy) {
+    return {
+      active: false,
+      partner: '-',
+      name: '共存シナジーなし',
+      detail: '相性情報はありません',
+      status: '未発動',
+      homeText: '',
+    };
+  }
+
+  const active = isCompanionSynergyActive({ dinoId, companionId });
+  return {
+    active,
+    partner: synergy.publicPlayerDinoName ?? '未発見の恐竜',
+    name: synergy.enabled ? synergy.name : '将来解放予定',
+    detail: synergy.enabled ? synergy.shortLabel : '将来のアップデートで解放予定',
+    status: getCompanionSynergyStatusText(synergy, active),
+    homeText: active ? `${synergy.shortLabel} 発動中` : '',
+  };
+}
 
 const UNLOCK_CONTENT = {
   titleX: INFO_PANEL.x + 26,
@@ -254,6 +294,7 @@ export class HomeScreen {
     this.companionIcon = new Sprite(Texture.EMPTY);
     this.companionTitle = this.createText('お供', 10, '#7cf7d4', 70);
     this.companionName = this.createText('お供なし', 11, '#fff0b4', 98);
+    this.companionSynergyLine = this.createText('', 8.5, '#7cf7d4', 98);
     this.companionModal = this.createCompanionModal();
     this.switchLeft = new Sprite(Texture.EMPTY);
     this.switchRight = new Sprite(Texture.EMPTY);
@@ -355,6 +396,7 @@ export class HomeScreen {
       this.companionIcon,
       this.companionTitle,
       this.companionName,
+      this.companionSynergyLine,
       ...this.resourceTexts.flatMap((entry) => [entry.label, entry.value]),
       this.dinoName,
       this.dinoLine,
@@ -723,6 +765,7 @@ export class HomeScreen {
     this.companionIcon.visible = hasOwnedCompanion;
     this.companionTitle.visible = hasOwnedCompanion;
     this.companionName.visible = hasOwnedCompanion;
+    this.companionSynergyLine.visible = hasOwnedCompanion;
     this.companionPanel.eventMode = hasOwnedCompanion ? 'static' : 'none';
     this.companionPanel.cursor = hasOwnedCompanion ? 'pointer' : 'default';
 
@@ -732,6 +775,8 @@ export class HomeScreen {
     }
 
     const companion = getCompanionById(companionState.selectedId);
+    const dinoId = this.getHomeDinoId(data);
+    const synergy = companion ? getCompanionSynergySummary(companion.id, dinoId) : null;
     const iconTexture = companion
       ? (this.textures.get(`companionIcon:${companion.id}`) ?? this.textures.get('companionIcon'))
       : this.textures.get('companionIcon');
@@ -761,8 +806,12 @@ export class HomeScreen {
     this.companionTitle.position.set(x + 58, y + 20);
     this.companionName.text = companion ? `${companion.displayName} Lv${companionState.levels?.[companion.id] ?? 1}` : '未セット';
     this.companionName.anchor.set(0, 0.5);
-    this.companionName.position.set(x + 58, y + 38);
+    this.companionName.position.set(x + 58, y + 35);
     this.companionName.style.fill = '#fff0b4';
+    this.companionSynergyLine.text = synergy?.homeText ?? '';
+    this.companionSynergyLine.anchor.set(0, 0.5);
+    this.companionSynergyLine.position.set(x + 58, y + 51);
+    this.companionSynergyLine.style.fill = synergy?.active ? '#7cf7d4' : '#8da49e';
 
     const shouldShowCompanionHomeTutorial = Boolean(companionState.lastHatchedId)
       && !this.companionHomeTutorialShownForVisit
@@ -1742,19 +1791,20 @@ export class HomeScreen {
     modal.clearButton.view.addChild(modal.clearButton.bg, modal.clearButton.text);
     modal.view.addChild(modal.overlay, modal.panelFrame, modal.panel, modal.title, modal.body, modal.selectedDetail, modal.closeText, modal.pageText, modal.clearButton.view);
 
-    for (let index = 0; index < 5; index += 1) {
+    for (let index = 0; index < 4; index += 1) {
       const row = {
         view: new Container(),
         frame: new Sprite(Texture.EMPTY),
         bg: new Graphics(),
         icon: new Sprite(Texture.EMPTY),
         name: this.createText('', 12, '#ffffff', 140),
-        detail: this.createText('', 9, '#cbe0da', 184),
+        detail: this.createText('', 8.5, '#cbe0da', 168),
+        synergy: this.createText('', 8.2, '#7cf7d4', 168),
         actionFrame: new Sprite(Texture.EMPTY),
         action: this.createText('', 10, '#071015', 62),
         companionId: null,
       };
-      row.view.position.set(52, 318 + index * 46);
+      row.view.position.set(52, 322 + index * 58);
       row.view.eventMode = 'static';
       row.view.cursor = 'pointer';
       row.view.on('pointertap', () => this.handleCompanionRow(row));
@@ -1763,13 +1813,14 @@ export class HomeScreen {
       row.icon.width = 34;
       row.icon.height = 34;
       row.name.position.set(44, 8);
-      row.detail.position.set(44, 26);
+      row.detail.position.set(44, 25);
+      row.synergy.position.set(44, 40);
       row.action.anchor.set(0.5);
-      row.action.position.set(246, 24);
-      row.actionFrame.position.set(216, 8);
+      row.action.position.set(246, 29);
+      row.actionFrame.position.set(216, 14);
       row.actionFrame.width = 60;
       row.actionFrame.height = 30;
-      row.view.addChild(row.frame, row.bg, row.icon, row.name, row.detail, row.actionFrame, row.action);
+      row.view.addChild(row.frame, row.bg, row.icon, row.name, row.detail, row.synergy, row.actionFrame, row.action);
       modal.rows.push(row);
       modal.view.addChild(row.view);
     }
@@ -1834,6 +1885,8 @@ export class HomeScreen {
     const ownedIds = new Set(state.ownedIds ?? []);
     const ownedCompanions = COMPANION_DINOS.filter((companion) => ownedIds.has(companion.id));
     const selected = getCompanionById(state.selectedId);
+    const dinoId = this.getHomeDinoId(data);
+    const selectedSynergy = selected ? getCompanionSynergySummary(selected.id, dinoId) : null;
     const fallbackIconTexture = this.textures.get('companionIcon') ?? Texture.EMPTY;
     const pageSize = this.companionModal.rows.length;
     const maxPage = Math.max(0, Math.ceil(ownedCompanions.length / pageSize) - 1);
@@ -1854,12 +1907,11 @@ export class HomeScreen {
       .stroke({ color: 0x35d7ff, width: 1.8, alpha: panelTexture ? 0.16 : 0.74 })
       .roundRect(8, 8, this.width - 84, 414, 11)
       .stroke({ color: 0xffd36b, width: 0.8, alpha: panelTexture ? 0.08 : 0.28 });
-    const selectedLevels = selected ? getCompanionUpgradeLevelsFromState(state, selected.id) : null;
     this.companionModal.body.text = ownedCompanions.length > 0
       ? `セット中: ${selected?.displayName ?? 'お供なし'}`
       : '所持しているお供恐竜はありません。';
     this.companionModal.selectedDetail.text = selected
-      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n効果: ${getCompanionEffectSummary(selected.id, selectedLevels)}`
+      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n相性: ${selectedSynergy.partner} / ${selectedSynergy.name} ${selectedSynergy.status}`
       : ownedCompanions.length > 0
         ? 'お供を選択すると、次の出撃から一緒に行動します。'
         : '卵を孵化すると、ここでセットできます。';
@@ -1868,6 +1920,7 @@ export class HomeScreen {
       const level = companion ? state.levels?.[companion.id] ?? 1 : 1;
       const isSelected = companion?.id === state.selectedId;
       const accent = companion ? COMPANION_TYPES[companion.type]?.accent ?? 0x7cf7d4 : 0x23434a;
+      const synergy = companion ? getCompanionSynergySummary(companion.id, dinoId) : null;
 
       row.view.visible = !!companion;
       if (!companion) {
@@ -1879,11 +1932,11 @@ export class HomeScreen {
       row.frame.texture = cardTexture ?? Texture.EMPTY;
       row.frame.visible = !!cardTexture;
       row.frame.width = 286;
-      row.frame.height = 44;
+      row.frame.height = 56;
       row.frame.alpha = isSelected ? 1 : 0.82;
       row.bg
         .clear()
-        .roundRect(0, 0, 286, 44, 10)
+        .roundRect(0, 0, 286, 56, 10)
         .fill({ color: isSelected ? 0x08272f : 0x031216, alpha: cardTexture ? 0.1 : 0.86 })
         .stroke({ color: accent, width: isSelected ? 1.8 : 1, alpha: isSelected ? 0.86 : cardTexture ? 0.18 : 0.44 });
       row.icon.texture = iconTexture;
@@ -1891,8 +1944,10 @@ export class HomeScreen {
       row.icon.alpha = 1;
       row.name.text = `${companion.displayName} Lv${level}`;
       row.name.style.fill = '#ffffff';
-      row.detail.text = COMPANION_UI_DESCRIPTIONS[companion.id] ?? getCompanionEffectSummary(companion.id, getCompanionUpgradeLevelsFromState(state, companion.id));
+      row.detail.text = `相性: ${synergy.partner} / ${synergy.name}`;
       row.detail.style.fill = '#cbe0da';
+      row.synergy.text = `${synergy.detail} / ${synergy.status}`;
+      row.synergy.style.fill = synergy.active ? '#7cf7d4' : synergy.status === '将来解放予定' ? '#8da49e' : '#ffd36b';
       row.actionFrame.texture = this.textures.get('companionSelectButton') ?? Texture.EMPTY;
       row.actionFrame.visible = row.actionFrame.texture !== Texture.EMPTY;
       row.actionFrame.alpha = isSelected ? 1 : 0.8;
