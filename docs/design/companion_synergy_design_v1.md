@@ -260,3 +260,54 @@ CS01時点では不要。CS02でも保存なしで実装する方針を推奨す
 - お供攻撃/補助: `src/scenes/play_scene.js` `updateCompanionSupportAttack()` / `updateCompanionUtility()`
 - お供選択UI: `src/ui/home_screen.js` `renderCompanionModal()`
 - 研究画面お供UI: `src/ui/research_screen.js` `renderCompanionOwnedPanel()`
+
+## CS02 実装メモ
+
+CS02では、プレイ中効果とUI表示にはまだ接続せず、共存シナジーを参照できるデータ層だけを追加した。
+
+### 作成ファイル
+
+- `src/data/companion_synergy.js`
+
+### 定義したシナジーID
+
+| お供ID | シナジーID | enabled |
+| --- | --- | --- |
+| `rex_hatchling` | `tyranno_rex_boss_hunter` | true |
+| `raptorling` | `raptor_double_claw` | true |
+| `spino_pup` | `spino_tide_support` | true |
+| `tricera_calf` | `tricera_guard_resonance` | true |
+| `medic_saur` | `ankylo_regen_armor` | false |
+| `para_juvenile` | `para_echo_scavenger` | false |
+| `stego_calf` | `stego_plate_shock` | false |
+| `ptera_chick` | `pteranodon_wing_cover` | false |
+| `compy_pack` | `compy_pack_hunt` | false |
+| `exp_chaser` | `ornithomimus_exp_runner` | false |
+
+### 取得関数
+
+- `getCompanionSynergy({ dinoId, companionId, includeDisabled = true })`
+  - プレイヤー恐竜IDとお供IDが一致する場合にシナジー情報を返す。
+  - `includeDisabled: false` の場合は予約シナジーを返さない。
+- `getCompanionSynergyForCompanion(companionId)`
+  - お供IDから相性情報を返す。
+  - UI表示用に予約シナジーも返す。
+- `isCompanionSynergyActive({ dinoId, companionId })`
+  - `enabled: true` かつID一致の場合だけ `true`。
+
+### 未実装プレイヤー恐竜ID
+
+CS02では将来追加を想定した仮IDとして以下を定義した。
+
+- `ankylosaurus`
+- `parasaurolophus`
+- `stegosaurus`
+- `pteranodon`
+- `compsognathus`
+- `ornithomimus`
+
+通常UIではこれらの実名を直接出さず、`publicPlayerDinoName: '未発見の恐竜'` を使う方針。
+
+### セーブ変更
+
+セーブ構造の変更はなし。共存シナジーは現在の `selectedDino` と `selectedCompanionId` から都度判定する。
