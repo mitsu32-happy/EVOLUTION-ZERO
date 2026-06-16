@@ -4,6 +4,12 @@ export const ASSET_KEYS = {
     triceratops: 'dinos.triceratops',
     tyrannosaurus: 'dinos.tyrannosaurus',
     spinosaurus: 'dinos.spinosaurus',
+    ankylosaurus: 'dinos.ankylosaurus',
+    parasaurolophus: 'dinos.parasaurolophus',
+    stegosaurus: 'dinos.stegosaurus',
+    pteranodon: 'dinos.pteranodon',
+    compsognathus: 'dinos.compsognathus',
+    ornithomimus: 'dinos.ornithomimus',
   },
   dinoSelectPortraits: {
     velociraptor: 'dinoSelectPortraits.velociraptor',
@@ -107,6 +113,12 @@ export const ASSET_KEYS = {
     triceratops: 'dinos.triceratopsSheet',
     tyrannosaurus: 'dinos.tyrannosaurusSheet',
     spinosaurus: 'dinos.spinosaurusSheet',
+    ankylosaurus: 'dinos.ankylosaurusSheet',
+    parasaurolophus: 'dinos.parasaurolophusSheet',
+    stegosaurus: 'dinos.stegosaurusSheet',
+    pteranodon: 'dinos.pteranodonSheet',
+    compsognathus: 'dinos.compsognathusSheet',
+    ornithomimus: 'dinos.ornithomimusSheet',
   },
   enemies: {
     swarm: 'enemies.swarm',
@@ -5715,6 +5727,13 @@ const SPINOSAURUS_SHEET_META = {
   },
 };
 
+const NEW_DINO_ND04_ANIMATIONS = {
+  idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+  run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+  attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+  death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+};
+
 Object.assign(ASSET_MANIFEST.dinos, {
   spinosaurus: {
     path: 'assets/dinos/spinosaurus.png',
@@ -5726,6 +5745,118 @@ Object.assign(ASSET_MANIFEST.dinos, {
     fallbackKey: 'dinos.spinosaurus',
     note: 'MVP-A01b dedicated spinosaurus 4x4 sprite sheet. QA frameEdgeIssues: 0.',
     ...SPINOSAURUS_SHEET_META,
+  },
+  ankylosaurus: {
+    path: 'assets/dinos/ankylosaurus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated ankylosaurus gameplay sheet.',
+  },
+  ankylosaurusSheet: {
+    path: 'assets/dinos/ankylosaurus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.ankylosaurus',
+    note: 'ND04 generated ankylosaurus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 160, displayHeight: 122 },
+    animations: NEW_DINO_ND04_ANIMATIONS,
+  },
+  parasaurolophus: {
+    path: 'assets/dinos/parasaurolophus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated parasaurolophus gameplay sheet.',
+  },
+  parasaurolophusSheet: {
+    path: 'assets/dinos/parasaurolophus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.parasaurolophus',
+    note: 'ND04 generated parasaurolophus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 150, displayHeight: 120 },
+    animations: NEW_DINO_ND04_ANIMATIONS,
+  },
+  stegosaurus: {
+    path: 'assets/dinos/stegosaurus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated stegosaurus gameplay sheet.',
+  },
+  stegosaurusSheet: {
+    path: 'assets/dinos/stegosaurus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.stegosaurus',
+    note: 'ND04 generated stegosaurus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 164, displayHeight: 124 },
+    animations: NEW_DINO_ND04_ANIMATIONS,
+  },
+  pteranodon: {
+    path: 'assets/dinos/pteranodon.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated pteranodon gameplay sheet.',
+  },
+  pteranodonSheet: {
+    path: 'assets/dinos/pteranodon_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.pteranodon',
+    note: 'ND04 generated pteranodon 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 154, displayHeight: 118 },
+    animations: {
+      ...NEW_DINO_ND04_ANIMATIONS,
+      run: { row: 1, frames: [0, 1, 2, 3], fps: 9, loop: true },
+    },
+  },
+  compsognathus: {
+    path: 'assets/dinos/compsognathus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated compsognathus gameplay sheet.',
+  },
+  compsognathusSheet: {
+    path: 'assets/dinos/compsognathus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.compsognathus',
+    note: 'ND04 generated compsognathus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 122, displayHeight: 96 },
+    animations: {
+      ...NEW_DINO_ND04_ANIMATIONS,
+      run: { row: 1, frames: [0, 1, 2, 3], fps: 11, loop: true },
+      attack: { row: 2, frames: [0, 1, 2, 3], fps: 12, loop: false },
+    },
+  },
+  ornithomimus: {
+    path: 'assets/dinos/ornithomimus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated ornithomimus gameplay sheet.',
+  },
+  ornithomimusSheet: {
+    path: 'assets/dinos/ornithomimus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.ornithomimus',
+    note: 'ND04 generated ornithomimus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 140, displayHeight: 122 },
+    animations: {
+      ...NEW_DINO_ND04_ANIMATIONS,
+      run: { row: 1, frames: [0, 1, 2, 3], fps: 11, loop: true },
+    },
   },
 });
 

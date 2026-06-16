@@ -144,3 +144,37 @@ ND04 should generate gameplay sprite sheets with the same safety rules used for 
 - no clipping on tail, wings, plates, crest, feet, or legs
 - no adjacent-cell contamination
 - contact sheet and JSON report before manifest connection
+
+## ND04 Result
+
+ND04 generated and connected base gameplay sheets for the six new dinosaurs:
+
+- `public/assets/dinos/ankylosaurus_sheet.png`
+- `public/assets/dinos/parasaurolophus_sheet.png`
+- `public/assets/dinos/stegosaurus_sheet.png`
+- `public/assets/dinos/pteranodon_sheet.png`
+- `public/assets/dinos/compsognathus_sheet.png`
+- `public/assets/dinos/ornithomimus_sheet.png`
+
+Each sheet uses a runtime-safe 4x4 structure with 384x384 cells:
+
+- row 0: idle
+- row 1: run / movement
+- row 2: action body animation
+- row 3: death / down fallback
+
+ND04 also extracted static fallback frames:
+
+- `public/assets/dinos/ankylosaurus.png`
+- `public/assets/dinos/parasaurolophus.png`
+- `public/assets/dinos/stegosaurus.png`
+- `public/assets/dinos/pteranodon.png`
+- `public/assets/dinos/compsognathus.png`
+- `public/assets/dinos/ornithomimus.png`
+
+QA artifacts:
+
+- `docs/assets/nd04_new_dinos_sprite_contact.png`
+- `docs/assets/nd04_new_dinos_sprite_report.json`
+
+Final output cells report `edgeIssues: 0` and `missingFrames: 0` for all six dinosaurs. Dedicated skill effects and evolution branch sprite sheets remain deferred to ND05 / ND06.
