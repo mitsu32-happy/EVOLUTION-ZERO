@@ -218,6 +218,23 @@ New dinosaurs should not collapse into these exact roles:
 - Compsognathus should feel like swarm speed, not simply small Velociraptor.
 - Ornithomimus should emphasize movement and growth tempo, not raw DPS.
 
+## ND05 Base Attack Result
+
+ND05 replaced the ND02 borrowed normal attack effect references with dedicated base attack assets:
+
+| Dinosaur ID | Attack ID | Effect asset |
+| --- | --- | --- |
+| `ankylosaurus` | `ankylosaurusTailClub` | `public/assets/effects/attacks/ankylosaurus_tail_club.png` |
+| `parasaurolophus` | `parasaurolophusSonicPulse` | `public/assets/effects/attacks/parasaurolophus_sonic_pulse.png` |
+| `stegosaurus` | `stegosaurusPlateQuake` | `public/assets/effects/attacks/stegosaurus_plate_quake.png` |
+| `pteranodon` | `pteranodonWindLance` | `public/assets/effects/attacks/pteranodon_wind_lance.png` |
+| `compsognathus` | `compsognathusPackBite` | `public/assets/effects/attacks/compsognathus_pack_bite.png` |
+| `ornithomimus` | `ornithomimusSprintKick` | `public/assets/effects/attacks/ornithomimus_sprint_kick.png` |
+
+Each attack also has a matching icon in `public/assets/ui/skills/`.
+
+ND05 keeps the ND02 balance values broadly intact and focuses on world-fit, readability, and removing borrowed placeholder visuals.
+
 ## Required Asset Matrix
 
 Each new dinosaur requires base, branch, UI, and effect assets before production completion.
@@ -231,7 +248,7 @@ Per dinosaur:
 - `public/assets/dinos/portraits/<id>.png`
 - `public/assets/dinos/dino_select/<id>_hero.png`
 - `public/assets/dinos/dino_select/<id>_portrait.png`
-- normal attack effect sheet under `public/assets/effects/attacks/`
+- normal attack effect under `public/assets/effects/attacks/`
 - normal attack icon under `public/assets/ui/skills/` or existing normal attack icon location
 - optional locked silhouette under `public/assets/dinos/locked/` if the dinosaur is not unlocked by default
 

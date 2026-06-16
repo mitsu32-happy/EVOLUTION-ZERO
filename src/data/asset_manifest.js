@@ -743,12 +743,24 @@ export const ASSET_KEYS = {
     tyrannosaurusZeroOmegaBite: 'normalAttackEffects.tyrannosaurusZeroOmegaBite',
     spinosaurusWaterSlash: 'normalAttackEffects.spinosaurusWaterSlash',
     spinosaurusSplashHit: 'normalAttackEffects.spinosaurusSplashHit',
+    ankylosaurusTailClub: 'normalAttackEffects.ankylosaurusTailClub',
+    parasaurolophusSonicPulse: 'normalAttackEffects.parasaurolophusSonicPulse',
+    stegosaurusPlateQuake: 'normalAttackEffects.stegosaurusPlateQuake',
+    pteranodonWindLance: 'normalAttackEffects.pteranodonWindLance',
+    compsognathusPackBite: 'normalAttackEffects.compsognathusPackBite',
+    ornithomimusSprintKick: 'normalAttackEffects.ornithomimusSprintKick',
   },
   normalAttackIcons: {
     raptorClaw: 'normalAttackIcons.raptorClaw',
     triceratopsHorn: 'normalAttackIcons.triceratopsHorn',
     trexBite: 'normalAttackIcons.trexBite',
     spinosaurusWaterSlash: 'normalAttackIcons.spinosaurusWaterSlash',
+    ankylosaurusTailClub: 'normalAttackIcons.ankylosaurusTailClub',
+    parasaurolophusSonicPulse: 'normalAttackIcons.parasaurolophusSonicPulse',
+    stegosaurusPlateQuake: 'normalAttackIcons.stegosaurusPlateQuake',
+    pteranodonWindLance: 'normalAttackIcons.pteranodonWindLance',
+    compsognathusPackBite: 'normalAttackIcons.compsognathusPackBite',
+    ornithomimusSprintKick: 'normalAttackIcons.ornithomimusSprintKick',
   },
   adaptationIcons: {
     speed: 'adaptationIcons.speed',
@@ -5994,6 +6006,63 @@ Object.assign(ASSET_MANIFEST.normalAttackEffects, {
     path: 'assets/effects/attacks/spinosaurus_attack_splash_hit_sheet.png',
     spriteSheet: true,
     note: 'MVP-A01b dedicated animated splash hit accent. QA frameEdgeIssues: 0.',
+  },
+  ankylosaurusTailClub: {
+    path: 'assets/effects/attacks/ankylosaurus_tail_club.png',
+    note: 'ND05 dedicated transparent normal attack effect for ankylosaurus tail-club shock burst. QA edgeIssues: 0.',
+  },
+  parasaurolophusSonicPulse: {
+    path: 'assets/effects/attacks/parasaurolophus_sonic_pulse.png',
+    note: 'ND05 dedicated transparent normal attack effect for parasaurolophus sonic pulse cone. QA edgeIssues: 0.',
+  },
+  stegosaurusPlateQuake: {
+    path: 'assets/effects/attacks/stegosaurus_plate_quake.png',
+    note: 'ND05 dedicated transparent normal attack effect for stegosaurus plate quake ripple. QA edgeIssues: 0.',
+  },
+  pteranodonWindLance: {
+    path: 'assets/effects/attacks/pteranodon_wind_lance.png',
+    note: 'ND05 dedicated transparent normal attack effect for pteranodon wind lance. QA edgeIssues: 0.',
+  },
+  compsognathusPackBite: {
+    path: 'assets/effects/attacks/compsognathus_pack_bite.png',
+    note: 'ND05 dedicated transparent normal attack effect for compsognathus pack bite slashes. QA edgeIssues: 0.',
+  },
+  ornithomimusSprintKick: {
+    path: 'assets/effects/attacks/ornithomimus_sprint_kick.png',
+    note: 'ND05 dedicated transparent normal attack effect for ornithomimus sprint kick impact. QA edgeIssues: 0.',
+  },
+});
+
+Object.assign(ASSET_MANIFEST.normalAttackIcons, {
+  ankylosaurusTailClub: {
+    path: 'assets/ui/skills/icon_ankylosaurus_tail_club.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for ankylosaurus tail-club shock burst.',
+  },
+  parasaurolophusSonicPulse: {
+    path: 'assets/ui/skills/icon_parasaurolophus_sonic_pulse.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for parasaurolophus sonic pulse.',
+  },
+  stegosaurusPlateQuake: {
+    path: 'assets/ui/skills/icon_stegosaurus_plate_quake.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for stegosaurus plate quake.',
+  },
+  pteranodonWindLance: {
+    path: 'assets/ui/skills/icon_pteranodon_wind_lance.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for pteranodon wind lance.',
+  },
+  compsognathusPackBite: {
+    path: 'assets/ui/skills/icon_compsognathus_pack_bite.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for compsognathus pack bite.',
+  },
+  ornithomimusSprintKick: {
+    path: 'assets/ui/skills/icon_ornithomimus_sprint_kick.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for ornithomimus sprint kick.',
   },
 });
 

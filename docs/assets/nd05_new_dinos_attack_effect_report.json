@@ -1,0 +1,104 @@
+{
+  "schema": "nd05_new_dinos_attack_effect_report",
+  "outputSize": 512,
+  "iconSize": 128,
+  "edgeMarginThreshold": 20,
+  "assets": [
+    {
+      "id": "ankylosaurus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c9b7410c81919c27d70404d54e6e.png",
+      "effectPath": "public/assets/effects/attacks/ankylosaurus_tail_club.png",
+      "iconPath": "public/assets/ui/skills/icon_ankylosaurus_tail_club.png",
+      "description": "close heavy tail-club impact burst",
+      "missingFrames": [],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "bbox": [
+        42,
+        176,
+        470,
+        336
+      ]
+    },
+    {
+      "id": "parasaurolophus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c9de5924819196d3f32aea2c10f3.png",
+      "effectPath": "public/assets/effects/attacks/parasaurolophus_sonic_pulse.png",
+      "iconPath": "public/assets/ui/skills/icon_parasaurolophus_sonic_pulse.png",
+      "description": "fan-shaped sonic pulse",
+      "missingFrames": [],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "bbox": [
+        42,
+        102,
+        470,
+        410
+      ]
+    },
+    {
+      "id": "stegosaurus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31ca0dc430819191d0cb3b76c536e4.png",
+      "effectPath": "public/assets/effects/attacks/stegosaurus_plate_quake.png",
+      "iconPath": "public/assets/ui/skills/icon_stegosaurus_plate_quake.png",
+      "description": "plate-energy quake ripple",
+      "missingFrames": [],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "bbox": [
+        42,
+        196,
+        470,
+        315
+      ]
+    },
+    {
+      "id": "pteranodon",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31ca3f2f5481919ed2b7c9925706a2.png",
+      "effectPath": "public/assets/effects/attacks/pteranodon_wind_lance.png",
+      "iconPath": "public/assets/ui/skills/icon_pteranodon_wind_lance.png",
+      "description": "long-range wind lance",
+      "missingFrames": [],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "bbox": [
+        42,
+        227,
+        470,
+        285
+      ]
+    },
+    {
+      "id": "compsognathus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31ca66673081919aa1c760b054936e.png",
+      "effectPath": "public/assets/effects/attacks/compsognathus_pack_bite.png",
+      "iconPath": "public/assets/ui/skills/icon_compsognathus_pack_bite.png",
+      "description": "fast compact bite/slash streaks",
+      "missingFrames": [],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "bbox": [
+        43,
+        42,
+        468,
+        470
+      ]
+    },
+    {
+      "id": "ornithomimus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31caa2e21081918c9cbfc9a37c2ec4.png",
+      "effectPath": "public/assets/effects/attacks/ornithomimus_sprint_kick.png",
+      "iconPath": "public/assets/ui/skills/icon_ornithomimus_sprint_kick.png",
+      "description": "sprint-kick dash impact",
+      "missingFrames": [],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "bbox": [
+        42,
+        173,
+        470,
+        339
+      ]
+    }
+  ]
+}

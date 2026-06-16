@@ -134,6 +134,10 @@ ND05 should check:
 - `compsognathusPackBite`
 - `ornithomimusSprintKick`
 
+## ND05 Result
+
+ND05 added dedicated base normal attack effect assets and icons for the six attack IDs listed above. The ND04 body animation row 2 remains body-action animation only; actual attack VFX now comes from `normalAttackEffects` through `src/data/normal_attacks.js`.
+
 ## Remaining Risks
 
 - The new dinosaurs are not fully balanced as playable unlocks yet.
