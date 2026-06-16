@@ -180,3 +180,28 @@ Build result:
 
 - build succeeded
 - existing Vite chunk-size warning remains
+
+## ND06 Result
+
+ND06 added evolution gameplay sprite sheets for all six new dinosaurs:
+
+- `public/assets/dinos/evolutions/sheets/ankylosaurus_{speed,hunting,attack,zero}_sheet.png`
+- `public/assets/dinos/evolutions/sheets/parasaurolophus_{speed,hunting,attack,zero}_sheet.png`
+- `public/assets/dinos/evolutions/sheets/stegosaurus_{speed,hunting,attack,zero}_sheet.png`
+- `public/assets/dinos/evolutions/sheets/pteranodon_{speed,hunting,attack,zero}_sheet.png`
+- `public/assets/dinos/evolutions/sheets/compsognathus_{speed,hunting,attack,zero}_sheet.png`
+- `public/assets/dinos/evolutions/sheets/ornithomimus_{speed,hunting,attack,zero}_sheet.png`
+
+The ND06 sheets keep the ND04 safety constraints:
+
+- fixed 4 x 4 layout
+- 384px cell size
+- one body per cell
+- transparent background
+- no sheet-wide display dependency
+- no edge issues in the generated report
+
+QA artifacts:
+
+- `docs/assets/nd06_new_dinos_evolution_sprite_contact.png`
+- `docs/assets/nd06_new_dinos_evolution_asset_report.json`

@@ -6099,6 +6099,115 @@ Object.assign(ASSET_MANIFEST.specialEffects, {
   },
 });
 
+const ND06_NEW_DINO_IDS = [
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+];
+
+const ND06_EVOLUTION_TAGS = ['speed', 'hunting', 'attack', 'zero'];
+
+const ND06_EVOLUTION_SHEET_META = {
+  spriteSheet: true,
+  sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384 },
+  animations: {
+    idle: { row: 0, frames: [0, 1, 2, 3], fps: 7, loop: true },
+    move: { row: 1, frames: [0, 1, 2, 3], fps: 10, loop: true },
+    action: { row: 2, frames: [0, 1, 2, 3], fps: 12, loop: false },
+    special: { row: 3, frames: [0, 1, 2, 3], fps: 12, loop: false },
+  },
+  anchor: { x: 0.5, y: 0.72 },
+};
+
+function toPascalBranchKey(id = '', tag = '') {
+  return `${id}${tag.charAt(0).toUpperCase()}${tag.slice(1)}`;
+}
+
+function toCamelBranchEffectKey(branchId = '') {
+  return branchId.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+const ND06_NEW_DINO_BRANCHES = ND06_NEW_DINO_IDS.flatMap((dinoId) => (
+  ND06_EVOLUTION_TAGS.map((tag) => {
+    const id = `${dinoId}_${tag}`;
+    const key = toPascalBranchKey(dinoId, tag);
+    const effectKey = toCamelBranchEffectKey(id);
+
+    return { id, dinoId, tag, key, effectKey };
+  })
+));
+
+Object.assign(ASSET_KEYS.evolutionHeroes, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionHeroes.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.evolutionPortraits, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionPortraits.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.evolutionSheets, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionSheets.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.evolutionSpecialIcons, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionSpecialIcons.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.normalAttackEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ effectKey }) => [`${effectKey}Attack`, `normalAttackEffects.${effectKey}Attack`]),
+));
+
+Object.assign(ASSET_KEYS.specialEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ effectKey }) => [`${effectKey}Ultimate`, `specialEffects.${effectKey}Ultimate`]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionHeroes, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, key }) => [key, {
+    path: `assets/dinos/evolutions/heroes/${id}_hero.png`,
+    note: 'ND06 generated dedicated new-dino evolution hero art.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionPortraits, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, key }) => [key, {
+    path: `assets/dinos/evolutions/portraits/${id}_portrait.png`,
+    note: 'ND06 generated dedicated new-dino evolution portrait.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionSheets, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, dinoId, key }) => [key, {
+    path: `assets/dinos/evolutions/sheets/${id}_sheet.png`,
+    fallbackKey: `dinos.${dinoId}Sheet`,
+    note: 'ND06 generated dedicated 4x4 evolution gameplay sprite sheet. QA edgeIssues: 0.',
+    ...ND06_EVOLUTION_SHEET_META,
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionSpecialIcons, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ dinoId, tag, key }) => [key, {
+    path: `assets/ui/hud/special_icons/special_${tag}_${dinoId}.png`,
+    note: 'ND06 generated dedicated evolution special icon.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.normalAttackEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, effectKey }) => [`${effectKey}Attack`, {
+    path: `assets/effects/attacks/evolutions/${id}_attack.png`,
+    note: 'ND06 generated dedicated evolution normal attack accent. QA edgeIssues: 0.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.specialEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, effectKey }) => [`${effectKey}Ultimate`, {
+    path: `assets/effects/specials/new_dinos/special_${id}_ultimate.png`,
+    note: 'ND06 generated dedicated evolution ultimate/special effect. QA edgeIssues: 0.',
+  }]),
+));
+
 export function flattenAssetManifest(manifest = ASSET_MANIFEST) {
   return Object.entries(manifest).flatMap(([category, entries]) => (
     (entries && typeof entries === 'object' && 'path' in entries

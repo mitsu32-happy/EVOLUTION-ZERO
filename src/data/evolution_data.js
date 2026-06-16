@@ -8,6 +8,20 @@ const DEFAULT_ZERO_REQUIREMENT_LINES = [
   'ZEROルート解析済み',
 ];
 
+function toCamelBranchKey(id = '') {
+  return id.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+function getBranchAssetPaths({ id, dinoId, tag }) {
+  return {
+    heroPath: `assets/dinos/evolutions/heroes/${id}_hero.png`,
+    portraitPath: `assets/dinos/evolutions/portraits/${id}_portrait.png`,
+    sheetPath: `assets/dinos/evolutions/sheets/${id}_sheet.png`,
+    specialIconPath: `assets/ui/hud/special_icons/special_${tag}_${dinoId}.png`,
+    normalAttackEffectKey: `normalAttackEffects.${toCamelBranchKey(id)}Attack`,
+  };
+}
+
 function createPendingEvolutionBranch({
   id,
   dinoId,
@@ -20,7 +34,6 @@ function createPendingEvolutionBranch({
   role,
   ultimateName,
   ultimateDescription,
-  normalAttackEffectKey,
 }) {
   return {
     id,
@@ -35,9 +48,9 @@ function createPendingEvolutionBranch({
     role,
     ultimateName,
     ultimateDescription,
-    normalAttackEffectKey,
-    assetStatus: 'pending',
-    assetNote: 'ND02 data-only branch. Dedicated hero, portrait, sheet, and icon assets are planned for ND03-ND06.',
+    ...getBranchAssetPaths({ id, dinoId, tag }),
+    assetStatus: 'connected',
+    assetNote: 'ND06 connected dedicated hero, portrait, gameplay sprite sheet, special icon, and branch attack effect assets.',
   };
 }
 
@@ -49,7 +62,6 @@ function createPendingZeroBranch({
   role,
   ultimateName,
   ultimateDescription,
-  normalAttackEffectKey,
   displayTarget,
 }) {
   return {
@@ -65,7 +77,7 @@ function createPendingZeroBranch({
     role,
     ultimateName,
     ultimateDescription,
-    normalAttackEffectKey,
+    ...getBranchAssetPaths({ id, dinoId, tag: 'zero' }),
     ultimateId: id,
     tier: 'zero',
     unlockCondition: 'future ZERO route',
@@ -82,8 +94,8 @@ function createPendingZeroBranch({
     },
     zeroRoute: true,
     hiddenUntilDiscovered: true,
-    assetStatus: 'pending',
-    assetNote: 'ND02 data-only ZERO branch. Dedicated ZERO assets and unlock route validation are planned for ND06.',
+    assetStatus: 'connected',
+    assetNote: 'ND06 connected dedicated ZERO hero, portrait, gameplay sprite sheet, special icon, and branch attack effect assets. Unlock remains future ZERO route gated.',
   };
 }
 

@@ -8205,88 +8205,20 @@ export class PlayScene {
   getEvolutionSheetKey(selectedEvolution = null) {
     const dinoId = selectedEvolution?.dinoId ?? this.gameState.selectedDino;
     const tag = selectedEvolution?.tag ?? this.gameState.selectedEvolution?.tag;
+    const suffix = tag ? `${tag.charAt(0).toUpperCase()}${tag.slice(1)}` : null;
+    const sheetKey = suffix ? `${dinoId}${suffix}` : null;
 
-    if (dinoId === 'triceratops') {
-      if (tag === 'zero') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsZero ?? ASSET_KEYS.evolutionSheets?.triceratopsAttack ?? null;
-      }
-
-      if (tag === 'speed') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsSpeed ?? null;
-      }
-
-      if (tag === 'hunting') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsHunting ?? null;
-      }
-
-      if (tag === 'attack') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsAttack ?? null;
-      }
-
-      return null;
-    }
-
-    if (dinoId === 'tyrannosaurus') {
-      if (tag === 'zero') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusZero ?? ASSET_KEYS.evolutionSheets?.tyrannosaurusAttack ?? null;
-      }
-
-      if (tag === 'speed') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusSpeed ?? null;
-      }
-
-      if (tag === 'hunting') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusHunting ?? null;
-      }
-
-      if (tag === 'attack') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusAttack ?? null;
-      }
-
-      return null;
-    }
-
-    if (dinoId === 'spinosaurus') {
-      if (tag === 'zero') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusZero ?? ASSET_KEYS.evolutionSheets?.spinosaurusAttack ?? null;
-      }
-
-      if (tag === 'speed') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusSpeed ?? null;
-      }
-
-      if (tag === 'hunting') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusHunting ?? null;
-      }
-
-      if (tag === 'attack') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusAttack ?? null;
-      }
-
-      return null;
-    }
-
-    if (dinoId !== 'velociraptor') {
+    if (!sheetKey) {
       return null;
     }
 
     if (tag === 'zero') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorZero ?? ASSET_KEYS.evolutionSheets?.velociraptorAttack ?? null;
+      return ASSET_KEYS.evolutionSheets?.[sheetKey]
+        ?? ASSET_KEYS.evolutionSheets?.[`${dinoId}Attack`]
+        ?? null;
     }
 
-    if (tag === 'speed') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorSpeed ?? null;
-    }
-
-    if (tag === 'hunting') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorHunting ?? null;
-    }
-
-    if (tag === 'attack') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorAttack ?? null;
-    }
-
-    return null;
+    return ASSET_KEYS.evolutionSheets?.[sheetKey] ?? null;
   }
 
   updateJoystick() {

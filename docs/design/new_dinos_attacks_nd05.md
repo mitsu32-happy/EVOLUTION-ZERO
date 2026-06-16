@@ -144,3 +144,22 @@ Build result:
 
 - build succeeded
 - existing Vite chunk-size warning remains
+
+## ND06 Result
+
+ND06 added branch-specific attack accents and ultimate/special effect images for all six new dinosaurs' evolution branches.
+
+New attack accent location:
+
+- `public/assets/effects/attacks/evolutions/{branch_id}_attack.png`
+
+New ultimate/special effect location:
+
+- `public/assets/effects/specials/new_dinos/special_{branch_id}_ultimate.png`
+
+These assets are registered in `src/data/asset_manifest.js` and are referenced by the generated evolution branch data. The base ND05 normal attacks remain unchanged for non-evolved forms.
+
+QA artifacts:
+
+- `docs/assets/nd06_new_dinos_evolution_effect_contact.png`
+- `docs/assets/nd06_new_dinos_evolution_asset_report.json`

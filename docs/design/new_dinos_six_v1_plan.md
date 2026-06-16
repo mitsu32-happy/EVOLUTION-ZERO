@@ -725,3 +725,29 @@ Deferred to later phases:
 - save migration and full playable QA
 
 Detailed implementation notes are in `docs/design/new_dinos_assets_nd03.md`.
+
+## ND06 Result
+
+ND06 generated and connected the six new dinosaurs' evolution branch assets:
+
+- 24 branch hero images
+- 24 branch portraits
+- 24 branch gameplay sprite sheets
+- 24 branch special icons
+- 24 branch normal-attack accent effects
+- 24 branch ultimate/special effect images
+
+The branch set covers `speed`, `hunting`, `attack`, and `zero` for:
+
+- `ankylosaurus`
+- `parasaurolophus`
+- `stegosaurus`
+- `pteranodon`
+- `compsognathus`
+- `ornithomimus`
+
+The six ZERO branches are now data/assets ready but remain future ZERO route gated. ND06 did not unlock them unconditionally and did not change save progression.
+
+`spinosaurus_zero` was rechecked. Its hero, portrait, sprite sheet, special icon, evolution definition, and ultimate definition already exist. It remains unassigned in the current stage-to-ZERO-route reward map and should be considered for a future route such as `ruins`.
+
+Detailed implementation notes are in `docs/design/new_dinos_evolutions_nd06.md`.

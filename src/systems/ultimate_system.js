@@ -240,6 +240,46 @@ const ULTIMATES = {
   },
 };
 
+const ND06_NEW_DINO_ULTIMATES = [
+  ['ankylosaurus_speed', '装甲ローリング', 'speed'],
+  ['ankylosaurus_hunting', '振動索敵', 'hunting'],
+  ['ankylosaurus_attack', 'クレータークラブ', 'attack'],
+  ['ankylosaurus_zero', 'ゼロバンカー', 'zero'],
+  ['parasaurolophus_speed', 'パルスステップ', 'speed'],
+  ['parasaurolophus_hunting', 'エコースキャン', 'hunting'],
+  ['parasaurolophus_attack', 'ハーモニックバースト', 'attack'],
+  ['parasaurolophus_zero', 'ゼロレゾナンス', 'zero'],
+  ['stegosaurus_speed', 'レールチャージ', 'speed'],
+  ['stegosaurus_hunting', 'プレートセンサー', 'hunting'],
+  ['stegosaurus_attack', 'プレートクエイク', 'attack'],
+  ['stegosaurus_zero', 'ゼロプレートウェーブ', 'zero'],
+  ['pteranodon_speed', 'レイザーウィング', 'speed'],
+  ['pteranodon_hunting', 'スカイマーカー', 'hunting'],
+  ['pteranodon_attack', 'ゲイルランス', 'attack'],
+  ['pteranodon_zero', 'ゼロスカイリフト', 'zero'],
+  ['compsognathus_speed', 'ラッシュパック', 'speed'],
+  ['compsognathus_hunting', 'パックマーク', 'hunting'],
+  ['compsognathus_attack', 'フレンジースウォーム', 'attack'],
+  ['compsognathus_zero', 'ゼロスウォーム', 'zero'],
+  ['ornithomimus_speed', 'ハイパーラン', 'speed'],
+  ['ornithomimus_hunting', 'ルートスキャン', 'hunting'],
+  ['ornithomimus_attack', 'スプリントブレイク', 'attack'],
+  ['ornithomimus_zero', 'ゼロアクセル', 'zero'],
+];
+
+function toCamelBranchKey(id = '') {
+  return id.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+ND06_NEW_DINO_ULTIMATES.forEach(([id, name, tag]) => {
+  const base = tag === 'zero' ? ULTIMATES.spinosaurus_zero : ULTIMATES[tag];
+  ULTIMATES[id] = {
+    ...base,
+    name,
+    effectTexture: `${toCamelBranchKey(id)}Ultimate`,
+  };
+});
+
 const MAX_ULTIMATE_EFFECTS = 42;
 const MAX_ULTIMATE_GRAPHICS_POOL = 36;
 const MAX_ULTIMATE_SPRITE_POOL = 28;
@@ -320,6 +360,11 @@ export class UltimateSystem {
       spinosaurusAttack: ASSET_KEYS.specialEffects.spinosaurusAttackHydroBreakSheet,
       spinosaurusZero: ASSET_KEYS.specialEffects.spinosaurusZeroTideSheet,
     };
+    Object.entries(ASSET_KEYS.specialEffects ?? {}).forEach(([id, key]) => {
+      if (id.endsWith('Ultimate')) {
+        keys[id] = key;
+      }
+    });
     const sheetKeys = {
       omegaCore: ASSET_KEYS.specialEffects.tyrannosaurusZeroOmegaCoreSheet,
       omegaBurst: ASSET_KEYS.specialEffects.tyrannosaurusZeroOmegaBurstSheet,
