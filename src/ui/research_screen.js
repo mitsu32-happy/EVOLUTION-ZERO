@@ -24,6 +24,10 @@ import {
   getCompanionUpgradeCost,
   getCompanionUpgradeLevelsFromState,
 } from '../data/companion_dinos.js';
+import {
+  getCompanionSynergyForCompanion,
+  isCompanionSynergyActive,
+} from '../data/companion_synergy.js';
 
 const RESEARCH_ASSET_PATHS = {
   researchBackground: 'assets/ui/research/research_background.png',
@@ -105,6 +109,49 @@ const CATEGORY_COLORS = {
   [RESEARCH_CATEGORY_IDS.unknownDomain]: 0x91a3b8,
   [RESEARCH_CATEGORY_IDS.analysisConversion]: 0xffb13b,
 };
+
+function getResearchCompanionDinoId(data = {}) {
+  return data.currentHomeDino ?? data.favoriteDinoId ?? data.homeDinoId ?? 'velociraptor';
+}
+
+function getCompanionSynergyStatusText(synergy, active) {
+  if (!synergy) {
+    return '未発動';
+  }
+
+  if (!synergy.enabled) {
+    return '';
+  }
+
+  return active ? '発動中' : '未発動';
+}
+
+function getCompanionSynergyResearchSummary(companionId, dinoId) {
+  const synergy = getCompanionSynergyForCompanion(companionId);
+  if (!synergy) {
+    return '共存シナジー: なし';
+  }
+
+  const active = isCompanionSynergyActive({ dinoId, companionId });
+  const partner = synergy.publicPlayerDinoName ?? '未発見の恐竜';
+  if (!synergy.enabled) {
+    return `相性:${partner}`;
+  }
+
+  const name = synergy.name;
+  const status = getCompanionSynergyStatusText(synergy, active);
+  const detail = synergy.shortLabel ?? name;
+  return `共存:${partner} 効果:${detail} / ${status}`;
+}
+
+function getCompanionSynergyResearchColor(companionId, dinoId) {
+  const synergy = getCompanionSynergyForCompanion(companionId);
+  if (!synergy?.enabled) {
+    return '#8da49e';
+  }
+
+  return isCompanionSynergyActive({ dinoId, companionId }) ? '#7cf7d4' : '#ffd36b';
+}
 
 export class ResearchScreen {
   constructor({
@@ -504,7 +551,8 @@ export class ResearchScreen {
         icon: new Sprite(Texture.EMPTY),
         name: this.createText('', 12, '#ffffff', 134),
         detail: this.createText('', 9.2, '#cbe0da', 186),
-        growth: this.createText('', 8.8, '#7cf7d4', 186),
+        synergy: this.createText('', 8.2, '#ffd36b', 186),
+        growth: this.createText('', 8.4, '#7cf7d4', 186),
         button: null,
         companionId: null,
       };
@@ -515,9 +563,10 @@ export class ResearchScreen {
       row.icon.height = 52;
       row.name.position.set(70, 10);
       row.detail.position.set(70, 30);
-      row.growth.position.set(70, 52);
+      row.synergy.position.set(70, 45);
+      row.growth.position.set(70, 59);
       row.button = makeActionButton('強化', 260, 26, 76, () => this.upgradeResearchCompanion(row.companionId));
-      row.view.addChild(row.sprite, row.bg, row.icon, row.name, row.detail, row.growth, row.button.view);
+      row.view.addChild(row.sprite, row.bg, row.icon, row.name, row.detail, row.synergy, row.growth, row.button.view);
       ownedRows.push(row);
     }
     const pagePrev = makeActionButton('前', 88, 680, 64, () => this.changeCompanionOwnedPage(-1));
@@ -1730,6 +1779,7 @@ export class ResearchScreen {
     const ui = this.companionResearchView;
     const state = data.companion ?? {};
     const ownedCompanions = COMPANION_DINOS.filter((companion) => state.ownedIds?.includes(companion.id));
+    const dinoId = getResearchCompanionDinoId(data);
     const pageSize = ui.ownedRows.length;
     const maxPage = Math.max(0, Math.ceil(ownedCompanions.length / pageSize) - 1);
     const fallbackIcon = this.textures.get('companionEgg') ?? Texture.EMPTY;
@@ -1772,6 +1822,8 @@ export class ResearchScreen {
       row.icon.visible = row.icon.texture !== Texture.EMPTY;
       row.name.text = `${companion.displayName} Lv${level} / ${companion.maxLevel}`;
       row.detail.text = getCompanionEffectSummary(companion.id, levels);
+      row.synergy.text = getCompanionSynergyResearchSummary(companion.id, dinoId);
+      row.synergy.style.fill = getCompanionSynergyResearchColor(companion.id, dinoId);
       row.growth.text = `範囲Lv${levels.range} 効果Lv${levels.effect} 速度Lv${levels.speed}${minCost ? ` / DNA${minCost}〜` : ' / MAX'}`;
       row.button.sprite.texture = buttonTexture ?? Texture.EMPTY;
       row.button.sprite.visible = !!buttonTexture;

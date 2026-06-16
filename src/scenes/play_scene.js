@@ -17,6 +17,7 @@ import {
   getCompanionScaledBehavior,
   getCompanionUpgradeLevelsFromState,
 } from '../data/companion_dinos.js';
+import { getCompanionSynergy } from '../data/companion_synergy.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
 import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
 import { Boss } from '../entities/boss.js';
@@ -461,6 +462,7 @@ export class PlayScene {
     this.companionAnimationTimer = 0;
     this.activeCompanion = null;
     this.activeCompanionLevel = 1;
+    this.activeCompanionSynergy = null;
     this.vignette = new Graphics();
     this.damageFlash = new Graphics();
     this.bossDefeatFxLayer = new Graphics();
@@ -1440,6 +1442,9 @@ export class PlayScene {
       companion: {
         active: Boolean(this.activeCompanion),
         id: this.activeCompanion?.id ?? null,
+        synergyId: this.activeCompanionSynergy?.synergyId ?? null,
+        synergyEffectType: this.activeCompanionSynergy?.effectType ?? null,
+        synergyValue: this.activeCompanionSynergy?.value ?? null,
         effects: this.companionEffects.length,
         effectPoolFree: this.companionEffectPool.length,
         targetScans: this.companionPerfStats?.targetScans ?? 0,
@@ -1751,6 +1756,9 @@ export class PlayScene {
       companion: {
         active: Boolean(this.activeCompanion),
         id: this.activeCompanion?.id ?? null,
+        synergyId: this.activeCompanionSynergy?.synergyId ?? null,
+        synergyEffectType: this.activeCompanionSynergy?.effectType ?? null,
+        synergyValue: this.activeCompanionSynergy?.value ?? null,
         targetScans: this.companionPerfStats?.targetScans ?? 0,
         pickupScans: this.companionPerfStats?.pickupScans ?? 0,
         lastEnemyScanSize: this.companionPerfStats?.lastEnemyScanSize ?? 0,
@@ -1937,8 +1945,38 @@ export class PlayScene {
     }
   }
 
+  getSelectedCompanionIdForSynergy() {
+    return getDebugCompanionId()
+      ?? this.gameState.selectedCompanionId
+      ?? this.saveManager?.getCompanionState?.()?.selectedId
+      ?? this.gameState.companion?.selectedId
+      ?? null;
+  }
+
+  refreshCompanionSynergy() {
+    const dinoId = this.gameState.selectedDinoId ?? this.gameState.selectedDino?.id ?? this.gameState.selectedDino;
+    const companionId = this.getSelectedCompanionIdForSynergy();
+    this.activeCompanionSynergy = getCompanionSynergy({
+      dinoId,
+      companionId,
+      includeDisabled: false,
+    });
+    this.combatSystem?.setCompanionSynergy?.(this.activeCompanionSynergy);
+    return this.activeCompanionSynergy;
+  }
+
+  getActiveCompanionSynergyValue(effectType) {
+    if (!this.activeCompanionSynergy || this.activeCompanionSynergy.effectType !== effectType) {
+      return 0;
+    }
+
+    const value = Number(this.activeCompanionSynergy.value ?? 0);
+    return Number.isFinite(value) ? value : 0;
+  }
+
   applyRunModifiers() {
     this.refreshRunConfig();
+    this.refreshCompanionSynergy();
     const research = this.saveManager?.getData().researchLevels ?? {};
     const bodyResearch = getBodyResearchBonuses(research);
     const adaptationResearch = getAdaptationResearchBonuses(research);
@@ -1947,6 +1985,7 @@ export class PlayScene {
     this.gameState.playerMaxHp = this.dinoConfig.maxHp + bodyResearch.maxHpBonus;
     this.gameState.playerHp = this.gameState.playerMaxHp;
     this.gameState.playerDamageMultiplier = (this.dinoConfig.damageTakenMultiplier ?? 1) * (bodyResearch.damageTakenMultiplier ?? 1);
+    this.gameState.playerDamageMultiplier *= Math.max(0.25, 1 + this.getActiveCompanionSynergyValue('damageTaken'));
     if (getDebugFlag('debugInvincible')) {
       this.gameState.playerDamageMultiplier = 0;
     }
@@ -3200,6 +3239,7 @@ export class PlayScene {
     this.gameState.companion = state;
     this.gameState.selectedCompanionId = companion?.id ?? null;
     this.activeCompanion = companion;
+    this.refreshCompanionSynergy();
     const debugLevel = getDebugCompanionLevel();
     const savedUpgradeLevels = companion ? getCompanionUpgradeLevelsFromState(state, companion.id) : null;
     this.activeCompanionUpgradeLevels = companion
@@ -3588,6 +3628,7 @@ export class PlayScene {
       `${this.companionAnimationState} #${this.companionAnimationFrame} tex ${frameText}`,
       `size ${sizeText} sc ${scaleText} a ${anchorText}`,
       `${this.companionMovementState}/${this.companionMovementTargetType} sp${speed} d${targetDistance}`,
+      `syn ${this.activeCompanionSynergy?.synergyId ?? '-'} ${this.activeCompanionSynergy?.effectType ?? '-'} ${this.activeCompanionSynergy?.value ?? '-'}`,
       `cd ${attackCooldown}/${utilityCooldown} fx ${this.companionEffects?.length ?? 0} r${radius} face${this.companionFacing}`,
       `${this.companionLastAction ?? 'idle'} ${this.companionLastTarget ?? '-'}`,
       `${x},${y}`,
@@ -4167,7 +4208,10 @@ export class PlayScene {
     });
     selectedTargets.forEach(({ enemy }) => {
       const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
-      const damage = Math.round((behavior.damage ?? 8) * bossMultiplier);
+      const skillMultiplier = this.activeCompanion.id === 'spino_pup'
+        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue('companionSkillDamage'))
+        : 1;
+      const damage = Math.round((behavior.damage ?? 8) * bossMultiplier * skillMultiplier);
       enemy.takeDamage?.(damage);
       this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
       this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
