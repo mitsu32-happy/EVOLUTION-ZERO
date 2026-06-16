@@ -183,7 +183,6 @@ function getCompanionSynergySummary(companionId, dinoId) {
       name: '共存シナジーなし',
       detail: '相性情報はありません',
       status: '未発動',
-      homeText: '',
     };
   }
 
@@ -195,7 +194,6 @@ function getCompanionSynergySummary(companionId, dinoId) {
     name: synergy.enabled ? synergy.name : '',
     detail: synergy.enabled ? synergy.shortLabel : '',
     status: getCompanionSynergyStatusText(synergy, active),
-    homeText: active ? `${synergy.shortLabel} 発動中` : '',
   };
 }
 
@@ -205,7 +203,7 @@ function formatCompanionSynergyLine(synergy) {
   }
 
   return synergy.enabled
-    ? `相性: ${synergy.partner} / ${synergy.name}`
+    ? `共存シナジー: ${synergy.partner}`
     : `相性: ${synergy.partner}`;
 }
 
@@ -214,7 +212,7 @@ function formatCompanionSynergyDetail(synergy) {
     return '';
   }
 
-  return `${synergy.detail} / ${synergy.status}`;
+  return `効果: ${synergy.detail} / ${synergy.status}`;
 }
 
 const UNLOCK_CONTENT = {
@@ -794,8 +792,6 @@ export class HomeScreen {
     }
 
     const companion = getCompanionById(companionState.selectedId);
-    const dinoId = this.getHomeDinoId(data);
-    const synergy = companion ? getCompanionSynergySummary(companion.id, dinoId) : null;
     const iconTexture = companion
       ? (this.textures.get(`companionIcon:${companion.id}`) ?? this.textures.get('companionIcon'))
       : this.textures.get('companionIcon');
@@ -827,10 +823,10 @@ export class HomeScreen {
     this.companionName.anchor.set(0, 0.5);
     this.companionName.position.set(x + 58, y + 35);
     this.companionName.style.fill = '#fff0b4';
-    this.companionSynergyLine.text = synergy?.homeText ?? '';
+    this.companionSynergyLine.text = companion ? 'タップで変更' : '';
     this.companionSynergyLine.anchor.set(0, 0.5);
     this.companionSynergyLine.position.set(x + 58, y + 51);
-    this.companionSynergyLine.style.fill = synergy?.active ? '#7cf7d4' : '#8da49e';
+    this.companionSynergyLine.style.fill = '#8da49e';
 
     const shouldShowCompanionHomeTutorial = Boolean(companionState.lastHatchedId)
       && !this.companionHomeTutorialShownForVisit
@@ -1930,7 +1926,7 @@ export class HomeScreen {
       ? `セット中: ${selected?.displayName ?? 'お供なし'}`
       : '所持しているお供恐竜はありません。';
     this.companionModal.selectedDetail.text = selected
-      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n${formatCompanionSynergyLine(selectedSynergy)}${selectedSynergy?.enabled ? ` ${selectedSynergy.status}` : ''}`
+      ? `${COMPANION_TYPES[selected.type]?.label ?? '補助'} / ${COMPANION_UI_DESCRIPTIONS[selected.id] ?? selected.description}\n${formatCompanionSynergyLine(selectedSynergy)}${selectedSynergy?.enabled ? `\n${formatCompanionSynergyDetail(selectedSynergy)}` : ''}`
       : ownedCompanions.length > 0
         ? 'お供を選択すると、次の出撃から一緒に行動します。'
         : '卵を孵化すると、ここでセットできます。';

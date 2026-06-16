@@ -140,7 +140,8 @@ function getCompanionSynergyResearchSummary(companionId, dinoId) {
 
   const name = synergy.name;
   const status = getCompanionSynergyStatusText(synergy, active);
-  return `相性:${partner} ${name} / ${status}`;
+  const detail = synergy.shortLabel ?? name;
+  return `共存:${partner} 効果:${detail} / ${status}`;
 }
 
 function getCompanionSynergyResearchColor(companionId, dinoId) {
