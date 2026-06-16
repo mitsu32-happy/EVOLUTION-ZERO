@@ -48,6 +48,60 @@ const ZERO_EVOLUTION_REQUIREMENTS = {
       attack: 3,
     },
   },
+  ankylosaurus_zero: {
+    dinoId: 'ankylosaurus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  parasaurolophus_zero: {
+    dinoId: 'parasaurolophus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  stegosaurus_zero: {
+    dinoId: 'stegosaurus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  pteranodon_zero: {
+    dinoId: 'pteranodon',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  compsognathus_zero: {
+    dinoId: 'compsognathus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  ornithomimus_zero: {
+    dinoId: 'ornithomimus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
 };
 
 export class GameState {

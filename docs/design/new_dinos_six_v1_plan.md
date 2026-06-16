@@ -606,3 +606,51 @@ Minimum QA before production completion:
 ND01 completed as design-only investigation.
 
 No code, asset, save, version, or news changes were made.
+
+## ND02 Result
+
+ND02 added data-only definitions for the six planned playable dinosaurs.
+
+Added dinosaur IDs:
+
+- `ankylosaurus`
+- `parasaurolophus`
+- `stegosaurus`
+- `pteranodon`
+- `compsognathus`
+- `ornithomimus`
+
+Added normal attack IDs:
+
+- `ankylosaurusTailClub`
+- `parasaurolophusSonicPulse`
+- `stegosaurusPlateQuake`
+- `pteranodonWindLance`
+- `compsognathusPackBite`
+- `ornithomimusSprintKick`
+
+Added branch IDs:
+
+- `ankylosaurus_speed`, `ankylosaurus_hunting`, `ankylosaurus_attack`, `ankylosaurus_zero`
+- `parasaurolophus_speed`, `parasaurolophus_hunting`, `parasaurolophus_attack`, `parasaurolophus_zero`
+- `stegosaurus_speed`, `stegosaurus_hunting`, `stegosaurus_attack`, `stegosaurus_zero`
+- `pteranodon_speed`, `pteranodon_hunting`, `pteranodon_attack`, `pteranodon_zero`
+- `compsognathus_speed`, `compsognathus_hunting`, `compsognathus_attack`, `compsognathus_zero`
+- `ornithomimus_speed`, `ornithomimus_hunting`, `ornithomimus_attack`, `ornithomimus_zero`
+
+ND02 intentionally does not expose the six dinosaurs in dino select or codex UI, does not add asset manifest keys, and does not reference missing image files. The new normal attacks reuse existing safe effect/icon keys until ND05 creates dedicated effects.
+
+Companion synergy ID alignment was confirmed with the existing future reservations:
+
+- `ankylosaurus` x `medic_saur`
+- `parasaurolophus` x `para_juvenile`
+- `stegosaurus` x `stego_calf`
+- `pteranodon` x `ptera_chick`
+- `compsognathus` x `compy_pack`
+- `ornithomimus` x `exp_chaser`
+
+These six synergies remain disabled. Enabling them is a later balance and QA decision, not part of ND02.
+
+`spinosaurus_zero` already exists in main and was not duplicated. ND06 should verify its quality, route unlock, and ZERO reward mapping.
+
+Detailed implementation notes are in `docs/design/new_dinos_data_nd02.md`.
