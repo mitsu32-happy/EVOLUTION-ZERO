@@ -154,6 +154,126 @@ const CODEX_DINOS = [
       },
     ],
   },
+  {
+    id: 'ankylosaurus',
+    name: 'アンキロサウルス',
+    shortName: 'アンキロ',
+    lineage: 'アンキロサウルス系統',
+    type: '重装防衛型',
+    trait: '装甲大型個体',
+    image: 'assets/dinos/dino_select/ankylosaurus_hero.png',
+    locked: true,
+    origin: {
+      name: '原種アンキロ',
+      desc: '装甲と尾棍で近距離を押し返す追加候補個体。',
+      stats: '体力 高 / 攻撃 中 / 速度 低',
+    },
+    branches: [
+      { id: 'ankylosaurus_speed', name: '???', tag: 'speed', desc: '高速装甲反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'ankylosaurus_hunting', name: '???', tag: 'hunting', desc: '振動索敵反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'ankylosaurus_attack', name: '???', tag: 'attack', desc: '尾棍重撃反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+    ],
+  },
+  {
+    id: 'parasaurolophus',
+    name: 'パラサウロロフス',
+    shortName: 'パラサ',
+    lineage: 'パラサウロロフス系統',
+    type: '音波支援型',
+    trait: '共鳴探索個体',
+    image: 'assets/dinos/dino_select/parasaurolophus_hero.png',
+    locked: true,
+    origin: {
+      name: '原種パラサ',
+      desc: '頭部トサカの共鳴で敵と資源を捉える追加候補個体。',
+      stats: '体力 中 / 支援 高 / 速度 中',
+    },
+    branches: [
+      { id: 'parasaurolophus_speed', name: '???', tag: 'speed', desc: '高速音波反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'parasaurolophus_hunting', name: '???', tag: 'hunting', desc: '反響探索反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'parasaurolophus_attack', name: '???', tag: 'attack', desc: '破壊音波反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+    ],
+  },
+  {
+    id: 'stegosaurus',
+    name: 'ステゴサウルス',
+    shortName: 'ステゴ',
+    lineage: 'ステゴサウルス系統',
+    type: '範囲制圧型',
+    trait: '背板衝波個体',
+    image: 'assets/dinos/dino_select/stegosaurus_hero.png',
+    locked: true,
+    origin: {
+      name: '原種ステゴ',
+      desc: '背板エネルギーで群れを押さえる追加候補個体。',
+      stats: '体力 高 / 範囲 高 / 速度 低',
+    },
+    branches: [
+      { id: 'stegosaurus_speed', name: '???', tag: 'speed', desc: '高速背板反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'stegosaurus_hunting', name: '???', tag: 'hunting', desc: '背板索敵反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'stegosaurus_attack', name: '???', tag: 'attack', desc: '地面衝撃反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+    ],
+  },
+  {
+    id: 'pteranodon',
+    name: 'プテラノドン',
+    shortName: 'プテラ',
+    lineage: 'プテラノドン系統',
+    type: '空中支援型',
+    trait: '翼膜支援個体',
+    image: 'assets/dinos/dino_select/pteranodon_hero.png',
+    locked: true,
+    origin: {
+      name: '原種プテラ',
+      desc: '翼膜の風刃で遠距離から牽制する追加候補個体。',
+      stats: '体力 低 / 支援 中 / 速度 高',
+    },
+    branches: [
+      { id: 'pteranodon_speed', name: '???', tag: 'speed', desc: '高速翼膜反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'pteranodon_hunting', name: '???', tag: 'hunting', desc: '空中追跡反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'pteranodon_attack', name: '???', tag: 'attack', desc: '風槍反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+    ],
+  },
+  {
+    id: 'compsognathus',
+    name: 'コンプソグナトゥス',
+    shortName: 'コンピー',
+    lineage: 'コンプソグナトゥス系統',
+    type: '群れ連撃型',
+    trait: '小型群れ個体',
+    image: 'assets/dinos/dino_select/compsognathus_hero.png',
+    locked: true,
+    origin: {
+      name: '原種コンピー',
+      desc: '小型群れで弱った敵を削る追加候補個体。',
+      stats: '体力 低 / 手数 高 / 速度 高',
+    },
+    branches: [
+      { id: 'compsognathus_speed', name: '???', tag: 'speed', desc: '高速群れ反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'compsognathus_hunting', name: '???', tag: 'hunting', desc: '群れ追跡反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'compsognathus_attack', name: '???', tag: 'attack', desc: '連撃群れ反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+    ],
+  },
+  {
+    id: 'ornithomimus',
+    name: 'オルニトミムス',
+    shortName: 'オルニ',
+    lineage: 'オルニトミムス系統',
+    type: '高速成長型',
+    trait: '走査成長個体',
+    image: 'assets/dinos/dino_select/ornithomimus_hero.png',
+    locked: true,
+    origin: {
+      name: '原種オルニ',
+      desc: '長い脚で走り抜け、回収テンポを支える追加候補個体。',
+      stats: '体力 中 / 回収 中 / 速度 高',
+    },
+    branches: [
+      { id: 'ornithomimus_speed', name: '???', tag: 'speed', desc: '高速走行反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'ornithomimus_hunting', name: '???', tag: 'hunting', desc: '資源走査反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+      { id: 'ornithomimus_attack', name: '???', tag: 'attack', desc: '走行衝撃反応の分岐候補。', condition: '発見条件: 未解析', stats: '未解析', locked: true },
+    ],
+  },
 ];
 
 const CODEX_BRANCH_OVERRIDES = {
@@ -1095,13 +1215,17 @@ export class CodexScreen {
   }
 
   isDinoUnlocked(dino, data = this.saveManager.getData()) {
-    if (!dino || dino.id !== 'spinosaurus') {
+    if (!dino) {
+      return false;
+    }
+
+    if (!dino.locked && dino.id !== 'spinosaurus') {
       return true;
     }
 
     const debug = new URLSearchParams(window.location.search);
-    return data?.unlockedDinos?.spinosaurus?.unlocked
-      || debug.get('debugUnlockDino') === 'spinosaurus'
+    return data?.unlockedDinos?.[dino.id]?.unlocked
+      || debug.get('debugUnlockDino') === dino.id
       || debug.get('debugUnlockAllDinos') === '1';
   }
 

@@ -10,12 +10,24 @@ export const ASSET_KEYS = {
     triceratops: 'dinoSelectPortraits.triceratops',
     tyrannosaurus: 'dinoSelectPortraits.tyrannosaurus',
     spinosaurus: 'dinoSelectPortraits.spinosaurus',
+    ankylosaurus: 'dinoSelectPortraits.ankylosaurus',
+    parasaurolophus: 'dinoSelectPortraits.parasaurolophus',
+    stegosaurus: 'dinoSelectPortraits.stegosaurus',
+    pteranodon: 'dinoSelectPortraits.pteranodon',
+    compsognathus: 'dinoSelectPortraits.compsognathus',
+    ornithomimus: 'dinoSelectPortraits.ornithomimus',
   },
   dinoSelectHero: {
     velociraptor: 'dinoSelectHero.velociraptor',
     triceratops: 'dinoSelectHero.triceratops',
     tyrannosaurus: 'dinoSelectHero.tyrannosaurus',
     spinosaurus: 'dinoSelectHero.spinosaurus',
+    ankylosaurus: 'dinoSelectHero.ankylosaurus',
+    parasaurolophus: 'dinoSelectHero.parasaurolophus',
+    stegosaurus: 'dinoSelectHero.stegosaurus',
+    pteranodon: 'dinoSelectHero.pteranodon',
+    compsognathus: 'dinoSelectHero.compsognathus',
+    ornithomimus: 'dinoSelectHero.ornithomimus',
   },
   evolutionHeroes: {
     velociraptorSpeed: 'evolutionHeroes.velociraptorSpeed',
@@ -5723,6 +5735,36 @@ Object.assign(ASSET_MANIFEST.dinoSelectPortraits, {
     uiPortrait: true,
     note: 'MVP-A11b cleaned spinosaurus portrait for selector/HUD icon use; detached top fragments removed.',
   },
+  ankylosaurus: {
+    path: 'assets/dinos/dino_select/ankylosaurus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for ankylosaurus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  parasaurolophus: {
+    path: 'assets/dinos/dino_select/parasaurolophus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for parasaurolophus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  stegosaurus: {
+    path: 'assets/dinos/dino_select/stegosaurus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for stegosaurus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  pteranodon: {
+    path: 'assets/dinos/dino_select/pteranodon_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for pteranodon. Base art only; gameplay sprite sheet is deferred.',
+  },
+  compsognathus: {
+    path: 'assets/dinos/dino_select/compsognathus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for compsognathus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  ornithomimus: {
+    path: 'assets/dinos/dino_select/ornithomimus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for ornithomimus. Base art only; gameplay sprite sheet is deferred.',
+  },
 });
 
 Object.assign(ASSET_MANIFEST.dinoSelectHero, {
@@ -5730,6 +5772,36 @@ Object.assign(ASSET_MANIFEST.dinoSelectHero, {
     path: 'assets/dinos/dino_select/spinosaurus_hero.png',
     uiHero: true,
     note: 'MVP-A01b dedicated spinosaurus hero art.',
+  },
+  ankylosaurus: {
+    path: 'assets/dinos/dino_select/ankylosaurus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked ankylosaurus roster display.',
+  },
+  parasaurolophus: {
+    path: 'assets/dinos/dino_select/parasaurolophus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked parasaurolophus roster display.',
+  },
+  stegosaurus: {
+    path: 'assets/dinos/dino_select/stegosaurus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked stegosaurus roster display.',
+  },
+  pteranodon: {
+    path: 'assets/dinos/dino_select/pteranodon_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked pteranodon roster display.',
+  },
+  compsognathus: {
+    path: 'assets/dinos/dino_select/compsognathus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked compsognathus roster display.',
+  },
+  ornithomimus: {
+    path: 'assets/dinos/dino_select/ornithomimus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked ornithomimus roster display.',
   },
 });
 

@@ -654,3 +654,57 @@ These six synergies remain disabled. Enabling them is a later balance and QA dec
 `spinosaurus_zero` already exists in main and was not duplicated. ND06 should verify its quality, route unlock, and ZERO reward mapping.
 
 Detailed implementation notes are in `docs/design/new_dinos_data_nd02.md`.
+
+## ND03 Result
+
+ND03 generated and connected base UI art for the six new dinosaurs:
+
+- hero images for dino select detail
+- dino-select portrait images
+- 144px icon / HUD portrait images
+
+The existing hero images were rechecked during ND03. Their composition is a frontal or three-quarter-front intimidation pose, not a right-facing side profile. Early right-facing drafts were not adopted; final ND03 assets use the front-facing threat composition to match existing `velociraptor`, `triceratops`, `tyrannosaurus`, and `spinosaurus` hero art.
+
+New assets:
+
+- `public/assets/dinos/dino_select/ankylosaurus_hero.png`
+- `public/assets/dinos/dino_select/ankylosaurus_portrait.png`
+- `public/assets/dinos/portraits/ankylosaurus.png`
+- `public/assets/dinos/dino_select/parasaurolophus_hero.png`
+- `public/assets/dinos/dino_select/parasaurolophus_portrait.png`
+- `public/assets/dinos/portraits/parasaurolophus.png`
+- `public/assets/dinos/dino_select/stegosaurus_hero.png`
+- `public/assets/dinos/dino_select/stegosaurus_portrait.png`
+- `public/assets/dinos/portraits/stegosaurus.png`
+- `public/assets/dinos/dino_select/pteranodon_hero.png`
+- `public/assets/dinos/dino_select/pteranodon_portrait.png`
+- `public/assets/dinos/portraits/pteranodon.png`
+- `public/assets/dinos/dino_select/compsognathus_hero.png`
+- `public/assets/dinos/dino_select/compsognathus_portrait.png`
+- `public/assets/dinos/portraits/compsognathus.png`
+- `public/assets/dinos/dino_select/ornithomimus_hero.png`
+- `public/assets/dinos/dino_select/ornithomimus_portrait.png`
+- `public/assets/dinos/portraits/ornithomimus.png`
+
+Contact / report artifacts:
+
+- `docs/assets/nd03_new_dinos_hero_contact.png`
+- `docs/assets/nd03_new_dinos_icon_contact.png`
+- `docs/assets/nd03_new_dinos_asset_report.json`
+
+UI exposure:
+
+- Dino select now lists the six dinosaurs as locked future candidates with preview art.
+- Codex registers the six dinosaurs as locked/unknown entries with debug unlock support for QA.
+- Home and PlayScene do not load the six dinosaurs yet.
+
+Deferred to later phases:
+
+- gameplay sprite sheets
+- normal attack effect assets
+- evolution branch hero/portrait/icon assets
+- ZERO branch assets
+- public unlock routes
+- save migration and full playable QA
+
+Detailed implementation notes are in `docs/design/new_dinos_assets_nd03.md`.
