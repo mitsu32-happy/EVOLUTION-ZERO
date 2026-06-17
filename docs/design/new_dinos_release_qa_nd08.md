@@ -15,6 +15,32 @@ Target dinosaurs:
 
 No feature changes, version updates, news updates, main merge, or push were performed in ND08.
 
+## Post-QA Asset Quality Follow-Up
+
+ND08 initially reached a main-merge candidate judgment, but later visual review
+found the new six dinosaurs' evolution branches were not yet production quality.
+
+Follow-up passes:
+
+- ND09: attempted evolution-asset polish, rejected as too close to local
+  processing / color-shift treatment.
+- ND09b: regenerated dedicated evolution illustrations and effects for all 24
+  branches.
+- ND09c: corrected hero composition and regenerated branch-specific gameplay
+  animation sheets.
+
+Current ND09c asset QA summary:
+
+- 24 evolution hero images now use the front / three-quarter-front intimidation
+  composition expected by existing hero art.
+- 24 evolution gameplay sprite sheets now exist as individual right-facing
+  `4x4` sheets per branch.
+- `docs/assets/nd09c_new_dinos_evolution_asset_report.json` reports missing
+  asset 0, edge issue 0, cell contamination 0, and minimum sprite cell margin
+  32 px.
+
+Main-merge readiness must be rechecked after ND09c runtime QA.
+
 ## Clean Save QA
 
 Method:

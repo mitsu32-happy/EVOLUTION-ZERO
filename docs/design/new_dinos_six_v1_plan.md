@@ -18,6 +18,25 @@ Target dinosaurs:
 
 The update is a large feature. ND01 is investigation and design only. No runtime code, save format, version, news, or asset changes are included in this step.
 
+## Evolution Asset Quality Note
+
+After ND08, visual review identified that the six new dinosaurs' evolution
+branches needed stronger production-quality differentiation and animation
+readiness before main integration.
+
+Current accepted follow-up direction:
+
+- ND09b regenerated the 24 evolution branch designs as dedicated illustrations
+  rather than color-only variants.
+- ND09c aligned the 24 evolution hero images to the existing front intimidation
+  hero composition.
+- ND09c regenerated the 24 evolution gameplay sprite sheets as separate
+  right-facing `4x4` runtime sheets, one per evolution branch, with sprite cell
+  minimum margin 32 px and no reported edge/cell-contamination issues.
+
+The branch must not be treated as final-release ready until ND09c runtime QA is
+completed.
+
 ## Existing Implementation Survey
 
 ### Current playable dinosaur IDs

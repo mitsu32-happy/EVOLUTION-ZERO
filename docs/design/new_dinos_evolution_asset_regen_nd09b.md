@@ -56,6 +56,33 @@ Effect concept sheets:
 - `docs/assets/nd09b_sources/compsognathus_effects.png`
 - `docs/assets/nd09b_sources/ornithomimus_effects.png`
 
+## ND09c Follow-Up
+
+ND09c supersedes the ND09b hero and gameplay sprite sheet outputs for the new
+six dinosaurs' evolution branches.
+
+Reason:
+
+- ND09b creature designs were accepted as dedicated evolution concepts, but hero
+  composition still needed to match the existing front intimidation style.
+- Gameplay sprite sheets needed branch-specific animation-ready sheets rather
+  than relying on a single processed branch illustration.
+- User review also flagged sprite source margin risk, so ND09c regenerated the
+  sprite-pose sources with stronger transparent padding before splitting into
+  runtime sheets.
+
+ND09c updates:
+
+- 24 front / three-quarter-front hero images regenerated and replaced in place.
+- 24 right-facing `4x4` gameplay sprite sheets regenerated and replaced in
+  place, one sheet per evolution branch.
+- Final runtime sprite report: missing asset 0, edge issue 0, cell
+  contamination 0, minimum cell margin 32 px.
+
+Detailed record:
+
+- `docs/design/new_dinos_evolution_pose_anim_nd09c.md`
+
 ## Replaced Asset Types
 
 For all 24 evolution branches, ND09b replaces the existing runtime files in

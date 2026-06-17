@@ -6112,7 +6112,7 @@ const ND06_EVOLUTION_TAGS = ['speed', 'hunting', 'attack', 'zero'];
 
 const ND06_EVOLUTION_SHEET_META = {
   spriteSheet: true,
-  sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384 },
+  sheet: { columns: 4, rows: 4, frameWidth: 512, frameHeight: 512 },
   animations: {
     idle: { row: 0, frames: [0, 1, 2, 3], fps: 7, loop: true },
     move: { row: 1, frames: [0, 1, 2, 3], fps: 10, loop: true },

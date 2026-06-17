@@ -1,0 +1,1148 @@
+{
+  "phase": "ND09c",
+  "cellSize": 512,
+  "finalCellSafeMarginTarget": 72,
+  "summary": {
+    "heroComposition": "front-to-three-quarter intimidation pose, matched to existing hero reference",
+    "runtimeSpriteSheetPolicy": "one right-facing 4x4 sheet per evolution branch",
+    "sourceSheetPolicy": "generated source sheets are branch columns only; runtime assets are split per evolution"
+  },
+  "assets": {
+    "ankylosaurus_speed": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ankylosaurus_speed_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_speed_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 12.14,
+        "moveAToMoveB": 10.32,
+        "moveToAction": 19.64
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 80,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 80,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "streamlined fast silhouette with forward posture and thin energy accents"
+    },
+    "ankylosaurus_hunting": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ankylosaurus_hunting_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_hunting_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 12.75,
+        "moveAToMoveB": 21.69,
+        "moveToAction": 28.26
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 88,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 79,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "tracking / hunter silhouette with sharper eyes, claws, or sensor anatomy"
+    },
+    "ankylosaurus_attack": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ankylosaurus_attack_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_attack_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 13.76,
+        "moveAToMoveB": 11.7,
+        "moveToAction": 21.84
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 80,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 80,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "larger attack organs and heavier impact silhouette"
+    },
+    "ankylosaurus_zero": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ankylosaurus_zero_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_zero_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 11.9,
+        "moveAToMoveB": 8.99,
+        "moveToAction": 24.88
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 80,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 78,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 78,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "ZERO-corrupted silhouette with abnormal organic glow and crystal/crack forms"
+    },
+    "parasaurolophus_speed": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/parasaurolophus_speed_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_speed_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 15.86,
+        "moveAToMoveB": 10.48,
+        "moveToAction": 15.05
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 85,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 81,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "streamlined fast silhouette with forward posture and thin energy accents"
+    },
+    "parasaurolophus_hunting": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/parasaurolophus_hunting_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_hunting_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 17.26,
+        "moveAToMoveB": 13.42,
+        "moveToAction": 17.15
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 90,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 78,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 90,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 78,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "tracking / hunter silhouette with sharper eyes, claws, or sensor anatomy"
+    },
+    "parasaurolophus_attack": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/parasaurolophus_attack_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_attack_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 15.57,
+        "moveAToMoveB": 20.64,
+        "moveToAction": 18.94
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 78,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 78,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "larger attack organs and heavier impact silhouette"
+    },
+    "parasaurolophus_zero": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/parasaurolophus_zero_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_zero_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 14.55,
+        "moveAToMoveB": 11.51,
+        "moveToAction": 19.15
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 1.0,
+          "heightRange": 2,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 87,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 79,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "ZERO-corrupted silhouette with abnormal organic glow and crystal/crack forms"
+    },
+    "stegosaurus_speed": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/stegosaurus_speed_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_speed_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 11.43,
+        "moveAToMoveB": 8.99,
+        "moveToAction": 16.46
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 87,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 79,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "streamlined fast silhouette with forward posture and thin energy accents"
+    },
+    "stegosaurus_hunting": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/stegosaurus_hunting_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_hunting_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 11.56,
+        "moveAToMoveB": 8.35,
+        "moveToAction": 12.51
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 80,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 87,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 80,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "tracking / hunter silhouette with sharper eyes, claws, or sensor anatomy"
+    },
+    "stegosaurus_attack": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/stegosaurus_attack_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_attack_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 11.67,
+        "moveAToMoveB": 8.31,
+        "moveToAction": 21.28
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 79,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "larger attack organs and heavier impact silhouette"
+    },
+    "stegosaurus_zero": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/stegosaurus_zero_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_zero_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 12.41,
+        "moveAToMoveB": 9.78,
+        "moveToAction": 17.47
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 74,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 74,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "ZERO-corrupted silhouette with abnormal organic glow and crystal/crack forms"
+    },
+    "pteranodon_speed": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/pteranodon_speed_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_speed_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 17.15,
+        "moveAToMoveB": 18.57,
+        "moveToAction": 15.16
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 88,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 85,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 88,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 81,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "streamlined fast silhouette with forward posture and thin energy accents"
+    },
+    "pteranodon_hunting": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/pteranodon_hunting_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_hunting_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 18.2,
+        "moveAToMoveB": 19.71,
+        "moveToAction": 23.43
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 88,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 85,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 88,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 81,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "tracking / hunter silhouette with sharper eyes, claws, or sensor anatomy"
+    },
+    "pteranodon_attack": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/pteranodon_attack_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_attack_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 20.81,
+        "moveAToMoveB": 21.85,
+        "moveToAction": 22.92
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 85,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 81,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "larger attack organs and heavier impact silhouette"
+    },
+    "pteranodon_zero": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/pteranodon_zero_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_zero_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 16.98,
+        "moveAToMoveB": 18.42,
+        "moveToAction": 19.2
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 80,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 78,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 78,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "ZERO-corrupted silhouette with abnormal organic glow and crystal/crack forms"
+    },
+    "compsognathus_speed": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/compsognathus_speed_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_speed_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 12.86,
+        "moveAToMoveB": 7.7,
+        "moveToAction": 15.37
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 81,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 79,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "streamlined fast silhouette with forward posture and thin energy accents"
+    },
+    "compsognathus_hunting": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/compsognathus_hunting_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_hunting_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 11.89,
+        "moveAToMoveB": 7.76,
+        "moveToAction": 16.35
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 80,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 89,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 79,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "tracking / hunter silhouette with sharper eyes, claws, or sensor anatomy"
+    },
+    "compsognathus_attack": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/compsognathus_attack_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_attack_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 14.65,
+        "moveAToMoveB": 10.84,
+        "moveToAction": 20.71
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 90,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 86,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 90,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 82,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "larger attack organs and heavier impact silhouette"
+    },
+    "compsognathus_zero": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/compsognathus_zero_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_zero_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 15.85,
+        "moveAToMoveB": 11.95,
+        "moveToAction": 20.02
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 91,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 78,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 91,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 78,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "ZERO-corrupted silhouette with abnormal organic glow and crystal/crack forms"
+    },
+    "ornithomimus_speed": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ornithomimus_speed_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_speed_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 13.28,
+        "moveAToMoveB": 10.53,
+        "moveToAction": 18.42
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 74,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 76,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 74,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "streamlined fast silhouette with forward posture and thin energy accents"
+    },
+    "ornithomimus_hunting": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ornithomimus_hunting_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_hunting_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 14.36,
+        "moveAToMoveB": 9.39,
+        "moveToAction": 19.83
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 67,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 78,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 87,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 69,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 67,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "tracking / hunter silhouette with sharper eyes, claws, or sensor anatomy"
+    },
+    "ornithomimus_attack": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ornithomimus_attack_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_attack_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 13.63,
+        "moveAToMoveB": 11.21,
+        "moveToAction": 23.56
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 68,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 79,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 85,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 70,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 68,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "larger attack organs and heavier impact silhouette"
+    },
+    "ornithomimus_zero": {
+      "heroPath": "public/assets/dinos/evolutions/heroes/ornithomimus_zero_hero.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_zero_sheet.png",
+      "heroCompositionCheck": "front-threat",
+      "spriteFacingCheck": "right-facing-fixed",
+      "animationFrameDifference": {
+        "idleToMove": 12.03,
+        "moveAToMoveB": 9.26,
+        "moveToAction": 19.29
+      },
+      "frameSizeStability": true,
+      "rowMetrics": [
+        {
+          "row": 0,
+          "yCenterRange": 4.0,
+          "heightRange": 0,
+          "minMargin": 71,
+          "edgeIssues": []
+        },
+        {
+          "row": 1,
+          "yCenterRange": 0.5,
+          "heightRange": 1,
+          "minMargin": 75,
+          "edgeIssues": []
+        },
+        {
+          "row": 2,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 82,
+          "edgeIssues": []
+        },
+        {
+          "row": 3,
+          "yCenterRange": 0.0,
+          "heightRange": 0,
+          "minMargin": 73,
+          "edgeIssues": []
+        }
+      ],
+      "minMargin": 71,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "missingAsset": false,
+      "visualDifferentiationMemo": "ZERO-corrupted silhouette with abnormal organic glow and crystal/crack forms"
+    }
+  },
+  "totals": {
+    "assetCount": 24,
+    "edgeIssueCount": 0,
+    "cellContaminationCount": 0,
+    "missingAssetCount": 0,
+    "minMargin": 67,
+    "frameSizeStable": true
+  }
+}
