@@ -172,6 +172,32 @@ ND09c uses generated branch-pose sheets as source art and expands each branch
 into a stable 4x4 runtime sheet. If future QA requires every single animation
 cell to be independently illustrated, that can become a separate ND09d pass.
 
+## ND09d Supersession
+
+ND09d supersedes the ND09c gameplay sprite sheet outputs.
+
+Reason:
+
+- User visual review still found possible clipping / adjacent-cell contamination
+  in contact views despite ND09c numeric checks.
+- The ND09c action rows were too close to idle/move poses because some unsafe
+  action source cells had to fall back to contained body poses.
+
+ND09d changes:
+
+- Regenerated one `4x4` motion source sheet per evolution branch, for 24 total.
+- Preserved one runtime sheet per branch at
+  `public/assets/dinos/evolutions/sheets/{id}_sheet.png`.
+- Kept `512x512` frame metadata.
+- Increased safe placement; final report shows missing asset 0, edge issue 0,
+  cell contamination 0, minimum margin 104 px, frame size stable true.
+- Action rows now use generated attack poses per species.
+
+Detailed record:
+
+- `docs/design/new_dinos_evolution_animation_nd09d.md`
+- `docs/assets/nd09d_new_dinos_evolution_asset_report.json`
+
 ## Main Merge Status
 
 No main merge or push was performed in ND09c.

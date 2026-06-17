@@ -28,18 +28,20 @@ Follow-up passes:
   branches.
 - ND09c: corrected hero composition and regenerated branch-specific gameplay
   animation sheets.
+- ND09d: regenerated 24 branch-specific gameplay motion sheets with generated
+  idle / move / action / death rows and stricter visual margin review.
 
-Current ND09c asset QA summary:
+Current ND09d asset QA summary:
 
 - 24 evolution hero images now use the front / three-quarter-front intimidation
   composition expected by existing hero art.
 - 24 evolution gameplay sprite sheets now exist as individual right-facing
-  `4x4` sheets per branch.
-- `docs/assets/nd09c_new_dinos_evolution_asset_report.json` reports missing
+  `4x4` sheets per branch with generated motion rows.
+- `docs/assets/nd09d_new_dinos_evolution_asset_report.json` reports missing
   asset 0, edge issue 0, cell contamination 0, and minimum sprite cell margin
-  32 px.
+  104 px.
 
-Main-merge readiness must be rechecked after ND09c runtime QA.
+Main-merge readiness must be rechecked after ND09d runtime QA.
 
 ## Clean Save QA
 
@@ -269,3 +271,27 @@ See:
 
 - `docs/design/new_dinos_evolution_asset_regen_nd09b.md`
 - `docs/assets/nd09b_new_dinos_evolution_asset_report.json`
+
+## ND09d Visual Reassessment
+
+ND09c was not accepted as final gameplay sprite quality because user review
+found action-row readability issues and possible clipping / adjacent-cell
+contamination in contact views. ND09d replaces only the gameplay sprite sheets
+with 24 generated motion sheets.
+
+ND09d report:
+
+- 24 branch sheets regenerated
+- missing asset 0
+- edge issue 0
+- cell contamination 0
+- minimum margin 104 px
+- action rows now use species-specific generated attack poses
+
+The ND08 `main統合可` judgment remains superseded until ND09d runtime QA is
+accepted.
+
+See:
+
+- `docs/design/new_dinos_evolution_animation_nd09d.md`
+- `docs/assets/nd09d_new_dinos_evolution_asset_report.json`

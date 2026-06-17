@@ -83,6 +83,31 @@ Detailed record:
 
 - `docs/design/new_dinos_evolution_pose_anim_nd09c.md`
 
+## ND09d Follow-Up
+
+ND09d supersedes the ND09c gameplay sprite sheet outputs only.
+
+Reason:
+
+- ND09c solved runtime frame stability, but user visual review still found that
+  the action rows were not attack-readable enough.
+- Contact views also suggested possible clipping or adjacent-cell contamination,
+  so ND09d required visual contact review in addition to numeric edge checks.
+
+ND09d updates:
+
+- 24 branch-specific generated `4x4` motion source sheets were created under
+  `docs/assets/nd09d_sources/`.
+- Runtime sheet paths remain unchanged.
+- ND09b portraits, icons, branch attack effects, and ultimate effects remain in
+  use.
+- Final ND09d report: missing asset 0, edge issue 0, cell contamination 0,
+  minimum sprite margin 104 px.
+
+Detailed record:
+
+- `docs/design/new_dinos_evolution_animation_nd09d.md`
+
 ## Replaced Asset Types
 
 For all 24 evolution branches, ND09b replaces the existing runtime files in
