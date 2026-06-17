@@ -52,6 +52,15 @@ const ZERO_ROUTE_REWARD_BY_STAGE = {
   volcano: 'triceratops_zero',
   swamp: 'tyrannosaurus_zero',
 };
+const RESEARCH_DINO_UNLOCKS = {
+  spinosaurus_unlock: 'spinosaurus',
+  ankylosaurus_unlock: 'ankylosaurus',
+  parasaurolophus_unlock: 'parasaurolophus',
+  stegosaurus_unlock: 'stegosaurus',
+  pteranodon_unlock: 'pteranodon',
+  compsognathus_unlock: 'compsognathus',
+  ornithomimus_unlock: 'ornithomimus',
+};
 
 const DEFAULT_SAVE = {
   save_version: SAVE_VERSION,
@@ -1138,13 +1147,17 @@ export class SaveManager {
       gameplaySettings: this.normalizeGameplaySettings(value?.gameplaySettings),
     };
 
-    if ((normalized.researchLevels?.spinosaurus_unlock ?? 0) > 0) {
-      normalized.unlockedDinos.spinosaurus = {
+    Object.entries(RESEARCH_DINO_UNLOCKS).forEach(([researchId, dinoId]) => {
+      if ((normalized.researchLevels?.[researchId] ?? 0) <= 0) {
+        return;
+      }
+
+      normalized.unlockedDinos[dinoId] = {
         unlocked: true,
-        source: normalized.unlockedDinos.spinosaurus?.source ?? 'research',
-        unlockedAt: normalized.unlockedDinos.spinosaurus?.unlockedAt ?? null,
+        source: normalized.unlockedDinos[dinoId]?.source ?? 'research',
+        unlockedAt: normalized.unlockedDinos[dinoId]?.unlockedAt ?? null,
       };
-    }
+    });
 
     return normalized;
   }

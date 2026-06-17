@@ -47,7 +47,18 @@ function isTutorialDebugEnabled() {
 
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
 const DEBUG_DIFFICULTY_IDS = new Set(['normal', 'hard', 'expert']);
-const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
+const DEBUG_DINO_IDS = new Set([
+  'velociraptor',
+  'triceratops',
+  'tyrannosaurus',
+  'spinosaurus',
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+]);
 
 const TUTORIAL_PAGES = {
   home: [

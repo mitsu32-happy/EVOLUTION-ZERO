@@ -355,6 +355,36 @@ CODEX_DINOS.forEach((dino) => {
   }
 });
 
+const NEW_DINO_CODEX_BRANCH_DINOS = new Set([
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+]);
+const NEW_DINO_CODEX_BRANCH_TAGS = [
+  { id: 'speed', tag: 'speed', condition: 'Lv5+ / 高速Lv3', stats: '高速分岐候補' },
+  { id: 'hunting', tag: 'hunting', condition: 'Lv5+ / 狩猟Lv3', stats: '狩猟分岐候補' },
+  { id: 'attack', tag: 'attack', condition: 'Lv5+ / 攻撃Lv3', stats: '攻撃分岐候補' },
+];
+
+CODEX_DINOS.forEach((dino) => {
+  if (!NEW_DINO_CODEX_BRANCH_DINOS.has(dino.id)) {
+    return;
+  }
+
+  dino.branches = NEW_DINO_CODEX_BRANCH_TAGS.map((branch) => ({
+    id: branch.id,
+    name: TAG_META[branch.tag]?.label ?? branch.tag,
+    tag: branch.tag,
+    fallbackImage: dino.image,
+    desc: `${dino.name}の${TAG_META[branch.tag]?.label ?? '適応'}分岐。`,
+    condition: branch.condition,
+    stats: branch.stats,
+  }));
+});
+
 const CODEX_DISPLAY_FIXES = {
   velociraptor: {
     name: 'ヴェロキラプトル',

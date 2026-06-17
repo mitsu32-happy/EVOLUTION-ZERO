@@ -126,6 +126,17 @@ Report summary:
 - ZERO route assignment for the six new dinosaurs and `spinosaurus_zero` remains a future progression task.
 - Full evolution selection, result, codex, and long-play QA should be done in ND07/ND08.
 
+## ND07 Follow-up
+
+ND07 connected the six new base dinosaurs to research unlocks and display recovery paths:
+
+- research unlocks were added for all six base dinosaurs
+- dino select now treats the six base dinosaurs as research-locked instead of permanently future-locked
+- codex base entries now unlock from save state and non-ZERO branch cards hydrate from ND06 `evolution_data`
+- HUD and result screens now load the ND06 evolution portraits and special icons for these dinosaurs
+
+ZERO branch policy is unchanged from ND06: the six new ZERO branches and `spinosaurus_zero` remain implemented but future route gated, with no unconditional unlock in ND07.
+
 ## QA Result
 
 Static checks:

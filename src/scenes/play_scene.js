@@ -86,7 +86,18 @@ const WHITEOUT_DUMP_STORAGE_KEY = 'EVOLUTION_ZERO_WHITEOUT_DUMP';
 const WHITEOUT_BOSS_CLEAR_OVERRUN_SECONDS = 0.85;
 const WHITEOUT_FLASH_ALPHA_LIMIT = 0.24;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
-const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
+const DEBUG_DINO_IDS = new Set([
+  'velociraptor',
+  'triceratops',
+  'tyrannosaurus',
+  'spinosaurus',
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+]);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
 const DEBUG_EVOLUTION_SKILLS = {
   speed: ['afterimage_claw'],

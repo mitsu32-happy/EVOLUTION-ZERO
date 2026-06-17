@@ -751,3 +751,26 @@ The six ZERO branches are now data/assets ready but remain future ZERO route gat
 `spinosaurus_zero` was rechecked. Its hero, portrait, sprite sheet, special icon, evolution definition, and ultimate definition already exist. It remains unassigned in the current stage-to-ZERO-route reward map and should be considered for a future route such as `ruins`.
 
 Detailed implementation notes are in `docs/design/new_dinos_evolutions_nd06.md`.
+
+## ND07 Result
+
+ND07 connected the six new base dinosaurs to the same research-unlock flow used by `spinosaurus`.
+
+Added research unlocks:
+
+- `ankylosaurus_unlock` -> `ankylosaurus`
+- `parasaurolophus_unlock` -> `parasaurolophus`
+- `stegosaurus_unlock` -> `stegosaurus`
+- `pteranodon_unlock` -> `pteranodon`
+- `compsognathus_unlock` -> `compsognathus`
+- `ornithomimus_unlock` -> `ornithomimus`
+
+The new dinosaurs are no longer permanent future-lock entries in dino select. They remain locked until research is purchased, then become selectable and available in Home rotation. Existing saves remain compatible; if a save has a completed research level but no `unlockedDinos` entry, normalization backfills the unlock.
+
+Codex entries are connected to base unlock state. After unlock, base information is visible and non-ZERO branches can hydrate from `evolution_data`; ZERO branches remain future route gated.
+
+HUD and result display now resolve base/evolution portraits and special icons for the six new dinosaurs, avoiding fallback to existing dinosaur portraits.
+
+ND07 did not enable companion synergy reservations and did not assign new ZERO route rewards.
+
+Detailed implementation notes are in `docs/design/new_dinos_unlock_qa_nd07.md`.

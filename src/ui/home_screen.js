@@ -69,6 +69,12 @@ const HOME_ASSET_PATHS = {
     triceratops: 'assets/dinos/dino_select/triceratops_hero.png',
     tyrannosaurus: 'assets/dinos/dino_select/tyrannosaurus_hero.png',
     spinosaurus: 'assets/dinos/dino_select/spinosaurus_hero.png',
+    ankylosaurus: 'assets/dinos/dino_select/ankylosaurus_hero.png',
+    parasaurolophus: 'assets/dinos/dino_select/parasaurolophus_hero.png',
+    stegosaurus: 'assets/dinos/dino_select/stegosaurus_hero.png',
+    pteranodon: 'assets/dinos/dino_select/pteranodon_hero.png',
+    compsognathus: 'assets/dinos/dino_select/compsognathus_hero.png',
+    ornithomimus: 'assets/dinos/dino_select/ornithomimus_hero.png',
   },
   evolutionHero: {
     speed: 'assets/dinos/evolutions/heroes/velociraptor_speed_hero.png',
@@ -77,7 +83,18 @@ const HOME_ASSET_PATHS = {
   },
 };
 
-const HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus'];
+const HOME_DINO_IDS = [
+  'velociraptor',
+  'triceratops',
+  'tyrannosaurus',
+  'spinosaurus',
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+];
 const DEFAULT_HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus'];
 const HOME_BRANCH_ORDER = ['speed', 'hunting', 'attack', 'zero'];
 
@@ -108,6 +125,48 @@ const HOME_DINO_PROFILES = {
     line: '中距離型',
     width: 300,
     height: 214,
+    y: 280,
+  },
+  ankylosaurus: {
+    label: 'アンキロサウルス',
+    line: '防衛型',
+    width: 296,
+    height: 210,
+    y: 282,
+  },
+  parasaurolophus: {
+    label: 'パラサウロロフス',
+    line: '音波支援型',
+    width: 288,
+    height: 208,
+    y: 280,
+  },
+  stegosaurus: {
+    label: 'ステゴサウルス',
+    line: '範囲制圧型',
+    width: 298,
+    height: 212,
+    y: 280,
+  },
+  pteranodon: {
+    label: 'プテラノドン',
+    line: '空中支援型',
+    width: 314,
+    height: 218,
+    y: 276,
+  },
+  compsognathus: {
+    label: 'コンプソグナトゥス',
+    line: '群れ連撃型',
+    width: 294,
+    height: 208,
+    y: 282,
+  },
+  ornithomimus: {
+    label: 'オルニトミムス',
+    line: '高速成長型',
+    width: 292,
+    height: 212,
     y: 280,
   },
 };
