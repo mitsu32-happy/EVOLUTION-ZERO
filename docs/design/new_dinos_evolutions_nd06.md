@@ -170,3 +170,30 @@ Notes:
 
 - A browser-control environment Statsig network message appeared once during automation. It was not present in the app tab console logs and is not counted as an EVOLUTION ZERO runtime warning.
 - Build succeeded with the existing Vite chunk-size warning.
+
+## ND09 Supersession
+
+ND09 supersedes the visual content of the ND06 evolution branch assets.
+
+Reason:
+
+- User review after ND08 found that the ND06 branch assets looked too close to base dinosaur color variants.
+- `speed`, `hunting`, `attack`, and `zero` needed clearer branch identity in silhouette, organs, glow, and effects.
+
+ND09 reprocessed all 24 evolution sets in place while preserving runtime paths and manifest keys:
+
+- hero
+- portrait
+- gameplay sprite sheet
+- special icon
+- branch attack effect
+- ultimate effect
+
+New QA artifacts:
+
+- `docs/assets/nd09_new_dinos_evolution_hero_contact.png`
+- `docs/assets/nd09_new_dinos_evolution_sprite_contact.png`
+- `docs/assets/nd09_new_dinos_evolution_effect_contact.png`
+- `docs/assets/nd09_new_dinos_evolution_asset_report.json`
+
+Detailed notes are in `docs/design/new_dinos_evolution_asset_polish_nd09.md`.

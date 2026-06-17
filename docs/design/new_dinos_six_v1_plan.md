@@ -774,3 +774,45 @@ HUD and result display now resolve base/evolution portraits and special icons fo
 ND07 did not enable companion synergy reservations and did not assign new ZERO route rewards.
 
 Detailed implementation notes are in `docs/design/new_dinos_unlock_qa_nd07.md`.
+
+## ND09 Result
+
+ND09 was opened after ND08 because visual review found that the six new dinosaurs'
+evolution branches were too close to color variants of the base dinosaurs.
+
+ND09 reprocessed all 24 evolution sets in place while preserving existing runtime
+paths and manifest keys:
+
+- hero
+- portrait
+- gameplay sprite sheet
+- special icon
+- branch attack effect
+- ultimate effect
+
+The polish pass adds branch-specific silhouette, organ, and effect cues:
+
+- `speed`: lighter streamlined accents, motion rails, thinner cyan energy lines.
+- `hunting`: sensor/eye/targeting cues, claw and pursuit accents.
+- `attack`: heavier weapon-organ emphasis, stronger impact and energy shapes.
+- `zero`: abnormal cracks, crystal/corruption cues, cyan/red-purple unstable glow.
+
+The pass also regenerated ND09 QA artifacts:
+
+- `docs/assets/nd09_new_dinos_evolution_hero_contact.png`
+- `docs/assets/nd09_new_dinos_evolution_sprite_contact.png`
+- `docs/assets/nd09_new_dinos_evolution_effect_contact.png`
+- `docs/assets/nd09_new_dinos_evolution_asset_report.json`
+
+Report result:
+
+- missing asset: 0
+- sprite/effect edge issue: 0
+- minimum measured transparent margin: 12 px
+
+ND09 does not change unlock rules, save structure, companion synergy enabled
+state, version, or news. The ND08 merge decision should be considered superseded
+until ND09 visual QA is accepted.
+
+Detailed implementation notes are in
+`docs/design/new_dinos_evolution_asset_polish_nd09.md`.

@@ -1,0 +1,1120 @@
+{
+  "branches": [
+    {
+      "id": "ankylosaurus_speed",
+      "dinoId": "ankylosaurus",
+      "tag": "speed",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_speed_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_ankylosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_speed_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_speed_ultimate.png"
+      },
+      "differentiation": "reduced-weight armor rails and low sprint fins",
+      "directionMemo": "streamlined silhouette, thin cyan speed fins/rails, lighter motion streaks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ankylosaurus_hunting",
+      "dinoId": "ankylosaurus",
+      "tag": "hunting",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_hunting_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_ankylosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_hunting_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_hunting_ultimate.png"
+      },
+      "differentiation": "tail-hammer tracking rings and head sensor nodes",
+      "directionMemo": "amber sensor organs, eye/crest targeting rings, sharper claws or pursuit marks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 25,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ankylosaurus_attack",
+      "dinoId": "ankylosaurus",
+      "tag": "attack",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_attack_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_ankylosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_attack_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_attack_ultimate.png"
+      },
+      "differentiation": "oversized tail-hammer impact core and heavier armor spikes",
+      "directionMemo": "larger weapon organs, red/orange power glow, heavier impact shapes",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ankylosaurus_zero",
+      "dinoId": "ankylosaurus",
+      "tag": "zero",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_zero_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_ankylosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_zero_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_zero_ultimate.png"
+      },
+      "differentiation": "crystallized armor seams and corrupted tail-hammer glow",
+      "directionMemo": "ZERO corruption cracks, purple/cyan crystal growths, unstable dark-energy organs",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 25,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "parasaurolophus_speed",
+      "dinoId": "parasaurolophus",
+      "tag": "speed",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_speed_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_parasaurolophus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_speed_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_speed_ultimate.png"
+      },
+      "differentiation": "streamlined crest channel and thin resonance rails",
+      "directionMemo": "streamlined silhouette, thin cyan speed fins/rails, lighter motion streaks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "parasaurolophus_hunting",
+      "dinoId": "parasaurolophus",
+      "tag": "hunting",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_hunting_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_parasaurolophus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_hunting_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_hunting_ultimate.png"
+      },
+      "differentiation": "crest sonar dish, amber scan rings, eye tracking marks",
+      "directionMemo": "amber sensor organs, eye/crest targeting rings, sharper claws or pursuit marks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 31,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "parasaurolophus_attack",
+      "dinoId": "parasaurolophus",
+      "tag": "attack",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_attack_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_parasaurolophus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_attack_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_attack_ultimate.png"
+      },
+      "differentiation": "enlarged crest shock emitter and visible sonic pressure cones",
+      "directionMemo": "larger weapon organs, red/orange power glow, heavier impact shapes",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "parasaurolophus_zero",
+      "dinoId": "parasaurolophus",
+      "tag": "zero",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_zero_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_parasaurolophus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_zero_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_zero_ultimate.png"
+      },
+      "differentiation": "ZERO resonance fissures through crest and skull glow",
+      "directionMemo": "ZERO corruption cracks, purple/cyan crystal growths, unstable dark-energy organs",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 31,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "stegosaurus_speed",
+      "dinoId": "stegosaurus",
+      "tag": "speed",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_speed_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_stegosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_speed_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_speed_ultimate.png"
+      },
+      "differentiation": "thin swept-back plate edges and cyan dorsal rails",
+      "directionMemo": "streamlined silhouette, thin cyan speed fins/rails, lighter motion streaks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "stegosaurus_hunting",
+      "dinoId": "stegosaurus",
+      "tag": "hunting",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_hunting_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_stegosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_hunting_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_hunting_ultimate.png"
+      },
+      "differentiation": "sensor plates with amber receiver nodes",
+      "directionMemo": "amber sensor organs, eye/crest targeting rings, sharper claws or pursuit marks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 19,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "stegosaurus_attack",
+      "dinoId": "stegosaurus",
+      "tag": "attack",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_attack_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_stegosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_attack_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_attack_ultimate.png"
+      },
+      "differentiation": "larger powered plates and red quake conduits",
+      "directionMemo": "larger weapon organs, red/orange power glow, heavier impact shapes",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "stegosaurus_zero",
+      "dinoId": "stegosaurus",
+      "tag": "zero",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_zero_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_stegosaurus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_zero_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_zero_ultimate.png"
+      },
+      "differentiation": "reactor-like dorsal plates with unstable purple/cyan cracks",
+      "directionMemo": "ZERO corruption cracks, purple/cyan crystal growths, unstable dark-energy organs",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 19,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "pteranodon_speed",
+      "dinoId": "pteranodon",
+      "tag": "speed",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/pteranodon_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_speed_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_pteranodon.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_speed_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_speed_ultimate.png"
+      },
+      "differentiation": "narrow high-speed wing edges and cyan contrails",
+      "directionMemo": "streamlined silhouette, thin cyan speed fins/rails, lighter motion streaks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "pteranodon_hunting",
+      "dinoId": "pteranodon",
+      "tag": "hunting",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/pteranodon_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_hunting_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_pteranodon.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_hunting_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_hunting_ultimate.png"
+      },
+      "differentiation": "predator eyes, talon emphasis, amber aerial target marks",
+      "directionMemo": "amber sensor organs, eye/crest targeting rings, sharper claws or pursuit marks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 23,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "pteranodon_attack",
+      "dinoId": "pteranodon",
+      "tag": "attack",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/pteranodon_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_attack_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_pteranodon.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_attack_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_attack_ultimate.png"
+      },
+      "differentiation": "wing-blade emitters and red wind-lance edges",
+      "directionMemo": "larger weapon organs, red/orange power glow, heavier impact shapes",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "pteranodon_zero",
+      "dinoId": "pteranodon",
+      "tag": "zero",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/pteranodon_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_zero_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_pteranodon.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_zero_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_zero_ultimate.png"
+      },
+      "differentiation": "corrupted wing membrane tears and abnormal ZERO glow",
+      "directionMemo": "ZERO corruption cracks, purple/cyan crystal growths, unstable dark-energy organs",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 23,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "compsognathus_speed",
+      "dinoId": "compsognathus",
+      "tag": "speed",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/compsognathus_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_speed_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_compsognathus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_speed_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_speed_ultimate.png"
+      },
+      "differentiation": "extra running afterimages and emphasized legs",
+      "directionMemo": "streamlined silhouette, thin cyan speed fins/rails, lighter motion streaks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "compsognathus_hunting",
+      "dinoId": "compsognathus",
+      "tag": "hunting",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/compsognathus_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_hunting_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_compsognathus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_hunting_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_hunting_ultimate.png"
+      },
+      "differentiation": "pack pursuit marks, sharper eyes, claw emphasis",
+      "directionMemo": "amber sensor organs, eye/crest targeting rings, sharper claws or pursuit marks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 50,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "compsognathus_attack",
+      "dinoId": "compsognathus",
+      "tag": "attack",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/compsognathus_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_attack_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_compsognathus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_attack_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_attack_ultimate.png"
+      },
+      "differentiation": "red claw marks and aggressive pack slash cues",
+      "directionMemo": "larger weapon organs, red/orange power glow, heavier impact shapes",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "compsognathus_zero",
+      "dinoId": "compsognathus",
+      "tag": "zero",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/compsognathus_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_zero_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_compsognathus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_zero_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_zero_ultimate.png"
+      },
+      "differentiation": "multiple ZERO-resonant ghost pack members and purple cracks",
+      "directionMemo": "ZERO corruption cracks, purple/cyan crystal growths, unstable dark-energy organs",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 50,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ornithomimus_speed",
+      "dinoId": "ornithomimus",
+      "tag": "speed",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_speed_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_speed_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_speed_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_speed_ornithomimus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_speed_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_speed_ultimate.png"
+      },
+      "differentiation": "longer leg speed rails and sprint posture accents",
+      "directionMemo": "streamlined silhouette, thin cyan speed fins/rails, lighter motion streaks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ornithomimus_hunting",
+      "dinoId": "ornithomimus",
+      "tag": "hunting",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_hunting_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_hunting_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_hunting_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_ornithomimus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_hunting_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_hunting_ultimate.png"
+      },
+      "differentiation": "head/eye tracking sensors and pursuit scan marks",
+      "directionMemo": "amber sensor organs, eye/crest targeting rings, sharper claws or pursuit marks",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 30,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ornithomimus_attack",
+      "dinoId": "ornithomimus",
+      "tag": "attack",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_attack_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_attack_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_attack_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_attack_ornithomimus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_attack_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_attack_ultimate.png"
+      },
+      "differentiation": "reinforced legs and forward shock impact flares",
+      "directionMemo": "larger weapon organs, red/orange power glow, heavier impact shapes",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 14,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    },
+    {
+      "id": "ornithomimus_zero",
+      "dinoId": "ornithomimus",
+      "tag": "zero",
+      "assets": {
+        "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_zero_hero.png",
+        "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_zero_portrait.png",
+        "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_zero_sheet.png",
+        "specialIcon": "public/assets/ui/hud/special_icons/special_zero_ornithomimus.png",
+        "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_zero_attack.png",
+        "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_zero_ultimate.png"
+      },
+      "differentiation": "neural leg conduits and red-purple ZERO nerve glow",
+      "directionMemo": "ZERO corruption cracks, purple/cyan crystal growths, unstable dark-energy organs",
+      "colorOnlyRisk": "reduced: silhouette/organ/effect geometry overlays added, not palette-only",
+      "transparentCheck": "alpha PNG retained",
+      "missingAsset": 0,
+      "edgeIssueCount": 0,
+      "minMargin": 12,
+      "qa": {
+        "hero": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "portrait": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "sheet": {
+          "minMargin": 26,
+          "edgeIssues": []
+        },
+        "specialIcon": {
+          "minMargin": 12,
+          "edgeIssues": []
+        },
+        "normalAttackEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        },
+        "ultimateEffect": {
+          "minMargin": 16,
+          "edgeIssues": []
+        }
+      }
+    }
+  ],
+  "summary": {
+    "branchCount": 24,
+    "missingAssets": 0,
+    "edgeIssues": 0,
+    "minMargin": 12,
+    "contacts": {
+      "hero": "docs/assets/nd09_new_dinos_evolution_hero_contact.png",
+      "sprite": "docs/assets/nd09_new_dinos_evolution_sprite_contact.png",
+      "effect": "docs/assets/nd09_new_dinos_evolution_effect_contact.png"
+    }
+  },
+  "notes": []
+}

@@ -215,3 +215,17 @@ Reason:
 - Future route planning is still required for the six new ZERO branches and `spinosaurus_zero`.
 - Companion synergy activation for the six new dinosaurs remains a separate feature phase.
 - Minor balance tuning may be useful after broader player-feel testing, especially `compsognathus` sustained DPS and `ornithomimus` mobility value.
+
+## ND09 Visual Reassessment
+
+After ND08, user visual review found a release-quality asset issue:
+
+- the 24 new evolution branch sets looked too close to base dinosaur color variants
+- branch-specific anatomy and effect identity were not strong enough
+
+ND09 was opened to reprocess those assets before main integration. The ND08 `main統合可` judgment is therefore superseded by ND09 visual QA until the polished assets pass checks.
+
+See:
+
+- `docs/design/new_dinos_evolution_asset_polish_nd09.md`
+- `docs/assets/nd09_new_dinos_evolution_asset_report.json`
