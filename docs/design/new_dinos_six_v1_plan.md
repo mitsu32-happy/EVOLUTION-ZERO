@@ -816,3 +816,33 @@ until ND09 visual QA is accepted.
 
 Detailed implementation notes are in
 `docs/design/new_dinos_evolution_asset_polish_nd09.md`.
+
+## ND09b Result
+
+ND09 was rejected as a final art pass because it relied on local reprocessing.
+ND09b replaces the 24 evolution branch sets again, this time using generated
+creature concept sheets and generated branch effect sheets as the source.
+
+Generated source sheets are stored in:
+
+- `docs/assets/nd09b_sources/`
+
+ND09b regenerated:
+
+- `docs/assets/nd09b_new_dinos_evolution_hero_contact.png`
+- `docs/assets/nd09b_new_dinos_evolution_sprite_contact.png`
+- `docs/assets/nd09b_new_dinos_evolution_effect_contact.png`
+- `docs/assets/nd09b_new_dinos_evolution_asset_report.json`
+
+Report result:
+
+- branch count: 24
+- missing asset: 0
+- sprite/effect edge issue: 0
+- minimum measured transparent margin: 12 px
+
+ND09b does not change unlock rules, ZERO route gating, save structure, companion
+synergy enabled state, version, or news.
+
+Detailed implementation notes are in
+`docs/design/new_dinos_evolution_asset_regen_nd09b.md`.

@@ -229,3 +229,17 @@ See:
 
 - `docs/design/new_dinos_evolution_asset_polish_nd09.md`
 - `docs/assets/nd09_new_dinos_evolution_asset_report.json`
+
+## ND09b Visual Reassessment
+
+ND09 was not accepted as final release-quality art because it was still too close
+to local decoration over existing assets. ND09b replaces the ND09 approach with
+generated creature/effect sheets for all 24 evolution branches.
+
+The ND08 `main統合可` judgment remains superseded until ND09b visual QA is
+accepted.
+
+See:
+
+- `docs/design/new_dinos_evolution_asset_regen_nd09b.md`
+- `docs/assets/nd09b_new_dinos_evolution_asset_report.json`

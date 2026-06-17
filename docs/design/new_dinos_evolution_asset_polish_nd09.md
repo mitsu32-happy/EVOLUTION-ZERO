@@ -12,6 +12,16 @@ Issue:
 
 ND09 replaces the branch assets in-place while preserving the existing manifest keys and file names.
 
+## ND09b Supersession
+
+ND09 was later rejected as a release-quality solution because it remained a
+local polish/reprocessing pass over the previous branch assets. ND09b supersedes
+this document for final asset direction.
+
+ND09b uses generated creature concept sheets and generated effect sheets as the
+source for the 24 evolution branch replacements. See
+`docs/design/new_dinos_evolution_asset_regen_nd09b.md`.
+
 ## Non-Color-Only Rule
 
 ND09 does not treat palette shifting as sufficient.

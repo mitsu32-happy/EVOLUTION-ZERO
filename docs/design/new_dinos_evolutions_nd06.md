@@ -197,3 +197,14 @@ New QA artifacts:
 - `docs/assets/nd09_new_dinos_evolution_asset_report.json`
 
 Detailed notes are in `docs/design/new_dinos_evolution_asset_polish_nd09.md`.
+
+## ND09b Supersession
+
+ND09b supersedes ND09 for the final visual direction.
+
+- ND09 was a local polish pass and was not accepted as release-quality.
+- ND09b uses generated creature concept sheets and generated VFX sheets for the
+  24 branch replacements.
+- Runtime paths and manifest keys remain unchanged.
+
+Detailed notes are in `docs/design/new_dinos_evolution_asset_regen_nd09b.md`.
