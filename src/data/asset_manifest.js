@@ -6129,6 +6129,39 @@ const ND09F_ANKYLOSAURUS_EVOLUTION_DISPLAY = {
   zero: { displayWidth: 190, displayHeight: 144 },
 };
 
+const ND09G_REMAINING_EVOLUTION_DISPLAY = {
+  parasaurolophus: {
+    speed: { displayWidth: 164, displayHeight: 126 },
+    hunting: { displayWidth: 166, displayHeight: 128 },
+    attack: { displayWidth: 172, displayHeight: 132 },
+    zero: { displayWidth: 174, displayHeight: 134 },
+  },
+  stegosaurus: {
+    speed: { displayWidth: 178, displayHeight: 132 },
+    hunting: { displayWidth: 180, displayHeight: 134 },
+    attack: { displayWidth: 188, displayHeight: 140 },
+    zero: { displayWidth: 190, displayHeight: 142 },
+  },
+  pteranodon: {
+    speed: { displayWidth: 166, displayHeight: 124 },
+    hunting: { displayWidth: 168, displayHeight: 126 },
+    attack: { displayWidth: 172, displayHeight: 128 },
+    zero: { displayWidth: 174, displayHeight: 130 },
+  },
+  compsognathus: {
+    speed: { displayWidth: 138, displayHeight: 106 },
+    hunting: { displayWidth: 142, displayHeight: 108 },
+    attack: { displayWidth: 146, displayHeight: 112 },
+    zero: { displayWidth: 150, displayHeight: 114 },
+  },
+  ornithomimus: {
+    speed: { displayWidth: 160, displayHeight: 132 },
+    hunting: { displayWidth: 164, displayHeight: 134 },
+    attack: { displayWidth: 170, displayHeight: 140 },
+    zero: { displayWidth: 172, displayHeight: 142 },
+  },
+};
+
 function toPascalBranchKey(id = '', tag = '') {
   return `${id}${tag.charAt(0).toUpperCase()}${tag.slice(1)}`;
 }
@@ -6189,7 +6222,7 @@ Object.assign(ASSET_MANIFEST.evolutionSheets, Object.fromEntries(
   ND06_NEW_DINO_BRANCHES.map(({ id, dinoId, tag, key }) => {
     const displayOverride = dinoId === 'ankylosaurus'
       ? ND09F_ANKYLOSAURUS_EVOLUTION_DISPLAY[tag]
-      : null;
+      : ND09G_REMAINING_EVOLUTION_DISPLAY[dinoId]?.[tag] ?? null;
     const sheet = displayOverride
       ? { ...ND06_EVOLUTION_SHEET_META.sheet, ...displayOverride }
       : ND06_EVOLUTION_SHEET_META.sheet;
@@ -6199,7 +6232,7 @@ Object.assign(ASSET_MANIFEST.evolutionSheets, Object.fromEntries(
       fallbackKey: `dinos.${dinoId}Sheet`,
       note: dinoId === 'ankylosaurus'
         ? 'ND09f baseline-aligned ankylosaurus evolution gameplay sprite sheet. QA edgeIssues: 0.'
-        : 'ND06 generated dedicated 4x4 evolution gameplay sprite sheet. QA edgeIssues: 0.',
+        : 'ND09g baseline-aligned new-dino evolution gameplay sprite sheet. QA edgeIssues: 0.',
       ...ND06_EVOLUTION_SHEET_META,
       sheet,
     }];
