@@ -19,7 +19,7 @@ import {
 } from '../data/companion_dinos.js';
 import { getCompanionSynergy } from '../data/companion_synergy.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
-import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
+import { getEvolutionBranch, getEvolutionBranchById, getEvolutionBranchId } from '../data/evolution_data.js';
 import { Boss } from '../entities/boss.js';
 import { Enemy } from '../entities/enemy.js';
 import { Pickup } from '../entities/pickup.js';
@@ -195,18 +195,24 @@ function getDebugEvolutionTag() {
   return tag;
 }
 
-function getDebugForceEvolutionTag() {
+function getDebugForceEvolutionTag(dinoId = null) {
   if (typeof window === 'undefined') {
     return null;
   }
 
-  const tag = new URLSearchParams(window.location.search).get('debugForceEvolution');
+  const value = new URLSearchParams(window.location.search).get('debugForceEvolution');
 
-  if (!DEBUG_EVOLUTION_TAGS.has(tag)) {
+  if (DEBUG_EVOLUTION_TAGS.has(value)) {
+    return value;
+  }
+
+  const branch = getEvolutionBranchById(value);
+
+  if (!branch || (dinoId && branch.dinoId !== dinoId)) {
     return null;
   }
 
-  return tag;
+  return branch.tag;
 }
 
 function shouldDebugForceLevelupTutorial() {
@@ -2155,7 +2161,7 @@ export class PlayScene {
   }
 
   applyDebugEvolutionIfRequested() {
-    const tag = getDebugEvolutionTag() ?? getDebugForceEvolutionTag();
+    const tag = getDebugEvolutionTag() ?? getDebugForceEvolutionTag(this.gameState.selectedDino);
 
     if (!tag) {
       return;
@@ -2201,7 +2207,7 @@ export class PlayScene {
     this.gameState.ultimateGauge = 100;
     this.gameState.ultimateReady = true;
 
-    if (getDebugForceEvolutionTag() === 'zero') {
+    if (getDebugForceEvolutionTag(this.gameState.selectedDino) === 'zero') {
       this.applyDebugZeroEvolution();
     }
   }
@@ -2281,7 +2287,7 @@ export class PlayScene {
       return;
     }
 
-    const forceTag = getDebugForceEvolutionTag();
+    const forceTag = getDebugForceEvolutionTag(this.gameState.selectedDino);
     const shouldPlayDemo = getDebugFlag('debugEvolutionDemo') || Boolean(forceTag);
 
     if (!shouldPlayDemo || this.didPlayDebugEvolutionDemo) {

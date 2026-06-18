@@ -11,6 +11,7 @@ import {
 
 const BASE_EXP_TO_LEVEL = 6;
 const MAX_OWNED_SKILLS = 3;
+const NORMAL_EVOLUTION_TAGS = ['speed', 'hunting', 'attack'];
 const ZERO_EVOLUTION_REQUIREMENTS = {
   velociraptor_zero: {
     dinoId: 'velociraptor',
@@ -103,6 +104,14 @@ const ZERO_EVOLUTION_REQUIREMENTS = {
     },
   },
 };
+
+function getDebugFlag(name) {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  return new URLSearchParams(window.location.search).get(name) === '1';
+}
 
 export class GameState {
   constructor() {
@@ -238,8 +247,13 @@ export class GameState {
       skill.adaptationTags.forEach((tag) => {
         this.adaptationProgress[tag] = (this.adaptationProgress[tag] ?? 0) + 1;
       });
+      if (getDebugFlag('debugFastEvolution')) {
+        NORMAL_EVOLUTION_TAGS.forEach((tag) => {
+          this.adaptationProgress[tag] = Math.max(this.adaptationProgress[tag] ?? 0, EVOLUTION_DETECTION_THRESHOLD);
+        });
+      }
       this.detectAdaptationSynergies(skill.adaptationTags);
-      this.detectEvolutionCandidates(skill.adaptationTags);
+      this.detectEvolutionCandidates(getDebugFlag('debugFastEvolution') ? NORMAL_EVOLUTION_TAGS : skill.adaptationTags);
       this.detectZeroEvolutionCandidate();
     }
 

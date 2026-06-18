@@ -3,6 +3,7 @@ import { createBottomNav } from './bottom_nav.js';
 import { drawButtonFrame, drawPanel, drawScreenBackground, UI_COLORS, UI_LAYOUT, toCssColor } from './ui_theme.js';
 import {
   getEvolutionBranch,
+  getEvolutionBranchById,
   isEvolutionDiscovered,
   normalizeDiscoveredEvolutions,
 } from '../data/evolution_data.js';
@@ -1256,30 +1257,37 @@ export class CodexScreen {
     const debug = new URLSearchParams(window.location.search);
     return data?.unlockedDinos?.[dino.id]?.unlocked
       || debug.get('debugUnlockDino') === dino.id
-      || debug.get('debugUnlockAllDinos') === '1';
+      || debug.get('debugUnlockAllDinos') === '1'
+      || debug.get('debugUnlockCodex') === '1';
   }
 
   isBranchFound(dino, branch, discovered) {
     const debug = new URLSearchParams(window.location.search);
 
-    if (debug.get('debugDiscoverAllEvolutions') === '1') {
+    if (debug.get('debugDiscoverAllEvolutions') === '1' || debug.get('debugUnlockCodex') === '1') {
       return true;
     }
 
+    const debugEvolution = debug.get('debugEvolution') ?? debug.get('debugEvolutionUnlock') ?? debug.get('debugForceEvolution');
+    const debugBranch = getEvolutionBranchById(debugEvolution);
+    const debugBranchMatches = debugBranch?.id === branch.id && debugBranch.dinoId === dino.id;
+
     if (branch.zeroRoute) {
       return isEvolutionDiscovered(discovered, dino.id, 'zero')
-        || debug.get('debugUnlockZeroRoute') === `${dino.id}_zero`;
+        || debug.get('debugUnlockZeroRoute') === `${dino.id}_zero`
+        || debug.get('debugUnlockZeroEvolutions') === '1'
+        || debugBranchMatches;
     }
 
     if (branch.locked) {
       return false;
     }
 
-    const debugEvolution = debug.get('debugEvolution') ?? debug.get('debugEvolutionUnlock') ?? debug.get('debugForceEvolution');
     const debugDino = debug.get('debugDino');
     const debugDinoMatches = !debugDino || debugDino === dino.id;
 
     return isEvolutionDiscovered(discovered, dino.id, branch.tag)
+      || debugBranchMatches
       || (debugDinoMatches && debugEvolution === branch.tag);
   }
 }
