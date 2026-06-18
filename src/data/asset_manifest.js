@@ -6115,11 +6115,18 @@ const ND06_EVOLUTION_SHEET_META = {
   sheet: { columns: 4, rows: 4, frameWidth: 512, frameHeight: 512 },
   animations: {
     idle: { row: 0, frames: [0, 1, 2, 3], fps: 7, loop: true },
-    move: { row: 1, frames: [0, 1, 2, 3], fps: 10, loop: true },
-    action: { row: 2, frames: [0, 1, 2, 3], fps: 12, loop: false },
-    special: { row: 3, frames: [0, 1, 2, 3], fps: 12, loop: false },
+    run: { row: 1, frames: [0, 1, 2, 3], fps: 10, loop: true },
+    attack: { row: 2, frames: [0, 1, 2, 3], fps: 12, loop: false },
+    death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
   },
   anchor: { x: 0.5, y: 0.72 },
+};
+
+const ND09F_ANKYLOSAURUS_EVOLUTION_DISPLAY = {
+  speed: { displayWidth: 178, displayHeight: 134 },
+  hunting: { displayWidth: 180, displayHeight: 136 },
+  attack: { displayWidth: 188, displayHeight: 142 },
+  zero: { displayWidth: 190, displayHeight: 144 },
 };
 
 function toPascalBranchKey(id = '', tag = '') {
@@ -6179,12 +6186,24 @@ Object.assign(ASSET_MANIFEST.evolutionPortraits, Object.fromEntries(
 ));
 
 Object.assign(ASSET_MANIFEST.evolutionSheets, Object.fromEntries(
-  ND06_NEW_DINO_BRANCHES.map(({ id, dinoId, key }) => [key, {
-    path: `assets/dinos/evolutions/sheets/${id}_sheet.png`,
-    fallbackKey: `dinos.${dinoId}Sheet`,
-    note: 'ND06 generated dedicated 4x4 evolution gameplay sprite sheet. QA edgeIssues: 0.',
-    ...ND06_EVOLUTION_SHEET_META,
-  }]),
+  ND06_NEW_DINO_BRANCHES.map(({ id, dinoId, tag, key }) => {
+    const displayOverride = dinoId === 'ankylosaurus'
+      ? ND09F_ANKYLOSAURUS_EVOLUTION_DISPLAY[tag]
+      : null;
+    const sheet = displayOverride
+      ? { ...ND06_EVOLUTION_SHEET_META.sheet, ...displayOverride }
+      : ND06_EVOLUTION_SHEET_META.sheet;
+
+    return [key, {
+      path: `assets/dinos/evolutions/sheets/${id}_sheet.png`,
+      fallbackKey: `dinos.${dinoId}Sheet`,
+      note: dinoId === 'ankylosaurus'
+        ? 'ND09f baseline-aligned ankylosaurus evolution gameplay sprite sheet. QA edgeIssues: 0.'
+        : 'ND06 generated dedicated 4x4 evolution gameplay sprite sheet. QA edgeIssues: 0.',
+      ...ND06_EVOLUTION_SHEET_META,
+      sheet,
+    }];
+  }),
 ));
 
 Object.assign(ASSET_MANIFEST.evolutionSpecialIcons, Object.fromEntries(
