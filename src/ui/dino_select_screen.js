@@ -960,5 +960,7 @@ function isDebugDinoUnlocked(dinoId) {
   }
 
   const params = new URLSearchParams(window.location.search);
-  return params.get('debugUnlockDino') === dinoId || params.get('debugUnlockAllDinos') === '1';
+  return params.get('debugUnlockDino') === dinoId
+    || params.get('debugUnlockAllDinos') === '1'
+    || params.get('debugNewDinoQa') === '1';
 }

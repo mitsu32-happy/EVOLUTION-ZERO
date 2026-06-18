@@ -1258,13 +1258,18 @@ export class CodexScreen {
     return data?.unlockedDinos?.[dino.id]?.unlocked
       || debug.get('debugUnlockDino') === dino.id
       || debug.get('debugUnlockAllDinos') === '1'
-      || debug.get('debugUnlockCodex') === '1';
+      || debug.get('debugUnlockCodex') === '1'
+      || debug.get('debugNewDinoQa') === '1';
   }
 
   isBranchFound(dino, branch, discovered) {
     const debug = new URLSearchParams(window.location.search);
 
-    if (debug.get('debugDiscoverAllEvolutions') === '1' || debug.get('debugUnlockCodex') === '1') {
+    if (
+      debug.get('debugDiscoverAllEvolutions') === '1'
+      || debug.get('debugUnlockCodex') === '1'
+      || debug.get('debugNewDinoQa') === '1'
+    ) {
       return true;
     }
 
@@ -1276,6 +1281,7 @@ export class CodexScreen {
       return isEvolutionDiscovered(discovered, dino.id, 'zero')
         || debug.get('debugUnlockZeroRoute') === `${dino.id}_zero`
         || debug.get('debugUnlockZeroEvolutions') === '1'
+        || debug.get('debugNewDinoQa') === '1'
         || debugBranchMatches;
     }
 

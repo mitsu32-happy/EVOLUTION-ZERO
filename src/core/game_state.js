@@ -110,7 +110,9 @@ function getDebugFlag(name) {
     return false;
   }
 
-  return new URLSearchParams(window.location.search).get(name) === '1';
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name) === '1'
+    || (name === 'debugFastEvolution' && params.get('debugNewDinoQa') === '1');
 }
 
 export class GameState {
