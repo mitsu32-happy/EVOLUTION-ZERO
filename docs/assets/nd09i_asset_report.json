@@ -1,0 +1,964 @@
+{
+  "phase": "ND09i",
+  "evolutionPresentationFix": {
+    "cause": "EvolutionSequence had a static portrait preload map for old dinos only; tag fallback could show velociraptor portraits for new-dino branches.",
+    "fix": "Runtime now loads selectedEvolution.portraitPath dynamically and prefers it before id/tag fallback."
+  },
+  "icons": [
+    {
+      "id": "ankylosaurus_speed",
+      "path": "public/assets/ui/hud/special_icons/special_speed_ankylosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ankylosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, armor and tail-club silhouette, speed branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ankylosaurus_hunting",
+      "path": "public/assets/ui/hud/special_icons/special_hunting_ankylosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ankylosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, armor and tail-club silhouette, hunting branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ankylosaurus_attack",
+      "path": "public/assets/ui/hud/special_icons/special_attack_ankylosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ankylosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, armor and tail-club silhouette, attack branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ankylosaurus_zero",
+      "path": "public/assets/ui/hud/special_icons/special_zero_ankylosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ankylosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, armor and tail-club silhouette, zero branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "parasaurolophus_speed",
+      "path": "public/assets/ui/hud/special_icons/special_speed_parasaurolophus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/parasaurolophus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, crest sonic silhouette, speed branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "parasaurolophus_hunting",
+      "path": "public/assets/ui/hud/special_icons/special_hunting_parasaurolophus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/parasaurolophus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, crest sonic silhouette, hunting branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "parasaurolophus_attack",
+      "path": "public/assets/ui/hud/special_icons/special_attack_parasaurolophus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/parasaurolophus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, crest sonic silhouette, attack branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "parasaurolophus_zero",
+      "path": "public/assets/ui/hud/special_icons/special_zero_parasaurolophus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/parasaurolophus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, crest sonic silhouette, zero branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "stegosaurus_speed",
+      "path": "public/assets/ui/hud/special_icons/special_speed_stegosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/stegosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, plate-backed silhouette, speed branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "stegosaurus_hunting",
+      "path": "public/assets/ui/hud/special_icons/special_hunting_stegosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/stegosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, plate-backed silhouette, hunting branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "stegosaurus_attack",
+      "path": "public/assets/ui/hud/special_icons/special_attack_stegosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/stegosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, plate-backed silhouette, attack branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "stegosaurus_zero",
+      "path": "public/assets/ui/hud/special_icons/special_zero_stegosaurus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/stegosaurus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, plate-backed silhouette, zero branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "pteranodon_speed",
+      "path": "public/assets/ui/hud/special_icons/special_speed_pteranodon.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/pteranodon_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, winged pterosaur silhouette, speed branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "pteranodon_hunting",
+      "path": "public/assets/ui/hud/special_icons/special_hunting_pteranodon.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/pteranodon_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, winged pterosaur silhouette, hunting branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "pteranodon_attack",
+      "path": "public/assets/ui/hud/special_icons/special_attack_pteranodon.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/pteranodon_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, winged pterosaur silhouette, attack branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "pteranodon_zero",
+      "path": "public/assets/ui/hud/special_icons/special_zero_pteranodon.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/pteranodon_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, winged pterosaur silhouette, zero branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "compsognathus_speed",
+      "path": "public/assets/ui/hud/special_icons/special_speed_compsognathus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/compsognathus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, small pack theropod silhouette, speed branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "compsognathus_hunting",
+      "path": "public/assets/ui/hud/special_icons/special_hunting_compsognathus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/compsognathus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, small pack theropod silhouette, hunting branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "compsognathus_attack",
+      "path": "public/assets/ui/hud/special_icons/special_attack_compsognathus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/compsognathus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, small pack theropod silhouette, attack branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "compsognathus_zero",
+      "path": "public/assets/ui/hud/special_icons/special_zero_compsognathus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/compsognathus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, small pack theropod silhouette, zero branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ornithomimus_speed",
+      "path": "public/assets/ui/hud/special_icons/special_speed_ornithomimus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ornithomimus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, long-legged sprint silhouette, speed branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ornithomimus_hunting",
+      "path": "public/assets/ui/hud/special_icons/special_hunting_ornithomimus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ornithomimus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, long-legged sprint silhouette, hunting branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ornithomimus_attack",
+      "path": "public/assets/ui/hud/special_icons/special_attack_ornithomimus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ornithomimus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, long-legged sprint silhouette, attack branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    },
+    {
+      "id": "ornithomimus_zero",
+      "path": "public/assets/ui/hud/special_icons/special_zero_ornithomimus.png",
+      "source": "docs/assets/nd09i_generated_icon_sources/ornithomimus_ultimate_icon_sheet.png",
+      "sourceType": "built-in image generation sheet",
+      "memo": "dedicated generated ultimate icon, long-legged sprint silhouette, zero branch",
+      "bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      }
+    }
+  ],
+  "ultimateEffects": [
+    {
+      "id": "ankylosaurus_speed",
+      "path": "public/assets/effects/specials/new_dinos/special_ankylosaurus_speed_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        131,
+        20,
+        382,
+        237
+      ]
+    },
+    {
+      "id": "ankylosaurus_hunting",
+      "path": "public/assets/effects/specials/new_dinos/special_ankylosaurus_hunting_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        143,
+        19,
+        367,
+        238
+      ]
+    },
+    {
+      "id": "ankylosaurus_attack",
+      "path": "public/assets/effects/specials/new_dinos/special_ankylosaurus_attack_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        138,
+        18,
+        375,
+        237
+      ]
+    },
+    {
+      "id": "ankylosaurus_zero",
+      "path": "public/assets/effects/specials/new_dinos/special_ankylosaurus_zero_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        142,
+        18,
+        370,
+        235
+      ]
+    },
+    {
+      "id": "parasaurolophus_speed",
+      "path": "public/assets/effects/specials/new_dinos/special_parasaurolophus_speed_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        125,
+        20,
+        388,
+        238
+      ]
+    },
+    {
+      "id": "parasaurolophus_hunting",
+      "path": "public/assets/effects/specials/new_dinos/special_parasaurolophus_hunting_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        139,
+        19,
+        372,
+        237
+      ]
+    },
+    {
+      "id": "parasaurolophus_attack",
+      "path": "public/assets/effects/specials/new_dinos/special_parasaurolophus_attack_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        127,
+        18,
+        385,
+        237
+      ]
+    },
+    {
+      "id": "parasaurolophus_zero",
+      "path": "public/assets/effects/specials/new_dinos/special_parasaurolophus_zero_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        141,
+        18,
+        370,
+        235
+      ]
+    },
+    {
+      "id": "stegosaurus_speed",
+      "path": "public/assets/effects/specials/new_dinos/special_stegosaurus_speed_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        112,
+        19,
+        400,
+        236
+      ]
+    },
+    {
+      "id": "stegosaurus_hunting",
+      "path": "public/assets/effects/specials/new_dinos/special_stegosaurus_hunting_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        114,
+        19,
+        396,
+        237
+      ]
+    },
+    {
+      "id": "stegosaurus_attack",
+      "path": "public/assets/effects/specials/new_dinos/special_stegosaurus_attack_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        127,
+        20,
+        384,
+        237
+      ]
+    },
+    {
+      "id": "stegosaurus_zero",
+      "path": "public/assets/effects/specials/new_dinos/special_stegosaurus_zero_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        131,
+        20,
+        381,
+        237
+      ]
+    },
+    {
+      "id": "pteranodon_speed",
+      "path": "public/assets/effects/specials/new_dinos/special_pteranodon_speed_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        142,
+        19,
+        369,
+        238
+      ]
+    },
+    {
+      "id": "pteranodon_hunting",
+      "path": "public/assets/effects/specials/new_dinos/special_pteranodon_hunting_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        149,
+        21,
+        361,
+        238
+      ]
+    },
+    {
+      "id": "pteranodon_attack",
+      "path": "public/assets/effects/specials/new_dinos/special_pteranodon_attack_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        144,
+        20,
+        369,
+        236
+      ]
+    },
+    {
+      "id": "pteranodon_zero",
+      "path": "public/assets/effects/specials/new_dinos/special_pteranodon_zero_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        148,
+        18,
+        364,
+        236
+      ]
+    },
+    {
+      "id": "compsognathus_speed",
+      "path": "public/assets/effects/specials/new_dinos/special_compsognathus_speed_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        144,
+        19,
+        368,
+        238
+      ]
+    },
+    {
+      "id": "compsognathus_hunting",
+      "path": "public/assets/effects/specials/new_dinos/special_compsognathus_hunting_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        138,
+        19,
+        373,
+        238
+      ]
+    },
+    {
+      "id": "compsognathus_attack",
+      "path": "public/assets/effects/specials/new_dinos/special_compsognathus_attack_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        143,
+        18,
+        371,
+        237
+      ]
+    },
+    {
+      "id": "compsognathus_zero",
+      "path": "public/assets/effects/specials/new_dinos/special_compsognathus_zero_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        133,
+        19,
+        378,
+        237
+      ]
+    },
+    {
+      "id": "ornithomimus_speed",
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_speed_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        150,
+        34,
+        361,
+        222
+      ]
+    },
+    {
+      "id": "ornithomimus_hunting",
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_hunting_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        150,
+        34,
+        361,
+        222
+      ]
+    },
+    {
+      "id": "ornithomimus_attack",
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_attack_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        148,
+        34,
+        363,
+        222
+      ]
+    },
+    {
+      "id": "ornithomimus_zero",
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_zero_ultimate.png",
+      "exists": true,
+      "sourceType": "ND09b dedicated generated VFX asset",
+      "bbox": [
+        154,
+        34,
+        359,
+        222
+      ]
+    }
+  ],
+  "sprintImpactEffects": [
+    {
+      "path": "public/assets/effects/attacks/ornithomimus_sprint_kick.png",
+      "sourceBbox": [
+        50,
+        176,
+        463,
+        336
+      ],
+      "finalBbox": [
+        50,
+        176,
+        463,
+        336
+      ],
+      "margins": {
+        "left": 50,
+        "top": 176,
+        "right": 49,
+        "bottom": 176
+      },
+      "minMargin": 49,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/attacks/evolutions/ornithomimus_attack_attack.png",
+      "sourceBbox": [
+        121,
+        34,
+        263,
+        158
+      ],
+      "finalBbox": [
+        121,
+        34,
+        263,
+        158
+      ],
+      "margins": {
+        "left": 121,
+        "top": 34,
+        "right": 121,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/attacks/evolutions/ornithomimus_hunting_attack.png",
+      "sourceBbox": [
+        122,
+        34,
+        261,
+        158
+      ],
+      "finalBbox": [
+        122,
+        34,
+        261,
+        158
+      ],
+      "margins": {
+        "left": 122,
+        "top": 34,
+        "right": 123,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/attacks/evolutions/ornithomimus_speed_attack.png",
+      "sourceBbox": [
+        123,
+        34,
+        261,
+        158
+      ],
+      "finalBbox": [
+        123,
+        34,
+        261,
+        158
+      ],
+      "margins": {
+        "left": 123,
+        "top": 34,
+        "right": 123,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/attacks/evolutions/ornithomimus_zero_attack.png",
+      "sourceBbox": [
+        124,
+        34,
+        259,
+        158
+      ],
+      "finalBbox": [
+        124,
+        34,
+        259,
+        158
+      ],
+      "margins": {
+        "left": 124,
+        "top": 34,
+        "right": 125,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_attack_ultimate.png",
+      "sourceBbox": [
+        148,
+        34,
+        363,
+        222
+      ],
+      "finalBbox": [
+        148,
+        34,
+        363,
+        222
+      ],
+      "margins": {
+        "left": 148,
+        "top": 34,
+        "right": 149,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_hunting_ultimate.png",
+      "sourceBbox": [
+        150,
+        34,
+        361,
+        222
+      ],
+      "finalBbox": [
+        150,
+        34,
+        361,
+        222
+      ],
+      "margins": {
+        "left": 150,
+        "top": 34,
+        "right": 151,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_speed_ultimate.png",
+      "sourceBbox": [
+        150,
+        34,
+        361,
+        222
+      ],
+      "finalBbox": [
+        150,
+        34,
+        361,
+        222
+      ],
+      "margins": {
+        "left": 150,
+        "top": 34,
+        "right": 151,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    },
+    {
+      "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_zero_ultimate.png",
+      "sourceBbox": [
+        154,
+        34,
+        359,
+        222
+      ],
+      "finalBbox": [
+        154,
+        34,
+        359,
+        222
+      ],
+      "margins": {
+        "left": 154,
+        "top": 34,
+        "right": 153,
+        "bottom": 34
+      },
+      "minMargin": 34,
+      "scale": 1.0
+    }
+  ]
+}

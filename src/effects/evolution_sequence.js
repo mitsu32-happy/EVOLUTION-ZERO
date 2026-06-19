@@ -164,6 +164,7 @@ export class EvolutionSequence {
     this.nameText.text = evolution?.evolutionName ?? this.config.name;
     this.subText.text = this.config.message;
     this.codexText.text = this.isNewDiscovery ? '\u56f3\u9451\u30c7\u30fc\u30bf\u66f4\u65b0 / \u65b0\u898f\u9032\u5316\u767a\u898b' : '';
+    this.ensureEvolutionPortraitTexture();
     this.applyPortraitTexture();
     this.draw({ x: this.width / 2, y: this.height / 2 });
   }
@@ -560,6 +561,21 @@ export class EvolutionSequence {
     });
   }
 
+  ensureEvolutionPortraitTexture() {
+    const portraitPath = this.evolution?.portraitPath;
+
+    if (!portraitPath || this.portraitTextures[portraitPath]) {
+      return;
+    }
+
+    Assets.load(assetUrl(portraitPath)).then((texture) => {
+      this.portraitTextures[portraitPath] = texture;
+      if (this.evolution?.portraitPath === portraitPath) {
+        this.applyPortraitTexture();
+      }
+    }).catch(() => {});
+  }
+
   loadUiAssets() {
     Object.entries(UI_ASSET_PATHS).forEach(([key, path]) => {
       Assets.load(assetUrl(path)).then((texture) => {
@@ -582,9 +598,9 @@ export class EvolutionSequence {
 
   applyPortraitTexture() {
     const portraitPath = this.evolution?.portraitPath;
-    const texture = this.portraitTextures[this.evolution?.id]
-      ?? this.portraitTextures[this.evolution?.tag]
-      ?? (portraitPath ? this.portraitTextures[portraitPath] : null);
+    const texture = (portraitPath ? this.portraitTextures[portraitPath] : null)
+      ?? this.portraitTextures[this.evolution?.id]
+      ?? this.portraitTextures[this.evolution?.tag];
 
     if (!texture) {
       this.portraitSprite.texture = Texture.EMPTY;
