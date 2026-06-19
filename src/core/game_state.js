@@ -10,6 +10,7 @@ import {
 } from '../data/adaptation_synergy.js';
 
 const BASE_EXP_TO_LEVEL = 6;
+const DEBUG_NEW_DINO_QA_EXP_MULTIPLIER = 100;
 const MAX_OWNED_SKILLS = 3;
 const NORMAL_EVOLUTION_TAGS = ['speed', 'hunting', 'attack'];
 const ZERO_EVOLUTION_REQUIREMENTS = {
@@ -113,6 +114,14 @@ function getDebugFlag(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name) === '1'
     || (name === 'debugFastEvolution' && params.get('debugNewDinoQa') === '1');
+}
+
+function getDebugExpMultiplier() {
+  if (getDebugFlag('debugNewDinoQa')) {
+    return DEBUG_NEW_DINO_QA_EXP_MULTIPLIER;
+  }
+
+  return 1;
 }
 
 export class GameState {
@@ -523,11 +532,12 @@ export class GameState {
       return 0;
     }
 
+    const gainedExp = Math.max(0, amount * getDebugExpMultiplier());
     let levelsGained = 0;
 
-    this.collectedExp += amount;
-    this.totalExpGained += amount;
-    this.score += amount * 100;
+    this.collectedExp += gainedExp;
+    this.totalExpGained += gainedExp;
+    this.score += gainedExp * 100;
 
     while (this.collectedExp >= this.expToNextLevel) {
       this.collectedExp -= this.expToNextLevel;

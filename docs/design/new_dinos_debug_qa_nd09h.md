@@ -19,6 +19,7 @@ http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugNewDinoQa=1&qaND09hU
 - 全プレイヤー恐竜のQAセッション解放
 - 新6体のdino select確認
 - 適応スキル1つ取得後の通常進化候補高速到達
+- PlayScene中のEXP獲得100倍化
 - 図鑑の新6体/進化先/ZERO進化確認
 - ZERO進化の図鑑確認補助
 
@@ -34,6 +35,22 @@ http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugNewDinoQa=1&qaND09hU
 | `debugUnlockCodex=1` | 図鑑で新6体と進化先を確認可能にする個別フラグ。 | なし |
 | `debugUnlockZeroEvolutions=1` | 図鑑上でZERO進化を確認可能にする個別フラグ。 | なし |
 | `debugForceEvolution={branchId}` | PlaySceneで特定進化先を直接適用する。例: `ankylosaurus_zero`。 | なし |
+
+## EXP 100x QA Boost
+
+`debugNewDinoQa=1` の時のみ、`GameState.addExp()` で受け取ったEXPを100倍にして加算する。
+
+目的:
+
+- 通常研究・長時間レベル上げなしで進化選択まで到達する
+- 新6体base / speed / hunting / attack の目視QAを短時間で回す
+- ND10での進化先確認作業を軽くする
+
+制限:
+
+- `debugNewDinoQa=1` 以外では倍率をかけない
+- セーブデータに倍率フラグは保存しない
+- ZERO進化の通常解放条件は変更しない
 
 ## Direct PlayScene URLs
 
