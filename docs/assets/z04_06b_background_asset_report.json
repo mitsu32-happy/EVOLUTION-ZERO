@@ -1,0 +1,73 @@
+{
+  "strategy": "Generate one production-quality 1024 tile per stage, then apply the same soft opposite-edge blend used for Z04-06a ruins so tiled joins do not produce visible color seams.",
+  "zeroModePolicy": "Stage backgrounds are shared by NORMAL/HARD/EXPERT/ZERO. Existing ZERO overlays, warning guides and boss effects remain responsible for ZERO atmosphere.",
+  "stages": {
+    "jungle": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0ca9d0305872c2ab016a36f92274f88191b393980ce1ae278c.png",
+      "output": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\maps\\backgrounds\\jungle_battlefield_tile.png",
+      "concept": "Primordial jungle with damp roots and evolution research debris; muted cyan bioluminescence, sparse vegetation for readability.",
+      "outputSize": [
+        1024,
+        1024
+      ],
+      "edgeDeltaBefore": {
+        "left_right_mean_delta": 8.9076,
+        "left_right_max_delta": 74,
+        "top_bottom_mean_delta": 9.1914,
+        "top_bottom_max_delta": 117
+      },
+      "edgeDeltaAfter": {
+        "left_right_mean_delta": 0.0,
+        "left_right_max_delta": 0,
+        "top_bottom_mean_delta": 0.0,
+        "top_bottom_max_delta": 0
+      },
+      "fileSizeBytes": 2204503
+    },
+    "volcano": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0ca9d0305872c2ab016a36f9832e388191b43195762df0a032.png",
+      "output": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\maps\\backgrounds\\volcanic_battlefield_tile.png",
+      "concept": "Black basalt volcanic field with restrained lava seams and melted ancient facility remnants; dark enough for warnings and bullets.",
+      "outputSize": [
+        1024,
+        1024
+      ],
+      "edgeDeltaBefore": {
+        "left_right_mean_delta": 11.1595,
+        "left_right_max_delta": 91,
+        "top_bottom_mean_delta": 11.5182,
+        "top_bottom_max_delta": 143
+      },
+      "edgeDeltaAfter": {
+        "left_right_mean_delta": 0.0,
+        "left_right_max_delta": 0,
+        "top_bottom_mean_delta": 0.0,
+        "top_bottom_max_delta": 0
+      },
+      "fileSizeBytes": 2218204
+    },
+    "swamp": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0ca9d0305872c2ab016a36f9e48f488191ba7a8a635cb15736.png",
+      "output": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\maps\\backgrounds\\swamp_battlefield_tile.png",
+      "concept": "Toxic marsh with sunken research plates, black mud, restrained green-purple liquid and subtle low fog.",
+      "outputSize": [
+        1024,
+        1024
+      ],
+      "edgeDeltaBefore": {
+        "left_right_mean_delta": 10.1191,
+        "left_right_max_delta": 76,
+        "top_bottom_mean_delta": 11.1615,
+        "top_bottom_max_delta": 73
+      },
+      "edgeDeltaAfter": {
+        "left_right_mean_delta": 0.0,
+        "left_right_max_delta": 0,
+        "top_bottom_mean_delta": 0.0,
+        "top_bottom_max_delta": 0
+      },
+      "fileSizeBytes": 2087444
+    }
+  },
+  "contact": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\z04_06b_stage_background_contact.png"
+}

@@ -3328,12 +3328,12 @@ export const ASSET_MANIFEST = {
     jungle: {
       path: 'assets/maps/backgrounds/jungle_battlefield_tile.png',
       tile: true,
-      note: 'MVP-064 generated low-contrast jungle combat background tile.',
+      note: 'Z04-06b generated seamless low-contrast jungle research-ruins battlefield tile used by all jungle difficulties.',
     },
     volcano: {
       path: 'assets/maps/backgrounds/volcanic_battlefield_tile.png',
       tile: true,
-      note: 'MVP-064 generated low-contrast volcanic combat background tile.',
+      note: 'Z04-06b generated seamless low-contrast volcanic facility battlefield tile used by all volcano difficulties.',
     },
     ruins: {
       path: 'assets/maps/backgrounds/ruins_battlefield_tile.png',
@@ -3348,7 +3348,7 @@ export const ASSET_MANIFEST = {
     swamp: {
       path: 'assets/maps/backgrounds/swamp_battlefield_tile.png',
       tile: true,
-      note: 'MVP-067 generated low-contrast swamp combat background tile.',
+      note: 'Z04-06b generated seamless low-contrast toxic swamp facility battlefield tile used by all swamp difficulties.',
     },
   },
   stageThumbnails: {
