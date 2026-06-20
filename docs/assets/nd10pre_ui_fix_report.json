@@ -1,0 +1,46 @@
+{
+  "lockedSilhouette": {
+    "method": "runtime hero texture with dark teal tint/alpha; contact simulates the same intent",
+    "newDinos": [
+      "ankylosaurus",
+      "parasaurolophus",
+      "stegosaurus",
+      "pteranodon",
+      "compsognathus",
+      "ornithomimus"
+    ]
+  },
+  "unknownResearchCards": {
+    "expected": [
+      "spinosaurus",
+      "ankylosaurus",
+      "parasaurolophus",
+      "stegosaurus",
+      "pteranodon",
+      "compsognathus",
+      "ornithomimus"
+    ],
+    "newDinoCount": 6,
+    "withSpinosaurusCount": 7
+  },
+  "dnaLayout": {
+    "researchPtVisible": false,
+    "costDisplay": "DNA icon + number",
+    "resourceAlignment": "single-currency centered"
+  },
+  "home": {
+    "background": "public/assets/ui/home/home_background.png",
+    "placeholderPanel": "non-interactive future event display area"
+  },
+  "runtimeQa": {
+    "engine": "Microsoft Edge via Playwright",
+    "consoleWarnError": "0 for home start flow, research unknown tab, dino select locked cards, and ornithomimus play smoke",
+    "screenshots": [
+      "docs/assets/nd10pre_home_runtime_screenshot.png",
+      "docs/assets/nd10pre_research_runtime_screenshot.png",
+      "docs/assets/nd10pre_unknown_runtime_screenshot_top.png",
+      "docs/assets/nd10pre_unknown_runtime_screenshot_scrolled.png",
+      "docs/assets/nd10pre_dino_select_locked_runtime_screenshot.png"
+    ]
+  }
+}

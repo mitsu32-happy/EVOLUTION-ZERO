@@ -19,7 +19,7 @@ import {
 } from '../data/companion_dinos.js';
 import { getCompanionSynergy } from '../data/companion_synergy.js';
 import { EvolutionSequence } from '../effects/evolution_sequence.js';
-import { getEvolutionBranch, getEvolutionBranchId } from '../data/evolution_data.js';
+import { getEvolutionBranch, getEvolutionBranchById, getEvolutionBranchId } from '../data/evolution_data.js';
 import { Boss } from '../entities/boss.js';
 import { Enemy } from '../entities/enemy.js';
 import { Pickup } from '../entities/pickup.js';
@@ -86,7 +86,18 @@ const WHITEOUT_DUMP_STORAGE_KEY = 'EVOLUTION_ZERO_WHITEOUT_DUMP';
 const WHITEOUT_BOSS_CLEAR_OVERRUN_SECONDS = 0.85;
 const WHITEOUT_FLASH_ALPHA_LIMIT = 0.24;
 const DEBUG_EVOLUTION_TAGS = new Set(['speed', 'hunting', 'attack', 'zero']);
-const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
+const DEBUG_DINO_IDS = new Set([
+  'velociraptor',
+  'triceratops',
+  'tyrannosaurus',
+  'spinosaurus',
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+]);
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
 const DEBUG_EVOLUTION_SKILLS = {
   speed: ['afterimage_claw'],
@@ -184,18 +195,24 @@ function getDebugEvolutionTag() {
   return tag;
 }
 
-function getDebugForceEvolutionTag() {
+function getDebugForceEvolutionTag(dinoId = null) {
   if (typeof window === 'undefined') {
     return null;
   }
 
-  const tag = new URLSearchParams(window.location.search).get('debugForceEvolution');
+  const value = new URLSearchParams(window.location.search).get('debugForceEvolution');
 
-  if (!DEBUG_EVOLUTION_TAGS.has(tag)) {
+  if (DEBUG_EVOLUTION_TAGS.has(value)) {
+    return value;
+  }
+
+  const branch = getEvolutionBranchById(value);
+
+  if (!branch || (dinoId && branch.dinoId !== dinoId)) {
     return null;
   }
 
-  return tag;
+  return branch.tag;
 }
 
 function shouldDebugForceLevelupTutorial() {
@@ -2144,7 +2161,7 @@ export class PlayScene {
   }
 
   applyDebugEvolutionIfRequested() {
-    const tag = getDebugEvolutionTag() ?? getDebugForceEvolutionTag();
+    const tag = getDebugEvolutionTag() ?? getDebugForceEvolutionTag(this.gameState.selectedDino);
 
     if (!tag) {
       return;
@@ -2177,6 +2194,9 @@ export class PlayScene {
       tag: candidate.tag,
       mutationName: branch?.mutationName ?? candidate.name,
       evolutionName: branch?.evolutionName ?? candidate.evolutionName,
+      heroPath: branch?.heroPath ?? null,
+      portraitPath: branch?.portraitPath ?? null,
+      specialIconPath: branch?.specialIconPath ?? null,
       normalAttackEffectKey: branch?.normalAttackEffectKey ?? null,
       ultimateId: branch?.ultimateId ?? null,
       selectedAtLevel: this.gameState.playerLevel,
@@ -2190,7 +2210,7 @@ export class PlayScene {
     this.gameState.ultimateGauge = 100;
     this.gameState.ultimateReady = true;
 
-    if (getDebugForceEvolutionTag() === 'zero') {
+    if (getDebugForceEvolutionTag(this.gameState.selectedDino) === 'zero') {
       this.applyDebugZeroEvolution();
     }
   }
@@ -2270,7 +2290,7 @@ export class PlayScene {
       return;
     }
 
-    const forceTag = getDebugForceEvolutionTag();
+    const forceTag = getDebugForceEvolutionTag(this.gameState.selectedDino);
     const shouldPlayDemo = getDebugFlag('debugEvolutionDemo') || Boolean(forceTag);
 
     if (!shouldPlayDemo || this.didPlayDebugEvolutionDemo) {
@@ -8205,88 +8225,20 @@ export class PlayScene {
   getEvolutionSheetKey(selectedEvolution = null) {
     const dinoId = selectedEvolution?.dinoId ?? this.gameState.selectedDino;
     const tag = selectedEvolution?.tag ?? this.gameState.selectedEvolution?.tag;
+    const suffix = tag ? `${tag.charAt(0).toUpperCase()}${tag.slice(1)}` : null;
+    const sheetKey = suffix ? `${dinoId}${suffix}` : null;
 
-    if (dinoId === 'triceratops') {
-      if (tag === 'zero') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsZero ?? ASSET_KEYS.evolutionSheets?.triceratopsAttack ?? null;
-      }
-
-      if (tag === 'speed') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsSpeed ?? null;
-      }
-
-      if (tag === 'hunting') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsHunting ?? null;
-      }
-
-      if (tag === 'attack') {
-        return ASSET_KEYS.evolutionSheets?.triceratopsAttack ?? null;
-      }
-
-      return null;
-    }
-
-    if (dinoId === 'tyrannosaurus') {
-      if (tag === 'zero') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusZero ?? ASSET_KEYS.evolutionSheets?.tyrannosaurusAttack ?? null;
-      }
-
-      if (tag === 'speed') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusSpeed ?? null;
-      }
-
-      if (tag === 'hunting') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusHunting ?? null;
-      }
-
-      if (tag === 'attack') {
-        return ASSET_KEYS.evolutionSheets?.tyrannosaurusAttack ?? null;
-      }
-
-      return null;
-    }
-
-    if (dinoId === 'spinosaurus') {
-      if (tag === 'zero') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusZero ?? ASSET_KEYS.evolutionSheets?.spinosaurusAttack ?? null;
-      }
-
-      if (tag === 'speed') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusSpeed ?? null;
-      }
-
-      if (tag === 'hunting') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusHunting ?? null;
-      }
-
-      if (tag === 'attack') {
-        return ASSET_KEYS.evolutionSheets?.spinosaurusAttack ?? null;
-      }
-
-      return null;
-    }
-
-    if (dinoId !== 'velociraptor') {
+    if (!sheetKey) {
       return null;
     }
 
     if (tag === 'zero') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorZero ?? ASSET_KEYS.evolutionSheets?.velociraptorAttack ?? null;
+      return ASSET_KEYS.evolutionSheets?.[sheetKey]
+        ?? ASSET_KEYS.evolutionSheets?.[`${dinoId}Attack`]
+        ?? null;
     }
 
-    if (tag === 'speed') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorSpeed ?? null;
-    }
-
-    if (tag === 'hunting') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorHunting ?? null;
-    }
-
-    if (tag === 'attack') {
-      return ASSET_KEYS.evolutionSheets?.velociraptorAttack ?? null;
-    }
-
-    return null;
+    return ASSET_KEYS.evolutionSheets?.[sheetKey] ?? null;
   }
 
   updateJoystick() {

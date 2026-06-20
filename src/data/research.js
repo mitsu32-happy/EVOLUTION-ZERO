@@ -9,6 +9,8 @@ export const RESEARCH_CATEGORY_IDS = {
   analysisConversion: 'analysis_conversion',
 };
 
+export const RESEARCH_PT_TO_DNA_RATE = 5;
+
 export const RESEARCH_CATEGORIES = [
   {
     id: RESEARCH_CATEGORY_IDS.bodyEnhancement,
@@ -24,7 +26,7 @@ export const RESEARCH_CATEGORIES = [
     name: '適応能力',
     shortName: '適応',
     iconName: 'adaptationAbility',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     role: 'スキル技を解析し、プレイ中の候補へ追加する枠',
     unlockTarget: '裂爪衝撃波、毒胞子散布、骨片スパイクなど',
   },
@@ -33,7 +35,7 @@ export const RESEARCH_CATEGORIES = [
     name: 'お供研究',
     shortName: 'お供',
     iconName: 'companionResearch',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     role: '卵の孵化とお供恐竜の強化を行う専用枠',
     unlockTarget: 'お供恐竜の孵化、セット前の強化確認、成長管理',
   },
@@ -42,26 +44,13 @@ export const RESEARCH_CATEGORIES = [
     name: '未知領域',
     shortName: '未知',
     iconName: 'unknownDomain',
-    material: '研究Pt',
+    material: 'DNA',
     role: '新規恐竜、ステージ、進化環境を解析する拡張枠',
     unlockTarget: '未確認個体、未調査ステージ、新環境条件',
   },
-  {
-    id: RESEARCH_CATEGORY_IDS.analysisConversion,
-    name: '解析変換',
-    shortName: '変換',
-    iconName: 'analysisConversion',
-    material: 'DNA',
-    role: '余剰DNAを高レートで研究Ptへ変換する補助枠',
-    unlockTarget: 'DNA 500 -> 研究Pt 10 などの変換メニュー',
-  },
 ];
 
-export const ANALYSIS_CONVERSION_RATES = [
-  { id: 'convert_500', dnaCost: 500, researchPtGain: 10 },
-  { id: 'convert_1000', dnaCost: 1000, researchPtGain: 25 },
-  { id: 'convert_3000', dnaCost: 3000, researchPtGain: 90 },
-];
+export const ANALYSIS_CONVERSION_RATES = [];
 
 export const BODY_RESEARCH_IDS = {
   dnaGain: 'dna_gain_up',
@@ -243,7 +232,7 @@ export const RESEARCH_ITEMS = [
     name: '裂爪衝撃波',
     description: '新しい適応技を解放します。',
     effectLabel: 'スキル技解放',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     iconName: 'slashWave',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -254,7 +243,7 @@ export const RESEARCH_ITEMS = [
     name: '毒胞子散布',
     description: '新しい範囲技を解放します。',
     effectLabel: '候補へ出現',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     iconName: 'poisonSpore',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -265,7 +254,7 @@ export const RESEARCH_ITEMS = [
     name: '骨片スパイク',
     description: '新しい射出技を解放します。',
     effectLabel: '専用アイコン対象',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     iconName: 'boneSpike',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -278,7 +267,7 @@ export const RESEARCH_ITEMS = [
     effectLabel: '高速適応',
     adaptationTag: 'speed',
     adaptationTagLabel: '高速適応',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     adaptationSkillId: 'accelerated_blades',
     iconName: 'skillAccelBlades',
     status: 'available',
@@ -296,7 +285,7 @@ export const RESEARCH_ITEMS = [
     effectLabel: '狩猟適応',
     adaptationTag: 'hunting',
     adaptationTagLabel: '狩猟適応',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     adaptationSkillId: 'predator_marking',
     iconName: 'skillPredatorMark',
     status: 'available',
@@ -314,7 +303,7 @@ export const RESEARCH_ITEMS = [
     effectLabel: '攻撃適応',
     adaptationTag: 'attack',
     adaptationTagLabel: '攻撃適応',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     adaptationSkillId: 'flame_breath',
     iconName: 'skillFlameBreath',
     status: 'available',
@@ -330,7 +319,7 @@ export const RESEARCH_ITEMS = [
     name: '野性分岐解析',
     description: '新しい進化候補を解放します。',
     effectLabel: '進化ルート解放',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     iconName: 'evolutionBranch',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -341,7 +330,7 @@ export const RESEARCH_ITEMS = [
     name: '結晶変異解析',
     description: '特殊な進化候補を解放します。',
     effectLabel: '未知進化解析',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     iconName: 'specialMutation',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -352,7 +341,7 @@ export const RESEARCH_ITEMS = [
     name: '捕食特化ルート',
     description: '狩猟系の進化候補を解放します。',
     effectLabel: '分岐候補追加',
-    material: 'DNA + 研究Pt',
+    material: 'DNA',
     iconName: 'evolutionBranch',
     status: 'locked',
     unlockHint: '条件を満たすと表示',
@@ -363,7 +352,7 @@ export const RESEARCH_ITEMS = [
     name: '未確認恐竜解析',
     description: '新しい恐竜を解放します。',
     effectLabel: '恐竜解析',
-    material: '研究Pt',
+    material: 'DNA',
     iconName: 'unknownDinoScan',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -374,7 +363,7 @@ export const RESEARCH_ITEMS = [
     name: 'スピノサウルス解析',
     description: 'スピノサウルスを解放します。',
     effectLabel: 'スピノサウルス解放',
-    material: '研究Pt',
+    material: 'DNA',
     iconName: 'unknownDinoScan',
     status: 'available',
     maxLevel: 1,
@@ -382,7 +371,103 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 220,
     unlockDinoId: 'spinosaurus',
-    unlockHint: '研究Pt 220で解放',
+    unlockHint: '研究で解放できます',
+  },
+  {
+    id: 'ankylosaurus_unlock',
+    category: RESEARCH_CATEGORY_IDS.unknownDomain,
+    name: 'アンキロサウルス解析',
+    description: 'アンキロサウルスを解放します。',
+    effectLabel: 'アンキロサウルス解放',
+    material: 'DNA',
+    iconName: 'unknownDinoScan',
+    status: 'available',
+    maxLevel: 1,
+    baseCost: 1400,
+    costStep: 0,
+    researchPtCost: 260,
+    unlockDinoId: 'ankylosaurus',
+    unlockHint: '研究で解放できます',
+  },
+  {
+    id: 'parasaurolophus_unlock',
+    category: RESEARCH_CATEGORY_IDS.unknownDomain,
+    name: 'パラサウロロフス解析',
+    description: 'パラサウロロフスを解放します。',
+    effectLabel: 'パラサウロロフス解放',
+    material: 'DNA',
+    iconName: 'unknownDinoScan',
+    status: 'available',
+    maxLevel: 1,
+    baseCost: 1200,
+    costStep: 0,
+    researchPtCost: 250,
+    unlockDinoId: 'parasaurolophus',
+    unlockHint: '研究で解放できます',
+  },
+  {
+    id: 'stegosaurus_unlock',
+    category: RESEARCH_CATEGORY_IDS.unknownDomain,
+    name: 'ステゴサウルス解析',
+    description: 'ステゴサウルスを解放します。',
+    effectLabel: 'ステゴサウルス解放',
+    material: 'DNA',
+    iconName: 'unknownDinoScan',
+    status: 'available',
+    maxLevel: 1,
+    baseCost: 1400,
+    costStep: 0,
+    researchPtCost: 270,
+    unlockDinoId: 'stegosaurus',
+    unlockHint: '研究で解放できます',
+  },
+  {
+    id: 'pteranodon_unlock',
+    category: RESEARCH_CATEGORY_IDS.unknownDomain,
+    name: 'プテラノドン解析',
+    description: 'プテラノドンを解放します。',
+    effectLabel: 'プテラノドン解放',
+    material: 'DNA',
+    iconName: 'unknownDinoScan',
+    status: 'available',
+    maxLevel: 1,
+    baseCost: 1300,
+    costStep: 0,
+    researchPtCost: 260,
+    unlockDinoId: 'pteranodon',
+    unlockHint: '研究で解放できます',
+  },
+  {
+    id: 'compsognathus_unlock',
+    category: RESEARCH_CATEGORY_IDS.unknownDomain,
+    name: 'コンプソグナトゥス解析',
+    description: 'コンプソグナトゥスを解放します。',
+    effectLabel: 'コンプソグナトゥス解放',
+    material: 'DNA',
+    iconName: 'unknownDinoScan',
+    status: 'available',
+    maxLevel: 1,
+    baseCost: 1100,
+    costStep: 0,
+    researchPtCost: 240,
+    unlockDinoId: 'compsognathus',
+    unlockHint: '研究で解放できます',
+  },
+  {
+    id: 'ornithomimus_unlock',
+    category: RESEARCH_CATEGORY_IDS.unknownDomain,
+    name: 'オルニトミムス解析',
+    description: 'オルニトミムスを解放します。',
+    effectLabel: 'オルニトミムス解放',
+    material: 'DNA',
+    iconName: 'unknownDinoScan',
+    status: 'available',
+    maxLevel: 1,
+    baseCost: 1200,
+    costStep: 0,
+    researchPtCost: 250,
+    unlockDinoId: 'ornithomimus',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'deep_stage_scan',
@@ -390,7 +475,7 @@ export const RESEARCH_ITEMS = [
     name: '深層ステージ調査',
     description: '新しいステージを解放します。',
     effectLabel: 'ステージ解析',
-    material: '研究Pt',
+    material: 'DNA',
     iconName: 'stageScan',
     status: 'locked',
     unlockHint: '今後解放予定',
@@ -401,7 +486,7 @@ export const RESEARCH_ITEMS = [
     name: 'ZERO環境予測',
     description: 'ZERO環境のヒントを表示します。',
     effectLabel: '環境反応予測',
-    material: '研究Pt',
+    material: 'DNA',
     iconName: 'unknownDomain',
     status: 'locked',
     unlockHint: 'ZEROはEXPERTクリアで解放',
@@ -423,13 +508,20 @@ export function getResearchItem(id) {
 export function getResearchItemsByCategory(categoryId) {
   if (categoryId === RESEARCH_CATEGORY_IDS.adaptationAbility) {
     return RESEARCH_ITEMS.filter((item) => item.category === categoryId && (
-      item.adaptationSkillId
-      || item.effectType === 'adaptationSkillDamage'
-      || item.effectType === 'statUpgradeTheory'
+      item.status !== 'locked'
+      && (
+        item.adaptationSkillId
+        || item.effectType === 'adaptationSkillDamage'
+        || item.effectType === 'statUpgradeTheory'
+      )
     ));
   }
 
-  return RESEARCH_ITEMS.filter((item) => item.category === categoryId);
+  if (categoryId === RESEARCH_CATEGORY_IDS.unknownDomain) {
+    return RESEARCH_ITEMS.filter((item) => item.category === categoryId && item.status !== 'locked' && item.unlockDinoId);
+  }
+
+  return RESEARCH_ITEMS.filter((item) => item.category === categoryId && item.status !== 'locked');
 }
 
 export function getResearchCost(item, level) {
@@ -442,8 +534,10 @@ export function getResearchCostDetail(item, level) {
   }
 
   return {
-    dna: (item.baseCost ?? item.dnaCost ?? 0) + (item.costStep ?? 0) * level,
-    researchPt: item.researchPtCost ?? 0,
+    dna: (item.baseCost ?? item.dnaCost ?? 0)
+      + (item.costStep ?? 0) * level
+      + (item.researchPtCost ?? 0) * RESEARCH_PT_TO_DNA_RATE,
+    researchPt: 0,
   };
 }
 

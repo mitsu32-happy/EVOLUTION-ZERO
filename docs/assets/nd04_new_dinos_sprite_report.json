@@ -1,0 +1,974 @@
+{
+  "schema": "nd04_new_dinos_sprite_report",
+  "cellSize": 384,
+  "columns": 4,
+  "rows": 4,
+  "edgeMarginThreshold": 28,
+  "assets": [
+    {
+      "id": "ankylosaurus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c548d290819194cc8c27165a4869.png",
+      "sheetPath": "public/assets/dinos/ankylosaurus_sheet.png",
+      "fallbackPath": "public/assets/dinos/ankylosaurus.png",
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "columns": 4,
+      "rows": 4,
+      "displayWidth": 160,
+      "displayHeight": 122,
+      "movement": "heavy armored walk, tail-club action",
+      "missingFrames": [],
+      "sourceEdgeIssues": [
+        {
+          "frame": "r1c0",
+          "sourceMargins": {
+            "left": 30,
+            "top": 51,
+            "right": 34,
+            "bottom": 0
+          }
+        },
+        {
+          "frame": "r2c0",
+          "sourceMargins": {
+            "left": 97,
+            "top": 0,
+            "right": 36,
+            "bottom": 51
+          }
+        },
+        {
+          "frame": "r2c2",
+          "sourceMargins": {
+            "left": 29,
+            "top": 72,
+            "right": 0,
+            "bottom": 49
+          }
+        },
+        {
+          "frame": "r2c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 83,
+            "right": 73,
+            "bottom": 47
+          }
+        }
+      ],
+      "edgeIssues": [],
+      "minOutputMargin": 42,
+      "marginSamples": [
+        {
+          "left": 42,
+          "top": 194,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 201,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 196,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 198,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 138,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 208,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 206,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 208,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 66,
+          "top": 125,
+          "right": 67,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 186,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 216,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 209,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 196,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 44,
+          "top": 183,
+          "right": 44,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 227,
+          "right": 42,
+          "bottom": 54
+        },
+        {
+          "left": 42,
+          "top": 237,
+          "right": 42,
+          "bottom": 54
+        }
+      ]
+    },
+    {
+      "id": "parasaurolophus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c5b36518819198f1c2ef5841d945.png",
+      "sheetPath": "public/assets/dinos/parasaurolophus_sheet.png",
+      "fallbackPath": "public/assets/dinos/parasaurolophus.png",
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "columns": 4,
+      "rows": 4,
+      "displayWidth": 150,
+      "displayHeight": 120,
+      "movement": "light walk, crest sonic action",
+      "missingFrames": [],
+      "sourceEdgeIssues": [
+        {
+          "frame": "r0c2",
+          "sourceMargins": {
+            "left": 18,
+            "top": 43,
+            "right": 0,
+            "bottom": 12
+          }
+        },
+        {
+          "frame": "r0c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 48,
+            "right": 59,
+            "bottom": 11
+          }
+        },
+        {
+          "frame": "r1c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 66,
+            "right": 63,
+            "bottom": 21
+          }
+        },
+        {
+          "frame": "r2c1",
+          "sourceMargins": {
+            "left": 6,
+            "top": 29,
+            "right": 0,
+            "bottom": 22
+          }
+        },
+        {
+          "frame": "r2c2",
+          "sourceMargins": {
+            "left": 0,
+            "top": 18,
+            "right": 0,
+            "bottom": 24
+          }
+        },
+        {
+          "frame": "r2c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 52,
+            "right": 61,
+            "bottom": 23
+          }
+        },
+        {
+          "frame": "r3c2",
+          "sourceMargins": {
+            "left": 8,
+            "top": 73,
+            "right": 0,
+            "bottom": 56
+          }
+        },
+        {
+          "frame": "r3c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 111,
+            "right": 57,
+            "bottom": 49
+          }
+        }
+      ],
+      "edgeIssues": [],
+      "minOutputMargin": 49,
+      "marginSamples": [
+        {
+          "left": 49,
+          "top": 150,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 151,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 173,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 157,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 177,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 179,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 179,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 180,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 175,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 175,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 171,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 170,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 188,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 213,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 234,
+          "right": 49,
+          "bottom": 54
+        },
+        {
+          "left": 49,
+          "top": 247,
+          "right": 49,
+          "bottom": 54
+        }
+      ]
+    },
+    {
+      "id": "stegosaurus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c5e4dde08191b32c27460a6e4ec3.png",
+      "sheetPath": "public/assets/dinos/stegosaurus_sheet.png",
+      "fallbackPath": "public/assets/dinos/stegosaurus.png",
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "columns": 4,
+      "rows": 4,
+      "displayWidth": 164,
+      "displayHeight": 124,
+      "movement": "heavy plate-sway walk, stomp action",
+      "missingFrames": [],
+      "sourceEdgeIssues": [
+        {
+          "frame": "r1c2",
+          "sourceMargins": {
+            "left": 3,
+            "top": 46,
+            "right": 0,
+            "bottom": 38
+          }
+        },
+        {
+          "frame": "r1c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 50,
+            "right": 72,
+            "bottom": 37
+          }
+        },
+        {
+          "frame": "r2c1",
+          "sourceMargins": {
+            "left": 33,
+            "top": 5,
+            "right": 0,
+            "bottom": 41
+          }
+        },
+        {
+          "frame": "r2c2",
+          "sourceMargins": {
+            "left": 0,
+            "top": 42,
+            "right": 4,
+            "bottom": 26
+          }
+        },
+        {
+          "frame": "r3c1",
+          "sourceMargins": {
+            "left": 2,
+            "top": 64,
+            "right": 42,
+            "bottom": 44
+          }
+        }
+      ],
+      "edgeIssues": [],
+      "minOutputMargin": 35,
+      "marginSamples": [
+        {
+          "left": 35,
+          "top": 155,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 149,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 159,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 146,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 155,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 157,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 189,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 36,
+          "top": 161,
+          "right": 36,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 175,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 143,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 175,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 36,
+          "top": 159,
+          "right": 37,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 172,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 194,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 35,
+          "top": 225,
+          "right": 35,
+          "bottom": 54
+        },
+        {
+          "left": 39,
+          "top": 170,
+          "right": 39,
+          "bottom": 54
+        }
+      ]
+    },
+    {
+      "id": "pteranodon",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c61471d48191861bbf771f309f91.png",
+      "sheetPath": "public/assets/dinos/pteranodon_sheet.png",
+      "fallbackPath": "public/assets/dinos/pteranodon.png",
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "columns": 4,
+      "rows": 4,
+      "displayWidth": 154,
+      "displayHeight": 118,
+      "movement": "hover/flap/glide, wind action",
+      "missingFrames": [],
+      "sourceEdgeIssues": [],
+      "edgeIssues": [],
+      "minOutputMargin": 29,
+      "marginSamples": [
+        {
+          "left": 56,
+          "top": 109,
+          "right": 57,
+          "bottom": 118
+        },
+        {
+          "left": 56,
+          "top": 107,
+          "right": 57,
+          "bottom": 116
+        },
+        {
+          "left": 58,
+          "top": 109,
+          "right": 58,
+          "bottom": 118
+        },
+        {
+          "left": 61,
+          "top": 109,
+          "right": 61,
+          "bottom": 117
+        },
+        {
+          "left": 73,
+          "top": 91,
+          "right": 73,
+          "bottom": 100
+        },
+        {
+          "left": 49,
+          "top": 110,
+          "right": 49,
+          "bottom": 118
+        },
+        {
+          "left": 38,
+          "top": 129,
+          "right": 38,
+          "bottom": 137
+        },
+        {
+          "left": 76,
+          "top": 102,
+          "right": 76,
+          "bottom": 111
+        },
+        {
+          "left": 70,
+          "top": 110,
+          "right": 70,
+          "bottom": 119
+        },
+        {
+          "left": 50,
+          "top": 113,
+          "right": 50,
+          "bottom": 121
+        },
+        {
+          "left": 29,
+          "top": 137,
+          "right": 29,
+          "bottom": 146
+        },
+        {
+          "left": 63,
+          "top": 122,
+          "right": 63,
+          "bottom": 131
+        },
+        {
+          "left": 67,
+          "top": 104,
+          "right": 68,
+          "bottom": 113
+        },
+        {
+          "left": 100,
+          "top": 99,
+          "right": 100,
+          "bottom": 108
+        },
+        {
+          "left": 85,
+          "top": 121,
+          "right": 85,
+          "bottom": 129
+        },
+        {
+          "left": 83,
+          "top": 135,
+          "right": 84,
+          "bottom": 143
+        }
+      ]
+    },
+    {
+      "id": "compsognathus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c647ab50819195756ae9b5cd65b5.png",
+      "sheetPath": "public/assets/dinos/compsognathus_sheet.png",
+      "fallbackPath": "public/assets/dinos/compsognathus.png",
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "columns": 4,
+      "rows": 4,
+      "displayWidth": 122,
+      "displayHeight": 96,
+      "movement": "fast small theropod run, bite action",
+      "missingFrames": [],
+      "sourceEdgeIssues": [
+        {
+          "frame": "r1c2",
+          "sourceMargins": {
+            "left": 15,
+            "top": 108,
+            "right": 0,
+            "bottom": 40
+          }
+        },
+        {
+          "frame": "r1c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 98,
+            "right": 58,
+            "bottom": 40
+          }
+        },
+        {
+          "frame": "r3c2",
+          "sourceMargins": {
+            "left": 17,
+            "top": 97,
+            "right": 0,
+            "bottom": 72
+          }
+        },
+        {
+          "frame": "r3c3",
+          "sourceMargins": {
+            "left": 0,
+            "top": 115,
+            "right": 93,
+            "bottom": 66
+          }
+        }
+      ],
+      "edgeIssues": [],
+      "minOutputMargin": 66,
+      "marginSamples": [
+        {
+          "left": 66,
+          "top": 188,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 175,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 196,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 175,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 216,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 213,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 239,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 221,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 208,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 220,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 212,
+          "right": 67,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 194,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 182,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 228,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 253,
+          "right": 66,
+          "bottom": 72
+        },
+        {
+          "left": 66,
+          "top": 248,
+          "right": 66,
+          "bottom": 72
+        }
+      ]
+    },
+    {
+      "id": "ornithomimus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0120e5e2f4052905016a31c677f2c08191940cdd148a54e02c.png",
+      "sheetPath": "public/assets/dinos/ornithomimus_sheet.png",
+      "fallbackPath": "public/assets/dinos/ornithomimus.png",
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "columns": 4,
+      "rows": 4,
+      "displayWidth": 140,
+      "displayHeight": 122,
+      "movement": "long-leg sprint, dash-kick action",
+      "missingFrames": [],
+      "sourceEdgeIssues": [
+        {
+          "frame": "r0c0",
+          "sourceMargins": {
+            "left": 23,
+            "top": 34,
+            "right": 41,
+            "bottom": 0
+          }
+        },
+        {
+          "frame": "r0c1",
+          "sourceMargins": {
+            "left": 22,
+            "top": 30,
+            "right": 59,
+            "bottom": 0
+          }
+        },
+        {
+          "frame": "r0c2",
+          "sourceMargins": {
+            "left": 13,
+            "top": 62,
+            "right": 46,
+            "bottom": 0
+          }
+        },
+        {
+          "frame": "r0c3",
+          "sourceMargins": {
+            "left": 4,
+            "top": 65,
+            "right": 46,
+            "bottom": 0
+          }
+        },
+        {
+          "frame": "r1c0",
+          "sourceMargins": {
+            "left": 38,
+            "top": 0,
+            "right": 15,
+            "bottom": 30
+          }
+        },
+        {
+          "frame": "r1c1",
+          "sourceMargins": {
+            "left": 49,
+            "top": 0,
+            "right": 57,
+            "bottom": 16
+          }
+        },
+        {
+          "frame": "r1c2",
+          "sourceMargins": {
+            "left": 26,
+            "top": 0,
+            "right": 50,
+            "bottom": 11
+          }
+        },
+        {
+          "frame": "r1c3",
+          "sourceMargins": {
+            "left": 20,
+            "top": 0,
+            "right": 50,
+            "bottom": 10
+          }
+        },
+        {
+          "frame": "r2c1",
+          "sourceMargins": {
+            "left": 26,
+            "top": 106,
+            "right": 2,
+            "bottom": 39
+          }
+        }
+      ],
+      "edgeIssues": [],
+      "minOutputMargin": 48,
+      "marginSamples": [
+        {
+          "left": 62,
+          "top": 156,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 143,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 181,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 188,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 159,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 112,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 130,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 133,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 232,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 255,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 213,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 221,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 68,
+          "top": 175,
+          "right": 69,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 208,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 225,
+          "right": 62,
+          "bottom": 48
+        },
+        {
+          "left": 62,
+          "top": 277,
+          "right": 62,
+          "bottom": 48
+        }
+      ]
+    }
+  ]
+}

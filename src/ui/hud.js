@@ -111,6 +111,38 @@ const SPECIAL_LABELS = {
   spinosaurus_zero: 'Abyssal',
 };
 
+const NEW_DINO_HUD_KEYS = {
+  ankylosaurus: 'Ankylosaurus',
+  parasaurolophus: 'Parasaurolophus',
+  stegosaurus: 'Stegosaurus',
+  pteranodon: 'Pteranodon',
+  compsognathus: 'Compsognathus',
+  ornithomimus: 'Ornithomimus',
+};
+const EVOLUTION_HUD_SUFFIX = {
+  speed: 'Speed',
+  hunting: 'Hunting',
+  attack: 'Attack',
+  zero: 'Zero',
+};
+const NEW_DINO_SPECIAL_LABELS = {
+  ankylosaurus: { speed: 'Roll', hunting: 'Sensor', attack: 'Crater', zero: 'Bunker' },
+  parasaurolophus: { speed: 'Echo', hunting: 'Pulse', attack: 'Sonic', zero: 'Resonance' },
+  stegosaurus: { speed: 'Plate', hunting: 'Sensor', attack: 'Quake', zero: 'Reactor' },
+  pteranodon: { speed: 'Glide', hunting: 'Dive', attack: 'Gale', zero: 'Voidwing' },
+  compsognathus: { speed: 'Dash', hunting: 'Pack', attack: 'Swarm', zero: 'Resonant' },
+  ornithomimus: { speed: 'Sprint', hunting: 'Trace', attack: 'Impact', zero: 'Overdrive' },
+};
+
+Object.entries(NEW_DINO_HUD_KEYS).forEach(([dinoId, dinoKey]) => {
+  HUD_ASSETS[`portrait${dinoKey}`] = `assets/dinos/portraits/${dinoId}.png`;
+  Object.entries(EVOLUTION_HUD_SUFFIX).forEach(([tag, suffix]) => {
+    HUD_ASSETS[`portrait${dinoKey}${suffix}`] = `assets/dinos/evolutions/portraits/${dinoId}_${tag}_portrait.png`;
+    HUD_ASSETS[`special${dinoKey}${suffix}`] = `assets/ui/hud/special_icons/special_${tag}_${dinoId}.png`;
+    SPECIAL_LABELS[`${dinoId}_${tag}`] = NEW_DINO_SPECIAL_LABELS[dinoId]?.[tag] ?? 'Special';
+  });
+});
+
 const TOP_HUD = {
   y: 6,
   height: 96,
@@ -146,6 +178,24 @@ function assetUrl(path) {
 
 function cssColor(color) {
   return `#${color.toString(16).padStart(6, '0')}`;
+}
+
+function getNewDinoHudKey(dinoId) {
+  return NEW_DINO_HUD_KEYS[dinoId] ?? null;
+}
+
+function getNewDinoHudTextureKey(prefix, dinoId, tag = null) {
+  const dinoKey = getNewDinoHudKey(dinoId);
+  if (!dinoKey) {
+    return null;
+  }
+
+  if (!tag) {
+    return `${prefix}${dinoKey}`;
+  }
+
+  const suffix = EVOLUTION_HUD_SUFFIX[tag];
+  return suffix ? `${prefix}${dinoKey}${suffix}` : null;
 }
 
 export class Hud {
@@ -742,6 +792,11 @@ export class Hud {
       return this.assetTextures.specialSpinosaurusSpeed ?? this.assetTextures.specialSpeed;
     }
 
+    const newDinoSpecialKey = getNewDinoHudTextureKey('special', dinoId, tag);
+    if (newDinoSpecialKey && this.assetTextures[newDinoSpecialKey]) {
+      return this.assetTextures[newDinoSpecialKey];
+    }
+
     if (dinoId === 'velociraptor' && tag === 'zero') {
       return this.assetTextures.specialVelociraptorZero ?? this.assetTextures.specialAttack;
     }
@@ -778,6 +833,11 @@ export class Hud {
 
     if (dinoId === 'spinosaurus') {
       return this.assetTextures.portraitSpinosaurus;
+    }
+
+    const newDinoPortraitKey = getNewDinoHudTextureKey('portrait', dinoId);
+    if (newDinoPortraitKey && this.assetTextures[newDinoPortraitKey]) {
+      return this.assetTextures[newDinoPortraitKey];
     }
 
     return this.assetTextures.portraitVelociraptor;
@@ -839,6 +899,11 @@ export class Hud {
       if (tag === 'attack') {
         return this.assetTextures.portraitSpinosaurusAttack ?? this.assetTextures.portraitSpinosaurus;
       }
+    }
+
+    const newDinoPortraitKey = getNewDinoHudTextureKey('portrait', evolvedDinoId, tag);
+    if (newDinoPortraitKey && this.assetTextures[newDinoPortraitKey]) {
+      return this.assetTextures[newDinoPortraitKey];
     }
 
     if (tag) {

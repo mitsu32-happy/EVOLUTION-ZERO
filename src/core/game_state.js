@@ -10,7 +10,9 @@ import {
 } from '../data/adaptation_synergy.js';
 
 const BASE_EXP_TO_LEVEL = 6;
+const DEBUG_NEW_DINO_QA_EXP_MULTIPLIER = 100;
 const MAX_OWNED_SKILLS = 3;
+const NORMAL_EVOLUTION_TAGS = ['speed', 'hunting', 'attack'];
 const ZERO_EVOLUTION_REQUIREMENTS = {
   velociraptor_zero: {
     dinoId: 'velociraptor',
@@ -48,7 +50,79 @@ const ZERO_EVOLUTION_REQUIREMENTS = {
       attack: 3,
     },
   },
+  ankylosaurus_zero: {
+    dinoId: 'ankylosaurus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  parasaurolophus_zero: {
+    dinoId: 'parasaurolophus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  stegosaurus_zero: {
+    dinoId: 'stegosaurus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  pteranodon_zero: {
+    dinoId: 'pteranodon',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  compsognathus_zero: {
+    dinoId: 'compsognathus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
+  ornithomimus_zero: {
+    dinoId: 'ornithomimus',
+    playerLevel: 8,
+    adaptationLevels: {
+      speed: 3,
+      hunting: 3,
+      attack: 3,
+    },
+  },
 };
+
+function getDebugFlag(name) {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name) === '1'
+    || (name === 'debugFastEvolution' && params.get('debugNewDinoQa') === '1');
+}
+
+function getDebugExpMultiplier() {
+  if (getDebugFlag('debugNewDinoQa')) {
+    return DEBUG_NEW_DINO_QA_EXP_MULTIPLIER;
+  }
+
+  return 1;
+}
 
 export class GameState {
   constructor() {
@@ -184,8 +258,13 @@ export class GameState {
       skill.adaptationTags.forEach((tag) => {
         this.adaptationProgress[tag] = (this.adaptationProgress[tag] ?? 0) + 1;
       });
+      if (getDebugFlag('debugFastEvolution')) {
+        NORMAL_EVOLUTION_TAGS.forEach((tag) => {
+          this.adaptationProgress[tag] = Math.max(this.adaptationProgress[tag] ?? 0, EVOLUTION_DETECTION_THRESHOLD);
+        });
+      }
       this.detectAdaptationSynergies(skill.adaptationTags);
-      this.detectEvolutionCandidates(skill.adaptationTags);
+      this.detectEvolutionCandidates(getDebugFlag('debugFastEvolution') ? NORMAL_EVOLUTION_TAGS : skill.adaptationTags);
       this.detectZeroEvolutionCandidate();
     }
 
@@ -411,6 +490,9 @@ export class GameState {
       tier: isZeroEvolution ? 'zero' : 'normal',
       mutationName: branch?.mutationName ?? candidate.name,
       evolutionName: branch?.evolutionName ?? candidate.evolutionName,
+      heroPath: branch?.heroPath ?? candidate.heroPath ?? null,
+      portraitPath: branch?.portraitPath ?? candidate.portraitPath ?? null,
+      specialIconPath: branch?.specialIconPath ?? candidate.specialIconPath ?? null,
       normalAttackEffectKey: branch?.normalAttackEffectKey ?? candidate.normalAttackEffectKey ?? null,
       ultimateId: branch?.ultimateId ?? candidate.ultimateId ?? null,
       selectedAtLevel: this.playerLevel,
@@ -453,11 +535,12 @@ export class GameState {
       return 0;
     }
 
+    const gainedExp = Math.max(0, amount * getDebugExpMultiplier());
     let levelsGained = 0;
 
-    this.collectedExp += amount;
-    this.totalExpGained += amount;
-    this.score += amount * 100;
+    this.collectedExp += gainedExp;
+    this.totalExpGained += gainedExp;
+    this.score += gainedExp * 100;
 
     while (this.collectedExp >= this.expToNextLevel) {
       this.collectedExp -= this.expToNextLevel;

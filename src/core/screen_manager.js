@@ -22,6 +22,7 @@ import {
   ZERO_TITLES,
   getTitleFrameForTitle,
 } from '../data/reward_titles.js';
+import { RESEARCH_PT_TO_DNA_RATE } from '../data/research.js';
 
 function getDebugResearchPt() {
   if (typeof window === 'undefined') {
@@ -47,7 +48,18 @@ function isTutorialDebugEnabled() {
 
 const DEBUG_STAGE_IDS = new Set(['jungle', 'volcano', 'swamp', 'ruins']);
 const DEBUG_DIFFICULTY_IDS = new Set(['normal', 'hard', 'expert']);
-const DEBUG_DINO_IDS = new Set(['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus']);
+const DEBUG_DINO_IDS = new Set([
+  'velociraptor',
+  'triceratops',
+  'tyrannosaurus',
+  'spinosaurus',
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+]);
 
 const TUTORIAL_PAGES = {
   home: [
@@ -59,22 +71,15 @@ const TUTORIAL_PAGES = {
       tooltipPosition: 'top',
     },
     {
-      title: 'デイリー',
-      body: '毎日更新される目標です。\n達成すると研究Ptを獲得できます。',
-      target: 'デイリー',
-      targetId: 'home.daily',
-      tooltipPosition: 'top',
-    },
-    {
       title: 'ホーム',
-      body: '出撃やデイリー確認など、ゲームの拠点です。',
+      body: '出撃や研究、図鑑確認など、ゲームの拠点です。',
       target: 'ホーム',
       targetId: 'home.navHome',
       tooltipPosition: 'top',
     },
     {
       title: '研究',
-      body: 'DNAや研究Ptがたまったら、新しい恐竜や強化を解放できます。',
+      body: 'DNAがたまったら、新しい恐竜や強化を解放できます。',
       target: '研究 / 解放',
       targetId: 'home.research',
       tooltipPosition: 'top',
@@ -370,7 +375,7 @@ export class ScreenManager {
       saveManager: this.saveManager,
       assetLoader: this.assetLoader,
       onDeploy: () => this.withUiClick(() => this.showStageSelect()),
-      onResearch: () => this.withUiClick(() => this.showResearch()),
+      onResearch: (categoryId = null) => this.withUiClick(() => this.showResearch(categoryId)),
       onCodex: () => this.withUiClick(() => this.showCodex()),
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
       onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
@@ -980,12 +985,12 @@ export class ScreenManager {
     const bounds = {
       home: {
         'home.deploy': { x: 38, y: 418, width: 314, height: 76, radius: 14 },
-        'home.daily': { x: 38, y: 520, width: 314, height: 180, radius: 14 },
         'home.navHome': { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.research': { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.codex': { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.title': { x: Math.round(width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
-        'home.news': { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+        'home.news': { x: 244, y: 20, width: 128, height: 42, radius: 12 },
+        'home.banner': { x: 18, y: 536, width: 354, height: 126, radius: 14 },
         'home.companion': { x: 18, y: 92, width: 168, height: 58, radius: 12 },
         'home.options': { x: 286, y: bottomNavY, width: 78, height: 72, radius: 12 },
       },
@@ -1228,13 +1233,14 @@ export class ScreenManager {
     this.showTutorial('sortie');
   }
 
-  async showResearch() {
+  async showResearch(initialCategory = null) {
     this.saveManager.load();
     this.applyDebugResearchPt();
     this.saveManager.recordDailyProgress('openResearch', 1);
     await this.loadAssetGroups(['research'], '研究UI読み込み中');
     this.ensureResearchScreen();
     this.researchScreen.saveManager = this.saveManager;
+    this.researchScreen.setInitialCategory?.(initialCategory);
     this.show('research');
   }
 
@@ -1295,7 +1301,11 @@ export class ScreenManager {
       return;
     }
 
-    this.saveManager.data.researchPt = Math.max(this.saveManager.data.researchPt ?? 0, value);
+    this.saveManager.data.ownedDna = Math.max(
+      this.saveManager.data.ownedDna ?? 0,
+      value * RESEARCH_PT_TO_DNA_RATE,
+    );
+    this.saveManager.data.researchPt = 0;
   }
 
   applyDebugDna() {

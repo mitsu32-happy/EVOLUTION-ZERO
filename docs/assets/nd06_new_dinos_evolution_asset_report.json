@@ -1,0 +1,663 @@
+{
+  "branches": [
+    {
+      "id": "ankylosaurus_speed",
+      "dinoId": "ankylosaurus",
+      "tag": "speed",
+      "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_speed_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_speed_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_speed_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_speed_ankylosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_speed_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_speed_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 17,
+      "edgeIssues": []
+    },
+    {
+      "id": "ankylosaurus_hunting",
+      "dinoId": "ankylosaurus",
+      "tag": "hunting",
+      "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_hunting_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_hunting_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_hunting_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_ankylosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_hunting_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_hunting_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 17,
+      "edgeIssues": []
+    },
+    {
+      "id": "ankylosaurus_attack",
+      "dinoId": "ankylosaurus",
+      "tag": "attack",
+      "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_attack_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_attack_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_attack_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_attack_ankylosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_attack_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_attack_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 17,
+      "edgeIssues": []
+    },
+    {
+      "id": "ankylosaurus_zero",
+      "dinoId": "ankylosaurus",
+      "tag": "zero",
+      "hero": "public/assets/dinos/evolutions/heroes/ankylosaurus_zero_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ankylosaurus_zero_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ankylosaurus_zero_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_zero_ankylosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ankylosaurus_zero_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ankylosaurus_zero_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 17,
+      "edgeIssues": []
+    },
+    {
+      "id": "parasaurolophus_speed",
+      "dinoId": "parasaurolophus",
+      "tag": "speed",
+      "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_speed_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_speed_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_speed_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_speed_parasaurolophus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_speed_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_speed_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 24,
+      "edgeIssues": []
+    },
+    {
+      "id": "parasaurolophus_hunting",
+      "dinoId": "parasaurolophus",
+      "tag": "hunting",
+      "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_hunting_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_hunting_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_hunting_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_parasaurolophus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_hunting_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_hunting_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 24,
+      "edgeIssues": []
+    },
+    {
+      "id": "parasaurolophus_attack",
+      "dinoId": "parasaurolophus",
+      "tag": "attack",
+      "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_attack_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_attack_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_attack_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_attack_parasaurolophus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_attack_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_attack_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 24,
+      "edgeIssues": []
+    },
+    {
+      "id": "parasaurolophus_zero",
+      "dinoId": "parasaurolophus",
+      "tag": "zero",
+      "hero": "public/assets/dinos/evolutions/heroes/parasaurolophus_zero_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/parasaurolophus_zero_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/parasaurolophus_zero_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_zero_parasaurolophus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/parasaurolophus_zero_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_parasaurolophus_zero_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 24,
+      "edgeIssues": []
+    },
+    {
+      "id": "stegosaurus_speed",
+      "dinoId": "stegosaurus",
+      "tag": "speed",
+      "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_speed_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_speed_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_speed_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_speed_stegosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_speed_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_speed_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 10,
+      "edgeIssues": []
+    },
+    {
+      "id": "stegosaurus_hunting",
+      "dinoId": "stegosaurus",
+      "tag": "hunting",
+      "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_hunting_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_hunting_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_hunting_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_stegosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_hunting_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_hunting_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 10,
+      "edgeIssues": []
+    },
+    {
+      "id": "stegosaurus_attack",
+      "dinoId": "stegosaurus",
+      "tag": "attack",
+      "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_attack_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_attack_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_attack_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_attack_stegosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_attack_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_attack_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 10,
+      "edgeIssues": []
+    },
+    {
+      "id": "stegosaurus_zero",
+      "dinoId": "stegosaurus",
+      "tag": "zero",
+      "hero": "public/assets/dinos/evolutions/heroes/stegosaurus_zero_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/stegosaurus_zero_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/stegosaurus_zero_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_zero_stegosaurus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/stegosaurus_zero_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_stegosaurus_zero_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 10,
+      "edgeIssues": []
+    },
+    {
+      "id": "pteranodon_speed",
+      "dinoId": "pteranodon",
+      "tag": "speed",
+      "hero": "public/assets/dinos/evolutions/heroes/pteranodon_speed_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_speed_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_speed_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_speed_pteranodon.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_speed_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_speed_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 8,
+      "edgeIssues": []
+    },
+    {
+      "id": "pteranodon_hunting",
+      "dinoId": "pteranodon",
+      "tag": "hunting",
+      "hero": "public/assets/dinos/evolutions/heroes/pteranodon_hunting_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_hunting_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_hunting_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_pteranodon.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_hunting_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_hunting_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 8,
+      "edgeIssues": []
+    },
+    {
+      "id": "pteranodon_attack",
+      "dinoId": "pteranodon",
+      "tag": "attack",
+      "hero": "public/assets/dinos/evolutions/heroes/pteranodon_attack_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_attack_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_attack_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_attack_pteranodon.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_attack_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_attack_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 8,
+      "edgeIssues": []
+    },
+    {
+      "id": "pteranodon_zero",
+      "dinoId": "pteranodon",
+      "tag": "zero",
+      "hero": "public/assets/dinos/evolutions/heroes/pteranodon_zero_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/pteranodon_zero_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/pteranodon_zero_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_zero_pteranodon.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/pteranodon_zero_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_pteranodon_zero_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 8,
+      "edgeIssues": []
+    },
+    {
+      "id": "compsognathus_speed",
+      "dinoId": "compsognathus",
+      "tag": "speed",
+      "hero": "public/assets/dinos/evolutions/heroes/compsognathus_speed_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_speed_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_speed_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_speed_compsognathus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_speed_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_speed_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 42,
+      "edgeIssues": []
+    },
+    {
+      "id": "compsognathus_hunting",
+      "dinoId": "compsognathus",
+      "tag": "hunting",
+      "hero": "public/assets/dinos/evolutions/heroes/compsognathus_hunting_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_hunting_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_hunting_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_compsognathus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_hunting_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_hunting_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 42,
+      "edgeIssues": []
+    },
+    {
+      "id": "compsognathus_attack",
+      "dinoId": "compsognathus",
+      "tag": "attack",
+      "hero": "public/assets/dinos/evolutions/heroes/compsognathus_attack_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_attack_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_attack_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_attack_compsognathus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_attack_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_attack_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 42,
+      "edgeIssues": []
+    },
+    {
+      "id": "compsognathus_zero",
+      "dinoId": "compsognathus",
+      "tag": "zero",
+      "hero": "public/assets/dinos/evolutions/heroes/compsognathus_zero_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/compsognathus_zero_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/compsognathus_zero_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_zero_compsognathus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/compsognathus_zero_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_compsognathus_zero_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 42,
+      "edgeIssues": []
+    },
+    {
+      "id": "ornithomimus_speed",
+      "dinoId": "ornithomimus",
+      "tag": "speed",
+      "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_speed_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_speed_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_speed_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_speed_ornithomimus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_speed_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_speed_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 23,
+      "edgeIssues": []
+    },
+    {
+      "id": "ornithomimus_hunting",
+      "dinoId": "ornithomimus",
+      "tag": "hunting",
+      "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_hunting_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_hunting_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_hunting_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_hunting_ornithomimus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_hunting_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_hunting_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 23,
+      "edgeIssues": []
+    },
+    {
+      "id": "ornithomimus_attack",
+      "dinoId": "ornithomimus",
+      "tag": "attack",
+      "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_attack_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_attack_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_attack_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_attack_ornithomimus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_attack_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_attack_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 23,
+      "edgeIssues": []
+    },
+    {
+      "id": "ornithomimus_zero",
+      "dinoId": "ornithomimus",
+      "tag": "zero",
+      "hero": "public/assets/dinos/evolutions/heroes/ornithomimus_zero_hero.png",
+      "portrait": "public/assets/dinos/evolutions/portraits/ornithomimus_zero_portrait.png",
+      "sheet": "public/assets/dinos/evolutions/sheets/ornithomimus_zero_sheet.png",
+      "specialIcon": "public/assets/ui/hud/special_icons/special_zero_ornithomimus.png",
+      "normalAttackEffect": "public/assets/effects/attacks/evolutions/ornithomimus_zero_attack.png",
+      "ultimateEffect": "public/assets/effects/specials/new_dinos/special_ornithomimus_zero_ultimate.png",
+      "sheetFrame": {
+        "columns": 4,
+        "rows": 4,
+        "frameWidth": 384,
+        "frameHeight": 384
+      },
+      "edgeIssueCount": 0,
+      "minMargin": 23,
+      "edgeIssues": []
+    }
+  ],
+  "spinosaurusZero": {
+    "hero": {
+      "path": "assets/dinos/evolutions/heroes/spinosaurus_zero_hero.png",
+      "exists": true,
+      "size": [
+        1024,
+        768
+      ]
+    },
+    "portrait": {
+      "path": "assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png",
+      "exists": true,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "sheet": {
+      "path": "assets/dinos/evolutions/sheets/spinosaurus_zero_sheet.png",
+      "exists": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    "specialIcon": {
+      "path": "assets/ui/hud/special_icons/special_zero_spinosaurus.png",
+      "exists": true,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "sheetReport": {
+      "frameCount": 16,
+      "minMargin": 0,
+      "edgeIssues": [
+        {
+          "row": 0,
+          "column": 0,
+          "issue": "edge risk",
+          "margin": {
+            "left": 32,
+            "top": 50,
+            "right": 0,
+            "bottom": 0,
+            "min": 0
+          }
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "issue": "edge risk",
+          "margin": {
+            "left": 0,
+            "top": 42,
+            "right": 32,
+            "bottom": 0,
+            "min": 0
+          }
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "issue": "edge risk",
+          "margin": {
+            "left": 32,
+            "top": 58,
+            "right": 160,
+            "bottom": 0,
+            "min": 0
+          }
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "issue": "empty frame"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "issue": "edge risk",
+          "margin": {
+            "left": 32,
+            "top": 0,
+            "right": 0,
+            "bottom": 50,
+            "min": 0
+          }
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "issue": "edge risk",
+          "margin": {
+            "left": 0,
+            "top": 0,
+            "right": 32,
+            "bottom": 63,
+            "min": 0
+          }
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "issue": "edge risk",
+          "margin": {
+            "left": 32,
+            "top": 0,
+            "right": 160,
+            "bottom": 69,
+            "min": 0
+          }
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "issue": "empty frame"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "issue": "edge risk",
+          "margin": {
+            "left": 32,
+            "top": 51,
+            "right": 0,
+            "bottom": 179,
+            "min": 0
+          }
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "issue": "edge risk",
+          "margin": {
+            "left": 0,
+            "top": 62,
+            "right": 32,
+            "bottom": 191,
+            "min": 0
+          }
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "issue": "empty frame"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "issue": "empty frame"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "issue": "empty frame"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "issue": "empty frame"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "issue": "empty frame"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "branchSetCount": 24,
+    "generatedHeroCount": 24,
+    "generatedSpriteSheetCount": 24,
+    "generatedEffectCount": 24,
+    "totalEdgeIssues": 0,
+    "minSheetMargin": 8
+  }
+}

@@ -1,0 +1,1124 @@
+{
+  "phase": "ND09d",
+  "policy": {
+    "source": "24 built-in generated 4x4 motion sheets, one per evolution branch",
+    "runtime": "runtime keeps one 512x512 4x4 sheet per evolution branch",
+    "localProcessing": "chroma-key removal, cell split, cleanup, and safe placement only",
+    "visualQa": "contact sheets must be checked; numeric report alone is insufficient"
+  },
+  "assets": {
+    "ankylosaurus_speed": {
+      "sourcePath": "docs/assets/nd09d_sources/ankylosaurus_speed_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_speed_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 117,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.23,
+          "yCenterRange": 0.5,
+          "minMargin": 127,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.81,
+          "yCenterRange": 0.5,
+          "minMargin": 117,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.67,
+          "yCenterRange": 1.0,
+          "minMargin": 121,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.73,
+          "yCenterRange": 0.5,
+          "minMargin": 122,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "tail hammer wind-up / swing / impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ankylosaurus_hunting": {
+      "sourcePath": "docs/assets/nd09d_sources/ankylosaurus_hunting_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_hunting_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 109,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 5.29,
+          "yCenterRange": 0.5,
+          "minMargin": 113,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 7.12,
+          "yCenterRange": 5.5,
+          "minMargin": 109,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 6.87,
+          "yCenterRange": 5.0,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.17,
+          "yCenterRange": 0.5,
+          "minMargin": 109,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "tail hammer wind-up / swing / impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ankylosaurus_attack": {
+      "sourcePath": "docs/assets/nd09d_sources/ankylosaurus_attack_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_attack_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 106,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 2.83,
+          "yCenterRange": 0.5,
+          "minMargin": 113,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.77,
+          "yCenterRange": 0.0,
+          "minMargin": 107,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 6.59,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.01,
+          "yCenterRange": 0.5,
+          "minMargin": 106,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "tail hammer wind-up / swing / impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ankylosaurus_zero": {
+      "sourcePath": "docs/assets/nd09d_sources/ankylosaurus_zero_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ankylosaurus_zero_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.18,
+          "yCenterRange": 0.5,
+          "minMargin": 119,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.46,
+          "yCenterRange": 0.5,
+          "minMargin": 117,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 8.18,
+          "yCenterRange": 1.0,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.71,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "tail hammer wind-up / swing / impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "parasaurolophus_speed": {
+      "sourcePath": "docs/assets/nd09d_sources/parasaurolophus_speed_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_speed_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 2.79,
+          "yCenterRange": 0.5,
+          "minMargin": 131,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.95,
+          "yCenterRange": 0.5,
+          "minMargin": 123,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 8.26,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.3,
+          "yCenterRange": 0.5,
+          "minMargin": 114,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crest sonic charge / pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "parasaurolophus_hunting": {
+      "sourcePath": "docs/assets/nd09d_sources/parasaurolophus_hunting_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_hunting_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.45,
+          "yCenterRange": 0.5,
+          "minMargin": 138,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.71,
+          "yCenterRange": 0.5,
+          "minMargin": 120,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.35,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.86,
+          "yCenterRange": 0.5,
+          "minMargin": 117,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crest sonic charge / pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "parasaurolophus_attack": {
+      "sourcePath": "docs/assets/nd09d_sources/parasaurolophus_attack_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_attack_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 104,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 4.64,
+          "yCenterRange": 0.5,
+          "minMargin": 124,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 2.65,
+          "yCenterRange": 0.0,
+          "minMargin": 123,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.44,
+          "yCenterRange": 0.5,
+          "minMargin": 115,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.74,
+          "yCenterRange": 0.5,
+          "minMargin": 104,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crest sonic charge / pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "parasaurolophus_zero": {
+      "sourcePath": "docs/assets/nd09d_sources/parasaurolophus_zero_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/parasaurolophus_zero_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 5.05,
+          "yCenterRange": 0.5,
+          "minMargin": 134,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.37,
+          "yCenterRange": 0.5,
+          "minMargin": 123,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 6.93,
+          "yCenterRange": 0.0,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.62,
+          "yCenterRange": 0.5,
+          "minMargin": 130,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crest sonic charge / pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "stegosaurus_speed": {
+      "sourcePath": "docs/assets/nd09d_sources/stegosaurus_speed_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_speed_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 111,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 5.81,
+          "yCenterRange": 0.5,
+          "minMargin": 114,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 5.53,
+          "yCenterRange": 0.0,
+          "minMargin": 111,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 10.87,
+          "yCenterRange": 0.5,
+          "minMargin": 120,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.38,
+          "yCenterRange": 0.5,
+          "minMargin": 117,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "plate charge / stomp / ground pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "stegosaurus_hunting": {
+      "sourcePath": "docs/assets/nd09d_sources/stegosaurus_hunting_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_hunting_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 110,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 5.85,
+          "yCenterRange": 0.5,
+          "minMargin": 110,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 5.39,
+          "yCenterRange": 0.5,
+          "minMargin": 110,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 8.75,
+          "yCenterRange": 0.5,
+          "minMargin": 121,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.51,
+          "yCenterRange": 0.5,
+          "minMargin": 118,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "plate charge / stomp / ground pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "stegosaurus_attack": {
+      "sourcePath": "docs/assets/nd09d_sources/stegosaurus_attack_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_attack_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 106,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 6.69,
+          "yCenterRange": 0.5,
+          "minMargin": 111,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 6.43,
+          "yCenterRange": 0.5,
+          "minMargin": 106,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.58,
+          "yCenterRange": 0.5,
+          "minMargin": 120,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.27,
+          "yCenterRange": 0.5,
+          "minMargin": 115,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "plate charge / stomp / ground pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "stegosaurus_zero": {
+      "sourcePath": "docs/assets/nd09d_sources/stegosaurus_zero_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/stegosaurus_zero_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 106,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 5.64,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 5.9,
+          "yCenterRange": 0.5,
+          "minMargin": 106,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.87,
+          "yCenterRange": 1.0,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.27,
+          "yCenterRange": 0.5,
+          "minMargin": 116,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "plate charge / stomp / ground pulse / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "pteranodon_speed": {
+      "sourcePath": "docs/assets/nd09d_sources/pteranodon_speed_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_speed_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 111,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 4.1,
+          "yCenterRange": 0.5,
+          "minMargin": 122,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 5.52,
+          "yCenterRange": 0.5,
+          "minMargin": 111,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 8.18,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.42,
+          "yCenterRange": 0.5,
+          "minMargin": 116,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "wing draw / slash / wind release / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "pteranodon_hunting": {
+      "sourcePath": "docs/assets/nd09d_sources/pteranodon_hunting_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_hunting_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 104,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 6.61,
+          "yCenterRange": 0.5,
+          "minMargin": 105,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 6.32,
+          "yCenterRange": 5.0,
+          "minMargin": 104,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 6.2,
+          "yCenterRange": 0.5,
+          "minMargin": 127,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.57,
+          "yCenterRange": 0.5,
+          "minMargin": 110,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "wing draw / slash / wind release / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "pteranodon_attack": {
+      "sourcePath": "docs/assets/nd09d_sources/pteranodon_attack_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_attack_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 104,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.89,
+          "yCenterRange": 0.5,
+          "minMargin": 120,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.56,
+          "yCenterRange": 0.5,
+          "minMargin": 104,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.93,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 5.09,
+          "yCenterRange": 2.5,
+          "minMargin": 118,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "wing draw / slash / wind release / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "pteranodon_zero": {
+      "sourcePath": "docs/assets/nd09d_sources/pteranodon_zero_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/pteranodon_zero_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 104,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 4.21,
+          "yCenterRange": 0.5,
+          "minMargin": 113,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.57,
+          "yCenterRange": 0.5,
+          "minMargin": 104,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.39,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.51,
+          "yCenterRange": 0.5,
+          "minMargin": 115,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "wing draw / slash / wind release / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "compsognathus_speed": {
+      "sourcePath": "docs/assets/nd09d_sources/compsognathus_speed_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_speed_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 122,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.57,
+          "yCenterRange": 0.5,
+          "minMargin": 140,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.17,
+          "yCenterRange": 0.0,
+          "minMargin": 136,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 5.9,
+          "yCenterRange": 0.0,
+          "minMargin": 127,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 4.54,
+          "yCenterRange": 0.5,
+          "minMargin": 122,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crouch / leap / bite-slash / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "compsognathus_hunting": {
+      "sourcePath": "docs/assets/nd09d_sources/compsognathus_hunting_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_hunting_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 2.24,
+          "yCenterRange": 0.5,
+          "minMargin": 128,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.14,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 4.36,
+          "yCenterRange": 0.5,
+          "minMargin": 113,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 2.18,
+          "yCenterRange": 0.5,
+          "minMargin": 125,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crouch / leap / bite-slash / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "compsognathus_attack": {
+      "sourcePath": "docs/assets/nd09d_sources/compsognathus_attack_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_attack_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.83,
+          "yCenterRange": 0.5,
+          "minMargin": 124,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.74,
+          "yCenterRange": 0.5,
+          "minMargin": 122,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 6.8,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.33,
+          "yCenterRange": 0.5,
+          "minMargin": 120,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crouch / leap / bite-slash / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "compsognathus_zero": {
+      "sourcePath": "docs/assets/nd09d_sources/compsognathus_zero_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/compsognathus_zero_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 120,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 2.84,
+          "yCenterRange": 0.5,
+          "minMargin": 137,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.38,
+          "yCenterRange": 0.5,
+          "minMargin": 120,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 6.22,
+          "yCenterRange": 0.5,
+          "minMargin": 121,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 2.85,
+          "yCenterRange": 0.5,
+          "minMargin": 129,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "crouch / leap / bite-slash / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ornithomimus_speed": {
+      "sourcePath": "docs/assets/nd09d_sources/ornithomimus_speed_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_speed_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 117,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.36,
+          "yCenterRange": 0.5,
+          "minMargin": 127,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.88,
+          "yCenterRange": 0.5,
+          "minMargin": 117,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 7.11,
+          "yCenterRange": 0.5,
+          "minMargin": 122,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.23,
+          "yCenterRange": 0.5,
+          "minMargin": 121,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "sprint wind-up / dash / kick impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ornithomimus_hunting": {
+      "sourcePath": "docs/assets/nd09d_sources/ornithomimus_hunting_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_hunting_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 114,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 2.91,
+          "yCenterRange": 0.5,
+          "minMargin": 142,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 2.98,
+          "yCenterRange": 0.0,
+          "minMargin": 126,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 5.64,
+          "yCenterRange": 3.0,
+          "minMargin": 114,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.41,
+          "yCenterRange": 0.5,
+          "minMargin": 125,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "sprint wind-up / dash / kick impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ornithomimus_attack": {
+      "sourcePath": "docs/assets/nd09d_sources/ornithomimus_attack_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_attack_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 112,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 4.01,
+          "yCenterRange": 0.5,
+          "minMargin": 124,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 4.58,
+          "yCenterRange": 0.5,
+          "minMargin": 117,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 10.44,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.74,
+          "yCenterRange": 0.5,
+          "minMargin": 124,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "sprint wind-up / dash / kick impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    },
+    "ornithomimus_zero": {
+      "sourcePath": "docs/assets/nd09d_sources/ornithomimus_zero_motion_source.png",
+      "sheetPath": "public/assets/dinos/evolutions/sheets/ornithomimus_zero_sheet.png",
+      "missingAsset": false,
+      "cellSize": 512,
+      "minMargin": 110,
+      "edgeIssues": [],
+      "cellContamination": [],
+      "frameSizeStability": true,
+      "motionRows": [
+        {
+          "row": 0,
+          "motion": "idle",
+          "motionDifferenceScore": 3.6,
+          "yCenterRange": 0.5,
+          "minMargin": 124,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 1,
+          "motion": "move",
+          "motionDifferenceScore": 3.99,
+          "yCenterRange": 0.5,
+          "minMargin": 110,
+          "actionPoseCheck": "not-action-row"
+        },
+        {
+          "row": 2,
+          "motion": "action",
+          "motionDifferenceScore": 9.74,
+          "yCenterRange": 0.5,
+          "minMargin": 112,
+          "actionPoseCheck": "attack row uses generated dedicated action frames"
+        },
+        {
+          "row": 3,
+          "motion": "deathFallback",
+          "motionDifferenceScore": 3.33,
+          "yCenterRange": 0.5,
+          "minMargin": 125,
+          "actionPoseCheck": "not-action-row"
+        }
+      ],
+      "actionPoseMemo": "sprint wind-up / dash / kick impact / recovery",
+      "visualInspectionResult": "PASS: ND09d sprite, animation, and representative runtime sheets visually reviewed"
+    }
+  },
+  "totals": {
+    "assetCount": 24,
+    "missingAssetCount": 0,
+    "edgeIssueCount": 0,
+    "cellContaminationCount": 0,
+    "minMargin": 104,
+    "regeneratedProblemCellsCount": 0,
+    "frameSizeStable": true
+  }
+}

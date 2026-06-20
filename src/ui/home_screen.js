@@ -8,7 +8,6 @@ import {
 } from '../data/evolution_data.js';
 import { getDinoConfig } from '../data/run_config.js';
 import { getTitleById, getTitleFrameById } from '../data/reward_titles.js';
-import { DAILY_MISSION_COUNT, formatDailyReward, getDailyMissionTemplate } from '../data/daily_missions.js';
 import { UPDATE_NEWS } from '../data/update_news.js';
 import {
   COMPANION_DINOS,
@@ -21,12 +20,16 @@ import {
   getCompanionSynergyForCompanion,
   isCompanionSynergyActive,
 } from '../data/companion_synergy.js';
+import { RESEARCH_CATEGORY_IDS } from '../data/research.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
 import { playPressFeedback } from './ui_feedback.js';
 import { drawScreenBackground, UI_COLORS, toCssColor } from './ui_theme.js';
 
 const HOME_ASSET_PATHS = {
+  homeBackgroundTop: 'assets/ui/home/home_background_top_nd10pre.png',
+  homeBackgroundHero: 'assets/ui/home/home_background_hero_nd10pre.png',
+  homeBackgroundBottom: 'assets/ui/home/home_background_bottom_nd10pre.png',
   homeBackground: 'assets/ui/home/home_background.png',
   evolutionZeroLogo: 'assets/ui/home/evolution_zero_logo.png',
   resourcePanel: 'assets/ui/home/resource_panel.png',
@@ -51,6 +54,7 @@ const HOME_ASSET_PATHS = {
   newsButtonBack: 'assets/ui/home/news_button_back_a07d.png',
   newsBadgeUpdate: 'assets/ui/home/news_badge_update_a07d.png',
   newsBadgeNormal: 'assets/ui/home/news_badge_update_a07d.png',
+  newDinosBanner: 'assets/ui/home/banner_new_dinos_six_nd10pre.png',
   companionHomeFrame: 'assets/ui/companions/home_companion_frame_p06d.png',
   companionSelectPanel: 'assets/ui/companions/companion_select_panel_p06e.png',
   companionSelectCard: 'assets/ui/companions/companion_select_card_p06e.png',
@@ -69,6 +73,12 @@ const HOME_ASSET_PATHS = {
     triceratops: 'assets/dinos/dino_select/triceratops_hero.png',
     tyrannosaurus: 'assets/dinos/dino_select/tyrannosaurus_hero.png',
     spinosaurus: 'assets/dinos/dino_select/spinosaurus_hero.png',
+    ankylosaurus: 'assets/dinos/dino_select/ankylosaurus_hero.png',
+    parasaurolophus: 'assets/dinos/dino_select/parasaurolophus_hero.png',
+    stegosaurus: 'assets/dinos/dino_select/stegosaurus_hero.png',
+    pteranodon: 'assets/dinos/dino_select/pteranodon_hero.png',
+    compsognathus: 'assets/dinos/dino_select/compsognathus_hero.png',
+    ornithomimus: 'assets/dinos/dino_select/ornithomimus_hero.png',
   },
   evolutionHero: {
     speed: 'assets/dinos/evolutions/heroes/velociraptor_speed_hero.png',
@@ -77,7 +87,18 @@ const HOME_ASSET_PATHS = {
   },
 };
 
-const HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus', 'spinosaurus'];
+const HOME_DINO_IDS = [
+  'velociraptor',
+  'triceratops',
+  'tyrannosaurus',
+  'spinosaurus',
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+];
 const DEFAULT_HOME_DINO_IDS = ['velociraptor', 'triceratops', 'tyrannosaurus'];
 const HOME_BRANCH_ORDER = ['speed', 'hunting', 'attack', 'zero'];
 
@@ -110,13 +131,54 @@ const HOME_DINO_PROFILES = {
     height: 214,
     y: 280,
   },
+  ankylosaurus: {
+    label: 'アンキロサウルス',
+    line: '防衛型',
+    width: 296,
+    height: 210,
+    y: 282,
+  },
+  parasaurolophus: {
+    label: 'パラサウロロフス',
+    line: '音波支援型',
+    width: 288,
+    height: 208,
+    y: 280,
+  },
+  stegosaurus: {
+    label: 'ステゴサウルス',
+    line: '範囲制圧型',
+    width: 298,
+    height: 212,
+    y: 280,
+  },
+  pteranodon: {
+    label: 'プテラノドン',
+    line: '空中支援型',
+    width: 314,
+    height: 218,
+    y: 276,
+  },
+  compsognathus: {
+    label: 'コンプソグナトゥス',
+    line: '群れ連撃型',
+    width: 294,
+    height: 208,
+    y: 282,
+  },
+  ornithomimus: {
+    label: 'オルニトミムス',
+    line: '高速成長型',
+    width: 292,
+    height: 212,
+    y: 280,
+  },
 };
 
 const DEFAULT_UNLOCKED_HOME_DINOS = DEFAULT_HOME_DINO_IDS;
 
 const RESOURCE_ITEMS = [
-  { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 181, textX: 220 },
-  { id: 'researchPt', label: '研究Pt', color: UI_COLORS.dna, iconName: 'iconResearchBeakerBlue', iconX: 282, textX: 326 },
+  { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 218, textX: 260 },
 ];
 
 const UNLOCK_STATUS_ITEMS = [
@@ -136,13 +198,11 @@ const RECORD_ITEMS = [
 const HERO = { x: 0, y: 92, width: 390, height: 342 };
 const RESOURCE_PANEL = { x: 150, y: 16, width: 220, height: 68 };
 const DEPLOY = { x: 38, y: 424, width: 314, height: 66 };
-const HOME_INFO_TABS = [
-  { id: 'daily', label: 'デイリー', color: UI_COLORS.gold },
-  { id: 'record', label: '記録', color: UI_COLORS.green },
-  { id: 'unlock', label: '解放', color: UI_COLORS.dna },
-];
+const HOME_INFO_TABS = [];
 const INFO_TAB = { x: 18, y: 502, width: 110, height: 36, gap: 12 };
 const INFO_PANEL = { x: 18, y: 536, width: 354, height: 196 };
+const EVENT_PANEL = INFO_PANEL;
+const NEW_DINOS_BANNER = { x: 18, y: 536, width: 354, height: 126 };
 const UNLOCK_PANEL = INFO_PANEL;
 const RECORD_PANEL = INFO_PANEL;
 const DAILY_PANEL = INFO_PANEL;
@@ -278,14 +338,17 @@ export class HomeScreen {
     this.onCompanionHomeVisible = onCompanionHomeVisible;
     this.companionHomeTutorialShownForVisit = false;
     this.textures = new Map();
-    this.activeHomeInfoTab = 'daily';
-    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
+    this.activeHomeInfoTab = null;
+    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'banner', 'home', 'research', 'codex', 'options'];
     this.gamepadFocusIndex = 0;
     this.newsGamepadIndex = 0;
     this.companionModalPage = 0;
 
     this.view = new Container();
     this.background = new Graphics();
+    this.homeBackgroundTop = new Sprite(Texture.EMPTY);
+    this.homeBackgroundHero = new Sprite(Texture.EMPTY);
+    this.homeBackgroundBottom = new Sprite(Texture.EMPTY);
     this.homeBackground = new Sprite(Texture.EMPTY);
     this.logoSprite = new Sprite(Texture.EMPTY);
     this.logoFallback = this.createText('EVOLUTION\nZERO', 20, '#f4f7f5', 132);
@@ -337,6 +400,8 @@ export class HomeScreen {
     this.unlockTitle = this.createText('解放', 12, '#7cf7d4', 90);
     this.recordTitle = this.createText('記録', 12, '#7cf7d4', 90);
     this.dailyTitle = this.createText('デイリー', 12, '#7cf7d4', 120);
+    this.newDinosBanner = new Sprite(Texture.EMPTY);
+    this.newDinosBannerFallback = new Graphics();
     this.dailyClaimAllButton = this.createDailyClaimAllButton();
     this.infoTabButtons = HOME_INFO_TABS.map((item) => this.createHomeInfoTabButton(item));
     this.unlockRows = UNLOCK_STATUS_ITEMS.map((item) => ({
@@ -349,7 +414,7 @@ export class HomeScreen {
       label: this.createText(item.label, 9.5, '#cbe0da', 50),
       value: this.createText('', 13, '#ffffff', 66),
     }));
-    this.dailyRows = Array.from({ length: DAILY_MISSION_COUNT }, () => {
+    this.dailyRows = Array.from({ length: 0 }, () => {
       const button = this.createDailyButton();
 
       return {
@@ -382,6 +447,9 @@ export class HomeScreen {
 
     this.view.addChild(
       this.background,
+      this.homeBackgroundTop,
+      this.homeBackgroundHero,
+      this.homeBackgroundBottom,
       this.homeBackground,
       this.panelGraphics,
       this.heroFallback,
@@ -426,6 +494,8 @@ export class HomeScreen {
       this.recordTitle,
       ...this.recordRows.flatMap((entry) => [entry.label, entry.value]),
       this.dailyTitle,
+      this.newDinosBannerFallback,
+      this.newDinosBanner,
       this.dailyClaimAllButton.view,
       ...this.dailyRows.flatMap((entry) => [entry.label, entry.status, entry.reward, entry.button.view]),
       this.noticeText,
@@ -445,6 +515,12 @@ export class HomeScreen {
     this.newsEntryFallback.eventMode = 'static';
     this.newsEntryFallback.cursor = 'pointer';
     this.newsEntryFallback.on('pointertap', () => this.openNewsModal());
+    this.newDinosBanner.eventMode = 'static';
+    this.newDinosBanner.cursor = 'pointer';
+    this.newDinosBanner.on('pointertap', () => this.handleNewDinosBannerTap());
+    this.newDinosBannerFallback.eventMode = 'static';
+    this.newDinosBannerFallback.cursor = 'pointer';
+    this.newDinosBannerFallback.on('pointertap', () => this.handleNewDinosBannerTap());
     this.switchLeft.eventMode = 'static';
     this.switchLeft.cursor = 'pointer';
     this.switchLeft.on('pointertap', () => this.handleDinoSwitchTap(-1));
@@ -500,18 +576,6 @@ export class HomeScreen {
       return false;
     }
 
-    if (actions.nextPressed || actions.previousPressed) {
-      const current = this.getFocusedHomeItem();
-      if (['daily', 'record', 'unlock'].includes(current)) {
-        const tabs = ['daily', 'record', 'unlock'];
-        const index = tabs.indexOf(current);
-        const next = tabs[Math.max(0, Math.min(tabs.length - 1, index + (actions.nextPressed ? 1 : -1)))];
-        this.focusHomeItem(next);
-        this.handleHomeInfoTabTap(next);
-        return true;
-      }
-    }
-
     if (actions.downPressed || actions.upPressed || actions.leftPressed || actions.rightPressed) {
       this.moveGamepadFocus(actions);
       return true;
@@ -542,7 +606,6 @@ export class HomeScreen {
     const current = this.getFocusedHomeItem();
     const rows = {
       top: ['title', 'companion', 'news'],
-      info: ['daily', 'record', 'unlock'],
       nav: ['home', 'research', 'codex', 'options'],
     };
 
@@ -566,10 +629,8 @@ export class HomeScreen {
         title: 'deploy',
         companion: 'deploy',
         news: 'deploy',
-        deploy: 'daily',
-        daily: 'home',
-        record: 'research',
-        unlock: 'codex',
+        banner: 'home',
+        deploy: 'home',
         home: 'home',
         research: 'research',
         codex: 'codex',
@@ -584,14 +645,12 @@ export class HomeScreen {
         title: 'title',
         companion: 'companion',
         news: 'news',
+        banner: 'deploy',
         deploy: 'title',
-        daily: 'deploy',
-        record: 'deploy',
-        unlock: 'deploy',
-        home: 'daily',
-        research: 'record',
-        codex: 'unlock',
-        options: 'unlock',
+        home: 'deploy',
+        research: 'deploy',
+        codex: 'deploy',
+        options: 'deploy',
       };
       this.focusHomeItem(upMap[current] ?? 'deploy');
     }
@@ -607,8 +666,8 @@ export class HomeScreen {
       this.openCompanionModal();
     } else if (id === 'news') {
       this.openNewsModal();
-    } else if (['daily', 'record', 'unlock'].includes(id)) {
-      this.handleHomeInfoTabTap(id);
+    } else if (id === 'banner') {
+      this.handleNewDinosBannerTap();
     } else if (id === 'research') {
       this.onResearch?.();
     } else if (id === 'codex') {
@@ -665,7 +724,8 @@ export class HomeScreen {
       unlock: { x: 254, y: 520, width: 98, height: 44, radius: 12 },
       title: { x: Math.round(this.width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
       companion: { ...COMPANION_HOME_PANEL, radius: 12 },
-      news: { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+      news: { x: 244, y: 20, width: 128, height: 42, radius: 12 },
+      banner: { ...NEW_DINOS_BANNER, radius: 14 },
       home: { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
       research: { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
       codex: { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
@@ -686,15 +746,12 @@ export class HomeScreen {
     this.gameState = gameState ?? this.gameState;
 
     const data = this.saveData ?? {};
-    const fallbackResearchPt = Math.floor((data.totalExpGained ?? 0) * 0.12);
-    const researchPt = data.researchPt ?? fallbackResearchPt;
     const homeTarget = this.getHomeDisplayTarget(data);
     const homeDinoId = homeTarget.dinoId;
     const dino = getDinoConfig(homeDinoId);
     const profile = HOME_DINO_PROFILES[homeDinoId] ?? HOME_DINO_PROFILES.velociraptor;
     const resourceValues = {
       dna: data.ownedDna ?? 0,
-      researchPt,
     };
     const unlockValues = {
       dinos: `${this.getUnlockedDinoCount(data)} / ${HOME_DINO_IDS.length}`,
@@ -722,49 +779,7 @@ export class HomeScreen {
     this.recordRows.forEach(({ item, value }) => {
       value.text = recordValues[item.id] ?? '-';
     });
-    const dailyMissions = this.saveManager?.getDailyMissions?.() ?? data.dailyMissions ?? { missions: [] };
-    let claimableDailyCount = 0;
-    this.dailyRows.forEach((row, index) => {
-      const mission = dailyMissions.missions?.[index] ?? null;
-      const template = getDailyMissionTemplate(mission?.id);
-      const { status, reward, button } = row;
-      row.mission = mission;
-
-      if (!mission || !template) {
-        row.label.text = 'デイリー準備中';
-        status.text = '-';
-        reward.text = '-';
-        row.canShowButton = false;
-        button.view.visible = false;
-        return;
-      }
-
-      const progress = Math.min(template.target, Math.max(0, Math.floor(mission.progress ?? 0)));
-      const complete = Boolean(mission.completed) || progress >= template.target;
-      const claimed = Boolean(mission.claimed);
-      if (complete && !claimed) {
-        claimableDailyCount += 1;
-      }
-
-      row.label.text = template.shortLabel ?? template.label;
-      status.text = complete ? (claimed ? '受取済み' : '達成') : `${this.formatNumber(progress)}/${this.formatNumber(template.target)}`;
-      status.style.fill = complete ? '#65e878' : '#fff0b4';
-      reward.text = formatDailyReward(template.reward).replace('研究Pt ', 'Pt ');
-      row.canShowButton = complete;
-      button.view.visible = this.activeHomeInfoTab === 'daily' && complete;
-      button.view.eventMode = complete && !claimed ? 'static' : 'none';
-      button.view.cursor = complete && !claimed ? 'pointer' : 'default';
-      button.view.alpha = claimed ? 0.62 : 1;
-      button.text.text = claimed ? '済' : '受取';
-      button.text.style.fill = claimed ? '#8da49e' : '#071015';
-      this.drawDailyButton(button.bg, claimed);
-    });
-    this.dailyClaimAllButton.view.visible = this.activeHomeInfoTab === 'daily';
-    this.dailyClaimAllButton.view.eventMode = claimableDailyCount > 0 ? 'static' : 'none';
-    this.dailyClaimAllButton.view.cursor = claimableDailyCount > 0 ? 'pointer' : 'default';
-    this.dailyClaimAllButton.view.alpha = claimableDailyCount > 0 ? 1 : 0.58;
-    this.dailyClaimAllButton.text.text = claimableDailyCount > 0 ? '一括受取' : '受取なし';
-    this.drawDailyClaimAllButton(this.dailyClaimAllButton.bg, claimableDailyCount <= 0);
+    this.dailyClaimAllButton.view.visible = false;
     this.applyTextures(homeDinoId, homeTarget.evolutionId);
     this.updateHomeInfoTabVisibility();
     this.updateEquippedTitle(data);
@@ -936,6 +951,33 @@ export class HomeScreen {
   }
 
   getTutorialBounds(targetId) {
+    if (targetId === 'home.deploy') {
+      return {
+        x: DEPLOY.x,
+        y: DEPLOY.y - 6,
+        width: DEPLOY.width,
+        height: DEPLOY.height + 12,
+        radius: 14,
+      };
+    }
+
+    if (targetId === 'home.news') {
+      return {
+        x: 244,
+        y: 20,
+        width: 128,
+        height: 42,
+        radius: 12,
+      };
+    }
+
+    if (targetId === 'home.banner') {
+      return {
+        ...NEW_DINOS_BANNER,
+        radius: 14,
+      };
+    }
+
     if (targetId === 'home.companion') {
       return {
         ...COMPANION_HOME_PANEL,
@@ -1025,7 +1067,9 @@ export class HomeScreen {
     }
 
     const params = new URLSearchParams(window.location.search);
-    return params.get('debugUnlockDino') === dinoId || params.get('debugUnlockAllDinos') === '1';
+    return params.get('debugUnlockDino') === dinoId
+      || params.get('debugUnlockAllDinos') === '1'
+      || params.get('debugNewDinoQa') === '1';
   }
 
   getAvailableHomeTargets(data) {
@@ -1219,6 +1263,9 @@ export class HomeScreen {
 
   loadAssets() {
     const requests = [
+      ['homeBackgroundTop', ASSET_KEYS.homeUi?.homeBackgroundTop, HOME_ASSET_PATHS.homeBackgroundTop],
+      ['homeBackgroundHero', ASSET_KEYS.homeUi?.homeBackgroundHero, HOME_ASSET_PATHS.homeBackgroundHero],
+      ['homeBackgroundBottom', ASSET_KEYS.homeUi?.homeBackgroundBottom, HOME_ASSET_PATHS.homeBackgroundBottom],
       ['homeBackground', ASSET_KEYS.homeUi?.homeBackground, HOME_ASSET_PATHS.homeBackground],
       ['evolutionZeroLogo', ASSET_KEYS.homeUi?.evolutionZeroLogo, HOME_ASSET_PATHS.evolutionZeroLogo],
       ['resourcePanel', ASSET_KEYS.homeUi?.resourcePanel, HOME_ASSET_PATHS.resourcePanel],
@@ -1243,6 +1290,7 @@ export class HomeScreen {
       ['newsButtonBack', ASSET_KEYS.homeUi?.newsButtonBack, HOME_ASSET_PATHS.newsButtonBack],
       ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
       ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
+      ['newDinosBanner', ASSET_KEYS.homeUi?.newDinosBanner, HOME_ASSET_PATHS.newDinosBanner],
       ['companionHomeFrame', ASSET_KEYS.companionUi?.homeFrame, HOME_ASSET_PATHS.companionHomeFrame],
       ['companionSelectPanel', ASSET_KEYS.companionUi?.selectPanel, HOME_ASSET_PATHS.companionSelectPanel],
       ['companionSelectCard', ASSET_KEYS.companionUi?.selectCard, HOME_ASSET_PATHS.companionSelectCard],
@@ -1298,10 +1346,28 @@ export class HomeScreen {
   }
 
   applyTextures(dinoId, evolutionId = null) {
-    this.applySprite(this.homeBackground, this.textures.get('homeBackground'), HERO, 0.92);
+    this.applySprite(this.homeBackgroundTop, this.textures.get('homeBackgroundTop'), {
+      x: 0,
+      y: 0,
+      width: this.width,
+      height: 92,
+    }, 0.9);
+    this.applySprite(this.homeBackgroundHero, this.textures.get('homeBackgroundHero'), {
+      x: 0,
+      y: HERO.y,
+      width: this.width,
+      height: 410,
+    }, 0.9);
+    this.applySprite(this.homeBackgroundBottom, this.textures.get('homeBackgroundBottom'), {
+      x: 0,
+      y: 502,
+      width: this.width,
+      height: this.height - 502,
+    }, 0.9);
+    this.homeBackground.visible = false;
     this.applySprite(this.logoSprite, this.textures.get('evolutionZeroLogo'), { x: 12, y: 13, width: 138, height: 68 }, 0.96);
     this.logoFallback.visible = !this.logoSprite.visible;
-    this.applySprite(this.resourcePanel, this.textures.get('resourcePanel'), RESOURCE_PANEL, 0.92);
+    this.resourcePanel.visible = false;
     this.applySprite(this.infoPanel, this.textures.get('homeInfoPanelCommon'), INFO_PANEL, 0.94);
     this.applySprite(this.infoPanelGlow, this.textures.get('homeInfoPanelGlow'), {
       x: INFO_PANEL.x + 34,
@@ -1328,11 +1394,17 @@ export class HomeScreen {
       height: 50,
     }, 0.96);
     this.resourceIcons.forEach(({ item, sprite }) => {
-      this.applySprite(sprite, this.textures.get(item.iconName), { x: item.iconX - 10, y: 43, width: 20, height: 20 }, 0.95);
+      sprite.visible = false;
+    });
+    this.resourceTexts.forEach(({ label, value }) => {
+      label.visible = false;
+      value.visible = false;
     });
     this.applySprite(this.selectorPlate, this.textures.get('homeDinoSelector'), { x: SELECTOR.pillX, y: SELECTOR.y, width: 138, height: 28 }, 0.9);
-    this.applySprite(this.newsEntryFrame, this.textures.get('newsEntryButton'), { x: 204, y: 94, width: 172, height: 44 }, 0.96);
+    this.applySprite(this.newsEntryFrame, this.textures.get('newsEntryButton'), { x: 244, y: 20, width: 128, height: 42 }, 0.96);
     this.newsEntryFallback.visible = !this.newsEntryFrame.visible;
+    this.applySprite(this.newDinosBanner, this.textures.get('newDinosBanner'), NEW_DINOS_BANNER, 0.96);
+    this.newDinosBannerFallback.visible = !this.newDinosBanner.visible;
     this.applySprite(this.switchLeft, this.textures.get('homeDinoSwitchLeft'), { x: SELECTOR.leftX, y: SELECTOR.y - 2, width: 34, height: 34 }, 0.9);
     this.applySprite(this.switchRight, this.textures.get('homeDinoSwitchRight'), { x: SELECTOR.rightX, y: SELECTOR.y - 2, width: 34, height: 34 }, 0.9);
 
@@ -1402,7 +1474,7 @@ export class HomeScreen {
       value.anchor.set(0.5, 0);
       label.position.set(item.textX, 31);
       value.position.set(item.textX, 48);
-      value.style.fill = item.id === 'dna' ? '#fff0b4' : item.id === 'researchPt' ? '#d7fff2' : '#ffffff';
+      value.style.fill = item.id === 'dna' ? '#fff0b4' : '#ffffff';
     });
 
     this.dinoName.anchor.set(0.5, 0);
@@ -1417,7 +1489,7 @@ export class HomeScreen {
     this.newsEntryText.style.dropShadowColor = '#001014';
     this.newsEntryText.style.dropShadowBlur = 3;
     this.newsEntryText.anchor.set(0.5);
-    this.newsEntryText.position.set(284, 120);
+    this.newsEntryText.position.set(308, 42);
 
     this.deployTitle.anchor.set(0.5);
     this.deployTitle.position.set(this.width / 2 + 16, DEPLOY.y + 25);
@@ -1494,22 +1566,17 @@ export class HomeScreen {
       .ellipse(this.width / 2, 407, 78, 7)
       .fill({ color: dino.accentColor, alpha: 0.08 });
 
-    if (!this.resourcePanel.visible) {
-      this.drawPanel(this.panelGraphics, RESOURCE_PANEL.x, RESOURCE_PANEL.y, RESOURCE_PANEL.width, RESOURCE_PANEL.height, UI_COLORS.dna, 0.82);
-    }
-    if (!this.infoPanel.visible) {
-      this.drawPanel(this.panelGraphics, INFO_PANEL.x, INFO_PANEL.y, INFO_PANEL.width, INFO_PANEL.height, UI_COLORS.dna, 0.82);
-    }
     if (!this.deployFrame.visible) {
       this.drawPanel(this.panelGraphics, DEPLOY.x, DEPLOY.y, DEPLOY.width, DEPLOY.height, UI_COLORS.gold, 0.92);
     }
+    this.drawEventPlaceholderPanel(dino);
     if (!this.selectorPlate.visible) {
       this.drawPanel(this.switchFallback, SELECTOR.pillX, SELECTOR.y, 138, 28, UI_COLORS.dna, 0.74);
     }
     if (!this.newsEntryFrame.visible) {
       this.newsEntryFallback
         .clear()
-        .roundRect(204, 94, 172, 44, 9)
+        .roundRect(244, 20, 128, 42, 9)
         .fill({ color: 0x061012, alpha: 0.82 })
         .stroke({ color: UI_COLORS.dna, width: 1.1, alpha: 0.66 });
     }
@@ -1528,16 +1595,6 @@ export class HomeScreen {
   }
 
   drawIcons() {
-    RESOURCE_ITEMS.forEach((item, index) => {
-      if (this.resourceIcons[index]?.sprite.visible) {
-        return;
-      }
-      this.iconGraphics
-        .circle(item.iconX, 54, 4.5)
-        .fill({ color: item.color, alpha: 0.24 })
-        .stroke({ color: item.color, width: 1.2, alpha: 0.75 });
-    });
-
     if (this.activeHomeInfoTab === 'unlock') {
       UNLOCK_STATUS_ITEMS.forEach((item, index) => {
       const y = UNLOCK_CONTENT.rowStartY + index * UNLOCK_CONTENT.rowGap + 5;
@@ -1590,6 +1647,32 @@ export class HomeScreen {
         .poly([75, DEPLOY.y + 43, 88, DEPLOY.y + 25, 98, DEPLOY.y + 43])
         .fill({ color: UI_COLORS.gold, alpha: 0.84 });
     }
+  }
+
+  drawEventPlaceholderPanel(dino) {
+    const accent = dino?.accentColor ?? UI_COLORS.dna;
+
+    if (this.newDinosBannerFallback.visible) {
+      this.newDinosBannerFallback
+        .clear()
+        .roundRect(NEW_DINOS_BANNER.x, NEW_DINOS_BANNER.y, NEW_DINOS_BANNER.width, NEW_DINOS_BANNER.height, 14)
+        .fill({ color: 0x020708, alpha: 0.72 })
+        .stroke({ color: accent, width: 1.2, alpha: 0.58 })
+        .roundRect(NEW_DINOS_BANNER.x + 18, NEW_DINOS_BANNER.y + 22, 172, 72, 12)
+        .fill({ color: 0x001014, alpha: 0.62 })
+        .stroke({ color: 0x7cf7d4, width: 0.8, alpha: 0.4 });
+    } else {
+      this.newDinosBannerFallback.clear();
+    }
+
+    this.panelGraphics
+      .roundRect(NEW_DINOS_BANNER.x, NEW_DINOS_BANNER.y, NEW_DINOS_BANNER.width, NEW_DINOS_BANNER.height, 14)
+      .stroke({ color: accent, width: 1.2, alpha: 0.22 });
+  }
+
+  handleNewDinosBannerTap() {
+    this.playUiFeedback('ui_click');
+    this.onResearch?.(RESEARCH_CATEGORY_IDS.unknownDomain);
   }
 
   createNewsModal() {
@@ -2193,13 +2276,15 @@ export class HomeScreen {
   }
 
   updateHomeInfoTabVisibility() {
-    const active = this.activeHomeInfoTab;
-    const showDaily = active === 'daily';
-    const showRecord = active === 'record';
-    const showUnlock = active === 'unlock';
+    const showDaily = false;
+    const showRecord = false;
+    const showUnlock = false;
 
-    this.infoPanel.visible = this.hasTexture(this.infoPanel);
+    this.infoPanel.visible = false;
     this.infoPanelGlow.visible = false;
+    const hasBannerTexture = !!this.newDinosBanner.texture && this.newDinosBanner.texture !== Texture.EMPTY;
+    this.newDinosBanner.visible = hasBannerTexture;
+    this.newDinosBannerFallback.visible = !hasBannerTexture;
     this.dailyTitle.visible = showDaily;
     this.dailyClaimAllButton.view.visible = showDaily;
     this.recordTitle.visible = showRecord;

@@ -77,7 +77,103 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.spinosaurus,
     locked: 'research',
     unlockCondition: '研究: スピノサウルス解析',
-    unlockHint: '研究Pt 220で解放',
+    unlockHint: 'DNA 1100で解放',
+  },
+  {
+    id: 'ankylosaurus',
+    name: 'アンキロサウルス',
+    shortName: 'アンキロ',
+    type: '防衛型',
+    style: '装甲と尾棍で接近した敵を押し返す。高耐久の制圧候補。',
+    branchBase: 0,
+    sortieNote: '装甲で戦線を支える',
+    traits: ['HPが高い', '近距離制圧', '移動が重い'],
+    color: 0x9bd66b,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.ankylosaurus,
+    heroKey: ASSET_KEYS.dinoSelectHero.ankylosaurus,
+    locked: 'research',
+    unlockCondition: '研究: アンキロサウルス解析',
+    unlockHint: 'DNA 2700で解放',
+  },
+  {
+    id: 'parasaurolophus',
+    name: 'パラサウロロフス',
+    shortName: 'パラサ',
+    type: '音波支援型',
+    style: '音波で敵と資源を捉える。支援と回収補助の候補。',
+    branchBase: 0,
+    sortieNote: '共鳴で戦況を読む',
+    traits: ['中距離支援', '回収補助', '音波攻撃'],
+    color: 0x7cf7d4,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.parasaurolophus,
+    heroKey: ASSET_KEYS.dinoSelectHero.parasaurolophus,
+    locked: 'research',
+    unlockCondition: '研究: パラサウロロフス解析',
+    unlockHint: 'DNA 2450で解放',
+  },
+  {
+    id: 'stegosaurus',
+    name: 'ステゴサウルス',
+    shortName: 'ステゴ',
+    type: '範囲制圧型',
+    style: '背板エネルギーで周囲を押さえる。群れ処理の候補。',
+    branchBase: 0,
+    sortieNote: '背板衝撃で群れを抑える',
+    traits: ['範囲攻撃', '高耐久', '移動が重い'],
+    color: 0xffd36b,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.stegosaurus,
+    heroKey: ASSET_KEYS.dinoSelectHero.stegosaurus,
+    locked: 'research',
+    unlockCondition: '研究: ステゴサウルス解析',
+    unlockHint: 'DNA 2750で解放',
+  },
+  {
+    id: 'pteranodon',
+    name: 'プテラノドン',
+    shortName: 'プテラ',
+    type: '空中支援型',
+    style: '翼で距離を取り、風刃で牽制する。遠距離支援の候補。',
+    branchBase: 0,
+    sortieNote: '空中から風で支援する',
+    traits: ['高機動', '遠距離牽制', '耐久は低め'],
+    color: 0x8fdfff,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.pteranodon,
+    heroKey: ASSET_KEYS.dinoSelectHero.pteranodon,
+    locked: 'research',
+    unlockCondition: '研究: プテラノドン解析',
+    unlockHint: 'DNA 2600で解放',
+  },
+  {
+    id: 'compsognathus',
+    name: 'コンプソグナトゥス',
+    shortName: 'コンピー',
+    type: '群れ連撃型',
+    style: '小型の群れで素早く削る。低HP敵の処理候補。',
+    branchBase: 0,
+    sortieNote: '群れで弱った敵を追う',
+    traits: ['攻撃テンポが速い', '小型群れ', '耐久は低い'],
+    color: 0xb8fbff,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.compsognathus,
+    heroKey: ASSET_KEYS.dinoSelectHero.compsognathus,
+    locked: 'research',
+    unlockCondition: '研究: コンプソグナトゥス解析',
+    unlockHint: 'DNA 2300で解放',
+  },
+  {
+    id: 'ornithomimus',
+    name: 'オルニトミムス',
+    shortName: 'オルニ',
+    type: '高速成長型',
+    style: '長い脚で走り抜け、回収と成長テンポを支える候補。',
+    branchBase: 0,
+    sortieNote: '高速移動で資源を拾う',
+    traits: ['移動が速い', '回収補助', '軽量'],
+    color: 0xae73ff,
+    assetKey: ASSET_KEYS.dinoSelectPortraits.ornithomimus,
+    heroKey: ASSET_KEYS.dinoSelectHero.ornithomimus,
+    locked: 'research',
+    unlockCondition: '研究: オルニトミムス解析',
+    unlockHint: 'DNA 2450で解放',
   },
 ];
 
@@ -424,6 +520,8 @@ export class DinoSelectScreen {
     this.largeDinoFallback.clear();
     this.largeDinoSprite.texture = texture ?? Texture.EMPTY;
     this.largeDinoSprite.visible = !!texture;
+    this.largeDinoSprite.tint = locked ? 0x1f3030 : 0xffffff;
+    this.largeDinoSprite.alpha = locked ? 0.72 : 1;
 
     if (texture) {
       this.largeDinoSprite.anchor.set(0.5);
@@ -506,6 +604,8 @@ export class DinoSelectScreen {
       card.marker.clear();
       card.sprite.texture = texture ?? Texture.EMPTY;
       card.sprite.visible = !!texture;
+      card.sprite.tint = locked ? 0x243434 : 0xffffff;
+      card.sprite.alpha = locked ? (selected ? 0.78 : 0.6) : 1;
 
       if (texture) {
         const imageMaxWidth = card.dino.id === 'spinosaurus' ? 78 : 88;
@@ -538,7 +638,7 @@ export class DinoSelectScreen {
       return this.uiTextures.get('spinosaurusLockedSilhouette') ?? null;
     }
 
-    return null;
+    return this.heroTextures.get(dino?.id) ?? this.dinoTextures.get(dino?.id) ?? null;
   }
 
   renderPageControls() {
@@ -854,5 +954,7 @@ function isDebugDinoUnlocked(dinoId) {
   }
 
   const params = new URLSearchParams(window.location.search);
-  return params.get('debugUnlockDino') === dinoId || params.get('debugUnlockAllDinos') === '1';
+  return params.get('debugUnlockDino') === dinoId
+    || params.get('debugUnlockAllDinos') === '1'
+    || params.get('debugNewDinoQa') === '1';
 }

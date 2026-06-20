@@ -9,6 +9,12 @@ const DINO_LABELS = {
   triceratops: 'トリケラトプス',
   tyrannosaurus: 'ティラノサウルス',
   spinosaurus: 'スピノサウルス',
+  ankylosaurus: 'アンキロサウルス',
+  parasaurolophus: 'パラサウロロフス',
+  stegosaurus: 'ステゴサウルス',
+  pteranodon: 'プテラノドン',
+  compsognathus: 'コンプソグナトゥス',
+  ornithomimus: 'オルニトミムス',
 };
 
 const DINO_RESULT_LABELS = {
@@ -16,6 +22,12 @@ const DINO_RESULT_LABELS = {
   triceratops: 'トリケラ',
   tyrannosaurus: 'ティラノ',
   spinosaurus: 'スピノ',
+  ankylosaurus: 'アンキロ',
+  parasaurolophus: 'パラサ',
+  stegosaurus: 'ステゴ',
+  pteranodon: 'プテラ',
+  compsognathus: 'コンピー',
+  ornithomimus: 'オルニ',
 };
 
 const MODE_LABELS = {
@@ -67,6 +79,19 @@ const RESULT_EVOLUTION_PORTRAIT_PATHS = {
   spinosaurus_attack: 'assets/dinos/evolutions/portraits/spinosaurus_attack_portrait.png',
   spinosaurus_zero: 'assets/dinos/evolutions/portraits/spinosaurus_zero_portrait.png',
 };
+
+[
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+].forEach((dinoId) => {
+  ['speed', 'hunting', 'attack', 'zero'].forEach((tag) => {
+    RESULT_EVOLUTION_PORTRAIT_PATHS[`${dinoId}_${tag}`] = `assets/dinos/evolutions/portraits/${dinoId}_${tag}_portrait.png`;
+  });
+});
 
 const RESULT_PANEL = {
   x: 10,

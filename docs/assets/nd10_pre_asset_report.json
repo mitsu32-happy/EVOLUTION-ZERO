@@ -1,0 +1,35 @@
+{
+  "researchPointCleanup": {
+    "conversionRate": "researchPt 1 = DNA 5",
+    "migrationFlag": "researchPtConvertedToDna",
+    "legacyResearchPtConvertedToDna": true,
+    "doubleConversionPrevented": true
+  },
+  "branchIconTransparency": {
+    "checkedAssets": 48,
+    "transparentizedPortraits": 24,
+    "postFixIssues": 0,
+    "postFixIssueDetails": []
+  },
+  "sprintImpact": {
+    "checkedAssets": 14,
+    "edgeIssues": [],
+    "visualContact": "docs/assets/nd10_pre_sprint_impact_contact.png"
+  },
+  "researchUnlockCards": {
+    "expected": [
+      "ankylosaurus_unlock",
+      "parasaurolophus_unlock",
+      "stegosaurus_unlock",
+      "pteranodon_unlock",
+      "compsognathus_unlock",
+      "ornithomimus_unlock"
+    ],
+    "purchaseCheck": "6/6 success via SaveManager.buyResearch with DNA-only costs"
+  },
+  "unknownAndAdaptationTabs": {
+    "unknownCards": "spinosaurus + new 6 dino unlock cards only",
+    "adaptationCards": "implemented adaptation unlock cards only",
+    "futurePlaceholderCardsHidden": true
+  }
+}

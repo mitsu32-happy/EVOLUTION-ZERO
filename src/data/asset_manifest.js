@@ -4,18 +4,36 @@ export const ASSET_KEYS = {
     triceratops: 'dinos.triceratops',
     tyrannosaurus: 'dinos.tyrannosaurus',
     spinosaurus: 'dinos.spinosaurus',
+    ankylosaurus: 'dinos.ankylosaurus',
+    parasaurolophus: 'dinos.parasaurolophus',
+    stegosaurus: 'dinos.stegosaurus',
+    pteranodon: 'dinos.pteranodon',
+    compsognathus: 'dinos.compsognathus',
+    ornithomimus: 'dinos.ornithomimus',
   },
   dinoSelectPortraits: {
     velociraptor: 'dinoSelectPortraits.velociraptor',
     triceratops: 'dinoSelectPortraits.triceratops',
     tyrannosaurus: 'dinoSelectPortraits.tyrannosaurus',
     spinosaurus: 'dinoSelectPortraits.spinosaurus',
+    ankylosaurus: 'dinoSelectPortraits.ankylosaurus',
+    parasaurolophus: 'dinoSelectPortraits.parasaurolophus',
+    stegosaurus: 'dinoSelectPortraits.stegosaurus',
+    pteranodon: 'dinoSelectPortraits.pteranodon',
+    compsognathus: 'dinoSelectPortraits.compsognathus',
+    ornithomimus: 'dinoSelectPortraits.ornithomimus',
   },
   dinoSelectHero: {
     velociraptor: 'dinoSelectHero.velociraptor',
     triceratops: 'dinoSelectHero.triceratops',
     tyrannosaurus: 'dinoSelectHero.tyrannosaurus',
     spinosaurus: 'dinoSelectHero.spinosaurus',
+    ankylosaurus: 'dinoSelectHero.ankylosaurus',
+    parasaurolophus: 'dinoSelectHero.parasaurolophus',
+    stegosaurus: 'dinoSelectHero.stegosaurus',
+    pteranodon: 'dinoSelectHero.pteranodon',
+    compsognathus: 'dinoSelectHero.compsognathus',
+    ornithomimus: 'dinoSelectHero.ornithomimus',
   },
   evolutionHeroes: {
     velociraptorSpeed: 'evolutionHeroes.velociraptorSpeed',
@@ -95,6 +113,12 @@ export const ASSET_KEYS = {
     triceratops: 'dinos.triceratopsSheet',
     tyrannosaurus: 'dinos.tyrannosaurusSheet',
     spinosaurus: 'dinos.spinosaurusSheet',
+    ankylosaurus: 'dinos.ankylosaurusSheet',
+    parasaurolophus: 'dinos.parasaurolophusSheet',
+    stegosaurus: 'dinos.stegosaurusSheet',
+    pteranodon: 'dinos.pteranodonSheet',
+    compsognathus: 'dinos.compsognathusSheet',
+    ornithomimus: 'dinos.ornithomimusSheet',
   },
   enemies: {
     swarm: 'enemies.swarm',
@@ -323,6 +347,9 @@ export const ASSET_KEYS = {
     confirmButtonNo: 'commonUi.confirmButtonNo',
   },
   homeUi: {
+    homeBackgroundTop: 'homeUi.homeBackgroundTop',
+    homeBackgroundHero: 'homeUi.homeBackgroundHero',
+    homeBackgroundBottom: 'homeUi.homeBackgroundBottom',
     homeBackground: 'homeUi.homeBackground',
     evolutionZeroLogo: 'homeUi.evolutionZeroLogo',
     resourcePanel: 'homeUi.resourcePanel',
@@ -351,6 +378,7 @@ export const ASSET_KEYS = {
     newsButtonBack: 'homeUi.newsButtonBack',
     newsBadgeUpdate: 'homeUi.newsBadgeUpdate',
     newsBadgeNormal: 'homeUi.newsBadgeNormal',
+    newDinosBanner: 'homeUi.newDinosBanner',
   },
   titleSelectUi: {
     panel: 'titleSelectUi.panel',
@@ -719,12 +747,24 @@ export const ASSET_KEYS = {
     tyrannosaurusZeroOmegaBite: 'normalAttackEffects.tyrannosaurusZeroOmegaBite',
     spinosaurusWaterSlash: 'normalAttackEffects.spinosaurusWaterSlash',
     spinosaurusSplashHit: 'normalAttackEffects.spinosaurusSplashHit',
+    ankylosaurusTailClub: 'normalAttackEffects.ankylosaurusTailClub',
+    parasaurolophusSonicPulse: 'normalAttackEffects.parasaurolophusSonicPulse',
+    stegosaurusPlateQuake: 'normalAttackEffects.stegosaurusPlateQuake',
+    pteranodonWindLance: 'normalAttackEffects.pteranodonWindLance',
+    compsognathusPackBite: 'normalAttackEffects.compsognathusPackBite',
+    ornithomimusSprintKick: 'normalAttackEffects.ornithomimusSprintKick',
   },
   normalAttackIcons: {
     raptorClaw: 'normalAttackIcons.raptorClaw',
     triceratopsHorn: 'normalAttackIcons.triceratopsHorn',
     trexBite: 'normalAttackIcons.trexBite',
     spinosaurusWaterSlash: 'normalAttackIcons.spinosaurusWaterSlash',
+    ankylosaurusTailClub: 'normalAttackIcons.ankylosaurusTailClub',
+    parasaurolophusSonicPulse: 'normalAttackIcons.parasaurolophusSonicPulse',
+    stegosaurusPlateQuake: 'normalAttackIcons.stegosaurusPlateQuake',
+    pteranodonWindLance: 'normalAttackIcons.pteranodonWindLance',
+    compsognathusPackBite: 'normalAttackIcons.compsognathusPackBite',
+    ornithomimusSprintKick: 'normalAttackIcons.ornithomimusSprintKick',
   },
   adaptationIcons: {
     speed: 'adaptationIcons.speed',
@@ -3394,10 +3434,25 @@ export const ASSET_MANIFEST = {
     },
   },
   homeUi: {
+    homeBackgroundTop: {
+      path: 'assets/ui/home/home_background_top_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated top home backdrop for logo and news button area. Part of seamless three-zone home background.',
+    },
+    homeBackgroundHero: {
+      path: 'assets/ui/home/home_background_hero_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated middle home backdrop for dinosaur hero and sortie button area. Part of seamless three-zone home background.',
+    },
+    homeBackgroundBottom: {
+      path: 'assets/ui/home/home_background_bottom_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated bottom home backdrop for new-dino banner and menu area. Part of seamless three-zone home background.',
+    },
     homeBackground: {
       path: 'assets/ui/home/home_background.png',
       uiAsset: true,
-      note: 'MVP-076 generated dark DNA research facility background for the home screen.',
+      note: 'Existing home hero background retained for the dinosaur hero area.',
     },
     evolutionZeroLogo: {
       path: 'assets/ui/home/evolution_zero_logo.png',
@@ -3533,6 +3588,11 @@ export const ASSET_MANIFEST = {
       path: 'assets/ui/home/news_badge_update_a07d.png',
       uiAsset: true,
       note: 'MVP-A07d reuses compact badge chip; normal state is color/text-led.',
+    },
+    newDinosBanner: {
+      path: 'assets/ui/home/banner_new_dinos_six_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated horizontal banner art for the six new playable dinosaurs with baked Japanese release text.',
     },
   },
   titleSelectUi: {
@@ -5703,6 +5763,13 @@ const SPINOSAURUS_SHEET_META = {
   },
 };
 
+const NEW_DINO_ND04_ANIMATIONS = {
+  idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+  run: { row: 1, frames: [0, 1, 2, 3], fps: 8, loop: true },
+  attack: { row: 2, frames: [0, 1, 2, 3], fps: 10, loop: false },
+  death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+};
+
 Object.assign(ASSET_MANIFEST.dinos, {
   spinosaurus: {
     path: 'assets/dinos/spinosaurus.png',
@@ -5715,6 +5782,118 @@ Object.assign(ASSET_MANIFEST.dinos, {
     note: 'MVP-A01b dedicated spinosaurus 4x4 sprite sheet. QA frameEdgeIssues: 0.',
     ...SPINOSAURUS_SHEET_META,
   },
+  ankylosaurus: {
+    path: 'assets/dinos/ankylosaurus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated ankylosaurus gameplay sheet.',
+  },
+  ankylosaurusSheet: {
+    path: 'assets/dinos/ankylosaurus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.ankylosaurus',
+    note: 'ND04 generated ankylosaurus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 160, displayHeight: 122 },
+    animations: NEW_DINO_ND04_ANIMATIONS,
+  },
+  parasaurolophus: {
+    path: 'assets/dinos/parasaurolophus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated parasaurolophus gameplay sheet.',
+  },
+  parasaurolophusSheet: {
+    path: 'assets/dinos/parasaurolophus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.parasaurolophus',
+    note: 'ND04 generated parasaurolophus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 150, displayHeight: 120 },
+    animations: NEW_DINO_ND04_ANIMATIONS,
+  },
+  stegosaurus: {
+    path: 'assets/dinos/stegosaurus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated stegosaurus gameplay sheet.',
+  },
+  stegosaurusSheet: {
+    path: 'assets/dinos/stegosaurus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.stegosaurus',
+    note: 'ND04 generated stegosaurus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 164, displayHeight: 124 },
+    animations: NEW_DINO_ND04_ANIMATIONS,
+  },
+  pteranodon: {
+    path: 'assets/dinos/pteranodon.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated pteranodon gameplay sheet.',
+  },
+  pteranodonSheet: {
+    path: 'assets/dinos/pteranodon_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.pteranodon',
+    note: 'ND04 generated pteranodon 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 154, displayHeight: 118 },
+    animations: {
+      ...NEW_DINO_ND04_ANIMATIONS,
+      run: { row: 1, frames: [0, 1, 2, 3], fps: 9, loop: true },
+    },
+  },
+  compsognathus: {
+    path: 'assets/dinos/compsognathus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated compsognathus gameplay sheet.',
+  },
+  compsognathusSheet: {
+    path: 'assets/dinos/compsognathus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.compsognathus',
+    note: 'ND04 generated compsognathus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 122, displayHeight: 96 },
+    animations: {
+      ...NEW_DINO_ND04_ANIMATIONS,
+      run: { row: 1, frames: [0, 1, 2, 3], fps: 11, loop: true },
+      attack: { row: 2, frames: [0, 1, 2, 3], fps: 12, loop: false },
+    },
+  },
+  ornithomimus: {
+    path: 'assets/dinos/ornithomimus.png',
+    fallbackStill: true,
+    note: 'ND04 static fallback extracted from generated ornithomimus gameplay sheet.',
+  },
+  ornithomimusSheet: {
+    path: 'assets/dinos/ornithomimus_sheet.png',
+    spriteSheet: true,
+    fallbackKey: 'dinos.ornithomimus',
+    note: 'ND04 generated ornithomimus 4x4 gameplay sprite sheet. QA edgeIssues: 0, missingFrames: 0.',
+    postprocess: {
+      source: 'AI generated sheet, chroma-key removed and recentered into 384px fixed cells.',
+      report: 'docs/assets/nd04_new_dinos_sprite_report.json',
+    },
+    sheet: { columns: 4, rows: 4, frameWidth: 384, frameHeight: 384, displayWidth: 140, displayHeight: 122 },
+    animations: {
+      ...NEW_DINO_ND04_ANIMATIONS,
+      run: { row: 1, frames: [0, 1, 2, 3], fps: 11, loop: true },
+    },
+  },
 });
 
 Object.assign(ASSET_MANIFEST.dinoSelectPortraits, {
@@ -5723,6 +5902,36 @@ Object.assign(ASSET_MANIFEST.dinoSelectPortraits, {
     uiPortrait: true,
     note: 'MVP-A11b cleaned spinosaurus portrait for selector/HUD icon use; detached top fragments removed.',
   },
+  ankylosaurus: {
+    path: 'assets/dinos/dino_select/ankylosaurus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for ankylosaurus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  parasaurolophus: {
+    path: 'assets/dinos/dino_select/parasaurolophus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for parasaurolophus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  stegosaurus: {
+    path: 'assets/dinos/dino_select/stegosaurus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for stegosaurus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  pteranodon: {
+    path: 'assets/dinos/dino_select/pteranodon_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for pteranodon. Base art only; gameplay sprite sheet is deferred.',
+  },
+  compsognathus: {
+    path: 'assets/dinos/dino_select/compsognathus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for compsognathus. Base art only; gameplay sprite sheet is deferred.',
+  },
+  ornithomimus: {
+    path: 'assets/dinos/dino_select/ornithomimus_portrait.png',
+    uiPortrait: true,
+    note: 'ND03 front-facing locked roster portrait for ornithomimus. Base art only; gameplay sprite sheet is deferred.',
+  },
 });
 
 Object.assign(ASSET_MANIFEST.dinoSelectHero, {
@@ -5730,6 +5939,36 @@ Object.assign(ASSET_MANIFEST.dinoSelectHero, {
     path: 'assets/dinos/dino_select/spinosaurus_hero.png',
     uiHero: true,
     note: 'MVP-A01b dedicated spinosaurus hero art.',
+  },
+  ankylosaurus: {
+    path: 'assets/dinos/dino_select/ankylosaurus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked ankylosaurus roster display.',
+  },
+  parasaurolophus: {
+    path: 'assets/dinos/dino_select/parasaurolophus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked parasaurolophus roster display.',
+  },
+  stegosaurus: {
+    path: 'assets/dinos/dino_select/stegosaurus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked stegosaurus roster display.',
+  },
+  pteranodon: {
+    path: 'assets/dinos/dino_select/pteranodon_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked pteranodon roster display.',
+  },
+  compsognathus: {
+    path: 'assets/dinos/dino_select/compsognathus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked compsognathus roster display.',
+  },
+  ornithomimus: {
+    path: 'assets/dinos/dino_select/ornithomimus_hero.png',
+    uiHero: true,
+    note: 'ND03 front-facing intimidation hero art for locked ornithomimus roster display.',
   },
 });
 
@@ -5792,6 +6031,63 @@ Object.assign(ASSET_MANIFEST.normalAttackEffects, {
     spriteSheet: true,
     note: 'MVP-A01b dedicated animated splash hit accent. QA frameEdgeIssues: 0.',
   },
+  ankylosaurusTailClub: {
+    path: 'assets/effects/attacks/ankylosaurus_tail_club.png',
+    note: 'ND05 dedicated transparent normal attack effect for ankylosaurus tail-club shock burst. QA edgeIssues: 0.',
+  },
+  parasaurolophusSonicPulse: {
+    path: 'assets/effects/attacks/parasaurolophus_sonic_pulse.png',
+    note: 'ND05 dedicated transparent normal attack effect for parasaurolophus sonic pulse cone. QA edgeIssues: 0.',
+  },
+  stegosaurusPlateQuake: {
+    path: 'assets/effects/attacks/stegosaurus_plate_quake.png',
+    note: 'ND05 dedicated transparent normal attack effect for stegosaurus plate quake ripple. QA edgeIssues: 0.',
+  },
+  pteranodonWindLance: {
+    path: 'assets/effects/attacks/pteranodon_wind_lance.png',
+    note: 'ND05 dedicated transparent normal attack effect for pteranodon wind lance. QA edgeIssues: 0.',
+  },
+  compsognathusPackBite: {
+    path: 'assets/effects/attacks/compsognathus_pack_bite.png',
+    note: 'ND05 dedicated transparent normal attack effect for compsognathus pack bite slashes. QA edgeIssues: 0.',
+  },
+  ornithomimusSprintKick: {
+    path: 'assets/effects/attacks/ornithomimus_sprint_kick.png',
+    note: 'ND05 dedicated transparent normal attack effect for ornithomimus sprint kick impact. QA edgeIssues: 0.',
+  },
+});
+
+Object.assign(ASSET_MANIFEST.normalAttackIcons, {
+  ankylosaurusTailClub: {
+    path: 'assets/ui/skills/icon_ankylosaurus_tail_club.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for ankylosaurus tail-club shock burst.',
+  },
+  parasaurolophusSonicPulse: {
+    path: 'assets/ui/skills/icon_parasaurolophus_sonic_pulse.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for parasaurolophus sonic pulse.',
+  },
+  stegosaurusPlateQuake: {
+    path: 'assets/ui/skills/icon_stegosaurus_plate_quake.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for stegosaurus plate quake.',
+  },
+  pteranodonWindLance: {
+    path: 'assets/ui/skills/icon_pteranodon_wind_lance.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for pteranodon wind lance.',
+  },
+  compsognathusPackBite: {
+    path: 'assets/ui/skills/icon_compsognathus_pack_bite.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for compsognathus pack bite.',
+  },
+  ornithomimusSprintKick: {
+    path: 'assets/ui/skills/icon_ornithomimus_sprint_kick.png',
+    uiAsset: true,
+    note: 'ND05 generated normal attack icon for ornithomimus sprint kick.',
+  },
 });
 
 Object.assign(ASSET_MANIFEST.specialEffects, {
@@ -5826,6 +6122,167 @@ Object.assign(ASSET_MANIFEST.specialEffects, {
     note: 'MVP-A01b dedicated animated Abyssal Tide burst effect. QA frameEdgeIssues: 0.',
   },
 });
+
+const ND06_NEW_DINO_IDS = [
+  'ankylosaurus',
+  'parasaurolophus',
+  'stegosaurus',
+  'pteranodon',
+  'compsognathus',
+  'ornithomimus',
+];
+
+const ND06_EVOLUTION_TAGS = ['speed', 'hunting', 'attack', 'zero'];
+
+const ND06_EVOLUTION_SHEET_META = {
+  spriteSheet: true,
+  sheet: { columns: 4, rows: 4, frameWidth: 512, frameHeight: 512 },
+  animations: {
+    idle: { row: 0, frames: [0, 1, 2, 3], fps: 7, loop: true },
+    run: { row: 1, frames: [0, 1, 2, 3], fps: 10, loop: true },
+    attack: { row: 2, frames: [0, 1, 2, 3], fps: 12, loop: false },
+    death: { row: 3, frames: [0, 1, 2, 3], fps: 6, loop: false },
+  },
+  anchor: { x: 0.5, y: 0.72 },
+};
+
+const ND09F_ANKYLOSAURUS_EVOLUTION_DISPLAY = {
+  speed: { displayWidth: 178, displayHeight: 134 },
+  hunting: { displayWidth: 180, displayHeight: 136 },
+  attack: { displayWidth: 188, displayHeight: 142 },
+  zero: { displayWidth: 190, displayHeight: 144 },
+};
+
+const ND09G_REMAINING_EVOLUTION_DISPLAY = {
+  parasaurolophus: {
+    speed: { displayWidth: 164, displayHeight: 126 },
+    hunting: { displayWidth: 166, displayHeight: 128 },
+    attack: { displayWidth: 172, displayHeight: 132 },
+    zero: { displayWidth: 174, displayHeight: 134 },
+  },
+  stegosaurus: {
+    speed: { displayWidth: 178, displayHeight: 132 },
+    hunting: { displayWidth: 180, displayHeight: 134 },
+    attack: { displayWidth: 188, displayHeight: 140 },
+    zero: { displayWidth: 190, displayHeight: 142 },
+  },
+  pteranodon: {
+    speed: { displayWidth: 166, displayHeight: 124 },
+    hunting: { displayWidth: 168, displayHeight: 126 },
+    attack: { displayWidth: 172, displayHeight: 128 },
+    zero: { displayWidth: 174, displayHeight: 130 },
+  },
+  compsognathus: {
+    speed: { displayWidth: 138, displayHeight: 106 },
+    hunting: { displayWidth: 142, displayHeight: 108 },
+    attack: { displayWidth: 146, displayHeight: 112 },
+    zero: { displayWidth: 150, displayHeight: 114 },
+  },
+  ornithomimus: {
+    speed: { displayWidth: 160, displayHeight: 132 },
+    hunting: { displayWidth: 164, displayHeight: 134 },
+    attack: { displayWidth: 170, displayHeight: 140 },
+    zero: { displayWidth: 172, displayHeight: 142 },
+  },
+};
+
+function toPascalBranchKey(id = '', tag = '') {
+  return `${id}${tag.charAt(0).toUpperCase()}${tag.slice(1)}`;
+}
+
+function toCamelBranchEffectKey(branchId = '') {
+  return branchId.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+const ND06_NEW_DINO_BRANCHES = ND06_NEW_DINO_IDS.flatMap((dinoId) => (
+  ND06_EVOLUTION_TAGS.map((tag) => {
+    const id = `${dinoId}_${tag}`;
+    const key = toPascalBranchKey(dinoId, tag);
+    const effectKey = toCamelBranchEffectKey(id);
+
+    return { id, dinoId, tag, key, effectKey };
+  })
+));
+
+Object.assign(ASSET_KEYS.evolutionHeroes, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionHeroes.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.evolutionPortraits, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionPortraits.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.evolutionSheets, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionSheets.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.evolutionSpecialIcons, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ key }) => [key, `evolutionSpecialIcons.${key}`]),
+));
+
+Object.assign(ASSET_KEYS.normalAttackEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ effectKey }) => [`${effectKey}Attack`, `normalAttackEffects.${effectKey}Attack`]),
+));
+
+Object.assign(ASSET_KEYS.specialEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ effectKey }) => [`${effectKey}Ultimate`, `specialEffects.${effectKey}Ultimate`]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionHeroes, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, key }) => [key, {
+    path: `assets/dinos/evolutions/heroes/${id}_hero.png`,
+    note: 'ND06 generated dedicated new-dino evolution hero art.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionPortraits, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, key }) => [key, {
+    path: `assets/dinos/evolutions/portraits/${id}_portrait.png`,
+    note: 'ND06 generated dedicated new-dino evolution portrait.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionSheets, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, dinoId, tag, key }) => {
+    const displayOverride = dinoId === 'ankylosaurus'
+      ? ND09F_ANKYLOSAURUS_EVOLUTION_DISPLAY[tag]
+      : ND09G_REMAINING_EVOLUTION_DISPLAY[dinoId]?.[tag] ?? null;
+    const sheet = displayOverride
+      ? { ...ND06_EVOLUTION_SHEET_META.sheet, ...displayOverride }
+      : ND06_EVOLUTION_SHEET_META.sheet;
+
+    return [key, {
+      path: `assets/dinos/evolutions/sheets/${id}_sheet.png`,
+      fallbackKey: `dinos.${dinoId}Sheet`,
+      note: dinoId === 'ankylosaurus'
+        ? 'ND09f baseline-aligned ankylosaurus evolution gameplay sprite sheet. QA edgeIssues: 0.'
+        : 'ND09g baseline-aligned new-dino evolution gameplay sprite sheet. QA edgeIssues: 0.',
+      ...ND06_EVOLUTION_SHEET_META,
+      sheet,
+    }];
+  }),
+));
+
+Object.assign(ASSET_MANIFEST.evolutionSpecialIcons, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ dinoId, tag, key }) => [key, {
+    path: `assets/ui/hud/special_icons/special_${tag}_${dinoId}.png`,
+    note: 'ND06 generated dedicated evolution special icon.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.normalAttackEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, effectKey }) => [`${effectKey}Attack`, {
+    path: `assets/effects/attacks/evolutions/${id}_attack.png`,
+    note: 'ND06 generated dedicated evolution normal attack accent. QA edgeIssues: 0.',
+  }]),
+));
+
+Object.assign(ASSET_MANIFEST.specialEffects, Object.fromEntries(
+  ND06_NEW_DINO_BRANCHES.map(({ id, effectKey }) => [`${effectKey}Ultimate`, {
+    path: `assets/effects/specials/new_dinos/special_${id}_ultimate.png`,
+    note: 'ND06 generated dedicated evolution ultimate/special effect. QA edgeIssues: 0.',
+  }]),
+));
 
 export function flattenAssetManifest(manifest = ASSET_MANIFEST) {
   return Object.entries(manifest).flatMap(([category, entries]) => (

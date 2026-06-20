@@ -1,0 +1,293 @@
+﻿{
+  "assets": [
+    {
+      "id": "ankylosaurus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_094d79db9d306ba8016a3161a97a4481918fa2d16b012d1e33.png",
+      "sourceSize": [
+        1672,
+        941
+      ],
+      "sourceAlphaBbox": [
+        81,
+        60,
+        1473,
+        860
+      ],
+      "hero": "public\\assets\\dinos\\dino_select\\ankylosaurus_hero.png",
+      "heroSize": [
+        560,
+        390
+      ],
+      "heroAlphaBbox": [
+        8,
+        39,
+        552,
+        351
+      ],
+      "portrait": "public\\assets\\dinos\\dino_select\\ankylosaurus_portrait.png",
+      "portraitSize": [
+        512,
+        320
+      ],
+      "portraitAlphaBbox": [
+        6,
+        16,
+        505,
+        303
+      ],
+      "icon": "public\\assets\\dinos\\portraits\\ankylosaurus.png",
+      "iconSize": [
+        144,
+        144
+      ],
+      "iconAlphaBbox": [
+        5,
+        33,
+        139,
+        110
+      ],
+      "qualityNotes": "ND03 frontal intimidation hero crop; chroma-key alpha; no known missing asset reference."
+    },
+    {
+      "id": "parasaurolophus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_094d79db9d306ba8016a3161eade248191becc0c6864e91d80.png",
+      "sourceSize": [
+        1691,
+        930
+      ],
+      "sourceAlphaBbox": [
+        270,
+        29,
+        1164,
+        896
+      ],
+      "hero": "public\\assets\\dinos\\dino_select\\parasaurolophus_hero.png",
+      "heroSize": [
+        560,
+        390
+      ],
+      "heroAlphaBbox": [
+        87,
+        8,
+        472,
+        382
+      ],
+      "portrait": "public\\assets\\dinos\\dino_select\\parasaurolophus_portrait.png",
+      "portraitSize": [
+        512,
+        320
+      ],
+      "portraitAlphaBbox": [
+        97,
+        6,
+        414,
+        314
+      ],
+      "icon": "public\\assets\\dinos\\portraits\\parasaurolophus.png",
+      "iconSize": [
+        144,
+        144
+      ],
+      "iconAlphaBbox": [
+        5,
+        7,
+        139,
+        136
+      ],
+      "qualityNotes": "ND03 frontal intimidation hero crop; chroma-key alpha; no known missing asset reference."
+    },
+    {
+      "id": "stegosaurus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_094d79db9d306ba8016a31622ef48881919edd75a0552d2a38.png",
+      "sourceSize": [
+        1691,
+        930
+      ],
+      "sourceAlphaBbox": [
+        88,
+        26,
+        1384,
+        890
+      ],
+      "hero": "public\\assets\\dinos\\dino_select\\stegosaurus_hero.png",
+      "heroSize": [
+        560,
+        390
+      ],
+      "heroAlphaBbox": [
+        8,
+        14,
+        552,
+        376
+      ],
+      "portrait": "public\\assets\\dinos\\dino_select\\stegosaurus_portrait.png",
+      "portraitSize": [
+        512,
+        320
+      ],
+      "portraitAlphaBbox": [
+        25,
+        6,
+        486,
+        314
+      ],
+      "icon": "public\\assets\\dinos\\portraits\\stegosaurus.png",
+      "iconSize": [
+        144,
+        144
+      ],
+      "iconAlphaBbox": [
+        5,
+        27,
+        139,
+        116
+      ],
+      "qualityNotes": "ND03 frontal intimidation hero crop; chroma-key alpha; no known missing asset reference."
+    },
+    {
+      "id": "pteranodon",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_094d79db9d306ba8016a31627719b081919af3aeefe07d6200.png",
+      "sourceSize": [
+        1691,
+        930
+      ],
+      "sourceAlphaBbox": [
+        66,
+        57,
+        1609,
+        872
+      ],
+      "hero": "public\\assets\\dinos\\dino_select\\pteranodon_hero.png",
+      "heroSize": [
+        560,
+        390
+      ],
+      "heroAlphaBbox": [
+        8,
+        51,
+        552,
+        338
+      ],
+      "portrait": "public\\assets\\dinos\\dino_select\\pteranodon_portrait.png",
+      "portraitSize": [
+        512,
+        320
+      ],
+      "portraitAlphaBbox": [
+        6,
+        28,
+        506,
+        292
+      ],
+      "icon": "public\\assets\\dinos\\portraits\\pteranodon.png",
+      "iconSize": [
+        144,
+        144
+      ],
+      "iconAlphaBbox": [
+        5,
+        37,
+        139,
+        107
+      ],
+      "qualityNotes": "ND03 frontal intimidation hero crop; chroma-key alpha; no known missing asset reference."
+    },
+    {
+      "id": "compsognathus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_094d79db9d306ba8016a3162bc1e1081919515211f10384472.png",
+      "sourceSize": [
+        1691,
+        930
+      ],
+      "sourceAlphaBbox": [
+        118,
+        75,
+        1574,
+        864
+      ],
+      "hero": "public\\assets\\dinos\\dino_select\\compsognathus_hero.png",
+      "heroSize": [
+        560,
+        390
+      ],
+      "heroAlphaBbox": [
+        8,
+        48,
+        552,
+        342
+      ],
+      "portrait": "public\\assets\\dinos\\dino_select\\compsognathus_portrait.png",
+      "portraitSize": [
+        512,
+        320
+      ],
+      "portraitAlphaBbox": [
+        6,
+        25,
+        506,
+        295
+      ],
+      "icon": "public\\assets\\dinos\\portraits\\compsognathus.png",
+      "iconSize": [
+        144,
+        144
+      ],
+      "iconAlphaBbox": [
+        5,
+        36,
+        139,
+        108
+      ],
+      "qualityNotes": "ND03 frontal intimidation hero crop; chroma-key alpha; no known missing asset reference."
+    },
+    {
+      "id": "ornithomimus",
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_094d79db9d306ba8016a316305f5308191bf968ed19aa68020.png",
+      "sourceSize": [
+        1691,
+        930
+      ],
+      "sourceAlphaBbox": [
+        357,
+        40,
+        1097,
+        897
+      ],
+      "hero": "public\\assets\\dinos\\dino_select\\ornithomimus_hero.png",
+      "heroSize": [
+        560,
+        390
+      ],
+      "heroAlphaBbox": [
+        119,
+        8,
+        441,
+        382
+      ],
+      "portrait": "public\\assets\\dinos\\dino_select\\ornithomimus_portrait.png",
+      "portraitSize": [
+        512,
+        320
+      ],
+      "portraitAlphaBbox": [
+        123,
+        6,
+        388,
+        314
+      ],
+      "icon": "public\\assets\\dinos\\portraits\\ornithomimus.png",
+      "iconSize": [
+        144,
+        144
+      ],
+      "iconAlphaBbox": [
+        14,
+        5,
+        129,
+        139
+      ],
+      "qualityNotes": "ND03 frontal intimidation hero crop; chroma-key alpha; no known missing asset reference."
+    }
+  ],
+  "notes": "Base six hero/portrait/icon only. Evolution branch assets deferred to ND06."
+}

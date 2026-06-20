@@ -2,10 +2,10 @@ import { Container, Graphics, Text } from 'pixi.js';
 import { UI_COLORS } from './ui_theme.js';
 
 const TIPS = [
-  '適応Lvを上げると進化候補が出現します',
-  'ZEROルートは高難度クリアで解析されます',
-  'デイリーは毎日0時に更新されます',
-  '研究Ptはデイリーと解析で集められます',
+  '適応Lvは進化条件に影響します',
+  'ZEROは最高難度の特殊ルートです',
+  'DNAは研究と解放に使用します',
+  '恐竜ごとの特徴を活かしましょう',
 ];
 
 export class LoadingUi {

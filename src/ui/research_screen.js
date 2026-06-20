@@ -110,6 +110,11 @@ const CATEGORY_COLORS = {
   [RESEARCH_CATEGORY_IDS.analysisConversion]: 0xffb13b,
 };
 
+function isScrollableResearchCategory(categoryId) {
+  return categoryId === RESEARCH_CATEGORY_IDS.bodyEnhancement
+    || categoryId === RESEARCH_CATEGORY_IDS.unknownDomain;
+}
+
 function getResearchCompanionDinoId(data = {}) {
   return data.currentHomeDino ?? data.favoriteDinoId ?? data.homeDinoId ?? 'velociraptor';
 }
@@ -188,7 +193,7 @@ export class ResearchScreen {
     this.subtitle = this.createText('進化の可能性を解析する', 12, '#7cf7d4', 320);
     this.dnaIcon = new Sprite(Texture.EMPTY);
     this.researchPtIcon = new Sprite(Texture.EMPTY);
-    this.dnaText = this.createText('', 21, '#fff0b4', 120);
+    this.dnaText = this.createText('', 21, '#fff0b4', 180);
     this.researchPtText = this.createText('', 21, '#d7f2ff', 120);
     this.categoryTitle = this.createText('', 14, '#7cf7d4', 160);
     this.categoryNote = this.createText('', 10, '#cbe0da', 184);
@@ -281,6 +286,20 @@ export class ResearchScreen {
     this.bottomNav.setActive?.('research');
     this.render();
     this.view.visible = true;
+  }
+
+  setInitialCategory(categoryId = null) {
+    if (!categoryId) {
+      return;
+    }
+    const exists = RESEARCH_CATEGORIES.some((category) => category.id === categoryId);
+    if (!exists) {
+      return;
+    }
+    this.selectedCategory = categoryId;
+    this.bodyScrollOffset = 0;
+    this.gamepadFocusIndex = 0;
+    this.gamepadFocusArea = 'card';
   }
 
   hide() {
@@ -724,8 +743,8 @@ export class ResearchScreen {
   showConversionConfirm(rate) {
     this.confirmDialog.show({
       title: '解析変換',
-      message: '余剰DNAを研究Ptへ変換しますか？',
-      detail: `DNA ${rate.dnaCost} を消費\n研究Pt ${rate.researchPtGain} を取得`,
+      message: '解析変換は廃止されました。',
+      detail: '研究コストはDNAへ統合されています。',
       confirmLabel: 'はい',
       cancelLabel: 'いいえ',
       onConfirm: () => this.executeConversion(rate),
@@ -738,7 +757,7 @@ export class ResearchScreen {
   executeConversion(rate) {
     const success = this.saveManager.convertDnaToResearchPt?.(rate.id);
     this.noticeText.text = success
-      ? `DNA ${rate.dnaCost} を研究Pt ${rate.researchPtGain} へ変換しました`
+      ? '変換しました'
       : 'DNAが不足しています';
     this.render();
   }
@@ -978,7 +997,7 @@ export class ResearchScreen {
     }
 
     if (!card.canBuy) {
-      this.noticeText.text = 'DNAまたは研究Ptが不足しています';
+      this.noticeText.text = 'DNAが不足しています';
       return;
     }
 
@@ -1005,8 +1024,8 @@ export class ResearchScreen {
 
     this.confirmDialog.show({
       title: '卵を孵化',
-      message: 'DNAと研究Ptを使って卵を孵化しますか？',
-      detail: `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost}\n必要研究Pt ${COMPANION_HATCH_CONFIG.researchPtCost}`,
+      message: 'DNAを使って卵を孵化しますか？',
+      detail: `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost}`,
       confirmLabel: '孵化',
       cancelLabel: 'やめる',
       onConfirm: () => {
@@ -1104,13 +1123,13 @@ export class ResearchScreen {
 
     this.gamepadFocusIndex = nextIndex;
     const card = cards[nextIndex];
-    if (card?.item?.category === RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (isScrollableResearchCategory(card?.item?.category)) {
       this.ensureCardVisible(card);
     }
   }
 
   handleGamepadScrollInput(gamepadManager = null) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -1125,7 +1144,7 @@ export class ResearchScreen {
   }
 
   handleGamepadScroll(rightY = 0) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -1145,7 +1164,7 @@ export class ResearchScreen {
   }
 
   scrollBodyByRows(deltaRows) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -1367,13 +1386,13 @@ export class ResearchScreen {
     this.title.position.set(this.width / 2, 34);
     this.subtitle.anchor.set(0.5);
     this.subtitle.position.set(this.width / 2, 66);
-    this.dnaIcon.position.set(50, 132);
+    this.dnaIcon.position.set(132, 132);
     this.dnaIcon.width = 24;
     this.dnaIcon.height = 24;
     this.researchPtIcon.position.set(218, 132);
     this.researchPtIcon.width = 24;
     this.researchPtIcon.height = 24;
-    this.dnaText.position.set(80, 134);
+    this.dnaText.position.set(162, 134);
     this.researchPtText.position.set(248, 134);
     this.summaryTitle.position.set(SUMMARY_PANEL.x + 16, SUMMARY_PANEL.y + 10);
     this.summaryBody.position.set(SUMMARY_PANEL.x + 16, SUMMARY_PANEL.y + 34);
@@ -1392,24 +1411,23 @@ export class ResearchScreen {
       height: this.height,
     }, 0.82);
     this.applySprite(this.corePanel, this.textures.get('dnaCorePanel'), CORE_PANEL, 0.88);
-    this.applySprite(this.dnaIcon, this.textures.get('icon:dnaResource'), { x: 50, y: 132, width: 24, height: 24 });
-    this.applySprite(this.researchPtIcon, this.textures.get('icon:researchPt'), { x: 218, y: 132, width: 24, height: 24 });
+    this.applySprite(this.dnaIcon, this.textures.get('icon:dnaResource'), { x: 132, y: 132, width: 24, height: 24 });
+    this.researchPtIcon.visible = false;
   }
 
   render() {
     const data = this.saveManager.getData();
-    const researchPt = data.researchPt ?? Math.floor((data.totalExpGained ?? 0) * 0.12);
     const selected = RESEARCH_CATEGORIES.find((category) => category.id === this.selectedCategory) ?? RESEARCH_CATEGORIES[0];
     const categoryView = this.getCategoryView(selected, data);
 
     this.dnaText.text = `DNA ${this.formatNumber(data.ownedDna ?? 0)}`;
-    this.researchPtText.text = `研究Pt ${this.formatNumber(researchPt)}`;
+    this.researchPtText.visible = false;
     this.categoryTitle.text = categoryView.name;
     this.categoryNote.text = categoryView.material;
     this.summaryTitle.text = categoryView.name;
     this.summaryBody.text = this.truncate(categoryView.role, 34);
     this.scrollHintText.text = '';
-    this.renderBodyScrollBar(selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement);
+    this.renderBodyScrollBar(isScrollableResearchCategory(selected.id));
 
     this.drawSummary(selected);
     this.renderCategoryButtons();
@@ -1464,19 +1482,13 @@ export class ResearchScreen {
 
     this.companionResearchView.view.visible = false;
 
-    if (selected.id === RESEARCH_CATEGORY_IDS.analysisConversion) {
-      this.renderConversionCards();
-      return;
-    }
-
     const allItems = getResearchItemsByCategory(selected.id);
-    const isBodyCategory = selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement;
-    const bodyItems = allItems;
-    const items = isBodyCategory ? bodyItems : allItems.slice(0, 3);
-    const maxScroll = this.getBodyMaxScroll(bodyItems.length);
+    const isScrollableCategory = isScrollableResearchCategory(selected.id);
+    const items = isScrollableCategory ? allItems : allItems.slice(0, 3);
+    const maxScroll = this.getBodyMaxScroll(allItems.length);
 
-    this.bodyScrollOffset = isBodyCategory ? Math.min(this.bodyScrollOffset, maxScroll) : 0;
-    this.renderBodyScrollBar(isBodyCategory);
+    this.bodyScrollOffset = isScrollableCategory ? Math.min(this.bodyScrollOffset, maxScroll) : 0;
+    this.renderBodyScrollBar(isScrollableCategory);
     this.cards.forEach((card, index) => {
       const item = items[index];
 
@@ -1485,10 +1497,10 @@ export class ResearchScreen {
         return;
       }
 
-      const y = isBodyCategory
+      const y = isScrollableCategory
         ? CARD.y + index * (CARD.height + CARD.gap) - this.bodyScrollOffset
         : CARD.y + index * (CARD.height + CARD.gap);
-      const withinViewport = !isBodyCategory || (y >= BODY_SCROLL_VIEW.top && y + CARD.height <= BODY_SCROLL_VIEW.bottom);
+      const withinViewport = !isScrollableCategory || (y >= BODY_SCROLL_VIEW.top && y + CARD.height <= BODY_SCROLL_VIEW.bottom);
 
       card.view.position.set(CARD_LAYOUT.x, y);
       card.view.visible = withinViewport;
@@ -1509,8 +1521,7 @@ export class ResearchScreen {
         && !isMax
         && this.isPurchasableResearch(item)
         && cost !== null
-        && (data.ownedDna ?? 0) >= cost.dna
-        && (data.researchPt ?? 0) >= cost.researchPt;
+        && (data.ownedDna ?? 0) >= cost.dna;
       const frameKey = isMax ? 'cardCompleted' : isLocked ? 'cardLocked' : 'cardFrame';
       const color = isMax ? UI_COLORS.green : isLocked ? UI_COLORS.danger : CATEGORY_COLORS[item.category] ?? UI_COLORS.dna;
       const layout = this.getCardLayout();
@@ -1541,21 +1552,19 @@ export class ResearchScreen {
       card.step.text = isLocked
         ? this.truncate(item.unlockHint ?? '解析待ち', layout.stepLimit)
         : isDinoUnlock
-          ? this.truncate(this.formatCost(cost), layout.stepLimit)
+          ? this.truncate(item.unlockHint ?? '研究で解放できます', layout.stepLimit)
           : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
-      const isBodyEnhancement = item.category === RESEARCH_CATEGORY_IDS.bodyEnhancement;
       const dnaIcon = this.textures.get('icon:dnaResource');
-      const ptIcon = this.textures.get('icon:researchPt');
       const bodyCostY = 39;
       const bodyCostX = layout.badgeX - 6;
       card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
-      card.costPtIcon.texture = ptIcon ?? Texture.EMPTY;
-      card.costDnaIcon.visible = isBodyEnhancement && !!dnaIcon && !!cost && !isMax;
-      card.costPtIcon.visible = isBodyEnhancement && !!ptIcon && !!cost && !isMax && cost.researchPt > 0;
-      card.costDnaText.visible = isBodyEnhancement && !!cost && !isMax;
-      card.costPtText.visible = isBodyEnhancement && !!cost && !isMax && cost.researchPt > 0;
+      card.costPtIcon.texture = Texture.EMPTY;
+      card.costDnaIcon.visible = !!dnaIcon && !!cost && !isMax;
+      card.costPtIcon.visible = false;
+      card.costDnaText.visible = !!cost && !isMax;
+      card.costPtText.visible = false;
       card.costDnaText.text = cost ? `${cost.dna}` : '';
-      card.costPtText.text = cost?.researchPt ? `${cost.researchPt}` : '';
+      card.costPtText.text = '';
       card.costDnaIcon.position.set(bodyCostX, bodyCostY);
       card.costDnaIcon.width = 14;
       card.costDnaIcon.height = 14;
@@ -1571,10 +1580,10 @@ export class ResearchScreen {
         : isLocked
           ? 'LOCK'
           : canBuy
-            ? (isBodyEnhancement ? '' : isDinoUnlock ? '研究する' : this.formatCostShort(cost))
+            ? (isDinoUnlock ? '研究する' : '')
             : this.getInsufficientLabel(cost, data);
       card.status.style.fill = isLocked || (!canBuy && !isMax) ? '#ffaaa2' : isMax ? '#b6ffd0' : '#e7fff6';
-      if (isBodyEnhancement) {
+      if (!isDinoUnlock) {
         card.status.position.set(layout.badgeX + layout.badgeWidth / 2, 63);
         card.status.style.fontSize = 10;
         card.status.style.wordWrapWidth = layout.badgeWidth - 6;
@@ -1607,7 +1616,7 @@ export class ResearchScreen {
       name: 'お供研究',
       shortName: 'お供',
       iconName: 'companionResearch',
-      material: 'DNA + 研究Pt',
+      material: 'DNA',
       role: '卵の孵化と所持お供恐竜の強化を行います。',
     };
   }
@@ -1737,8 +1746,7 @@ export class ResearchScreen {
     const hasEgg = companion.eggPending || companion.eggIncubating;
     const isReady = hatchEntry?.action === 'claim';
     const canStart = hatchEntry?.action === 'start'
-      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
-      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost;
     const canUse = Boolean(isReady || canStart);
 
     ui.hatchDevice.texture = hatchTexture ?? this.textures.get('companionEgg') ?? Texture.EMPTY;
@@ -1750,9 +1758,9 @@ export class ResearchScreen {
       : companion.eggIncubating
         ? `残り時間: ${Number.isFinite(completeAt) ? this.formatHatchRemain(completeAt) : 'まもなく'}`
         : hasEgg
-          ? 'DNAと研究Ptを消費して、卵を1個ずつ孵化します。'
+          ? 'DNAを消費して、卵を1個ずつ孵化します。'
           : 'プレイ中に卵を入手すると、ここで孵化できます。';
-    ui.hatchCost.text = `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost} / 必要研究Pt ${COMPANION_HATCH_CONFIG.researchPtCost}\n孵化時間 ${this.formatHatchDuration(COMPANION_HATCH_CONFIG.durationMs)}`;
+    ui.hatchCost.text = `必要DNA ${COMPANION_HATCH_CONFIG.dnaCost}\n孵化時間 ${this.formatHatchDuration(COMPANION_HATCH_CONFIG.durationMs)}`;
     ui.hatchButton.sprite.texture = buttonTexture ?? Texture.EMPTY;
     ui.hatchButton.sprite.visible = !!buttonTexture;
     ui.hatchButton.sprite.width = 154;
@@ -1886,8 +1894,7 @@ export class ResearchScreen {
     }
 
     const canStart = item.action === 'start'
-      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
-      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost;
 
     this.handleCompanionHatchAction({ item, canBuy: item.action === 'claim' || canStart });
   }
@@ -1988,7 +1995,7 @@ export class ResearchScreen {
         ? '新しいお供恐竜を受け取れます。'
         : companion.eggIncubating
           ? '時間経過で孵化します。'
-          : 'DNAと研究Ptでお供恐竜の卵を孵化します。',
+          : 'DNAでお供恐竜の卵を孵化します。',
       action: isReady ? 'claim' : companion.eggIncubating ? 'wait' : 'start',
       category: RESEARCH_CATEGORY_IDS.companion,
     };
@@ -2000,8 +2007,7 @@ export class ResearchScreen {
     const completeAt = Date.parse(data.companion?.hatchCompleteAt ?? '');
     const isReady = item.action === 'claim';
     const canStart = item.action === 'start'
-      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost
-      && (data.researchPt ?? 0) >= COMPANION_HATCH_CONFIG.researchPtCost;
+      && (data.ownedDna ?? 0) >= COMPANION_HATCH_CONFIG.dnaCost;
     const canBuy = isReady || canStart;
 
     card.item = item;
@@ -2024,7 +2030,7 @@ export class ResearchScreen {
     this.hideAdaptationUnlockSupplements(card);
     card.name.text = item.name;
     card.desc.text = item.action === 'start'
-      ? 'DNAと研究Ptで孵化を開始'
+      ? 'DNAで孵化を開始'
       : item.action === 'wait'
         ? 'オフライン中も時間が進みます'
         : '新しいお供恐竜を受け取り';
@@ -2042,7 +2048,7 @@ export class ResearchScreen {
         ? '孵化中'
         : canStart ? '孵化' : this.getInsufficientLabel({
           dna: COMPANION_HATCH_CONFIG.dnaCost,
-          researchPt: COMPANION_HATCH_CONFIG.researchPtCost,
+          researchPt: 0,
         }, data);
     card.status.style.fill = canBuy ? '#e7fff6' : '#ffaaa2';
     card.costBadge.visible = !!this.textures.get('costBadge');
@@ -2050,15 +2056,13 @@ export class ResearchScreen {
     card.buttonBg.visible = !card.costBadge.visible;
     this.drawBadgeFallback(card.buttonBg, color, isReady, layout);
     const dnaIcon = this.textures.get('icon:dnaResource');
-    const ptIcon = this.textures.get('icon:researchPt');
     card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
-    card.costPtIcon.texture = ptIcon ?? Texture.EMPTY;
     card.costDnaIcon.visible = item.action === 'start' && !!dnaIcon;
-    card.costPtIcon.visible = item.action === 'start' && !!ptIcon;
+    card.costPtIcon.visible = false;
     card.costDnaText.visible = item.action === 'start';
-    card.costPtText.visible = item.action === 'start';
+    card.costPtText.visible = false;
     card.costDnaText.text = `${COMPANION_HATCH_CONFIG.dnaCost}`;
-    card.costPtText.text = `${COMPANION_HATCH_CONFIG.researchPtCost}`;
+    card.costPtText.text = '';
     card.costDnaIcon.position.set(layout.badgeX - 6, 36);
     card.costDnaText.position.set(layout.badgeX + 12, 35);
     card.costPtIcon.position.set(layout.badgeX + 48, 36);
@@ -2141,8 +2145,8 @@ export class ResearchScreen {
       this.drawCardFrame(card, 'analysisConvertPanel', UI_COLORS.gold, false, layout);
       this.applyCardIcon(card, 'analysisConversion', RESEARCH_CATEGORY_IDS.analysisConversion, UI_COLORS.gold, false, layout);
       card.progress.clear();
-      card.name.text = `DNA ${rate.dnaCost} → 研究Pt ${rate.researchPtGain}`;
-      card.desc.text = '余剰DNAを研究Ptへ変換する';
+      card.name.text = '解析変換は廃止';
+      card.desc.text = '研究コストはDNAへ統合';
       card.effect.text = '高レート変換';
       card.step.text = '補助解析';
       card.status.text = canBuy ? '変換' : 'DNA不足';
@@ -2163,11 +2167,11 @@ export class ResearchScreen {
   }
 
   getBodyResearchRenderCount() {
-    return getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length;
+    return getResearchItemsByCategory(this.selectedCategory).length;
   }
 
   isBodyScrollTarget(event) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -2341,15 +2345,14 @@ export class ResearchScreen {
     card.tagText.style.wordWrapWidth = safe.tagWidth - 8;
 
     const dnaIcon = this.textures.get('icon:dnaResource');
-    const ptIcon = this.textures.get('icon:researchPt');
     card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
     card.costDnaIcon.visible = !!dnaIcon && !!cost && !isMax;
-    card.costPtIcon.texture = ptIcon ?? Texture.EMPTY;
-    card.costPtIcon.visible = !!ptIcon && !!cost && !isMax;
+    card.costPtIcon.texture = Texture.EMPTY;
+    card.costPtIcon.visible = false;
     card.costDnaText.visible = !!cost && !isMax;
-    card.costPtText.visible = !!cost && !isMax && cost.researchPt > 0;
+    card.costPtText.visible = false;
     card.costDnaText.text = cost ? `${cost.dna}` : '';
-    card.costPtText.text = cost?.researchPt ? `${cost.researchPt}` : '';
+    card.costPtText.text = '';
     card.costDnaIcon.position.set(safe.costX, safe.costY);
     card.costDnaText.position.set(safe.costX + 17, safe.costY - 1);
     card.costPtIcon.position.set(safe.costX + 48, safe.costY);
@@ -2541,28 +2544,12 @@ export class ResearchScreen {
       return '';
     }
 
-    if (cost.dna > 0 && cost.researchPt > 0) {
-      return `DNA ${cost.dna} / 研究Pt ${cost.researchPt}`;
-    }
-
-    if (cost.researchPt > 0) {
-      return `研究Pt ${cost.researchPt}`;
-    }
-
     return `DNA ${cost.dna}`;
   }
 
   formatCostShort(cost) {
     if (!cost) {
       return '';
-    }
-
-    if (cost.dna > 0 && cost.researchPt > 0) {
-      return `D${cost.dna}/P${cost.researchPt}`;
-    }
-
-    if (cost.researchPt > 0) {
-      return `研究Pt ${cost.researchPt}`;
     }
 
     return `DNA ${cost.dna}`;
@@ -2573,13 +2560,6 @@ export class ResearchScreen {
       return '上限';
     }
 
-    const dnaShort = (data.ownedDna ?? 0) < cost.dna;
-    const ptShort = (data.researchPt ?? 0) < cost.researchPt;
-
-    if (dnaShort && ptShort) {
-      return '素材不足';
-    }
-
-    return ptShort ? 'Pt不足' : 'DNA不足';
+    return (data.ownedDna ?? 0) < cost.dna ? 'DNA不足' : '上限';
   }
 }
