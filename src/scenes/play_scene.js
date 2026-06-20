@@ -3690,7 +3690,8 @@ export class PlayScene {
     const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionUpgradeLevels) ?? this.activeCompanion.behavior ?? {};
 
     if (this.activeCompanion.type === 'exp') {
-      this.companionExpMultiplier = behavior.expMultiplier ?? 1.045;
+      const synergyBonus = Math.max(0, this.getActiveCompanionSynergyValue('expGain'));
+      this.companionExpMultiplier = (behavior.expMultiplier ?? 1.045) * (1 + synergyBonus);
       this.gameState.expGainMultiplier = (this.gameState.expGainMultiplier ?? 1) * this.companionExpMultiplier;
       this.companionLastAction = 'exp boost';
       this.triggerCompanionAction('expTrace', this.player.position, { duration: 0.62 });
@@ -4245,9 +4246,20 @@ export class PlayScene {
     });
     selectedTargets.forEach(({ enemy }) => {
       const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
-      const skillMultiplier = this.activeCompanion.id === 'spino_pup'
-        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue('companionSkillDamage'))
+      const synergyDamageTypes = {
+        spino_pup: 'companionSkillDamage',
+        stego_calf: 'areaDamage',
+        ptera_chick: 'rangedSupport',
+        compy_pack: 'lowHpPursuit',
+      };
+      const synergyDamageType = synergyDamageTypes[this.activeCompanion.id] ?? null;
+      const enemyMaxHp = Math.max(1, enemy.maxHp ?? enemy.hp ?? 1);
+      const lowHpMultiplier = this.activeCompanion.id === 'compy_pack' && enemy.hp <= enemyMaxHp * 0.45
+        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue('lowHpPursuit'))
         : 1;
+      const skillMultiplier = synergyDamageType && synergyDamageType !== 'lowHpPursuit'
+        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue(synergyDamageType))
+        : lowHpMultiplier;
       const damage = Math.round((behavior.damage ?? 8) * bossMultiplier * skillMultiplier);
       enemy.takeDamage?.(damage);
       this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
@@ -4298,7 +4310,8 @@ export class PlayScene {
         return;
       }
 
-      const healed = this.gameState.healPlayer(behavior.heal ?? 3);
+      const healMultiplier = 1 + Math.max(0, this.getActiveCompanionSynergyValue('healing'));
+      const healed = this.gameState.healPlayer((behavior.heal ?? 3) * healMultiplier);
       if (healed > 0) {
         this.triggerCompanionAction('healPulse', this.player.position, { duration: 0.7 });
         this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion);
@@ -4323,7 +4336,8 @@ export class PlayScene {
 
   applyCompanionPickupAssist(behavior, delta, options = {}) {
     const { expOnly = false, effectCooldown = 1.05 } = options;
-    const radius = behavior.pickupRadius ?? 135;
+    const synergyRangeBonus = Math.max(0, this.getActiveCompanionSynergyValue(expOnly ? 'expGain' : 'pickupRange'));
+    const radius = (behavior.pickupRadius ?? 135) * (1 + synergyRangeBonus);
     const pullMultiplier = behavior.pullMultiplier ?? 1.12;
     const maxProcess = this.performanceLoadSheddingLevel >= 1 ? 24 : 48;
     let targetedCount = 0;
