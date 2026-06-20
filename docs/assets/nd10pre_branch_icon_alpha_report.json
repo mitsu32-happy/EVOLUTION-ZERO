@@ -1,0 +1,818 @@
+[
+  {
+    "kind": "portrait",
+    "id": "ankylosaurus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_speed_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ankylosaurus_speed",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_speed_ankylosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ankylosaurus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_hunting_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ankylosaurus_hunting",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_hunting_ankylosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ankylosaurus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_attack_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ankylosaurus_attack",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_attack_ankylosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ankylosaurus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_zero_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ankylosaurus_zero",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_zero_ankylosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "parasaurolophus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_speed_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "parasaurolophus_speed",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_speed_parasaurolophus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "parasaurolophus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_hunting_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "parasaurolophus_hunting",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_hunting_parasaurolophus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "parasaurolophus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_attack_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "parasaurolophus_attack",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_attack_parasaurolophus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "parasaurolophus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_zero_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "parasaurolophus_zero",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_zero_parasaurolophus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "stegosaurus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_speed_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "stegosaurus_speed",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_speed_stegosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "stegosaurus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_hunting_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "stegosaurus_hunting",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_hunting_stegosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "stegosaurus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_attack_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "stegosaurus_attack",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_attack_stegosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "stegosaurus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_zero_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "stegosaurus_zero",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_zero_stegosaurus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "pteranodon_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_speed_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "pteranodon_speed",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_speed_pteranodon.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "pteranodon_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_hunting_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "pteranodon_hunting",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_hunting_pteranodon.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "pteranodon_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_attack_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "pteranodon_attack",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_attack_pteranodon.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "pteranodon_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_zero_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "pteranodon_zero",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_zero_pteranodon.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "compsognathus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_speed_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "compsognathus_speed",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_speed_compsognathus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "compsognathus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_hunting_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "compsognathus_hunting",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_hunting_compsognathus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "compsognathus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_attack_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "compsognathus_attack",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_attack_compsognathus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "compsognathus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_zero_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "compsognathus_zero",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_zero_compsognathus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ornithomimus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_speed_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ornithomimus_speed",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_speed_ornithomimus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ornithomimus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_hunting_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ornithomimus_hunting",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_hunting_ornithomimus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ornithomimus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_attack_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ornithomimus_attack",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_attack_ornithomimus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  },
+  {
+    "kind": "portrait",
+    "id": "ornithomimus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_zero_portrait.png",
+    "missing": false,
+    "size": [
+      512,
+      320
+    ],
+    "cornerAlpha": [
+      180,
+      180,
+      180,
+      180
+    ],
+    "edgeOpaquePixels": 1664
+  },
+  {
+    "kind": "special",
+    "id": "ornithomimus_zero",
+    "path": "public\\assets\\ui\\hud\\special_icons\\special_zero_ornithomimus.png",
+    "missing": false,
+    "size": [
+      128,
+      128
+    ],
+    "cornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "edgeOpaquePixels": 0
+  }
+]

@@ -22,6 +22,7 @@ import {
   ZERO_TITLES,
   getTitleFrameForTitle,
 } from '../data/reward_titles.js';
+import { RESEARCH_PT_TO_DNA_RATE } from '../data/research.js';
 
 function getDebugResearchPt() {
   if (typeof window === 'undefined') {
@@ -70,22 +71,15 @@ const TUTORIAL_PAGES = {
       tooltipPosition: 'top',
     },
     {
-      title: 'デイリー',
-      body: '毎日更新される目標です。\n達成すると研究Ptを獲得できます。',
-      target: 'デイリー',
-      targetId: 'home.daily',
-      tooltipPosition: 'top',
-    },
-    {
       title: 'ホーム',
-      body: '出撃やデイリー確認など、ゲームの拠点です。',
+      body: '出撃や研究、図鑑確認など、ゲームの拠点です。',
       target: 'ホーム',
       targetId: 'home.navHome',
       tooltipPosition: 'top',
     },
     {
       title: '研究',
-      body: 'DNAや研究Ptがたまったら、新しい恐竜や強化を解放できます。',
+      body: 'DNAがたまったら、新しい恐竜や強化を解放できます。',
       target: '研究 / 解放',
       targetId: 'home.research',
       tooltipPosition: 'top',
@@ -991,7 +985,6 @@ export class ScreenManager {
     const bounds = {
       home: {
         'home.deploy': { x: 38, y: 418, width: 314, height: 76, radius: 14 },
-        'home.daily': { x: 38, y: 520, width: 314, height: 180, radius: 14 },
         'home.navHome': { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.research': { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.codex': { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
@@ -1306,7 +1299,11 @@ export class ScreenManager {
       return;
     }
 
-    this.saveManager.data.researchPt = Math.max(this.saveManager.data.researchPt ?? 0, value);
+    this.saveManager.data.ownedDna = Math.max(
+      this.saveManager.data.ownedDna ?? 0,
+      value * RESEARCH_PT_TO_DNA_RATE,
+    );
+    this.saveManager.data.researchPt = 0;
   }
 
   applyDebugDna() {

@@ -77,7 +77,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.spinosaurus,
     locked: 'research',
     unlockCondition: '研究: スピノサウルス解析',
-    unlockHint: '研究Pt 220で解放',
+    unlockHint: 'DNA 1100???',
   },
   {
     id: 'ankylosaurus',
@@ -92,9 +92,8 @@ const BASE_DINOS = [
     assetKey: ASSET_KEYS.dinoSelectPortraits.ankylosaurus,
     heroKey: ASSET_KEYS.dinoSelectHero.ankylosaurus,
     locked: 'research',
-    previewWhenLocked: true,
     unlockCondition: '研究: アンキロサウルス解析',
-    unlockHint: 'DNA 1400 / 研究Pt 260で解放',
+    unlockHint: 'DNA 2700???',
   },
   {
     id: 'parasaurolophus',
@@ -109,9 +108,8 @@ const BASE_DINOS = [
     assetKey: ASSET_KEYS.dinoSelectPortraits.parasaurolophus,
     heroKey: ASSET_KEYS.dinoSelectHero.parasaurolophus,
     locked: 'research',
-    previewWhenLocked: true,
     unlockCondition: '研究: パラサウロロフス解析',
-    unlockHint: 'DNA 1200 / 研究Pt 250で解放',
+    unlockHint: 'DNA 2450???',
   },
   {
     id: 'stegosaurus',
@@ -126,9 +124,8 @@ const BASE_DINOS = [
     assetKey: ASSET_KEYS.dinoSelectPortraits.stegosaurus,
     heroKey: ASSET_KEYS.dinoSelectHero.stegosaurus,
     locked: 'research',
-    previewWhenLocked: true,
     unlockCondition: '研究: ステゴサウルス解析',
-    unlockHint: 'DNA 1400 / 研究Pt 270で解放',
+    unlockHint: 'DNA 2750???',
   },
   {
     id: 'pteranodon',
@@ -143,9 +140,8 @@ const BASE_DINOS = [
     assetKey: ASSET_KEYS.dinoSelectPortraits.pteranodon,
     heroKey: ASSET_KEYS.dinoSelectHero.pteranodon,
     locked: 'research',
-    previewWhenLocked: true,
     unlockCondition: '研究: プテラノドン解析',
-    unlockHint: 'DNA 1300 / 研究Pt 260で解放',
+    unlockHint: 'DNA 2600???',
   },
   {
     id: 'compsognathus',
@@ -160,9 +156,8 @@ const BASE_DINOS = [
     assetKey: ASSET_KEYS.dinoSelectPortraits.compsognathus,
     heroKey: ASSET_KEYS.dinoSelectHero.compsognathus,
     locked: 'research',
-    previewWhenLocked: true,
     unlockCondition: '研究: コンプソグナトゥス解析',
-    unlockHint: 'DNA 1100 / 研究Pt 240で解放',
+    unlockHint: 'DNA 2300???',
   },
   {
     id: 'ornithomimus',
@@ -177,9 +172,8 @@ const BASE_DINOS = [
     assetKey: ASSET_KEYS.dinoSelectPortraits.ornithomimus,
     heroKey: ASSET_KEYS.dinoSelectHero.ornithomimus,
     locked: 'research',
-    previewWhenLocked: true,
     unlockCondition: '研究: オルニトミムス解析',
-    unlockHint: 'DNA 1200 / 研究Pt 250で解放',
+    unlockHint: 'DNA 2450???',
   },
 ];
 

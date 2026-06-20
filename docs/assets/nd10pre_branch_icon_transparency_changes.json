@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ankylosaurus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_speed_portrait.png",
+    "transparentizedPixels": 6387
+  },
+  {
+    "id": "ankylosaurus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_hunting_portrait.png",
+    "transparentizedPixels": 6383
+  },
+  {
+    "id": "ankylosaurus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_attack_portrait.png",
+    "transparentizedPixels": 6347
+  },
+  {
+    "id": "ankylosaurus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ankylosaurus_zero_portrait.png",
+    "transparentizedPixels": 6375
+  },
+  {
+    "id": "parasaurolophus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_speed_portrait.png",
+    "transparentizedPixels": 6344
+  },
+  {
+    "id": "parasaurolophus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_hunting_portrait.png",
+    "transparentizedPixels": 6316
+  },
+  {
+    "id": "parasaurolophus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_attack_portrait.png",
+    "transparentizedPixels": 6280
+  },
+  {
+    "id": "parasaurolophus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\parasaurolophus_zero_portrait.png",
+    "transparentizedPixels": 6290
+  },
+  {
+    "id": "stegosaurus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_speed_portrait.png",
+    "transparentizedPixels": 6386
+  },
+  {
+    "id": "stegosaurus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_hunting_portrait.png",
+    "transparentizedPixels": 6384
+  },
+  {
+    "id": "stegosaurus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_attack_portrait.png",
+    "transparentizedPixels": 6324
+  },
+  {
+    "id": "stegosaurus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\stegosaurus_zero_portrait.png",
+    "transparentizedPixels": 6319
+  },
+  {
+    "id": "pteranodon_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_speed_portrait.png",
+    "transparentizedPixels": 6386
+  },
+  {
+    "id": "pteranodon_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_hunting_portrait.png",
+    "transparentizedPixels": 6384
+  },
+  {
+    "id": "pteranodon_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_attack_portrait.png",
+    "transparentizedPixels": 6366
+  },
+  {
+    "id": "pteranodon_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\pteranodon_zero_portrait.png",
+    "transparentizedPixels": 6347
+  },
+  {
+    "id": "compsognathus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_speed_portrait.png",
+    "transparentizedPixels": 6386
+  },
+  {
+    "id": "compsognathus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_hunting_portrait.png",
+    "transparentizedPixels": 6383
+  },
+  {
+    "id": "compsognathus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_attack_portrait.png",
+    "transparentizedPixels": 6387
+  },
+  {
+    "id": "compsognathus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\compsognathus_zero_portrait.png",
+    "transparentizedPixels": 6385
+  },
+  {
+    "id": "ornithomimus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_speed_portrait.png",
+    "transparentizedPixels": 6363
+  },
+  {
+    "id": "ornithomimus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_hunting_portrait.png",
+    "transparentizedPixels": 6338
+  },
+  {
+    "id": "ornithomimus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_attack_portrait.png",
+    "transparentizedPixels": 6263
+  },
+  {
+    "id": "ornithomimus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\portraits\\ornithomimus_zero_portrait.png",
+    "transparentizedPixels": 6344
+  }
+]

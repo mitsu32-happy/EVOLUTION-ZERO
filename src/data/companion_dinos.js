@@ -1,8 +1,8 @@
 import { ASSET_KEYS } from './asset_manifest.js';
 
 export const COMPANION_HATCH_CONFIG = {
-  dnaCost: 90,
-  researchPtCost: 12,
+  dnaCost: 150,
+  researchPtCost: 0,
   durationMs: 3 * 60 * 60 * 1000,
   debugDurationMs: 3000,
 };

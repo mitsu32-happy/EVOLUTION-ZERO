@@ -1,0 +1,1521 @@
+[
+  {
+    "kind": "normal_effect",
+    "id": "ornithomimus_sprint_kick",
+    "path": "public\\assets\\effects\\attacks\\ornithomimus_sprint_kick.png",
+    "size": [
+      512,
+      512
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "branch_effect",
+    "id": "ornithomimus_speed",
+    "path": "public\\assets\\effects\\attacks\\evolutions\\ornithomimus_speed_attack.png",
+    "size": [
+      384,
+      192
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "ultimate_effect",
+    "id": "ornithomimus_speed",
+    "path": "public\\assets\\effects\\specials\\new_dinos\\special_ornithomimus_speed_ultimate.png",
+    "size": [
+      512,
+      256
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "sprite_sheet",
+    "id": "ornithomimus_speed",
+    "path": "public\\assets\\dinos\\evolutions\\sheets\\ornithomimus_speed_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          71,
+          165,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          165,
+          71,
+          72
+        ],
+        "alphaPixels": 22396
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          76,
+          148,
+          434,
+          439
+        ],
+        "margin": [
+          76,
+          148,
+          77,
+          72
+        ],
+        "alphaPixels": 24293
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          71,
+          153,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          153,
+          71,
+          72
+        ],
+        "alphaPixels": 24128
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          71,
+          165,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          165,
+          71,
+          72
+        ],
+        "alphaPixels": 22676
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          71,
+          249,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          249,
+          71,
+          72
+        ],
+        "alphaPixels": 18122
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          71,
+          294,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          294,
+          71,
+          72
+        ],
+        "alphaPixels": 17191
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          71,
+          245,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          245,
+          71,
+          72
+        ],
+        "alphaPixels": 19098
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          71,
+          247,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          247,
+          71,
+          72
+        ],
+        "alphaPixels": 18049
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "bbox": [
+          71,
+          180,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          180,
+          71,
+          72
+        ],
+        "alphaPixels": 30517
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          71,
+          290,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          290,
+          71,
+          72
+        ],
+        "alphaPixels": 23082
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          71,
+          195,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          195,
+          71,
+          72
+        ],
+        "alphaPixels": 20380
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          71,
+          188,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          188,
+          71,
+          72
+        ],
+        "alphaPixels": 29172
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "bbox": [
+          71,
+          223,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          223,
+          71,
+          72
+        ],
+        "alphaPixels": 24562
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          71,
+          290,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          290,
+          71,
+          72
+        ],
+        "alphaPixels": 25315
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          71,
+          323,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          323,
+          71,
+          72
+        ],
+        "alphaPixels": 21439
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          71,
+          331,
+          440,
+          439
+        ],
+        "margin": [
+          71,
+          331,
+          71,
+          72
+        ],
+        "alphaPixels": 19434
+      }
+    ]
+  },
+  {
+    "kind": "branch_effect",
+    "id": "ornithomimus_hunting",
+    "path": "public\\assets\\effects\\attacks\\evolutions\\ornithomimus_hunting_attack.png",
+    "size": [
+      384,
+      192
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "ultimate_effect",
+    "id": "ornithomimus_hunting",
+    "path": "public\\assets\\effects\\specials\\new_dinos\\special_ornithomimus_hunting_ultimate.png",
+    "size": [
+      512,
+      256
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "sprite_sheet",
+    "id": "ornithomimus_hunting",
+    "path": "public\\assets\\dinos\\evolutions\\sheets\\ornithomimus_hunting_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          87,
+          142,
+          424,
+          439
+        ],
+        "margin": [
+          87,
+          142,
+          87,
+          72
+        ],
+        "alphaPixels": 23830
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          94,
+          142,
+          416,
+          439
+        ],
+        "margin": [
+          94,
+          142,
+          95,
+          72
+        ],
+        "alphaPixels": 23117
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          98,
+          142,
+          413,
+          439
+        ],
+        "margin": [
+          98,
+          142,
+          98,
+          72
+        ],
+        "alphaPixels": 23162
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          100,
+          142,
+          412,
+          439
+        ],
+        "margin": [
+          100,
+          142,
+          99,
+          72
+        ],
+        "alphaPixels": 24062
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          68,
+          247,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          247,
+          68,
+          72
+        ],
+        "alphaPixels": 23530
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          68,
+          256,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          256,
+          68,
+          72
+        ],
+        "alphaPixels": 21112
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          68,
+          253,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          253,
+          68,
+          72
+        ],
+        "alphaPixels": 21521
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          68,
+          255,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          255,
+          68,
+          72
+        ],
+        "alphaPixels": 21728
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "bbox": [
+          68,
+          250,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          250,
+          68,
+          72
+        ],
+        "alphaPixels": 28130
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          68,
+          205,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          205,
+          68,
+          72
+        ],
+        "alphaPixels": 29113
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          68,
+          156,
+          441,
+          437
+        ],
+        "margin": [
+          68,
+          156,
+          70,
+          74
+        ],
+        "alphaPixels": 20851
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          68,
+          186,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          186,
+          68,
+          72
+        ],
+        "alphaPixels": 28968
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "bbox": [
+          68,
+          193,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          193,
+          68,
+          72
+        ],
+        "alphaPixels": 36414
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          68,
+          298,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          298,
+          68,
+          72
+        ],
+        "alphaPixels": 25566
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          68,
+          328,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          328,
+          68,
+          72
+        ],
+        "alphaPixels": 22023
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          68,
+          316,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          316,
+          68,
+          72
+        ],
+        "alphaPixels": 22953
+      }
+    ]
+  },
+  {
+    "kind": "branch_effect",
+    "id": "ornithomimus_attack",
+    "path": "public\\assets\\effects\\attacks\\evolutions\\ornithomimus_attack_attack.png",
+    "size": [
+      384,
+      192
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "ultimate_effect",
+    "id": "ornithomimus_attack",
+    "path": "public\\assets\\effects\\specials\\new_dinos\\special_ornithomimus_attack_ultimate.png",
+    "size": [
+      512,
+      256
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "sprite_sheet",
+    "id": "ornithomimus_attack",
+    "path": "public\\assets\\dinos\\evolutions\\sheets\\ornithomimus_attack_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          62,
+          138,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          138,
+          62,
+          72
+        ],
+        "alphaPixels": 31035
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          66,
+          130,
+          446,
+          439
+        ],
+        "margin": [
+          66,
+          130,
+          65,
+          72
+        ],
+        "alphaPixels": 30686
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          79,
+          130,
+          432,
+          439
+        ],
+        "margin": [
+          79,
+          130,
+          79,
+          72
+        ],
+        "alphaPixels": 28781
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          70,
+          130,
+          440,
+          439
+        ],
+        "margin": [
+          70,
+          130,
+          71,
+          72
+        ],
+        "alphaPixels": 29087
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          62,
+          177,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          177,
+          62,
+          72
+        ],
+        "alphaPixels": 26410
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          62,
+          220,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          220,
+          62,
+          72
+        ],
+        "alphaPixels": 24743
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          62,
+          222,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          222,
+          62,
+          72
+        ],
+        "alphaPixels": 26724
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          62,
+          191,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          191,
+          62,
+          72
+        ],
+        "alphaPixels": 26756
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "bbox": [
+          84,
+          130,
+          426,
+          439
+        ],
+        "margin": [
+          84,
+          130,
+          85,
+          72
+        ],
+        "alphaPixels": 37505
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          62,
+          225,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          225,
+          62,
+          72
+        ],
+        "alphaPixels": 30448
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          62,
+          171,
+          300,
+          432
+        ],
+        "margin": [
+          62,
+          171,
+          211,
+          79
+        ],
+        "alphaPixels": 23224
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          146,
+          190,
+          449,
+          439
+        ],
+        "margin": [
+          146,
+          190,
+          62,
+          72
+        ],
+        "alphaPixels": 27297
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "bbox": [
+          62,
+          135,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          135,
+          62,
+          72
+        ],
+        "alphaPixels": 49593
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          62,
+          283,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          283,
+          62,
+          72
+        ],
+        "alphaPixels": 29843
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          62,
+          273,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          273,
+          62,
+          72
+        ],
+        "alphaPixels": 28880
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          62,
+          319,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          319,
+          62,
+          72
+        ],
+        "alphaPixels": 21419
+      }
+    ]
+  },
+  {
+    "kind": "branch_effect",
+    "id": "ornithomimus_zero",
+    "path": "public\\assets\\effects\\attacks\\evolutions\\ornithomimus_zero_attack.png",
+    "size": [
+      384,
+      192
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "ultimate_effect",
+    "id": "ornithomimus_zero",
+    "path": "public\\assets\\effects\\specials\\new_dinos\\special_ornithomimus_zero_ultimate.png",
+    "size": [
+      512,
+      256
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": []
+  },
+  {
+    "kind": "sprite_sheet",
+    "id": "ornithomimus_zero",
+    "path": "public\\assets\\dinos\\evolutions\\sheets\\ornithomimus_zero_sheet.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          80,
+          124,
+          430,
+          439
+        ],
+        "margin": [
+          80,
+          124,
+          81,
+          72
+        ],
+        "alphaPixels": 27859
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          70,
+          124,
+          441,
+          439
+        ],
+        "margin": [
+          70,
+          124,
+          70,
+          72
+        ],
+        "alphaPixels": 27107
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          78,
+          124,
+          434,
+          439
+        ],
+        "margin": [
+          78,
+          124,
+          77,
+          72
+        ],
+        "alphaPixels": 27703
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          62,
+          124,
+          449,
+          439
+        ],
+        "margin": [
+          62,
+          124,
+          62,
+          72
+        ],
+        "alphaPixels": 31423
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          59,
+          220,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          220,
+          59,
+          72
+        ],
+        "alphaPixels": 26414
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          59,
+          237,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          237,
+          59,
+          72
+        ],
+        "alphaPixels": 23201
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          59,
+          223,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          223,
+          59,
+          72
+        ],
+        "alphaPixels": 24661
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          59,
+          225,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          225,
+          59,
+          72
+        ],
+        "alphaPixels": 25901
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "bbox": [
+          68,
+          124,
+          443,
+          439
+        ],
+        "margin": [
+          68,
+          124,
+          68,
+          72
+        ],
+        "alphaPixels": 47932
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          59,
+          242,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          242,
+          59,
+          72
+        ],
+        "alphaPixels": 33890
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          59,
+          166,
+          452,
+          438
+        ],
+        "margin": [
+          59,
+          166,
+          59,
+          73
+        ],
+        "alphaPixels": 36635
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          59,
+          159,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          159,
+          59,
+          72
+        ],
+        "alphaPixels": 35777
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "bbox": [
+          59,
+          179,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          179,
+          59,
+          72
+        ],
+        "alphaPixels": 45145
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          59,
+          269,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          269,
+          59,
+          72
+        ],
+        "alphaPixels": 28743
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          59,
+          285,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          285,
+          59,
+          72
+        ],
+        "alphaPixels": 31317
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          59,
+          292,
+          452,
+          439
+        ],
+        "margin": [
+          59,
+          292,
+          59,
+          72
+        ],
+        "alphaPixels": 29107
+      }
+    ]
+  },
+  {
+    "kind": "sprite_sheet",
+    "id": "ornithomimus_base",
+    "path": "public\\assets\\dinos\\ornithomimus_sheet.png",
+    "size": [
+      1536,
+      1536
+    ],
+    "edgeOpaquePixels": 0,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          70,
+          168,
+          312,
+          335
+        ],
+        "margin": [
+          70,
+          168,
+          71,
+          48
+        ],
+        "alphaPixels": 8750
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          79,
+          168,
+          304,
+          335
+        ],
+        "margin": [
+          79,
+          168,
+          79,
+          48
+        ],
+        "alphaPixels": 8152
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          58,
+          176,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          176,
+          58,
+          48
+        ],
+        "alphaPixels": 9582
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          58,
+          183,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          183,
+          58,
+          48
+        ],
+        "alphaPixels": 8969
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          58,
+          204,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          204,
+          58,
+          48
+        ],
+        "alphaPixels": 9860
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          58,
+          182,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          182,
+          58,
+          48
+        ],
+        "alphaPixels": 11241
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          58,
+          186,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          186,
+          58,
+          48
+        ],
+        "alphaPixels": 10744
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          58,
+          207,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          207,
+          58,
+          48
+        ],
+        "alphaPixels": 10405
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "bbox": [
+          58,
+          229,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          229,
+          58,
+          48
+        ],
+        "alphaPixels": 11569
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "bbox": [
+          58,
+          248,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          248,
+          58,
+          48
+        ],
+        "alphaPixels": 10195
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "bbox": [
+          58,
+          205,
+          323,
+          335
+        ],
+        "margin": [
+          58,
+          205,
+          60,
+          48
+        ],
+        "alphaPixels": 12477
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "bbox": [
+          58,
+          217,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          217,
+          58,
+          48
+        ],
+        "alphaPixels": 10695
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "bbox": [
+          76,
+          168,
+          308,
+          335
+        ],
+        "margin": [
+          76,
+          168,
+          75,
+          48
+        ],
+        "alphaPixels": 13346
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "bbox": [
+          58,
+          204,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          204,
+          58,
+          48
+        ],
+        "alphaPixels": 12985
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "bbox": [
+          58,
+          222,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          222,
+          58,
+          48
+        ],
+        "alphaPixels": 11680
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "bbox": [
+          58,
+          282,
+          325,
+          335
+        ],
+        "margin": [
+          58,
+          282,
+          58,
+          48
+        ],
+        "alphaPixels": 7171
+      }
+    ]
+  }
+]

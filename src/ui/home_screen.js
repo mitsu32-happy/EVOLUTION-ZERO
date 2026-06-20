@@ -8,7 +8,6 @@ import {
 } from '../data/evolution_data.js';
 import { getDinoConfig } from '../data/run_config.js';
 import { getTitleById, getTitleFrameById } from '../data/reward_titles.js';
-import { DAILY_MISSION_COUNT, formatDailyReward, getDailyMissionTemplate } from '../data/daily_missions.js';
 import { UPDATE_NEWS } from '../data/update_news.js';
 import {
   COMPANION_DINOS,
@@ -174,8 +173,7 @@ const HOME_DINO_PROFILES = {
 const DEFAULT_UNLOCKED_HOME_DINOS = DEFAULT_HOME_DINO_IDS;
 
 const RESOURCE_ITEMS = [
-  { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 181, textX: 220 },
-  { id: 'researchPt', label: '研究Pt', color: UI_COLORS.dna, iconName: 'iconResearchBeakerBlue', iconX: 282, textX: 326 },
+  { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 194, textX: 238 },
 ];
 
 const UNLOCK_STATUS_ITEMS = [
@@ -195,11 +193,7 @@ const RECORD_ITEMS = [
 const HERO = { x: 0, y: 92, width: 390, height: 342 };
 const RESOURCE_PANEL = { x: 150, y: 16, width: 220, height: 68 };
 const DEPLOY = { x: 38, y: 424, width: 314, height: 66 };
-const HOME_INFO_TABS = [
-  { id: 'daily', label: 'デイリー', color: UI_COLORS.gold },
-  { id: 'record', label: '記録', color: UI_COLORS.green },
-  { id: 'unlock', label: '解放', color: UI_COLORS.dna },
-];
+const HOME_INFO_TABS = [];
 const INFO_TAB = { x: 18, y: 502, width: 110, height: 36, gap: 12 };
 const INFO_PANEL = { x: 18, y: 536, width: 354, height: 196 };
 const UNLOCK_PANEL = INFO_PANEL;
@@ -337,8 +331,8 @@ export class HomeScreen {
     this.onCompanionHomeVisible = onCompanionHomeVisible;
     this.companionHomeTutorialShownForVisit = false;
     this.textures = new Map();
-    this.activeHomeInfoTab = 'daily';
-    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'daily', 'record', 'unlock', 'home', 'research', 'codex', 'options'];
+    this.activeHomeInfoTab = null;
+    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'home', 'research', 'codex', 'options'];
     this.gamepadFocusIndex = 0;
     this.newsGamepadIndex = 0;
     this.companionModalPage = 0;
@@ -408,7 +402,7 @@ export class HomeScreen {
       label: this.createText(item.label, 9.5, '#cbe0da', 50),
       value: this.createText('', 13, '#ffffff', 66),
     }));
-    this.dailyRows = Array.from({ length: DAILY_MISSION_COUNT }, () => {
+    this.dailyRows = Array.from({ length: 0 }, () => {
       const button = this.createDailyButton();
 
       return {
@@ -559,18 +553,6 @@ export class HomeScreen {
       return false;
     }
 
-    if (actions.nextPressed || actions.previousPressed) {
-      const current = this.getFocusedHomeItem();
-      if (['daily', 'record', 'unlock'].includes(current)) {
-        const tabs = ['daily', 'record', 'unlock'];
-        const index = tabs.indexOf(current);
-        const next = tabs[Math.max(0, Math.min(tabs.length - 1, index + (actions.nextPressed ? 1 : -1)))];
-        this.focusHomeItem(next);
-        this.handleHomeInfoTabTap(next);
-        return true;
-      }
-    }
-
     if (actions.downPressed || actions.upPressed || actions.leftPressed || actions.rightPressed) {
       this.moveGamepadFocus(actions);
       return true;
@@ -601,7 +583,6 @@ export class HomeScreen {
     const current = this.getFocusedHomeItem();
     const rows = {
       top: ['title', 'companion', 'news'],
-      info: ['daily', 'record', 'unlock'],
       nav: ['home', 'research', 'codex', 'options'],
     };
 
@@ -625,10 +606,7 @@ export class HomeScreen {
         title: 'deploy',
         companion: 'deploy',
         news: 'deploy',
-        deploy: 'daily',
-        daily: 'home',
-        record: 'research',
-        unlock: 'codex',
+        deploy: 'home',
         home: 'home',
         research: 'research',
         codex: 'codex',
@@ -644,13 +622,10 @@ export class HomeScreen {
         companion: 'companion',
         news: 'news',
         deploy: 'title',
-        daily: 'deploy',
-        record: 'deploy',
-        unlock: 'deploy',
-        home: 'daily',
-        research: 'record',
-        codex: 'unlock',
-        options: 'unlock',
+        home: 'deploy',
+        research: 'deploy',
+        codex: 'deploy',
+        options: 'deploy',
       };
       this.focusHomeItem(upMap[current] ?? 'deploy');
     }
@@ -666,8 +641,6 @@ export class HomeScreen {
       this.openCompanionModal();
     } else if (id === 'news') {
       this.openNewsModal();
-    } else if (['daily', 'record', 'unlock'].includes(id)) {
-      this.handleHomeInfoTabTap(id);
     } else if (id === 'research') {
       this.onResearch?.();
     } else if (id === 'codex') {
@@ -745,15 +718,12 @@ export class HomeScreen {
     this.gameState = gameState ?? this.gameState;
 
     const data = this.saveData ?? {};
-    const fallbackResearchPt = Math.floor((data.totalExpGained ?? 0) * 0.12);
-    const researchPt = data.researchPt ?? fallbackResearchPt;
     const homeTarget = this.getHomeDisplayTarget(data);
     const homeDinoId = homeTarget.dinoId;
     const dino = getDinoConfig(homeDinoId);
     const profile = HOME_DINO_PROFILES[homeDinoId] ?? HOME_DINO_PROFILES.velociraptor;
     const resourceValues = {
       dna: data.ownedDna ?? 0,
-      researchPt,
     };
     const unlockValues = {
       dinos: `${this.getUnlockedDinoCount(data)} / ${HOME_DINO_IDS.length}`,
@@ -781,49 +751,7 @@ export class HomeScreen {
     this.recordRows.forEach(({ item, value }) => {
       value.text = recordValues[item.id] ?? '-';
     });
-    const dailyMissions = this.saveManager?.getDailyMissions?.() ?? data.dailyMissions ?? { missions: [] };
-    let claimableDailyCount = 0;
-    this.dailyRows.forEach((row, index) => {
-      const mission = dailyMissions.missions?.[index] ?? null;
-      const template = getDailyMissionTemplate(mission?.id);
-      const { status, reward, button } = row;
-      row.mission = mission;
-
-      if (!mission || !template) {
-        row.label.text = 'デイリー準備中';
-        status.text = '-';
-        reward.text = '-';
-        row.canShowButton = false;
-        button.view.visible = false;
-        return;
-      }
-
-      const progress = Math.min(template.target, Math.max(0, Math.floor(mission.progress ?? 0)));
-      const complete = Boolean(mission.completed) || progress >= template.target;
-      const claimed = Boolean(mission.claimed);
-      if (complete && !claimed) {
-        claimableDailyCount += 1;
-      }
-
-      row.label.text = template.shortLabel ?? template.label;
-      status.text = complete ? (claimed ? '受取済み' : '達成') : `${this.formatNumber(progress)}/${this.formatNumber(template.target)}`;
-      status.style.fill = complete ? '#65e878' : '#fff0b4';
-      reward.text = formatDailyReward(template.reward).replace('研究Pt ', 'Pt ');
-      row.canShowButton = complete;
-      button.view.visible = this.activeHomeInfoTab === 'daily' && complete;
-      button.view.eventMode = complete && !claimed ? 'static' : 'none';
-      button.view.cursor = complete && !claimed ? 'pointer' : 'default';
-      button.view.alpha = claimed ? 0.62 : 1;
-      button.text.text = claimed ? '済' : '受取';
-      button.text.style.fill = claimed ? '#8da49e' : '#071015';
-      this.drawDailyButton(button.bg, claimed);
-    });
-    this.dailyClaimAllButton.view.visible = this.activeHomeInfoTab === 'daily';
-    this.dailyClaimAllButton.view.eventMode = claimableDailyCount > 0 ? 'static' : 'none';
-    this.dailyClaimAllButton.view.cursor = claimableDailyCount > 0 ? 'pointer' : 'default';
-    this.dailyClaimAllButton.view.alpha = claimableDailyCount > 0 ? 1 : 0.58;
-    this.dailyClaimAllButton.text.text = claimableDailyCount > 0 ? '一括受取' : '受取なし';
-    this.drawDailyClaimAllButton(this.dailyClaimAllButton.bg, claimableDailyCount <= 0);
+    this.dailyClaimAllButton.view.visible = false;
     this.applyTextures(homeDinoId, homeTarget.evolutionId);
     this.updateHomeInfoTabVisibility();
     this.updateEquippedTitle(data);
@@ -1463,7 +1391,7 @@ export class HomeScreen {
       value.anchor.set(0.5, 0);
       label.position.set(item.textX, 31);
       value.position.set(item.textX, 48);
-      value.style.fill = item.id === 'dna' ? '#fff0b4' : item.id === 'researchPt' ? '#d7fff2' : '#ffffff';
+      value.style.fill = item.id === 'dna' ? '#fff0b4' : '#ffffff';
     });
 
     this.dinoName.anchor.set(0.5, 0);
@@ -1557,9 +1485,6 @@ export class HomeScreen {
 
     if (!this.resourcePanel.visible) {
       this.drawPanel(this.panelGraphics, RESOURCE_PANEL.x, RESOURCE_PANEL.y, RESOURCE_PANEL.width, RESOURCE_PANEL.height, UI_COLORS.dna, 0.82);
-    }
-    if (!this.infoPanel.visible) {
-      this.drawPanel(this.panelGraphics, INFO_PANEL.x, INFO_PANEL.y, INFO_PANEL.width, INFO_PANEL.height, UI_COLORS.dna, 0.82);
     }
     if (!this.deployFrame.visible) {
       this.drawPanel(this.panelGraphics, DEPLOY.x, DEPLOY.y, DEPLOY.width, DEPLOY.height, UI_COLORS.gold, 0.92);
@@ -2254,12 +2179,11 @@ export class HomeScreen {
   }
 
   updateHomeInfoTabVisibility() {
-    const active = this.activeHomeInfoTab;
-    const showDaily = active === 'daily';
-    const showRecord = active === 'record';
-    const showUnlock = active === 'unlock';
+    const showDaily = false;
+    const showRecord = false;
+    const showUnlock = false;
 
-    this.infoPanel.visible = this.hasTexture(this.infoPanel);
+    this.infoPanel.visible = false;
     this.infoPanelGlow.visible = false;
     this.dailyTitle.visible = showDaily;
     this.dailyClaimAllButton.view.visible = showDaily;

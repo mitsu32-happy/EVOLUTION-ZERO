@@ -1,10 +1,10 @@
 ﻿import {
-  ANALYSIS_CONVERSION_RATES,
   getBodyResearchBonuses,
   getResearchCostDetail,
   getResearchItem,
   RESEARCH_CATEGORY_IDS,
   RESEARCH_LEVEL_DEFAULTS,
+  RESEARCH_PT_TO_DNA_RATE,
 } from '../data/research.js';
 import {
   createEvolutionDiscovery,
@@ -19,12 +19,6 @@ import {
   getTitleRewardForStageClear,
   getZeroTitleRewardsForRun,
 } from '../data/reward_titles.js';
-import {
-  formatDailyReward,
-  getDailyMissionTemplate,
-  getJstDateKey,
-  normalizeDailyMissionsState,
-} from '../data/daily_missions.js';
 import {
   COMPANION_DINOS,
   COMPANION_HATCH_CONFIG,
@@ -74,6 +68,7 @@ const DEFAULT_SAVE = {
   totalDefeated: 0,
   totalExpGained: 0,
   researchPt: 0,
+  researchPtConvertedToDna: true,
   ownedDna: 0,
   totalDnaEarned: 0,
   lastRunDnaEarned: 0,
@@ -164,7 +159,13 @@ export class SaveManager {
       }
 
       const parsed = JSON.parse(raw);
+      const needsResearchPtMigration = !parsed?.researchPtConvertedToDna
+        && Number.isFinite(parsed?.researchPt)
+        && this.toNumber(parsed.researchPt) > 0;
       this.data = this.normalize(parsed);
+      if (needsResearchPtMigration) {
+        this.save();
+      }
     } catch {
       this.data = { ...DEFAULT_SAVE };
     }
@@ -187,8 +188,6 @@ export class SaveManager {
   }
 
   getData() {
-    this.ensureDailyMissionsCurrent();
-
     return {
       ...this.data,
       researchLevels: { ...this.data.researchLevels },
@@ -350,29 +349,21 @@ export class SaveManager {
   }
 
   getDailyMissions() {
-    this.ensureDailyMissionsCurrent();
-    return this.cloneDailyMissions(this.data.dailyMissions);
+    return this.cloneDailyMissions({ dateKey: null, missions: [] });
   }
 
-  ensureDailyMissionsCurrent(date = new Date()) {
-    const dateKey = typeof date === 'string' ? date : getJstDateKey(date);
-    this.data.dailyMissions = normalizeDailyMissionsState(this.data.dailyMissions, dateKey);
+  ensureDailyMissionsCurrent() {
+    this.data.dailyMissions = { dateKey: null, missions: [] };
     return this.data.dailyMissions;
   }
 
-  forceDailyMissionsDate(dateKey = getJstDateKey()) {
-    this.data.dailyMissions = normalizeDailyMissionsState(null, dateKey);
+  forceDailyMissionsDate() {
+    this.data.dailyMissions = { dateKey: null, missions: [] };
     return this.save();
   }
 
   completeDailyMissionsForDebug() {
-    this.ensureDailyMissionsCurrent();
-    this.data.dailyMissions.missions = this.data.dailyMissions.missions.map((mission) => ({
-      ...mission,
-      progress: mission.target,
-      completed: true,
-    }));
-    return this.save();
+    return this.getData();
   }
 
   recordDailyProgress(event, amount = 1) {
@@ -380,58 +371,11 @@ export class SaveManager {
       return this.getData();
     }
 
-    this.ensureDailyMissionsCurrent();
-    let changed = false;
-    this.data.dailyMissions.missions = this.data.dailyMissions.missions.map((mission) => {
-      const template = getDailyMissionTemplate(mission.id);
-
-      if (!template || template.event !== event || mission.claimed) {
-        return mission;
-      }
-
-      const nextProgress = Math.min(template.target, Math.max(0, Math.floor((mission.progress ?? 0) + amount)));
-      const nextCompleted = nextProgress >= template.target;
-
-      if (nextProgress === mission.progress && nextCompleted === mission.completed) {
-        return mission;
-      }
-
-      changed = true;
-      return {
-        ...mission,
-        target: template.target,
-        progress: nextProgress,
-        completed: nextCompleted,
-      };
-    });
-
-    return changed ? this.save() : this.getData();
+    return this.getData();
   }
 
   claimDailyMission(missionId) {
-    this.ensureDailyMissionsCurrent();
-    const mission = this.data.dailyMissions.missions.find((entry) => entry.id === missionId);
-    const template = getDailyMissionTemplate(missionId);
-
-    if (!mission || !template || mission.claimed || !mission.completed) {
-      return false;
-    }
-
-    mission.claimed = true;
-    this.data.dailyMissionClaims = {
-      ...(this.data.dailyMissionClaims ?? {}),
-      [`${this.data.dailyMissions.dateKey}:${missionId}`]: true,
-    };
-    this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna));
-    this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt));
-    this.data.researchPt += Math.max(0, Math.floor(template.reward?.researchPt ?? 0));
-
-    this.save();
-    return {
-      missionId,
-      reward: template.reward,
-      rewardText: formatDailyReward(template.reward),
-    };
+    return false;
   }
 
   addResearchPt(amount = 0) {
@@ -441,8 +385,7 @@ export class SaveManager {
       return this.getData();
     }
 
-    this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt));
-    this.data.researchPt += reward;
+    this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna)) + reward * RESEARCH_PT_TO_DNA_RATE;
     return this.save();
   }
 
@@ -475,14 +418,12 @@ export class SaveManager {
     }
 
     const dnaCost = COMPANION_HATCH_CONFIG.dnaCost;
-    const researchPtCost = COMPANION_HATCH_CONFIG.researchPtCost;
-    if ((this.data.ownedDna ?? 0) < dnaCost || (this.data.researchPt ?? 0) < researchPtCost) {
+    if ((this.data.ownedDna ?? 0) < dnaCost) {
       return { success: false, reason: 'insufficient', data: this.getData() };
     }
 
     const now = Date.now();
     this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) - dnaCost);
-    this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt) - researchPtCost);
     companion.eggPending = false;
     companion.eggDiscovered = true;
     companion.eggIncubating = true;
@@ -677,16 +618,7 @@ export class SaveManager {
   }
 
   convertDnaToResearchPt(rateId) {
-    const rate = ANALYSIS_CONVERSION_RATES.find((entry) => entry.id === rateId);
-
-    if (!rate || this.toNumber(this.data.ownedDna) < rate.dnaCost) {
-      return false;
-    }
-
-    this.data.ownedDna = Math.max(0, this.toNumber(this.data.ownedDna) - rate.dnaCost);
-    this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt)) + rate.researchPtGain;
-    this.save();
-    return true;
+    return false;
   }
 
   getResearchLevel(researchId) {
@@ -705,12 +637,11 @@ export class SaveManager {
       return false;
     }
 
-    if (this.data.ownedDna < costDetail.dna || (this.data.researchPt ?? 0) < costDetail.researchPt) {
+    if (this.data.ownedDna < costDetail.dna) {
       return false;
     }
 
     this.data.ownedDna -= costDetail.dna;
-    this.data.researchPt = Math.max(0, (this.data.researchPt ?? 0) - costDetail.researchPt);
     this.data.researchLevels[researchId] = level + 1;
     if (item.unlockDinoId) {
       this.unlockDinoInMemory(item.unlockDinoId, 'research');
@@ -803,7 +734,7 @@ export class SaveManager {
     this.data.totalDefeated += defeated;
     this.data.totalExpGained += expGained;
     this.data.ownedDna += dnaEarned;
-    this.data.researchPt = Math.max(0, this.toNumber(this.data.researchPt));
+    this.data.researchPt = 0;
     this.data.totalDnaEarned += dnaEarned;
     this.data.lastRunDnaEarned = dnaEarned;
     this.recordDailyProgress('survivedSeconds', Math.floor(survivalTime));
@@ -1095,6 +1026,11 @@ export class SaveManager {
   }
 
   normalize(value) {
+    const legacyResearchPt = Number.isFinite(value?.researchPt) ? this.toNumber(value.researchPt) : 0;
+    const researchPtConvertedToDna = Boolean(value?.researchPtConvertedToDna);
+    const migratedResearchPtDna = researchPtConvertedToDna
+      ? 0
+      : legacyResearchPt * RESEARCH_PT_TO_DNA_RATE;
     const normalized = {
       ...DEFAULT_SAVE,
       ...value,
@@ -1104,11 +1040,10 @@ export class SaveManager {
       totalRuns: this.toNumber(value?.totalRuns),
       totalDefeated: this.toNumber(value?.totalDefeated),
       totalExpGained: this.toNumber(value?.totalExpGained),
-      researchPt: Number.isFinite(value?.researchPt)
-        ? this.toNumber(value.researchPt)
-        : Math.floor(this.toNumber(value?.totalExpGained) * 0.12),
+      researchPt: 0,
+      researchPtConvertedToDna: true,
       lastSelectedMode: value?.lastSelectedMode ?? DEFAULT_SAVE.lastSelectedMode,
-      ownedDna: this.toNumber(value?.ownedDna),
+      ownedDna: this.toNumber(value?.ownedDna) + migratedResearchPtDna,
       totalDnaEarned: this.toNumber(value?.totalDnaEarned),
       lastRunDnaEarned: this.toNumber(value?.lastRunDnaEarned),
       researchLevels: {
@@ -1129,10 +1064,8 @@ export class SaveManager {
       currentHomeEvolutionId: typeof value?.currentHomeEvolutionId === 'string'
         ? value.currentHomeEvolutionId
         : DEFAULT_SAVE.currentHomeEvolutionId,
-      dailyMissions: normalizeDailyMissionsState(value?.dailyMissions),
-      dailyMissionClaims: typeof value?.dailyMissionClaims === 'object' && value.dailyMissionClaims !== null
-        ? { ...value.dailyMissionClaims }
-        : {},
+      dailyMissions: { dateKey: null, missions: [] },
+      dailyMissionClaims: {},
       companion: normalizeCompanionState(value?.companion),
       tutorialFlags: this.normalizeTutorialFlags(value?.tutorialFlags),
       audioSettings: {
@@ -1268,11 +1201,9 @@ export class SaveManager {
   }
 
   cloneDailyMissions(value = this.data.dailyMissions) {
-    const normalized = normalizeDailyMissionsState(value, value?.dateKey ?? getJstDateKey());
-
     return {
-      dateKey: normalized.dateKey,
-      missions: normalized.missions.map((mission) => ({ ...mission })),
+      dateKey: null,
+      missions: [],
     };
   }
 

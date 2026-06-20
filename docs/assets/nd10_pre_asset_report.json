@@ -1,125 +1,35 @@
 {
+  "researchPointCleanup": {
+    "conversionRate": "researchPt 1 = DNA 5",
+    "migrationFlag": "researchPtConvertedToDna",
+    "legacyResearchPtConvertedToDna": true,
+    "doubleConversionPrevented": true
+  },
+  "branchIconTransparency": {
+    "checkedAssets": 48,
+    "transparentizedPortraits": 24,
+    "postFixIssues": 0,
+    "postFixIssueDetails": []
+  },
   "sprintImpact": {
-    "effectCleanup": [
-      {
-        "path": "public/assets/effects/attacks/ornithomimus_sprint_kick.png",
-        "removedSmallComponents": 0,
-        "componentsBefore": 2,
-        "componentsAfter": 2,
-        "largestBbox": [
-          50,
-          181,
-          437,
-          327
-        ]
-      },
-      {
-        "path": "public/assets/effects/attacks/evolutions/ornithomimus_attack_attack.png",
-        "removedSmallComponents": 0,
-        "componentsBefore": 1,
-        "componentsAfter": 1,
-        "largestBbox": [
-          122,
-          41,
-          263,
-          157
-        ]
-      },
-      {
-        "path": "public/assets/effects/specials/new_dinos/special_ornithomimus_attack_ultimate.png",
-        "removedSmallComponents": 0,
-        "componentsBefore": 1,
-        "componentsAfter": 1,
-        "largestBbox": [
-          57,
-          20,
-          455,
-          235
-        ]
-      }
+    "checkedAssets": 14,
+    "edgeIssues": [],
+    "visualContact": "docs/assets/nd10_pre_sprint_impact_contact.png"
+  },
+  "researchUnlockCards": {
+    "expected": [
+      "ankylosaurus_unlock",
+      "parasaurolophus_unlock",
+      "stegosaurus_unlock",
+      "pteranodon_unlock",
+      "compsognathus_unlock",
+      "ornithomimus_unlock"
     ],
-    "spriteActionCellsCleaned": 272,
-    "contact": "docs/assets/nd10_pre_sprint_impact_contact.png",
-    "cause": "ornithomimus attack action row had detached slash/effect islands and sprint impact effects had small isolated alpha fragments.",
-    "fix": "Removed detached sprite action components and small isolated alpha fragments from sprint-related effects."
+    "purchaseCheck": "6/6 success via SaveManager.buyResearch with DNA-only costs"
   },
-  "lockedDinoSelect": {
-    "contact": "docs/assets/nd10_pre_dino_select_locked_contact.png",
-    "behavior": "Locked research dinos now use silhouette fallback instead of previewWhenLocked hero art."
-  },
-  "researchUnlocks": {
-    "contact": "docs/assets/nd10_pre_research_unlock_contact.png",
-    "items": [
-      {
-        "researchId": "ankylosaurus_unlock",
-        "dinoId": "ankylosaurus",
-        "dna": 1400,
-        "researchPt": 260
-      },
-      {
-        "researchId": "parasaurolophus_unlock",
-        "dinoId": "parasaurolophus",
-        "dna": 1200,
-        "researchPt": 250
-      },
-      {
-        "researchId": "stegosaurus_unlock",
-        "dinoId": "stegosaurus",
-        "dna": 1400,
-        "researchPt": 270
-      },
-      {
-        "researchId": "pteranodon_unlock",
-        "dinoId": "pteranodon",
-        "dna": 1300,
-        "researchPt": 260
-      },
-      {
-        "researchId": "compsognathus_unlock",
-        "dinoId": "compsognathus",
-        "dna": 1100,
-        "researchPt": 240
-      },
-      {
-        "researchId": "ornithomimus_unlock",
-        "dinoId": "ornithomimus",
-        "dna": 1200,
-        "researchPt": 250
-      }
-    ],
-    "saveMapping": "SaveManager RESEARCH_DINO_UNLOCKS maps all six research ids into unlockedDinos."
-  },
-  "evolutionCinematicIcons": {
-    "contact": "docs/assets/nd10_pre_evolution_cinematic_icon_contact.png",
-    "fix": "GameState selectedEvolution now carries branch portraitPath/specialIconPath for EvolutionSequence and HUD callers.",
-    "checkedNormalBranches": [
-      "ankylosaurus_speed",
-      "ankylosaurus_hunting",
-      "ankylosaurus_attack",
-      "parasaurolophus_speed",
-      "parasaurolophus_hunting",
-      "parasaurolophus_attack",
-      "stegosaurus_speed",
-      "stegosaurus_hunting",
-      "stegosaurus_attack",
-      "pteranodon_speed",
-      "pteranodon_hunting",
-      "pteranodon_attack",
-      "compsognathus_speed",
-      "compsognathus_hunting",
-      "compsognathus_attack",
-      "ornithomimus_speed",
-      "ornithomimus_hunting",
-      "ornithomimus_attack"
-    ],
-    "checkedZeroBranches": [
-      "ankylosaurus_zero",
-      "parasaurolophus_zero",
-      "stegosaurus_zero",
-      "pteranodon_zero",
-      "compsognathus_zero",
-      "ornithomimus_zero"
-    ]
-  },
-  "missingAssets": []
+  "unknownAndAdaptationTabs": {
+    "unknownCards": "spinosaurus + new 6 dino unlock cards only",
+    "adaptationCards": "implemented adaptation unlock cards only",
+    "futurePlaceholderCardsHidden": true
+  }
 }
