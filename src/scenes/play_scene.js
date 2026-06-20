@@ -78,6 +78,9 @@ const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
 const LOAD_SHEDDING_SOFT_OBJECTS = 520;
 const LOAD_SHEDDING_HARD_OBJECTS = 760;
+const ENEMY_VISUAL_CULL_CELL_SIZE = 14;
+const ENEMY_VISUAL_CULL_MAX_PER_CELL = 3;
+const ENEMY_OFFSCREEN_THROTTLE_MARGIN = 260;
 const PERFORMANCE_SNAPSHOT_LIMIT = 90;
 const TICKER_STALL_WARN_MS = 2500;
 const TICKER_STALL_FATAL_MS = 6500;
@@ -743,6 +746,7 @@ export class PlayScene {
       tickerStalls: 0,
       lastReason: null,
     };
+    this.mobileThermalSafetyLevel = 0;
     this.whiteoutDiagnostics = {
       dumpCount: 0,
       lastReason: null,
@@ -750,6 +754,12 @@ export class PlayScene {
       bossClearOverruns: 0,
     };
     this.runtimeInvalidCounts = {};
+    this.enemyVisualBudgetStats = {
+      culledEnemySprites: 0,
+      offscreenRenderCulled: 0,
+      throttledEnemyAnimations: 0,
+      visibleEnemySprites: 0,
+    };
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
     this.screenShakeTimer = 0;
@@ -1190,6 +1200,119 @@ export class PlayScene {
     };
   }
 
+  isMobileThermalRiskDevice() {
+    if (typeof navigator === 'undefined') {
+      return false;
+    }
+
+    const userAgent = navigator.userAgent ?? '';
+    const platform = navigator.platform ?? '';
+    const isAppleMobile = /iPhone|iPad|iPod/i.test(userAgent)
+      || (platform === 'MacIntel' && (navigator.maxTouchPoints ?? 0) > 1);
+    const isMobileBrowser = /Android|Mobile/i.test(userAgent);
+
+    return isAppleMobile || isMobileBrowser;
+  }
+
+  getVisibleEnemyStats(margin = 180) {
+    const left = (this.camera?.x ?? STAGE_BOUNDS.left) - margin;
+    const right = (this.camera?.x ?? STAGE_BOUNDS.left) + (this.camera?.visibleWidth ?? 0) + margin;
+    const top = (this.camera?.y ?? STAGE_BOUNDS.top) - margin;
+    const bottom = (this.camera?.y ?? STAGE_BOUNDS.top) + (this.camera?.visibleHeight ?? 0) + margin;
+    let visible = 0;
+    let offscreen = 0;
+
+    this.enemies.forEach((enemy) => {
+      if (!enemy || enemy.isDead) {
+        return;
+      }
+
+      const x = enemy.position?.x ?? 0;
+      const y = enemy.position?.y ?? 0;
+      if (x >= left && x <= right && y >= top && y <= bottom) {
+        visible += 1;
+        return;
+      }
+
+      offscreen += 1;
+    });
+
+    return { visible, offscreen, margin };
+  }
+
+  isEnemyWithinCameraMargin(enemy, margin = 0) {
+    const left = (this.camera?.x ?? STAGE_BOUNDS.left) - margin;
+    const right = (this.camera?.x ?? STAGE_BOUNDS.left) + (this.camera?.visibleWidth ?? 0) + margin;
+    const top = (this.camera?.y ?? STAGE_BOUNDS.top) - margin;
+    const bottom = (this.camera?.y ?? STAGE_BOUNDS.top) + (this.camera?.visibleHeight ?? 0) + margin;
+    const x = enemy?.position?.x ?? 0;
+    const y = enemy?.position?.y ?? 0;
+
+    return x >= left && x <= right && y >= top && y <= bottom;
+  }
+
+  shouldUseEnemyVisualBudget() {
+    if (this.enemies.length < 54 && this.mobileThermalSafetyLevel <= 0 && this.performanceLoadSheddingLevel <= 0) {
+      return false;
+    }
+
+    const children = this.getRuntimeContainerChildren().total;
+    return this.mobileThermalSafetyLevel >= 1
+      || this.performanceLoadSheddingLevel >= 1
+      || this.debugStressKillEnabled
+      || this.enemies.length >= 72
+      || children >= LOAD_SHEDDING_SOFT_CHILDREN * 0.72;
+  }
+
+  shouldProtectEnemyVisual(enemy) {
+    return enemy?.isDead
+      || enemy?.projectileCooldown > 0
+      || enemy?.electroCooldown > 0
+      || enemy?.summonCooldown > 0
+      || (enemy?.enemyLevel ?? 1) >= 8
+      || (enemy?.hp ?? 1) <= Math.max(1, (enemy?.maxHp ?? 1) * 0.18);
+  }
+
+  getEnemyVisualBudgetState(enemy, index, occupiedCells, enabled) {
+    const stats = this.enemyVisualBudgetStats;
+    const onScreen = this.isEnemyWithinCameraMargin(enemy, 96);
+    const nearScreen = this.isEnemyWithinCameraMargin(enemy, ENEMY_OFFSCREEN_THROTTLE_MARGIN);
+
+    if (!enabled || this.shouldProtectEnemyVisual(enemy)) {
+      stats.visibleEnemySprites += 1;
+      return { renderable: true, updateVisuals: true };
+    }
+
+    if (!nearScreen) {
+      stats.offscreenRenderCulled += 1;
+      return { renderable: false, updateVisuals: false };
+    }
+
+    if (!onScreen) {
+      const updateVisuals = (this.frameCount + index) % (this.mobileThermalSafetyLevel >= 1 ? 4 : 3) === 0;
+      if (!updateVisuals) {
+        stats.throttledEnemyAnimations += 1;
+      }
+      stats.visibleEnemySprites += 1;
+      return { renderable: true, updateVisuals };
+    }
+
+    const cellX = Math.round((enemy.position?.x ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
+    const cellY = Math.round((enemy.position?.y ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
+    const sizeKey = Math.round((enemy.radius ?? 0) / 4);
+    const key = `${enemy.enemyType}:${sizeKey}:${cellX}:${cellY}`;
+    const count = occupiedCells.get(key) ?? 0;
+    occupiedCells.set(key, count + 1);
+
+    if (count >= ENEMY_VISUAL_CULL_MAX_PER_CELL) {
+      stats.culledEnemySprites += 1;
+      return { renderable: false, updateVisuals: false };
+    }
+
+    stats.visibleEnemySprites += 1;
+    return { renderable: true, updateVisuals: true };
+  }
+
   getRuntimeObjectPressureCount() {
     return this.enemies.length
       + this.enemyProjectiles.length
@@ -1272,8 +1395,27 @@ export class PlayScene {
       }
     }
 
+    let thermalLevel = 0;
+    if (this.isMobileThermalRiskDevice()) {
+      const nearingSoftPressure = childTotal >= LOAD_SHEDDING_SOFT_CHILDREN * 0.68
+        || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.68
+        || (this.debugFpsEstimate > 0 && this.debugFpsEstimate < 45);
+      const sustainedPressure = childTotal >= LOAD_SHEDDING_SOFT_CHILDREN * 0.9
+        || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.9
+        || (this.debugFpsEstimate > 0 && this.debugFpsEstimate < 32);
+
+      if (nearingSoftPressure) {
+        thermalLevel = 1;
+      }
+
+      if (sustainedPressure || level >= 2) {
+        thermalLevel = 2;
+      }
+    }
+
+    this.mobileThermalSafetyLevel = thermalLevel;
     this.performanceLoadSheddingLevel = level;
-    this.combatSystem?.setPerformancePressure?.(level);
+    this.combatSystem?.setPerformancePressure?.(Math.max(level, thermalLevel));
     this.ultimateSystem?.setPerformancePressure?.(level);
     this.audioManager?.setPerformanceLoadSheddingLevel?.(level);
   }
@@ -1292,14 +1434,24 @@ export class PlayScene {
       return;
     }
 
+    const adaptationFx = stats.adaptationEffects?.totals ?? {};
+    const adaptationTop = stats.adaptationEffects?.topOffenders ?? [];
+    const adaptationTopText = adaptationTop.length > 0
+      ? adaptationTop
+        .map((entry) => `${entry.skillId} g${entry.graphicsFallbackCount}/s${entry.skippedEffectCount}/m${entry.missingTextureCount}`)
+        .join(', ')
+      : '-';
     const lines = [
       `FPS ${stats.fps}`,
-      `shed ${stats.loadSheddingLevel} children ${stats.containerChildrenTotal}`,
+      `shed ${stats.loadSheddingLevel} thermal ${stats.thermalSafetyLevel ?? 0} children ${stats.containerChildrenTotal}`,
       `spawn ${stats.spawn?.spawnBudget ?? '-'}/${stats.spawn?.maxSpawnBudget ?? '-'}`,
-      `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'}`,
+      `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'} vis/off ${stats.visibleEnemies ?? '-'}/${stats.offscreenEnemies ?? '-'}`,
+      `enemyCull c${stats.enemyVisualBudget?.culledEnemySprites ?? 0}/o${stats.enemyVisualBudget?.offscreenRenderCulled ?? 0}/a${stats.enemyVisualBudget?.throttledEnemyAnimations ?? 0}`,
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
+      `adaptFx tex ${adaptationFx.textureEffectCount ?? 0} / gfx ${adaptationFx.graphicsFallbackCount ?? 0} / skip ${adaptationFx.skippedEffectCount ?? 0} / miss ${adaptationFx.missingTextureCount ?? 0}`,
+      `adaptTop ${adaptationTopText}`,
       `dmg ${stats.damageNumbers}/${stats.caps.damageNumbers} pool ${stats.damageNumberPoolFree}/${stats.caps.damageNumberPool}`,
       `pickup ${stats.pickups}/${stats.caps.pickups}`,
       `comp fx ${stats.companionEffects}/${stats.caps.companionEffects} scan e${stats.companion?.targetScans ?? 0}/p${stats.companion?.pickupScans ?? 0}`,
@@ -1311,7 +1463,7 @@ export class PlayScene {
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 286, 180, 8)
+      .roundRect(8, 80, 320, 206, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -1429,6 +1581,7 @@ export class PlayScene {
     const activeBoss = this.getActiveBoss?.();
     const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
     const containerChildren = this.getRuntimeContainerChildren();
+    const visibleEnemyStats = this.getVisibleEnemyStats();
     const spawnStats = this.spawnSystem?.getPerformanceStats?.(this.gameState) ?? {};
     const criticalTextCount = this.combatSystem?.damageNumbers?.filter?.((number) => number.critical)?.length ?? 0;
     const hazardCount = this.stageGimmicks.filter((gimmick) => gimmick.type?.startsWith?.('boss_')).length;
@@ -1448,18 +1601,23 @@ export class PlayScene {
       debugStressKillThreshold: this.debugStressKillThreshold,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
       enemyCount: this.enemies.length,
+      visibleEnemyCount: visibleEnemyStats.visible,
+      offscreenEnemyCount: visibleEnemyStats.offscreen,
       projectileCount: (combatStats.combatProjectiles ?? 0) + this.enemyProjectiles.length,
       bossProjectileCount: this.enemyProjectiles.filter((projectile) => projectile.type?.startsWith?.('boss')).length,
       hazardCount,
       warningGuideCount,
       effectCount: combatStats.combatEffects ?? 0,
       ultimateEffectCount: this.ultimateSystem?.effects?.length ?? 0,
+      adaptationEffects: combatStats.adaptationEffects ?? null,
       damageTextCount: combatStats.damageNumbers ?? 0,
       criticalTextCount,
       pickupCount: this.pickups.length,
+      enemyVisualBudget: { ...(this.enemyVisualBudgetStats ?? {}) },
       containerChildren,
       containerChildrenTotal: containerChildren.total,
       loadSheddingLevel: this.performanceLoadSheddingLevel,
+      thermalSafetyLevel: this.mobileThermalSafetyLevel ?? 0,
       spawnBudget: spawnStats.spawnBudget ?? null,
       activeAudioCount: this.audioManager?.activeAudios?.size ?? null,
       activeAudioBufferCount: this.audioManager?.activeBufferRecords?.size ?? null,
@@ -1634,6 +1792,8 @@ export class PlayScene {
       difficulty: this.gameState?.selectedDifficulty ?? '-',
       elapsedTime: snapshot.elapsedTime,
       enemyCount: snapshot.enemyCount,
+      visibleEnemyCount: snapshot.visibleEnemyCount,
+      offscreenEnemyCount: snapshot.offscreenEnemyCount,
       projectileCount: snapshot.projectileCount,
       hazardCount: snapshot.hazardCount,
       warningGuideCount: snapshot.warningGuideCount,
@@ -1641,6 +1801,7 @@ export class PlayScene {
       damageTextCount: snapshot.damageTextCount,
       criticalTextCount: snapshot.criticalTextCount,
       pickupCount: snapshot.pickupCount,
+      enemyVisualBudget: snapshot.enemyVisualBudget,
       compFx: snapshot.companion?.effects ?? 0,
       compScan: `${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
       renderer: {
@@ -1658,6 +1819,7 @@ export class PlayScene {
       activeFullscreenGraphics: fullscreenGraphics,
       webglContextLost: (snapshot.diagnostics?.contextLost ?? 0) > 0,
       loadSheddingLevel: snapshot.loadSheddingLevel,
+      thermalSafetyLevel: snapshot.thermalSafetyLevel,
       bossClearSequence: this.bossClearSequence ? {
         age: Number((this.bossClearSequence.age ?? 0).toFixed(3)),
         duration: Number((this.bossClearSequence.duration ?? 0).toFixed(3)),
@@ -1692,9 +1854,12 @@ export class PlayScene {
         `mode=${dump.mode}`,
         `t=${dump.elapsedTime}`,
         `enemy=${dump.enemyCount}`,
+        `vis=${dump.visibleEnemyCount ?? '-'}/${dump.offscreenEnemyCount ?? '-'}`,
+        `cull=${dump.enemyVisualBudget?.culledEnemySprites ?? 0}/${dump.enemyVisualBudget?.offscreenRenderCulled ?? 0}`,
         `fx=${dump.effectCount}`,
         `compFx=${dump.compFx}`,
         `children=${dump.latestSnapshot?.containerChildrenTotal ?? '-'}`,
+        `thermal=${dump.thermalSafetyLevel ?? 0}`,
         `ctx=${dump.webglContextLost ? 1 : 0}`,
       ].join(' '));
     } catch {
@@ -1796,6 +1961,10 @@ export class PlayScene {
       depthChildren: this.depthLayer.children.length,
       uiChildren: this.uiLayer.children.length,
       containerChildrenTotal: containerChildren.total,
+      visibleEnemies: snapshot.visibleEnemyCount ?? 0,
+      offscreenEnemies: snapshot.offscreenEnemyCount ?? 0,
+      thermalSafetyLevel: snapshot.thermalSafetyLevel ?? 0,
+      enemyVisualBudget: snapshot.enemyVisualBudget ?? this.enemyVisualBudgetStats,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
       audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
@@ -3680,7 +3849,8 @@ export class PlayScene {
     const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionUpgradeLevels) ?? this.activeCompanion.behavior ?? {};
 
     if (this.activeCompanion.type === 'exp') {
-      this.companionExpMultiplier = behavior.expMultiplier ?? 1.045;
+      const synergyBonus = Math.max(0, this.getActiveCompanionSynergyValue('expGain'));
+      this.companionExpMultiplier = (behavior.expMultiplier ?? 1.045) * (1 + synergyBonus);
       this.gameState.expGainMultiplier = (this.gameState.expGainMultiplier ?? 1) * this.companionExpMultiplier;
       this.companionLastAction = 'exp boost';
       this.triggerCompanionAction('expTrace', this.player.position, { duration: 0.62 });
@@ -4235,9 +4405,20 @@ export class PlayScene {
     });
     selectedTargets.forEach(({ enemy }) => {
       const bossMultiplier = this.activeCompanion.type === 'boss' && enemy.isBoss ? (behavior.bossBonus ?? 1.55) : 1;
-      const skillMultiplier = this.activeCompanion.id === 'spino_pup'
-        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue('companionSkillDamage'))
+      const synergyDamageTypes = {
+        spino_pup: 'companionSkillDamage',
+        stego_calf: 'areaDamage',
+        ptera_chick: 'rangedSupport',
+        compy_pack: 'lowHpPursuit',
+      };
+      const synergyDamageType = synergyDamageTypes[this.activeCompanion.id] ?? null;
+      const enemyMaxHp = Math.max(1, enemy.maxHp ?? enemy.hp ?? 1);
+      const lowHpMultiplier = this.activeCompanion.id === 'compy_pack' && enemy.hp <= enemyMaxHp * 0.45
+        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue('lowHpPursuit'))
         : 1;
+      const skillMultiplier = synergyDamageType && synergyDamageType !== 'lowHpPursuit'
+        ? 1 + Math.max(0, this.getActiveCompanionSynergyValue(synergyDamageType))
+        : lowHpMultiplier;
       const damage = Math.round((behavior.damage ?? 8) * bossMultiplier * skillMultiplier);
       enemy.takeDamage?.(damage);
       this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
@@ -4288,7 +4469,8 @@ export class PlayScene {
         return;
       }
 
-      const healed = this.gameState.healPlayer(behavior.heal ?? 3);
+      const healMultiplier = 1 + Math.max(0, this.getActiveCompanionSynergyValue('healing'));
+      const healed = this.gameState.healPlayer((behavior.heal ?? 3) * healMultiplier);
       if (healed > 0) {
         this.triggerCompanionAction('healPulse', this.player.position, { duration: 0.7 });
         this.spawnCompanionEffect(this.player.position.x, this.player.position.y - 20, this.activeCompanion);
@@ -4313,7 +4495,8 @@ export class PlayScene {
 
   applyCompanionPickupAssist(behavior, delta, options = {}) {
     const { expOnly = false, effectCooldown = 1.05 } = options;
-    const radius = behavior.pickupRadius ?? 135;
+    const synergyRangeBonus = Math.max(0, this.getActiveCompanionSynergyValue(expOnly ? 'expGain' : 'pickupRange'));
+    const radius = (behavior.pickupRadius ?? 135) * (1 + synergyRangeBonus);
     const pullMultiplier = behavior.pullMultiplier ?? 1.12;
     const maxProcess = this.performanceLoadSheddingLevel >= 1 ? 24 : 48;
     let targetedCount = 0;
@@ -4618,9 +4801,19 @@ export class PlayScene {
     const playerCollider = this.player.getCollider();
 
     this.enemies = this.enemies.filter((enemy) => this.isRuntimeEntityUsable(enemy, 'enemy'));
+    this.enemyVisualBudgetStats = {
+      culledEnemySprites: 0,
+      offscreenRenderCulled: 0,
+      throttledEnemyAnimations: 0,
+      visibleEnemySprites: 0,
+    };
+    const useEnemyVisualBudget = this.shouldUseEnemyVisualBudget();
+    const occupiedVisualCells = new Map();
 
-    this.enemies.forEach((enemy) => {
-      enemy.update(delta, this.player);
+    this.enemies.forEach((enemy, index) => {
+      const visualState = this.getEnemyVisualBudgetState(enemy, index, occupiedVisualCells, useEnemyVisualBudget);
+      enemy.view.renderable = visualState.renderable;
+      enemy.update(delta, this.player, { updateVisuals: visualState.updateVisuals });
       this.updateRuinsEnemyAbility(delta, enemy);
       enemy.view.zIndex = enemy.position.y;
 
