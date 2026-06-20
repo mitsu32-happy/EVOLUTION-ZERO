@@ -87,15 +87,16 @@ Clear state:
 stageProgress.ruins.zero
 ```
 
-Research groundwork:
+Reward groundwork:
 
-- `getRuinsZeroUnlockState().zeroResearchAvailable` returns true after:
+- `stageProgress.ruins.zero.cleared` is the save authority used by later reward handling.
+- Z04-05 policy revision uses this state to backfill `spinosaurus_zero` for old clears when needed.
 
 ```text
 stageProgress.ruins.zero.cleared === true
 ```
 
-Z04-05 can use this to reveal ZERO evolution research cards.
+ZERO evolution research cards are not used.
 
 ## PlayScene Boot Path
 
@@ -118,9 +119,9 @@ Current boss behavior:
 - Phase 3 currently follows the existing generic ZERO fallback (`zero_eclipse_protocol`).
 - Dedicated bosses and assets are deferred to Z04-03/Z04-04.
 
-## ZERO Reward Research Groundwork
+## ZERO Reward Groundwork
 
-Z04-02 intentionally does not unlock:
+Z04-02 intentionally did not unlock:
 
 - `spinosaurus_zero`
 - `ankylosaurus_zero`
@@ -130,13 +131,13 @@ Z04-02 intentionally does not unlock:
 - `compsognathus_zero`
 - `ornithomimus_zero`
 
-Instead, ruins ZERO clear provides a reliable state for later research cards:
+Z04-05 policy revision:
 
 ```text
-SaveManager.getRuinsZeroUnlockState().zeroResearchAvailable
+ruins ZERO clear -> spinosaurus_zero
 ```
 
-Z04-05 should add DNA research items that individually unlock `unlockedZeroRoutes.<routeId>`.
+The new six ZERO routes stay locked for future stage 5-10 ZERO rewards.
 
 ## Existing ZERO Impact
 
@@ -145,7 +146,7 @@ The existing three ZERO routes remain unchanged:
 - `jungle` ZERO still unlocks through jungle EXPERT clear.
 - `volcano` ZERO still unlocks through volcano EXPERT clear.
 - `swamp` ZERO still unlocks through swamp EXPERT clear.
-- Existing route rewards are unchanged.
+- Existing route rewards are unchanged, and Z04-05 extends the same direct reward model to `ruins`.
 
 ## QA Result
 
@@ -189,10 +190,11 @@ Z04-04 status:
 - Dedicated phase 2 and final boss configs are now connected.
 - Dedicated boss assets are registered.
 - The route uses a `ruins` ZERO-specific enemy mix.
-- ZERO evolution research cards remain intentionally deferred.
+- ZERO route reward connection remained deferred to Z04-05.
 
 ### Z04-05
 
-- Add ZERO evolution research cards.
-- Connect research card purchase to individual `unlockedZeroRoutes`.
-- Add result/codex/research QA.
+- Add direct `ruins -> spinosaurus_zero` route reward.
+- Add old-save backfill for already cleared ruins ZERO saves.
+- Add result/codex/evolution QA.
+- Keep new six ZERO routes locked for future stages.

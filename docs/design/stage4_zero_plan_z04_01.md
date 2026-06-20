@@ -249,79 +249,49 @@ Recommended adjustments:
 
 ## ZERO Reward Policy
 
-Recommended approach:
+Z04-05 policy revision:
 
 ```text
-案B: 4ステージ目ZEROクリアでZERO進化研究カードを解放する
+ruins ZERO clear -> spinosaurus_zero
 ```
 
 Rationale:
 
-- New six dinos created many ZERO evolutions.
-- Unlocking all of them instantly would flatten the reward curve.
-- Research connection gives DNA a meaningful late-game sink.
-- It avoids sudden save-state unlock complexity and lets players choose which ZERO route to analyze first.
+- ZERO evolutions should remain direct ZERO-route clear rewards, matching existing progression.
+- `jungle` ZERO grants `velociraptor_zero`.
+- `volcano` ZERO grants `triceratops_zero`.
+- `swamp` ZERO grants `tyrannosaurus_zero`.
+- `ruins` ZERO grants `spinosaurus_zero`.
+- ZERO evolution research cards are not adopted for this update.
 
 ## New ZERO Evolution Connection Plan
 
-Candidates to connect through stage 4 ZERO research unlock:
+Stage 4 ZERO connection:
 
 | Evolution ID | Current state | Proposed Z04 handling |
 | --- | --- | --- |
-| `spinosaurus_zero` | Data/assets exist, unlock condition says `ruins ZERO clear` | First direct research-unlock candidate after ruins ZERO clear |
-| `ankylosaurus_zero` | Pending ZERO branch with assets connected | Research card unlocked after ruins ZERO clear |
-| `parasaurolophus_zero` | Pending ZERO branch with assets connected | Research card unlocked after ruins ZERO clear |
-| `stegosaurus_zero` | Pending ZERO branch with assets connected | Research card unlocked after ruins ZERO clear |
-| `pteranodon_zero` | Pending ZERO branch with assets connected | Research card unlocked after ruins ZERO clear |
-| `compsognathus_zero` | Pending ZERO branch with assets connected | Research card unlocked after ruins ZERO clear |
-| `ornithomimus_zero` | Pending ZERO branch with assets connected | Research card unlocked after ruins ZERO clear |
+| `spinosaurus_zero` | Data/assets exist, unlock condition says `ruins ZERO clear` | Direct reward from ruins ZERO clear |
+| `ankylosaurus_zero` | Pending ZERO branch with assets connected | Future stage 5 ZERO reward candidate |
+| `parasaurolophus_zero` | Pending ZERO branch with assets connected | Future stage 6 ZERO reward candidate |
+| `stegosaurus_zero` | Pending ZERO branch with assets connected | Future stage 7 ZERO reward candidate |
+| `pteranodon_zero` | Pending ZERO branch with assets connected | Future stage 8 ZERO reward candidate |
+| `compsognathus_zero` | Pending ZERO branch with assets connected | Future stage 9 ZERO reward candidate |
+| `ornithomimus_zero` | Pending ZERO branch with assets connected | Future stage 10 ZERO reward candidate |
 
-Recommended unlock model:
+Unlock model:
 
 1. `ruins` ZERO clear grants:
    - `ruins_zero_clear` title
    - `ruins_zero_frame`
-   - a persistent flag such as `stageProgress.ruins.zero.cleared`
-2. Research screen reads that clear state and reveals ZERO evolution analysis cards.
-3. Each ZERO evolution research card costs DNA and unlocks one `unlockedZeroRoutes.<evolutionId>`.
-4. ZERO evolution eligibility still requires:
+   - `unlockedZeroRoutes.spinosaurus_zero`
+   - `discoveredEvolutions.spinosaurus_zero`
+2. ZERO evolution eligibility still requires:
    - matching dino lineage
    - player level 8+
    - speed / hunting / attack Lv3+
-   - route unlocked through research
+   - route unlocked from ZERO clear
 
-Do not directly unlock all seven routes from clear alone.
-
-## Research Screen Connection Proposal
-
-Add a new set of unknown-domain research items in a later Z04 step:
-
-- `spinosaurus_zero_route_analysis`
-- `ankylosaurus_zero_route_analysis`
-- `parasaurolophus_zero_route_analysis`
-- `stegosaurus_zero_route_analysis`
-- `pteranodon_zero_route_analysis`
-- `compsognathus_zero_route_analysis`
-- `ornithomimus_zero_route_analysis`
-
-Visibility condition:
-
-- Hidden until `stageProgress.ruins.zero.cleared === true`.
-- Debug override can be added for QA only.
-
-Cost direction:
-
-- Use DNA only.
-- Costs should be late-game meaningful but not punishing.
-- Initial proposal:
-  - `spinosaurus_zero`: 1800 DNA
-  - defensive / support new dinos: 1500-1700 DNA
-  - high mobility / swarm routes: 1500-1700 DNA
-
-Save effect:
-
-- Set `unlockedZeroRoutes[evolutionId] = { unlocked: true, source: 'ruins_zero_research', unlockedAt }`.
-- Also set `discoveredEvolutions[evolutionId]` for codex/result consistency.
+Do not unlock the new six ZERO routes in Z04.
 
 ## Required Asset List
 
@@ -413,12 +383,12 @@ ZERO boss, enemies, and gimmicks.
 
 ### Z04-05
 
-ZERO evolution research unlock connection.
+Direct ZERO clear reward connection.
 
-- Add research items.
-- Add save manager helper for research unlocking ZERO routes.
-- Connect result/codex/research display.
-- Keep direct clear rewards limited to title/frame/research unlock.
+- Add `ruins -> spinosaurus_zero` to the ZERO route reward map.
+- Backfill old saves only when `stageProgress.ruins.zero.cleared` is already true.
+- Connect result/codex/evolution selection through existing ZERO reward structure.
+- Keep new six ZERO routes locked for future stage 5-10 rewards.
 
 ### Z04-06
 
@@ -426,8 +396,8 @@ QA and balance.
 
 - Full route smoke.
 - Debug fast route.
-- New ZERO route research unlock.
-- 7 ZERO evolution unlock research items.
+- `spinosaurus_zero` reward unlock QA.
+- New six ZERO route locked QA.
 - iPhone high-load soak.
 
 ### Z04-07
@@ -460,15 +430,14 @@ Main integration prep.
 ### Reward QA
 
 - First ruins ZERO clear grants `ruins_zero_clear` and `ruins_zero_frame`.
-- First ruins ZERO clear reveals ZERO route research cards.
-- Duplicate ruins ZERO clear does not duplicate title/frame/research unlock state.
-- ZERO route research unlocks the selected route only.
-- `spinosaurus_zero` and new six ZERO evolutions are not unlocked unconditionally.
+- First ruins ZERO clear grants `spinosaurus_zero`.
+- Duplicate ruins ZERO clear does not duplicate title/frame/route unlock state.
+- New six ZERO evolutions are not unlocked by ruins ZERO.
 
 ### Evolution QA
 
-- ZERO evolution candidate appears only after route research unlock and Lv/adaptation requirements.
-- All seven target ZERO evolutions can be unlocked through research in debug QA.
+- `spinosaurus_zero` appears only after ruins ZERO route unlock and Lv/adaptation requirements.
+- New six ZERO evolutions stay future-route locked.
 - Codex hidden/known state updates correctly.
 
 ### Performance QA
@@ -487,16 +456,16 @@ Main integration prep.
 - Dedicated boss/effect assets can increase memory pressure if sheets are oversized.
 - Ruins ZERO beam/pulse hazards can obscure player/projectiles if alpha and warning duration are not tuned.
 - Existing `ruins` ZERO debug lock paths can conflict with production unlock if only one side is updated.
-- Research card visibility must avoid showing future cards before `ruins` ZERO clear.
+- New six ZERO routes must stay locked until future stage 5-10 ZERO rewards.
 - `unlockedZeroRoutes` and `discoveredEvolutions` must stay synchronized for codex/result/evolution UI.
-- ZERO route research should not revive researchPt or daily systems.
+- Z04-05 must not revive researchPt, daily systems, or ZERO route research cards.
 
 ## Z04-02 Recommendation
 
 Next step should implement only low-risk data plumbing:
 
 1. Add `ruins_zero_clear` title and `ruins_zero_frame` definitions.
-2. Add `ruins` to ZERO route reward handling as a research-unlock trigger, not direct route unlock.
+2. Add production-safe unlock flag for ruins ZERO route.
 3. Add production-safe unlock flag for ruins ZERO route.
 4. Keep stage/boss visuals unchanged until Z04-03 assets are ready.
 5. Add docs and debug checks before gameplay tuning.
@@ -510,8 +479,7 @@ Z04-02 added the production route gate and boot path for `ruins` ZERO without ad
 - `PlayScene.applyRuinsZeroPreReleaseLock()` now allows `ruins` ZERO when the save data satisfies the production unlock condition.
 - `debugAllowRuinsZero=1` remains a QA bypass.
 - Clear state uses the existing `stageProgress.ruins.zero` entry created by `SaveManager.normalizeStageProgress()`.
-- ZERO evolution research unlock groundwork is exposed through `SaveManager.getRuinsZeroUnlockState().zeroResearchAvailable`, which becomes true after `stageProgress.ruins.zero.cleared`.
-- Direct ZERO evolution route rewards remain intentionally disabled for `ruins`; Z04-05 should connect DNA research cards to individual `unlockedZeroRoutes`.
+- Z04-05 policy later superseded the research-card proposal: ruins ZERO clear should directly unlock `spinosaurus_zero`.
 
 ## Z04-03 Update
 
@@ -533,8 +501,17 @@ Z04-04 added the first playable boss/gimmick layer for `ruins` ZERO.
 - Added a `ruins` ZERO-specific enemy weight mix that favors `ruinsShooter` / `ruinsElectro` pressure without raising raw spawn count.
 - `PlayScene.getZeroBossConfig()` now supports optional per-attack boss effect texture keys for beam / field / burst attacks.
 - Existing ZERO routes keep their previous `attackAssetKey` fallback behavior.
-- ZERO evolution research card connection remains deferred to Z04-05.
+- ZERO route reward connection remained deferred to Z04-05.
 
 Details:
 
 - `docs/design/stage4_zero_boss_gimmick_z04_04.md`
+
+## Z04-05 Update
+
+Z04-05 adopts the direct ZERO clear reward model.
+
+- Added `ruins -> spinosaurus_zero` to ZERO route rewards.
+- ZERO evolution research cards are not implemented.
+- Old saves with `stageProgress.ruins.zero.cleared === true` are backfilled to unlock `spinosaurus_zero`.
+- New six ZERO routes remain locked for future stage 5-10 ZERO rewards.

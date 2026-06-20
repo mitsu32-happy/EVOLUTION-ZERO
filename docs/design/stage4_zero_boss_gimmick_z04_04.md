@@ -8,7 +8,7 @@ Out of scope:
 
 - main merge / push
 - version or news updates
-- ZERO evolution research card connection
+- ZERO route reward connection
 - new stage addition
 
 ## Enemy Composition
@@ -159,4 +159,4 @@ Expected isolated impact:
 
 ## Remaining Work
 
-Z04-05 should connect ruins ZERO clear to ZERO evolution research card visibility.
+Z04-05 should connect ruins ZERO clear to the direct `spinosaurus_zero` route reward. ZERO evolution research cards are not used.
