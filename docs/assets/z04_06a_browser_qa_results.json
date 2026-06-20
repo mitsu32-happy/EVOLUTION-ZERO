@@ -1,0 +1,156 @@
+[
+  {
+    "name": "ruins_normal",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=ruins&debugDifficulty=normal&qaZ0406a=normal&cacheBust=1781966197559",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "name": "ruins_hard",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=ruins&debugDifficulty=hard&qaZ0406a=hard&cacheBust=1781966200367",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "name": "ruins_expert",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=ruins&debugDifficulty=expert&qaZ0406a=expert&cacheBust=1781966203160",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "name": "ruins_zero",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=spinosaurus&debugStage=ruins&debugMode=zero&debugDifficulty=expert&debugAllowRuinsZero=1&qaZ0406a=zero&cacheBust=1781966205949",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "name": "jungle_normal",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=jungle&debugDifficulty=normal&qaZ0406a=jungle&cacheBust=1781966208741",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "name": "volcano_normal",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=volcano&debugDifficulty=normal&qaZ0406a=volcano&cacheBust=1781966211529",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "name": "swamp_normal",
+    "metrics": {
+      "bodySample": "",
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=swamp&debugDifficulty=normal&qaZ0406a=swamp&cacheBust=1781966214312",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  }
+]

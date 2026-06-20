@@ -1,0 +1,29 @@
+{
+  "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_0ca9d0305872c2ab016a36a1f24084819184e411652d1ceb8c.png",
+  "output": "C:\\05.GitHub\\EVOLUTION-ZERO\\public\\assets\\maps\\backgrounds\\ruins_battlefield_tile.png",
+  "contact": "C:\\05.GitHub\\EVOLUTION-ZERO\\docs\\assets\\z04_06a_ruins_background_contact.png",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "outputSize": [
+    1024,
+    1024
+  ],
+  "strategy": "single generated ruins battlefield tile with soft opposite-edge blending; PlayScene tiles the 1024 texture for all ruins difficulties",
+  "edgeDeltaBefore": {
+    "left_right_mean_delta": 10.0612,
+    "left_right_max_delta": 89,
+    "top_bottom_mean_delta": 8.6348,
+    "top_bottom_max_delta": 65
+  },
+  "edgeDeltaAfter": {
+    "left_right_mean_delta": 0.0,
+    "left_right_max_delta": 0,
+    "top_bottom_mean_delta": 0.0,
+    "top_bottom_max_delta": 0
+  },
+  "fileSizeBytes": 2176332,
+  "zeroMode": "uses the same base ruins tile; ZERO-specific reactor pulse, warnings, boss and hazard effects remain separate overlays",
+  "deferred": "Z04-06b will evaluate jungle/volcano/swamp regeneration using the same no-obvious-seam standard"
+}

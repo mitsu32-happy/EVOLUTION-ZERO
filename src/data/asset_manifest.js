@@ -3338,12 +3338,12 @@ export const ASSET_MANIFEST = {
     ruins: {
       path: 'assets/maps/backgrounds/ruins_battlefield_tile.png',
       tile: true,
-      note: 'MVP-064 generated low-contrast ruined biome combat background tile for future stage use.',
+      note: 'Z04-06a generated seamless low-contrast ruins research-facility battlefield tile used by all ruins difficulties.',
     },
     ruinsZero: {
-      path: 'assets/maps/backgrounds/ruins_zero_battlefield_tile.png',
+      path: 'assets/maps/backgrounds/ruins_battlefield_tile.png',
       tile: true,
-      note: 'Z04-03 generated ruins ZERO contaminated reactor facility combat background tile.',
+      note: 'Legacy alias; ruins ZERO uses the common ruins battlefield tile plus ZERO-specific overlay/effect assets.',
     },
     swamp: {
       path: 'assets/maps/backgrounds/swamp_battlefield_tile.png',

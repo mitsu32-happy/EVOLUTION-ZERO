@@ -7415,10 +7415,6 @@ export class PlayScene {
   }
 
   getStageBackgroundAssetKey(stageId) {
-    if (stageId === 'ruins' && this.gameState.selectedMode === 'zero') {
-      return ASSET_KEYS.stageBackgrounds?.ruinsZero ?? ASSET_KEYS.stageBackgrounds?.ruins ?? ASSET_KEYS.stageBackgrounds?.jungle;
-    }
-
     return ASSET_KEYS.stageBackgrounds?.[stageId] ?? ASSET_KEYS.stageBackgrounds?.jungle;
   }
 

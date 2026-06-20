@@ -1,0 +1,45 @@
+{
+  "body": "予期しないエラーが発生しました。診断情報をコピーして報告してください。",
+  "card": {
+    "bottom": 822,
+    "height": 799,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 22
+  },
+  "cardCenteredX": 0,
+  "copy": {
+    "bottom": 593,
+    "height": 40,
+    "right": 143,
+    "width": 130,
+    "x": 13,
+    "y": 553
+  },
+  "copyText": "診断情報をコピー",
+  "overflowX": 0,
+  "overflowY": 0,
+  "reload": {
+    "bottom": 593,
+    "height": 40,
+    "right": 216,
+    "width": 65,
+    "x": 151,
+    "y": 553
+  },
+  "reloadText": "再起動",
+  "root": {
+    "bottom": 844,
+    "height": 844,
+    "right": 390,
+    "width": 390,
+    "x": 0,
+    "y": 0
+  },
+  "title": "ゲームが停止しました",
+  "viewport": {
+    "height": 844,
+    "width": 390
+  }
+}
