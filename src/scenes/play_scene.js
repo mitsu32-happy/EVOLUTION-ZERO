@@ -388,10 +388,17 @@ function getDebugUnlockZeroRoute() {
   }
 
   const params = new URLSearchParams(window.location.search);
-
-  return params.get('debugUnlockZeroRoute')
+  const explicitRoute = params.get('debugUnlockZeroRoute')
     ?? params.get('debugZeroEvolution')
     ?? null;
+
+  if (explicitRoute) {
+    return explicitRoute;
+  }
+
+  const forcedBranch = getEvolutionBranchById(params.get('debugForceEvolution'));
+
+  return forcedBranch?.tag === 'zero' ? forcedBranch.id : null;
 }
 
 export class PlayScene {
@@ -8264,7 +8271,7 @@ export class PlayScene {
 
   createTinyBuildLabel() {
     const label = new Text({
-      text: '蜃ｺ謦・擅莉ｶ',
+      text: 'QA MODE',
       style: {
         fill: '#96d7bd',
         fontFamily: 'Zen Kaku Gothic New, Oxanium, Noto Sans JP, sans-serif',
