@@ -340,7 +340,9 @@ export class Enemy {
     this.draw();
   }
 
-  update(delta, player) {
+  update(delta, player, options = {}) {
+    const updateVisuals = options.updateVisuals !== false;
+
     if (this.isDead) {
       this.deathTime += delta;
       this.position.x += this.velocity.x * delta * 0.28;
@@ -379,6 +381,11 @@ export class Enemy {
     this.hitImpact = Math.max(0, this.hitImpact - delta * 3.5);
 
     this.view.position.set(this.position.x, this.position.y);
+
+    if (!updateVisuals) {
+      return;
+    }
+
     this.view.rotation = this.velocity.x * 0.0018;
     const hitScale = 1 + this.hitImpact * 0.05;
     this.view.scale.set(

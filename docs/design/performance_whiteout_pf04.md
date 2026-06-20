@@ -18,15 +18,22 @@ PF04 targets the iPhone 15 whiteout / heat report without lowering adaptation sk
 - Damage number pressure now starts at level 1 and shortens text lifetime under pressure.
 - Non-critical damage text is capped earlier under pressure; critical text is preserved longer but still bounded.
 - Normal attack visuals no longer spawn when the acquired target is outside the actual attack hit shape.
+- PF04b moves dino-specific normal attack cooldown consumption after the hit-shape candidate check, so empty attacks do not consume cooldown.
+- PF04b adds high-load enemy visual budgeting: overlap culling, offscreen render culling, and offscreen animation throttling without removing internal enemies.
 - Performance and whiteout dumps now include:
   - `visibleEnemyCount`
   - `offscreenEnemyCount`
   - `thermalSafetyLevel`
+  - `enemyVisualBudget`
   - layer child counts already present in `containerChildren`
 
 ## Whiteout dump additions
 
-The `EVOLUTION_ZERO_WHITEOUT_DUMP` payload now records visible/offscreen enemy counts and thermal safety level, and the DOM whiteout summary includes `vis=visible/offscreen` and `thermal=level`.
+The `EVOLUTION_ZERO_WHITEOUT_DUMP` payload now records visible/offscreen enemy counts, thermal safety level, and enemy visual budget counters. The DOM whiteout summary includes `vis=visible/offscreen`, `thermal=level`, and `cull=overlap/offscreen`.
+
+## PF04b note
+
+iPhone 15 reports indicate the whiteout does not reliably show the crash/stop screen. PF04b therefore adds preventive runtime load reduction, not only diagnostic logging.
 
 ## QA notes
 

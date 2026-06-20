@@ -628,6 +628,22 @@ export class CombatSystem {
       return adaptationResult;
     }
 
+    if (this.attackPattern === 'normal' && this.normalAttackDefinition) {
+      const facing = this.getAttackFacing(player, target);
+      const hitTargets = this.findNormalAttackTargets(player, enemies, this.normalAttackDefinition, facing, target);
+
+      if (hitTargets.length <= 0) {
+        return adaptationResult;
+      }
+
+      this.attackTimer = this.attackInterval;
+      this.facePlayerToTarget(player, target);
+      return this.mergeCombatResults(
+        this.performNormalAttack(player, target, enemies, effectLayer, { facing, hitTargets }),
+        adaptationResult,
+      );
+    }
+
     this.attackTimer = this.attackInterval;
     this.facePlayerToTarget(player, target);
 
@@ -1045,7 +1061,7 @@ export class CombatSystem {
     };
   }
 
-  performNormalAttack(player, target, enemies, effectLayer) {
+  performNormalAttack(player, target, enemies, effectLayer, prepared = {}) {
     const attack = this.normalAttackDefinition;
 
     if (!attack) {
@@ -1065,8 +1081,8 @@ export class CombatSystem {
       return { pattern: 'normal', targets: [target], shake: 0 };
     }
 
-    const facing = this.getAttackFacing(player, target);
-    const hitTargets = this.findNormalAttackTargets(player, enemies, attack, facing, target);
+    const facing = prepared.facing ?? this.getAttackFacing(player, target);
+    const hitTargets = prepared.hitTargets ?? this.findNormalAttackTargets(player, enemies, attack, facing, target);
     const knockback = this.knockback;
 
     if (hitTargets.length <= 0) {

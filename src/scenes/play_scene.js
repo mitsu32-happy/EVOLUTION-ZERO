@@ -78,6 +78,9 @@ const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
 const LOAD_SHEDDING_SOFT_OBJECTS = 520;
 const LOAD_SHEDDING_HARD_OBJECTS = 760;
+const ENEMY_VISUAL_CULL_CELL_SIZE = 14;
+const ENEMY_VISUAL_CULL_MAX_PER_CELL = 3;
+const ENEMY_OFFSCREEN_THROTTLE_MARGIN = 260;
 const PERFORMANCE_SNAPSHOT_LIMIT = 90;
 const TICKER_STALL_WARN_MS = 2500;
 const TICKER_STALL_FATAL_MS = 6500;
@@ -751,6 +754,12 @@ export class PlayScene {
       bossClearOverruns: 0,
     };
     this.runtimeInvalidCounts = {};
+    this.enemyVisualBudgetStats = {
+      culledEnemySprites: 0,
+      offscreenRenderCulled: 0,
+      throttledEnemyAnimations: 0,
+      visibleEnemySprites: 0,
+    };
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
     this.screenShakeTimer = 0;
@@ -1231,6 +1240,79 @@ export class PlayScene {
     return { visible, offscreen, margin };
   }
 
+  isEnemyWithinCameraMargin(enemy, margin = 0) {
+    const left = (this.camera?.x ?? STAGE_BOUNDS.left) - margin;
+    const right = (this.camera?.x ?? STAGE_BOUNDS.left) + (this.camera?.visibleWidth ?? 0) + margin;
+    const top = (this.camera?.y ?? STAGE_BOUNDS.top) - margin;
+    const bottom = (this.camera?.y ?? STAGE_BOUNDS.top) + (this.camera?.visibleHeight ?? 0) + margin;
+    const x = enemy?.position?.x ?? 0;
+    const y = enemy?.position?.y ?? 0;
+
+    return x >= left && x <= right && y >= top && y <= bottom;
+  }
+
+  shouldUseEnemyVisualBudget() {
+    if (this.enemies.length < 54 && this.mobileThermalSafetyLevel <= 0 && this.performanceLoadSheddingLevel <= 0) {
+      return false;
+    }
+
+    const children = this.getRuntimeContainerChildren().total;
+    return this.mobileThermalSafetyLevel >= 1
+      || this.performanceLoadSheddingLevel >= 1
+      || this.debugStressKillEnabled
+      || this.enemies.length >= 72
+      || children >= LOAD_SHEDDING_SOFT_CHILDREN * 0.72;
+  }
+
+  shouldProtectEnemyVisual(enemy) {
+    return enemy?.isDead
+      || enemy?.projectileCooldown > 0
+      || enemy?.electroCooldown > 0
+      || enemy?.summonCooldown > 0
+      || (enemy?.enemyLevel ?? 1) >= 8
+      || (enemy?.hp ?? 1) <= Math.max(1, (enemy?.maxHp ?? 1) * 0.18);
+  }
+
+  getEnemyVisualBudgetState(enemy, index, occupiedCells, enabled) {
+    const stats = this.enemyVisualBudgetStats;
+    const onScreen = this.isEnemyWithinCameraMargin(enemy, 96);
+    const nearScreen = this.isEnemyWithinCameraMargin(enemy, ENEMY_OFFSCREEN_THROTTLE_MARGIN);
+
+    if (!enabled || this.shouldProtectEnemyVisual(enemy)) {
+      stats.visibleEnemySprites += 1;
+      return { renderable: true, updateVisuals: true };
+    }
+
+    if (!nearScreen) {
+      stats.offscreenRenderCulled += 1;
+      return { renderable: false, updateVisuals: false };
+    }
+
+    if (!onScreen) {
+      const updateVisuals = (this.frameCount + index) % (this.mobileThermalSafetyLevel >= 1 ? 4 : 3) === 0;
+      if (!updateVisuals) {
+        stats.throttledEnemyAnimations += 1;
+      }
+      stats.visibleEnemySprites += 1;
+      return { renderable: true, updateVisuals };
+    }
+
+    const cellX = Math.round((enemy.position?.x ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
+    const cellY = Math.round((enemy.position?.y ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
+    const sizeKey = Math.round((enemy.radius ?? 0) / 4);
+    const key = `${enemy.enemyType}:${sizeKey}:${cellX}:${cellY}`;
+    const count = occupiedCells.get(key) ?? 0;
+    occupiedCells.set(key, count + 1);
+
+    if (count >= ENEMY_VISUAL_CULL_MAX_PER_CELL) {
+      stats.culledEnemySprites += 1;
+      return { renderable: false, updateVisuals: false };
+    }
+
+    stats.visibleEnemySprites += 1;
+    return { renderable: true, updateVisuals: true };
+  }
+
   getRuntimeObjectPressureCount() {
     return this.enemies.length
       + this.enemyProjectiles.length
@@ -1364,6 +1446,7 @@ export class PlayScene {
       `shed ${stats.loadSheddingLevel} thermal ${stats.thermalSafetyLevel ?? 0} children ${stats.containerChildrenTotal}`,
       `spawn ${stats.spawn?.spawnBudget ?? '-'}/${stats.spawn?.maxSpawnBudget ?? '-'}`,
       `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'} vis/off ${stats.visibleEnemies ?? '-'}/${stats.offscreenEnemies ?? '-'}`,
+      `enemyCull c${stats.enemyVisualBudget?.culledEnemySprites ?? 0}/o${stats.enemyVisualBudget?.offscreenRenderCulled ?? 0}/a${stats.enemyVisualBudget?.throttledEnemyAnimations ?? 0}`,
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
@@ -1530,6 +1613,7 @@ export class PlayScene {
       damageTextCount: combatStats.damageNumbers ?? 0,
       criticalTextCount,
       pickupCount: this.pickups.length,
+      enemyVisualBudget: { ...(this.enemyVisualBudgetStats ?? {}) },
       containerChildren,
       containerChildrenTotal: containerChildren.total,
       loadSheddingLevel: this.performanceLoadSheddingLevel,
@@ -1717,6 +1801,7 @@ export class PlayScene {
       damageTextCount: snapshot.damageTextCount,
       criticalTextCount: snapshot.criticalTextCount,
       pickupCount: snapshot.pickupCount,
+      enemyVisualBudget: snapshot.enemyVisualBudget,
       compFx: snapshot.companion?.effects ?? 0,
       compScan: `${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
       renderer: {
@@ -1770,6 +1855,7 @@ export class PlayScene {
         `t=${dump.elapsedTime}`,
         `enemy=${dump.enemyCount}`,
         `vis=${dump.visibleEnemyCount ?? '-'}/${dump.offscreenEnemyCount ?? '-'}`,
+        `cull=${dump.enemyVisualBudget?.culledEnemySprites ?? 0}/${dump.enemyVisualBudget?.offscreenRenderCulled ?? 0}`,
         `fx=${dump.effectCount}`,
         `compFx=${dump.compFx}`,
         `children=${dump.latestSnapshot?.containerChildrenTotal ?? '-'}`,
@@ -1878,6 +1964,7 @@ export class PlayScene {
       visibleEnemies: snapshot.visibleEnemyCount ?? 0,
       offscreenEnemies: snapshot.offscreenEnemyCount ?? 0,
       thermalSafetyLevel: snapshot.thermalSafetyLevel ?? 0,
+      enemyVisualBudget: snapshot.enemyVisualBudget ?? this.enemyVisualBudgetStats,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
       audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
@@ -4714,9 +4801,19 @@ export class PlayScene {
     const playerCollider = this.player.getCollider();
 
     this.enemies = this.enemies.filter((enemy) => this.isRuntimeEntityUsable(enemy, 'enemy'));
+    this.enemyVisualBudgetStats = {
+      culledEnemySprites: 0,
+      offscreenRenderCulled: 0,
+      throttledEnemyAnimations: 0,
+      visibleEnemySprites: 0,
+    };
+    const useEnemyVisualBudget = this.shouldUseEnemyVisualBudget();
+    const occupiedVisualCells = new Map();
 
-    this.enemies.forEach((enemy) => {
-      enemy.update(delta, this.player);
+    this.enemies.forEach((enemy, index) => {
+      const visualState = this.getEnemyVisualBudgetState(enemy, index, occupiedVisualCells, useEnemyVisualBudget);
+      enemy.view.renderable = visualState.renderable;
+      enemy.update(delta, this.player, { updateVisuals: visualState.updateVisuals });
       this.updateRuinsEnemyAbility(delta, enemy);
       enemy.view.zIndex = enemy.position.y;
 

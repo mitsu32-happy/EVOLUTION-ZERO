@@ -8,6 +8,8 @@ Compsognathus should feel like a small pack: the controlled dinosaur is joined b
 
 PF04 does not implement mini-pack gameplay. This is intentionally deferred because the same workstream is reducing endgame iPhone heat and whiteout risk. Adding two active actors with scans, attacks, and animations needs a dedicated performance budget.
 
+PF04b keeps this as a known deferred item. The performance branch now has enemy visual culling and offscreen update throttling work in flight, so adding mini-pack actors before measuring that impact would blur QA results.
+
 ## Recommended design
 
 - Create a PlayScene-local `miniPack` actor list only when the selected dino is `compsognathus` or a Compsognathus evolution.
