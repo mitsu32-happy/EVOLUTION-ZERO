@@ -116,6 +116,7 @@ const PREVIEW = { x: 38, y: 286, width: 314, height: 96 };
 const DEPLOY_Y = 546;
 const DEPLOY_DESC = { x: 24, y: 596, width: 342, height: 98 };
 const STAGE_PAGE_SIZE = 4;
+const RUINS_ZERO_REQUIRED_ZERO_STAGES = ['jungle', 'volcano', 'swamp'];
 
 export class StageSelectScreen {
   constructor({ width, height, gameState, saveData = null, assetLoader = null, onBack, onContinue }) {
@@ -754,11 +755,27 @@ export class StageSelectScreen {
     if (type.id === 'zero') {
       const allowRuinsZeroDebug = new URLSearchParams(window.location.search).get('debugAllowRuinsZero') === '1';
 
-      if (this.selectedStage === 'ruins' && !allowRuinsZeroDebug) {
-        return {
-          locked: true,
-          reason: 'ruins ZEROは今後追加予定',
-        };
+      if (this.selectedStage === 'ruins') {
+        if (allowRuinsZeroDebug) {
+          return { locked: false, reason: '' };
+        }
+
+        const state = this.getRuinsZeroUnlockState();
+        if (!state.ruinsExpertCleared) {
+          return {
+            locked: true,
+            reason: 'ruins ZEROは遺跡EXPERTクリアが必要',
+          };
+        }
+
+        if (!state.unlocked) {
+          return {
+            locked: true,
+            reason: 'ruins ZEROは既存ZERO3種クリアで解放',
+          };
+        }
+
+        return { locked: false, reason: '' };
       }
 
       return {
@@ -768,6 +785,19 @@ export class StageSelectScreen {
     }
 
     return { locked: Boolean(type.locked), reason: '未解放' };
+  }
+
+  getRuinsZeroUnlockState() {
+    const allProgress = this.saveData?.stageProgress ?? {};
+    const ruinsProgress = allProgress.ruins ?? {};
+    const ruinsExpertCleared = Boolean(ruinsProgress.expert?.cleared);
+    const missingZeroStages = RUINS_ZERO_REQUIRED_ZERO_STAGES.filter((stageId) => !allProgress[stageId]?.zero?.cleared);
+
+    return {
+      unlocked: ruinsExpertCleared && missingZeroStages.length === 0,
+      ruinsExpertCleared,
+      missingZeroStages,
+    };
   }
 
   drawStageCardFallback(card, selected) {

@@ -2332,6 +2332,10 @@ export class PlayScene {
       return;
     }
 
+    if (this.saveManager?.isDifficultyUnlocked?.('ruins', 'zero')) {
+      return;
+    }
+
     this.gameState.selectedMode = 'standard';
     this.gameState.selectedDifficulty = 'expert';
   }

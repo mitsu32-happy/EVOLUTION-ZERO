@@ -500,3 +500,15 @@ Next step should implement only low-risk data plumbing:
 3. Add production-safe unlock flag for ruins ZERO route.
 4. Keep stage/boss visuals unchanged until Z04-03 assets are ready.
 5. Add docs and debug checks before gameplay tuning.
+
+## Z04-02 Update
+
+Z04-02 added the production route gate and boot path for `ruins` ZERO without adding dedicated boss/assets yet.
+
+- Unlock condition: `ruins` EXPERT clear plus `jungle`, `volcano`, and `swamp` ZERO clear.
+- Stage select now shows `ruins` ZERO as a real locked/unlocked candidate instead of "future update" only.
+- `PlayScene.applyRuinsZeroPreReleaseLock()` now allows `ruins` ZERO when the save data satisfies the production unlock condition.
+- `debugAllowRuinsZero=1` remains a QA bypass.
+- Clear state uses the existing `stageProgress.ruins.zero` entry created by `SaveManager.normalizeStageProgress()`.
+- ZERO evolution research unlock groundwork is exposed through `SaveManager.getRuinsZeroUnlockState().zeroResearchAvailable`, which becomes true after `stageProgress.ruins.zero.cleared`.
+- Direct ZERO evolution route rewards remain intentionally disabled for `ruins`; Z04-05 should connect DNA research cards to individual `unlockedZeroRoutes`.

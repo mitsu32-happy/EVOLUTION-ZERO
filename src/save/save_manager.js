@@ -36,6 +36,7 @@ const SAVE_KEY = 'evolution_zero_save_v1';
 const SAVE_VERSION = 1;
 const STAGE_IDS = ['jungle', 'volcano', 'swamp', 'ruins'];
 const STAGE_PROGRESS_KEYS = ['normal', 'hard', 'expert', 'endless', 'zero'];
+const RUINS_ZERO_REQUIRED_ZERO_STAGES = ['jungle', 'volcano', 'swamp'];
 const NEXT_DIFFICULTY_UNLOCKS = {
   normal: ['hard'],
   hard: ['expert'],
@@ -229,7 +230,7 @@ export class SaveManager {
     }
 
     if (difficultyId === 'zero' && stageId === 'ruins') {
-      return false;
+      return this.isRuinsZeroUnlocked(progress);
     }
 
     if (difficultyId === 'endless' || difficultyId === 'zero') {
@@ -237,6 +238,29 @@ export class SaveManager {
     }
 
     return false;
+  }
+
+  isRuinsZeroUnlocked(progress = this.normalizeStageProgress(this.data.stageProgress)) {
+    const stageProgress = progress.ruins ?? {};
+    const hasRuinsExpertClear = Boolean(stageProgress.expert?.cleared);
+    const hasRequiredZeroClears = RUINS_ZERO_REQUIRED_ZERO_STAGES.every((stageId) => (
+      Boolean(progress[stageId]?.zero?.cleared)
+    ));
+
+    return hasRuinsExpertClear && hasRequiredZeroClears;
+  }
+
+  getRuinsZeroUnlockState() {
+    const progress = this.normalizeStageProgress(this.data.stageProgress);
+    const missingZeroStages = RUINS_ZERO_REQUIRED_ZERO_STAGES.filter((stageId) => !progress[stageId]?.zero?.cleared);
+
+    return {
+      unlocked: this.isRuinsZeroUnlocked(progress),
+      ruinsExpertCleared: Boolean(progress.ruins?.expert?.cleared),
+      requiredZeroStages: [...RUINS_ZERO_REQUIRED_ZERO_STAGES],
+      missingZeroStages,
+      zeroResearchAvailable: Boolean(progress.ruins?.zero?.cleared),
+    };
   }
 
   getAudioSettings() {
