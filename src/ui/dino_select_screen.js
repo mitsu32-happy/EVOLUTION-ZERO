@@ -636,10 +636,6 @@ export class DinoSelectScreen {
   }
 
   getLockedDinoTexture(dino) {
-    if (dino?.previewWhenLocked) {
-      return this.heroTextures.get(dino.id) ?? this.dinoTextures.get(dino.id) ?? null;
-    }
-
     if (dino?.id === 'spinosaurus') {
       return this.uiTextures.get('spinosaurusLockedSilhouette') ?? null;
     }
