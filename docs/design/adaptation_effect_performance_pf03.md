@@ -86,3 +86,7 @@ If fallback/skip reappears, run a longer soak and prioritize by:
 4. `newEffectCreateCount` with low `pooledEffectReuseCount`
 
 Only then replace the identified fallback path with low-cost texture effects or shorter-duration texture effects.
+
+## PF04 follow-up
+
+PF04 keeps adaptation effects texture-first and adds iPhone/mobile thermal diagnostics plus lower-priority damage text pressure. Whiteout/performance dumps now include visible/offscreen enemy counts and thermal safety level so future mobile reports can distinguish enemy buildup, layer child pressure, and WebGL context loss.

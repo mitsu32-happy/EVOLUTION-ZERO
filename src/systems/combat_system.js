@@ -1069,6 +1069,10 @@ export class CombatSystem {
     const hitTargets = this.findNormalAttackTargets(player, enemies, attack, facing, target);
     const knockback = this.knockback;
 
+    if (hitTargets.length <= 0) {
+      return { pattern: attack.id, targets: [], shake: 0 };
+    }
+
     hitTargets.forEach((enemy, index) => {
       const hit = this.applyPlayerAttackDamage(this.damage, enemy);
       enemy.takeDamage(hit.damage, {
@@ -1993,11 +1997,21 @@ export class CombatSystem {
 
     const critical = options.critical === true;
 
-    if (this.performancePressureLevel >= 2 && !critical && this.damageNumbers.length >= MAX_DAMAGE_NUMBERS * 0.45) {
+    const pressureDurationMultiplier = this.performancePressureLevel >= 2 ? 0.68
+      : this.performancePressureLevel >= 1 ? 0.82
+        : 1;
+    const nonCriticalSoftCap = this.performancePressureLevel >= 2 ? MAX_DAMAGE_NUMBERS * 0.38
+      : this.performancePressureLevel >= 1 ? MAX_DAMAGE_NUMBERS * 0.62
+        : MAX_DAMAGE_NUMBERS;
+    const criticalSoftCap = this.performancePressureLevel >= 2 ? MAX_DAMAGE_NUMBERS * 0.62
+      : this.performancePressureLevel >= 1 ? MAX_DAMAGE_NUMBERS * 0.78
+        : MAX_DAMAGE_NUMBERS;
+
+    if (this.performancePressureLevel >= 1 && !critical && this.damageNumbers.length >= nonCriticalSoftCap) {
       return;
     }
 
-    if (this.performancePressureLevel >= 2 && critical && this.damageNumbers.length >= MAX_DAMAGE_NUMBERS * 0.72 && Math.random() < 0.35) {
+    if (this.performancePressureLevel >= 1 && critical && this.damageNumbers.length >= criticalSoftCap && Math.random() < (this.performancePressureLevel >= 2 ? 0.35 : 0.18)) {
       return;
     }
 
@@ -2016,7 +2030,7 @@ export class CombatSystem {
     });
     const number = {
       age: 0,
-      duration: critical ? 0.58 : 0.42,
+      duration: (critical ? 0.58 : 0.42) * pressureDurationMultiplier,
       view: text,
       startY: target.position.y - (target.isBoss ? 72 : 42) - (critical ? 8 : 0),
       driftX: offsetX + (Math.random() - 0.5) * (critical ? 14 : 10),

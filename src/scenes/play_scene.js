@@ -743,6 +743,7 @@ export class PlayScene {
       tickerStalls: 0,
       lastReason: null,
     };
+    this.mobileThermalSafetyLevel = 0;
     this.whiteoutDiagnostics = {
       dumpCount: 0,
       lastReason: null,
@@ -1190,6 +1191,46 @@ export class PlayScene {
     };
   }
 
+  isMobileThermalRiskDevice() {
+    if (typeof navigator === 'undefined') {
+      return false;
+    }
+
+    const userAgent = navigator.userAgent ?? '';
+    const platform = navigator.platform ?? '';
+    const isAppleMobile = /iPhone|iPad|iPod/i.test(userAgent)
+      || (platform === 'MacIntel' && (navigator.maxTouchPoints ?? 0) > 1);
+    const isMobileBrowser = /Android|Mobile/i.test(userAgent);
+
+    return isAppleMobile || isMobileBrowser;
+  }
+
+  getVisibleEnemyStats(margin = 180) {
+    const left = (this.camera?.x ?? STAGE_BOUNDS.left) - margin;
+    const right = (this.camera?.x ?? STAGE_BOUNDS.left) + (this.camera?.visibleWidth ?? 0) + margin;
+    const top = (this.camera?.y ?? STAGE_BOUNDS.top) - margin;
+    const bottom = (this.camera?.y ?? STAGE_BOUNDS.top) + (this.camera?.visibleHeight ?? 0) + margin;
+    let visible = 0;
+    let offscreen = 0;
+
+    this.enemies.forEach((enemy) => {
+      if (!enemy || enemy.isDead) {
+        return;
+      }
+
+      const x = enemy.position?.x ?? 0;
+      const y = enemy.position?.y ?? 0;
+      if (x >= left && x <= right && y >= top && y <= bottom) {
+        visible += 1;
+        return;
+      }
+
+      offscreen += 1;
+    });
+
+    return { visible, offscreen, margin };
+  }
+
   getRuntimeObjectPressureCount() {
     return this.enemies.length
       + this.enemyProjectiles.length
@@ -1272,8 +1313,27 @@ export class PlayScene {
       }
     }
 
+    let thermalLevel = 0;
+    if (this.isMobileThermalRiskDevice()) {
+      const nearingSoftPressure = childTotal >= LOAD_SHEDDING_SOFT_CHILDREN * 0.68
+        || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.68
+        || (this.debugFpsEstimate > 0 && this.debugFpsEstimate < 45);
+      const sustainedPressure = childTotal >= LOAD_SHEDDING_SOFT_CHILDREN * 0.9
+        || objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.9
+        || (this.debugFpsEstimate > 0 && this.debugFpsEstimate < 32);
+
+      if (nearingSoftPressure) {
+        thermalLevel = 1;
+      }
+
+      if (sustainedPressure || level >= 2) {
+        thermalLevel = 2;
+      }
+    }
+
+    this.mobileThermalSafetyLevel = thermalLevel;
     this.performanceLoadSheddingLevel = level;
-    this.combatSystem?.setPerformancePressure?.(level);
+    this.combatSystem?.setPerformancePressure?.(Math.max(level, thermalLevel));
     this.ultimateSystem?.setPerformancePressure?.(level);
     this.audioManager?.setPerformanceLoadSheddingLevel?.(level);
   }
@@ -1301,9 +1361,9 @@ export class PlayScene {
       : '-';
     const lines = [
       `FPS ${stats.fps}`,
-      `shed ${stats.loadSheddingLevel} children ${stats.containerChildrenTotal}`,
+      `shed ${stats.loadSheddingLevel} thermal ${stats.thermalSafetyLevel ?? 0} children ${stats.containerChildrenTotal}`,
       `spawn ${stats.spawn?.spawnBudget ?? '-'}/${stats.spawn?.maxSpawnBudget ?? '-'}`,
-      `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'}`,
+      `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'} vis/off ${stats.visibleEnemies ?? '-'}/${stats.offscreenEnemies ?? '-'}`,
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
@@ -1438,6 +1498,7 @@ export class PlayScene {
     const activeBoss = this.getActiveBoss?.();
     const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
     const containerChildren = this.getRuntimeContainerChildren();
+    const visibleEnemyStats = this.getVisibleEnemyStats();
     const spawnStats = this.spawnSystem?.getPerformanceStats?.(this.gameState) ?? {};
     const criticalTextCount = this.combatSystem?.damageNumbers?.filter?.((number) => number.critical)?.length ?? 0;
     const hazardCount = this.stageGimmicks.filter((gimmick) => gimmick.type?.startsWith?.('boss_')).length;
@@ -1457,6 +1518,8 @@ export class PlayScene {
       debugStressKillThreshold: this.debugStressKillThreshold,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
       enemyCount: this.enemies.length,
+      visibleEnemyCount: visibleEnemyStats.visible,
+      offscreenEnemyCount: visibleEnemyStats.offscreen,
       projectileCount: (combatStats.combatProjectiles ?? 0) + this.enemyProjectiles.length,
       bossProjectileCount: this.enemyProjectiles.filter((projectile) => projectile.type?.startsWith?.('boss')).length,
       hazardCount,
@@ -1470,6 +1533,7 @@ export class PlayScene {
       containerChildren,
       containerChildrenTotal: containerChildren.total,
       loadSheddingLevel: this.performanceLoadSheddingLevel,
+      thermalSafetyLevel: this.mobileThermalSafetyLevel ?? 0,
       spawnBudget: spawnStats.spawnBudget ?? null,
       activeAudioCount: this.audioManager?.activeAudios?.size ?? null,
       activeAudioBufferCount: this.audioManager?.activeBufferRecords?.size ?? null,
@@ -1644,6 +1708,8 @@ export class PlayScene {
       difficulty: this.gameState?.selectedDifficulty ?? '-',
       elapsedTime: snapshot.elapsedTime,
       enemyCount: snapshot.enemyCount,
+      visibleEnemyCount: snapshot.visibleEnemyCount,
+      offscreenEnemyCount: snapshot.offscreenEnemyCount,
       projectileCount: snapshot.projectileCount,
       hazardCount: snapshot.hazardCount,
       warningGuideCount: snapshot.warningGuideCount,
@@ -1668,6 +1734,7 @@ export class PlayScene {
       activeFullscreenGraphics: fullscreenGraphics,
       webglContextLost: (snapshot.diagnostics?.contextLost ?? 0) > 0,
       loadSheddingLevel: snapshot.loadSheddingLevel,
+      thermalSafetyLevel: snapshot.thermalSafetyLevel,
       bossClearSequence: this.bossClearSequence ? {
         age: Number((this.bossClearSequence.age ?? 0).toFixed(3)),
         duration: Number((this.bossClearSequence.duration ?? 0).toFixed(3)),
@@ -1702,9 +1769,11 @@ export class PlayScene {
         `mode=${dump.mode}`,
         `t=${dump.elapsedTime}`,
         `enemy=${dump.enemyCount}`,
+        `vis=${dump.visibleEnemyCount ?? '-'}/${dump.offscreenEnemyCount ?? '-'}`,
         `fx=${dump.effectCount}`,
         `compFx=${dump.compFx}`,
         `children=${dump.latestSnapshot?.containerChildrenTotal ?? '-'}`,
+        `thermal=${dump.thermalSafetyLevel ?? 0}`,
         `ctx=${dump.webglContextLost ? 1 : 0}`,
       ].join(' '));
     } catch {
@@ -1806,6 +1875,9 @@ export class PlayScene {
       depthChildren: this.depthLayer.children.length,
       uiChildren: this.uiLayer.children.length,
       containerChildrenTotal: containerChildren.total,
+      visibleEnemies: snapshot.visibleEnemyCount ?? 0,
+      offscreenEnemies: snapshot.offscreenEnemyCount ?? 0,
+      thermalSafetyLevel: snapshot.thermalSafetyLevel ?? 0,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
       audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),

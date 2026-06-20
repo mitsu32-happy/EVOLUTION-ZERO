@@ -872,8 +872,8 @@ export class CodexScreen {
     const foundBranches = dinoUnlocked ? branches.filter((branch) => this.isBranchFound(dino, branch, discovered)) : [];
     const unknownCount = branches.length - foundBranches.length;
 
-    this.lineageText.text = dinoUnlocked ? dino.lineage : `${dino.name} / 未解放`;
-    this.typeText.text = dinoUnlocked ? `${dino.type} / ${dino.trait}` : '研究で解放すると詳細を表示';
+    this.lineageText.text = dinoUnlocked ? dino.lineage : dino.name;
+    this.typeText.text = dinoUnlocked ? `${dino.type} / ${dino.trait}` : '未解放 / 研究で詳細表示';
     this.foundText.text = `発見済み ${foundBranches.length} / ${branches.length}`;
     this.unresolvedText.text = `未解析 ${unknownCount}`;
 
