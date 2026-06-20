@@ -866,8 +866,18 @@ synergy enabled state, version, or news.
 Detailed implementation notes are in
 `docs/design/new_dinos_evolution_asset_regen_nd09b.md`.
 
-## ND10???????
+## ND10pre Research Point / Daily Cleanup
 
-- ??Pt???????6???????DNA??????
-- ?6???DNA+??Pt???????Pt 1 = DNA 5 ????DNA?????????
-- ????/??/?????????????????????????????????????
+- Research Pt is removed as a user-facing currency and costs are unified to DNA.
+- Legacy owned Research Pt migrates to DNA at `1 Research Pt = 5 DNA` with a `researchPtConvertedToDna` guard.
+- Daily, record, and unlock panels are removed from Home; the lower area is reserved for future event / achievement surfaces.
+- Details: `docs/design/research_point_daily_cleanup_nd10pre.md`
+
+## ND10pre Home / Research UI Follow-up
+
+- Locked new-dino cards use hero-derived silhouettes instead of simple geometry.
+- Unknown research cards use the same DNA icon + value display as other cards.
+- Unknown tab scroll list contains Spinosaurus plus all six new dino unlock cards.
+- Home lower half has a non-interactive future-event research panel.
+- Home background was regenerated as a production dark sci-fi research facility illustration.
+- Details: `docs/design/new_dinos_home_research_ui_fix_nd10pre.md`

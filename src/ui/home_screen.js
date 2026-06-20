@@ -173,7 +173,7 @@ const HOME_DINO_PROFILES = {
 const DEFAULT_UNLOCKED_HOME_DINOS = DEFAULT_HOME_DINO_IDS;
 
 const RESOURCE_ITEMS = [
-  { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 194, textX: 238 },
+  { id: 'dna', label: 'DNA', color: UI_COLORS.danger, iconName: 'iconDnaRed', iconX: 218, textX: 260 },
 ];
 
 const UNLOCK_STATUS_ITEMS = [
@@ -196,6 +196,7 @@ const DEPLOY = { x: 38, y: 424, width: 314, height: 66 };
 const HOME_INFO_TABS = [];
 const INFO_TAB = { x: 18, y: 502, width: 110, height: 36, gap: 12 };
 const INFO_PANEL = { x: 18, y: 536, width: 354, height: 196 };
+const EVENT_PANEL = INFO_PANEL;
 const UNLOCK_PANEL = INFO_PANEL;
 const RECORD_PANEL = INFO_PANEL;
 const DAILY_PANEL = INFO_PANEL;
@@ -390,6 +391,8 @@ export class HomeScreen {
     this.unlockTitle = this.createText('解放', 12, '#7cf7d4', 90);
     this.recordTitle = this.createText('記録', 12, '#7cf7d4', 90);
     this.dailyTitle = this.createText('デイリー', 12, '#7cf7d4', 120);
+    this.eventAreaTitle = this.createText('イベント準備区画', 12, '#7cf7d4', 180);
+    this.eventAreaBody = this.createText('研究施設の下層デッキを調整中。今後のイベント表示領域として使用予定です。', 10, '#cbe0da', 280);
     this.dailyClaimAllButton = this.createDailyClaimAllButton();
     this.infoTabButtons = HOME_INFO_TABS.map((item) => this.createHomeInfoTabButton(item));
     this.unlockRows = UNLOCK_STATUS_ITEMS.map((item) => ({
@@ -479,6 +482,8 @@ export class HomeScreen {
       this.recordTitle,
       ...this.recordRows.flatMap((entry) => [entry.label, entry.value]),
       this.dailyTitle,
+      this.eventAreaTitle,
+      this.eventAreaBody,
       this.dailyClaimAllButton.view,
       ...this.dailyRows.flatMap((entry) => [entry.label, entry.status, entry.reward, entry.button.view]),
       this.noticeText,
@@ -1287,7 +1292,12 @@ export class HomeScreen {
   }
 
   applyTextures(dinoId, evolutionId = null) {
-    this.applySprite(this.homeBackground, this.textures.get('homeBackground'), HERO, 0.92);
+    this.applySprite(this.homeBackground, this.textures.get('homeBackground'), {
+      x: 0,
+      y: 0,
+      width: this.width,
+      height: this.height,
+    }, 0.9);
     this.applySprite(this.logoSprite, this.textures.get('evolutionZeroLogo'), { x: 12, y: 13, width: 138, height: 68 }, 0.96);
     this.logoFallback.visible = !this.logoSprite.visible;
     this.applySprite(this.resourcePanel, this.textures.get('resourcePanel'), RESOURCE_PANEL, 0.92);
@@ -1445,6 +1455,9 @@ export class HomeScreen {
 
     this.dailyTitle.position.set(DAILY_CONTENT.titleX, DAILY_CONTENT.titleY);
     this.dailyClaimAllButton.view.position.set(INFO_PANEL.x + INFO_PANEL.width - 92, INFO_PANEL.y + 12);
+    this.eventAreaTitle.position.set(EVENT_PANEL.x + 26, EVENT_PANEL.y + 18);
+    this.eventAreaBody.position.set(EVENT_PANEL.x + 26, EVENT_PANEL.y + 52);
+    this.eventAreaBody.style.lineHeight = 15;
     this.dailyRows.forEach(({ label, status, reward, button }, index) => {
       const y = DAILY_CONTENT.rowStartY + index * DAILY_CONTENT.rowGap;
 
@@ -1489,6 +1502,7 @@ export class HomeScreen {
     if (!this.deployFrame.visible) {
       this.drawPanel(this.panelGraphics, DEPLOY.x, DEPLOY.y, DEPLOY.width, DEPLOY.height, UI_COLORS.gold, 0.92);
     }
+    this.drawEventPlaceholderPanel(dino);
     if (!this.selectorPlate.visible) {
       this.drawPanel(this.switchFallback, SELECTOR.pillX, SELECTOR.y, 138, 28, UI_COLORS.dna, 0.74);
     }
@@ -1576,6 +1590,24 @@ export class HomeScreen {
         .poly([75, DEPLOY.y + 43, 88, DEPLOY.y + 25, 98, DEPLOY.y + 43])
         .fill({ color: UI_COLORS.gold, alpha: 0.84 });
     }
+  }
+
+  drawEventPlaceholderPanel(dino) {
+    const accent = dino?.accentColor ?? UI_COLORS.dna;
+
+    this.panelGraphics
+      .roundRect(EVENT_PANEL.x, EVENT_PANEL.y, EVENT_PANEL.width, EVENT_PANEL.height, 14)
+      .fill({ color: 0x020708, alpha: 0.56 })
+      .stroke({ color: accent, width: 1.2, alpha: 0.38 })
+      .roundRect(EVENT_PANEL.x + 14, EVENT_PANEL.y + 14, EVENT_PANEL.width - 28, EVENT_PANEL.height - 28, 10)
+      .stroke({ color: 0x7cf7d4, width: 0.8, alpha: 0.16 })
+      .rect(EVENT_PANEL.x + 28, EVENT_PANEL.y + 84, EVENT_PANEL.width - 56, 1)
+      .fill({ color: accent, alpha: 0.18 })
+      .circle(EVENT_PANEL.x + EVENT_PANEL.width - 42, EVENT_PANEL.y + 38, 12)
+      .fill({ color: accent, alpha: 0.08 })
+      .stroke({ color: accent, width: 1, alpha: 0.28 })
+      .circle(EVENT_PANEL.x + EVENT_PANEL.width - 42, EVENT_PANEL.y + 38, 4)
+      .fill({ color: 0x7cf7d4, alpha: 0.18 });
   }
 
   createNewsModal() {
@@ -2185,6 +2217,8 @@ export class HomeScreen {
 
     this.infoPanel.visible = false;
     this.infoPanelGlow.visible = false;
+    this.eventAreaTitle.visible = true;
+    this.eventAreaBody.visible = true;
     this.dailyTitle.visible = showDaily;
     this.dailyClaimAllButton.view.visible = showDaily;
     this.recordTitle.visible = showRecord;

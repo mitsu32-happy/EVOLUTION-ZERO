@@ -3433,7 +3433,7 @@ export const ASSET_MANIFEST = {
     homeBackground: {
       path: 'assets/ui/home/home_background.png',
       uiAsset: true,
-      note: 'MVP-076 generated dark DNA research facility background for the home screen.',
+      note: 'ND10pre regenerated production dark sci-fi dinosaur evolution research facility background. Darkened for home UI readability.',
     },
     evolutionZeroLogo: {
       path: 'assets/ui/home/evolution_zero_logo.png',

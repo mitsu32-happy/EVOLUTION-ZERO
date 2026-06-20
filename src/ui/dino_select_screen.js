@@ -77,7 +77,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.spinosaurus,
     locked: 'research',
     unlockCondition: '研究: スピノサウルス解析',
-    unlockHint: 'DNA 1100???',
+    unlockHint: 'DNA 1100で解放',
   },
   {
     id: 'ankylosaurus',
@@ -93,7 +93,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.ankylosaurus,
     locked: 'research',
     unlockCondition: '研究: アンキロサウルス解析',
-    unlockHint: 'DNA 2700???',
+    unlockHint: 'DNA 2700で解放',
   },
   {
     id: 'parasaurolophus',
@@ -109,7 +109,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.parasaurolophus,
     locked: 'research',
     unlockCondition: '研究: パラサウロロフス解析',
-    unlockHint: 'DNA 2450???',
+    unlockHint: 'DNA 2450で解放',
   },
   {
     id: 'stegosaurus',
@@ -125,7 +125,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.stegosaurus,
     locked: 'research',
     unlockCondition: '研究: ステゴサウルス解析',
-    unlockHint: 'DNA 2750???',
+    unlockHint: 'DNA 2750で解放',
   },
   {
     id: 'pteranodon',
@@ -141,7 +141,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.pteranodon,
     locked: 'research',
     unlockCondition: '研究: プテラノドン解析',
-    unlockHint: 'DNA 2600???',
+    unlockHint: 'DNA 2600で解放',
   },
   {
     id: 'compsognathus',
@@ -157,7 +157,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.compsognathus,
     locked: 'research',
     unlockCondition: '研究: コンプソグナトゥス解析',
-    unlockHint: 'DNA 2300???',
+    unlockHint: 'DNA 2300で解放',
   },
   {
     id: 'ornithomimus',
@@ -173,7 +173,7 @@ const BASE_DINOS = [
     heroKey: ASSET_KEYS.dinoSelectHero.ornithomimus,
     locked: 'research',
     unlockCondition: '研究: オルニトミムス解析',
-    unlockHint: 'DNA 2450???',
+    unlockHint: 'DNA 2450で解放',
   },
 ];
 
@@ -520,6 +520,8 @@ export class DinoSelectScreen {
     this.largeDinoFallback.clear();
     this.largeDinoSprite.texture = texture ?? Texture.EMPTY;
     this.largeDinoSprite.visible = !!texture;
+    this.largeDinoSprite.tint = locked ? 0x1f3030 : 0xffffff;
+    this.largeDinoSprite.alpha = locked ? 0.72 : 1;
 
     if (texture) {
       this.largeDinoSprite.anchor.set(0.5);
@@ -602,6 +604,8 @@ export class DinoSelectScreen {
       card.marker.clear();
       card.sprite.texture = texture ?? Texture.EMPTY;
       card.sprite.visible = !!texture;
+      card.sprite.tint = locked ? 0x243434 : 0xffffff;
+      card.sprite.alpha = locked ? (selected ? 0.78 : 0.6) : 1;
 
       if (texture) {
         const imageMaxWidth = card.dino.id === 'spinosaurus' ? 78 : 88;
@@ -634,7 +638,7 @@ export class DinoSelectScreen {
       return this.uiTextures.get('spinosaurusLockedSilhouette') ?? null;
     }
 
-    return null;
+    return this.heroTextures.get(dino?.id) ?? this.dinoTextures.get(dino?.id) ?? null;
   }
 
   renderPageControls() {

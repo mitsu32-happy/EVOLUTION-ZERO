@@ -110,6 +110,11 @@ const CATEGORY_COLORS = {
   [RESEARCH_CATEGORY_IDS.analysisConversion]: 0xffb13b,
 };
 
+function isScrollableResearchCategory(categoryId) {
+  return categoryId === RESEARCH_CATEGORY_IDS.bodyEnhancement
+    || categoryId === RESEARCH_CATEGORY_IDS.unknownDomain;
+}
+
 function getResearchCompanionDinoId(data = {}) {
   return data.currentHomeDino ?? data.favoriteDinoId ?? data.homeDinoId ?? 'velociraptor';
 }
@@ -1104,13 +1109,13 @@ export class ResearchScreen {
 
     this.gamepadFocusIndex = nextIndex;
     const card = cards[nextIndex];
-    if (card?.item?.category === RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (isScrollableResearchCategory(card?.item?.category)) {
       this.ensureCardVisible(card);
     }
   }
 
   handleGamepadScrollInput(gamepadManager = null) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -1125,7 +1130,7 @@ export class ResearchScreen {
   }
 
   handleGamepadScroll(rightY = 0) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -1145,7 +1150,7 @@ export class ResearchScreen {
   }
 
   scrollBodyByRows(deltaRows) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
@@ -1367,13 +1372,13 @@ export class ResearchScreen {
     this.title.position.set(this.width / 2, 34);
     this.subtitle.anchor.set(0.5);
     this.subtitle.position.set(this.width / 2, 66);
-    this.dnaIcon.position.set(50, 132);
+    this.dnaIcon.position.set(132, 132);
     this.dnaIcon.width = 24;
     this.dnaIcon.height = 24;
     this.researchPtIcon.position.set(218, 132);
     this.researchPtIcon.width = 24;
     this.researchPtIcon.height = 24;
-    this.dnaText.position.set(80, 134);
+    this.dnaText.position.set(162, 134);
     this.researchPtText.position.set(248, 134);
     this.summaryTitle.position.set(SUMMARY_PANEL.x + 16, SUMMARY_PANEL.y + 10);
     this.summaryBody.position.set(SUMMARY_PANEL.x + 16, SUMMARY_PANEL.y + 34);
@@ -1392,7 +1397,7 @@ export class ResearchScreen {
       height: this.height,
     }, 0.82);
     this.applySprite(this.corePanel, this.textures.get('dnaCorePanel'), CORE_PANEL, 0.88);
-    this.applySprite(this.dnaIcon, this.textures.get('icon:dnaResource'), { x: 50, y: 132, width: 24, height: 24 });
+    this.applySprite(this.dnaIcon, this.textures.get('icon:dnaResource'), { x: 132, y: 132, width: 24, height: 24 });
     this.researchPtIcon.visible = false;
   }
 
@@ -1408,7 +1413,7 @@ export class ResearchScreen {
     this.summaryTitle.text = categoryView.name;
     this.summaryBody.text = this.truncate(categoryView.role, 34);
     this.scrollHintText.text = '';
-    this.renderBodyScrollBar(selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement);
+    this.renderBodyScrollBar(isScrollableResearchCategory(selected.id));
 
     this.drawSummary(selected);
     this.renderCategoryButtons();
@@ -1464,13 +1469,12 @@ export class ResearchScreen {
     this.companionResearchView.view.visible = false;
 
     const allItems = getResearchItemsByCategory(selected.id);
-    const isBodyCategory = selected.id === RESEARCH_CATEGORY_IDS.bodyEnhancement;
-    const bodyItems = allItems;
-    const items = isBodyCategory ? bodyItems : allItems.slice(0, 3);
-    const maxScroll = this.getBodyMaxScroll(bodyItems.length);
+    const isScrollableCategory = isScrollableResearchCategory(selected.id);
+    const items = isScrollableCategory ? allItems : allItems.slice(0, 3);
+    const maxScroll = this.getBodyMaxScroll(allItems.length);
 
-    this.bodyScrollOffset = isBodyCategory ? Math.min(this.bodyScrollOffset, maxScroll) : 0;
-    this.renderBodyScrollBar(isBodyCategory);
+    this.bodyScrollOffset = isScrollableCategory ? Math.min(this.bodyScrollOffset, maxScroll) : 0;
+    this.renderBodyScrollBar(isScrollableCategory);
     this.cards.forEach((card, index) => {
       const item = items[index];
 
@@ -1479,10 +1483,10 @@ export class ResearchScreen {
         return;
       }
 
-      const y = isBodyCategory
+      const y = isScrollableCategory
         ? CARD.y + index * (CARD.height + CARD.gap) - this.bodyScrollOffset
         : CARD.y + index * (CARD.height + CARD.gap);
-      const withinViewport = !isBodyCategory || (y >= BODY_SCROLL_VIEW.top && y + CARD.height <= BODY_SCROLL_VIEW.bottom);
+      const withinViewport = !isScrollableCategory || (y >= BODY_SCROLL_VIEW.top && y + CARD.height <= BODY_SCROLL_VIEW.bottom);
 
       card.view.position.set(CARD_LAYOUT.x, y);
       card.view.visible = withinViewport;
@@ -1536,15 +1540,14 @@ export class ResearchScreen {
         : isDinoUnlock
           ? this.truncate(this.formatCost(cost), layout.stepLimit)
           : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
-      const isBodyEnhancement = item.category === RESEARCH_CATEGORY_IDS.bodyEnhancement;
       const dnaIcon = this.textures.get('icon:dnaResource');
       const bodyCostY = 39;
       const bodyCostX = layout.badgeX - 6;
       card.costDnaIcon.texture = dnaIcon ?? Texture.EMPTY;
       card.costPtIcon.texture = Texture.EMPTY;
-      card.costDnaIcon.visible = isBodyEnhancement && !!dnaIcon && !!cost && !isMax;
+      card.costDnaIcon.visible = !!dnaIcon && !!cost && !isMax;
       card.costPtIcon.visible = false;
-      card.costDnaText.visible = isBodyEnhancement && !!cost && !isMax;
+      card.costDnaText.visible = !!cost && !isMax;
       card.costPtText.visible = false;
       card.costDnaText.text = cost ? `${cost.dna}` : '';
       card.costPtText.text = '';
@@ -1563,10 +1566,10 @@ export class ResearchScreen {
         : isLocked
           ? 'LOCK'
           : canBuy
-            ? (isBodyEnhancement ? '' : isDinoUnlock ? '研究する' : this.formatCostShort(cost))
+            ? (isDinoUnlock ? '研究する' : '')
             : this.getInsufficientLabel(cost, data);
       card.status.style.fill = isLocked || (!canBuy && !isMax) ? '#ffaaa2' : isMax ? '#b6ffd0' : '#e7fff6';
-      if (isBodyEnhancement) {
+      if (!isDinoUnlock) {
         card.status.position.set(layout.badgeX + layout.badgeWidth / 2, 63);
         card.status.style.fontSize = 10;
         card.status.style.wordWrapWidth = layout.badgeWidth - 6;
@@ -2150,11 +2153,11 @@ export class ResearchScreen {
   }
 
   getBodyResearchRenderCount() {
-    return getResearchItemsByCategory(RESEARCH_CATEGORY_IDS.bodyEnhancement).length;
+    return getResearchItemsByCategory(this.selectedCategory).length;
   }
 
   isBodyScrollTarget(event) {
-    if (this.selectedCategory !== RESEARCH_CATEGORY_IDS.bodyEnhancement) {
+    if (!isScrollableResearchCategory(this.selectedCategory)) {
       return false;
     }
 
