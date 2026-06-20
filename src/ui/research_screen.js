@@ -288,6 +288,20 @@ export class ResearchScreen {
     this.view.visible = true;
   }
 
+  setInitialCategory(categoryId = null) {
+    if (!categoryId) {
+      return;
+    }
+    const exists = RESEARCH_CATEGORIES.some((category) => category.id === categoryId);
+    if (!exists) {
+      return;
+    }
+    this.selectedCategory = categoryId;
+    this.bodyScrollOffset = 0;
+    this.gamepadFocusIndex = 0;
+    this.gamepadFocusArea = 'card';
+  }
+
   hide() {
     this.view.visible = false;
   }
@@ -1538,7 +1552,7 @@ export class ResearchScreen {
       card.step.text = isLocked
         ? this.truncate(item.unlockHint ?? '解析待ち', layout.stepLimit)
         : isDinoUnlock
-          ? this.truncate(this.formatCost(cost), layout.stepLimit)
+          ? this.truncate(item.unlockHint ?? '研究で解放できます', layout.stepLimit)
           : this.truncate(`強化段階 ${level} / ${item.maxLevel}`, layout.stepLimit);
       const dnaIcon = this.textures.get('icon:dnaResource');
       const bodyCostY = 39;

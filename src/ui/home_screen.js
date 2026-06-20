@@ -20,12 +20,16 @@ import {
   getCompanionSynergyForCompanion,
   isCompanionSynergyActive,
 } from '../data/companion_synergy.js';
+import { RESEARCH_CATEGORY_IDS } from '../data/research.js';
 import { createBottomNav } from './bottom_nav.js';
 import { TitleSelectUi } from './title_select_ui.js';
 import { playPressFeedback } from './ui_feedback.js';
 import { drawScreenBackground, UI_COLORS, toCssColor } from './ui_theme.js';
 
 const HOME_ASSET_PATHS = {
+  homeBackgroundTop: 'assets/ui/home/home_background_top_nd10pre.png',
+  homeBackgroundHero: 'assets/ui/home/home_background_hero_nd10pre.png',
+  homeBackgroundBottom: 'assets/ui/home/home_background_bottom_nd10pre.png',
   homeBackground: 'assets/ui/home/home_background.png',
   evolutionZeroLogo: 'assets/ui/home/evolution_zero_logo.png',
   resourcePanel: 'assets/ui/home/resource_panel.png',
@@ -50,6 +54,7 @@ const HOME_ASSET_PATHS = {
   newsButtonBack: 'assets/ui/home/news_button_back_a07d.png',
   newsBadgeUpdate: 'assets/ui/home/news_badge_update_a07d.png',
   newsBadgeNormal: 'assets/ui/home/news_badge_update_a07d.png',
+  newDinosBanner: 'assets/ui/home/banner_new_dinos_six_nd10pre.png',
   companionHomeFrame: 'assets/ui/companions/home_companion_frame_p06d.png',
   companionSelectPanel: 'assets/ui/companions/companion_select_panel_p06e.png',
   companionSelectCard: 'assets/ui/companions/companion_select_card_p06e.png',
@@ -197,6 +202,7 @@ const HOME_INFO_TABS = [];
 const INFO_TAB = { x: 18, y: 502, width: 110, height: 36, gap: 12 };
 const INFO_PANEL = { x: 18, y: 536, width: 354, height: 196 };
 const EVENT_PANEL = INFO_PANEL;
+const NEW_DINOS_BANNER = { x: 18, y: 536, width: 354, height: 126 };
 const UNLOCK_PANEL = INFO_PANEL;
 const RECORD_PANEL = INFO_PANEL;
 const DAILY_PANEL = INFO_PANEL;
@@ -333,13 +339,16 @@ export class HomeScreen {
     this.companionHomeTutorialShownForVisit = false;
     this.textures = new Map();
     this.activeHomeInfoTab = null;
-    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'home', 'research', 'codex', 'options'];
+    this.gamepadFocusItems = ['deploy', 'title', 'companion', 'news', 'banner', 'home', 'research', 'codex', 'options'];
     this.gamepadFocusIndex = 0;
     this.newsGamepadIndex = 0;
     this.companionModalPage = 0;
 
     this.view = new Container();
     this.background = new Graphics();
+    this.homeBackgroundTop = new Sprite(Texture.EMPTY);
+    this.homeBackgroundHero = new Sprite(Texture.EMPTY);
+    this.homeBackgroundBottom = new Sprite(Texture.EMPTY);
     this.homeBackground = new Sprite(Texture.EMPTY);
     this.logoSprite = new Sprite(Texture.EMPTY);
     this.logoFallback = this.createText('EVOLUTION\nZERO', 20, '#f4f7f5', 132);
@@ -391,8 +400,8 @@ export class HomeScreen {
     this.unlockTitle = this.createText('解放', 12, '#7cf7d4', 90);
     this.recordTitle = this.createText('記録', 12, '#7cf7d4', 90);
     this.dailyTitle = this.createText('デイリー', 12, '#7cf7d4', 120);
-    this.eventAreaTitle = this.createText('イベント準備区画', 12, '#7cf7d4', 180);
-    this.eventAreaBody = this.createText('研究施設の下層デッキを調整中。今後のイベント表示領域として使用予定です。', 10, '#cbe0da', 280);
+    this.newDinosBanner = new Sprite(Texture.EMPTY);
+    this.newDinosBannerFallback = new Graphics();
     this.dailyClaimAllButton = this.createDailyClaimAllButton();
     this.infoTabButtons = HOME_INFO_TABS.map((item) => this.createHomeInfoTabButton(item));
     this.unlockRows = UNLOCK_STATUS_ITEMS.map((item) => ({
@@ -438,6 +447,9 @@ export class HomeScreen {
 
     this.view.addChild(
       this.background,
+      this.homeBackgroundTop,
+      this.homeBackgroundHero,
+      this.homeBackgroundBottom,
       this.homeBackground,
       this.panelGraphics,
       this.heroFallback,
@@ -482,8 +494,8 @@ export class HomeScreen {
       this.recordTitle,
       ...this.recordRows.flatMap((entry) => [entry.label, entry.value]),
       this.dailyTitle,
-      this.eventAreaTitle,
-      this.eventAreaBody,
+      this.newDinosBannerFallback,
+      this.newDinosBanner,
       this.dailyClaimAllButton.view,
       ...this.dailyRows.flatMap((entry) => [entry.label, entry.status, entry.reward, entry.button.view]),
       this.noticeText,
@@ -503,6 +515,12 @@ export class HomeScreen {
     this.newsEntryFallback.eventMode = 'static';
     this.newsEntryFallback.cursor = 'pointer';
     this.newsEntryFallback.on('pointertap', () => this.openNewsModal());
+    this.newDinosBanner.eventMode = 'static';
+    this.newDinosBanner.cursor = 'pointer';
+    this.newDinosBanner.on('pointertap', () => this.handleNewDinosBannerTap());
+    this.newDinosBannerFallback.eventMode = 'static';
+    this.newDinosBannerFallback.cursor = 'pointer';
+    this.newDinosBannerFallback.on('pointertap', () => this.handleNewDinosBannerTap());
     this.switchLeft.eventMode = 'static';
     this.switchLeft.cursor = 'pointer';
     this.switchLeft.on('pointertap', () => this.handleDinoSwitchTap(-1));
@@ -611,6 +629,7 @@ export class HomeScreen {
         title: 'deploy',
         companion: 'deploy',
         news: 'deploy',
+        banner: 'home',
         deploy: 'home',
         home: 'home',
         research: 'research',
@@ -626,6 +645,7 @@ export class HomeScreen {
         title: 'title',
         companion: 'companion',
         news: 'news',
+        banner: 'deploy',
         deploy: 'title',
         home: 'deploy',
         research: 'deploy',
@@ -646,6 +666,8 @@ export class HomeScreen {
       this.openCompanionModal();
     } else if (id === 'news') {
       this.openNewsModal();
+    } else if (id === 'banner') {
+      this.handleNewDinosBannerTap();
     } else if (id === 'research') {
       this.onResearch?.();
     } else if (id === 'codex') {
@@ -702,7 +724,8 @@ export class HomeScreen {
       unlock: { x: 254, y: 520, width: 98, height: 44, radius: 12 },
       title: { x: Math.round(this.width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
       companion: { ...COMPANION_HOME_PANEL, radius: 12 },
-      news: { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+      news: { x: 244, y: 20, width: 128, height: 42, radius: 12 },
+      banner: { ...NEW_DINOS_BANNER, radius: 14 },
       home: { x: 24, y: bottomNavY, width: 78, height: 72, radius: 12 },
       research: { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
       codex: { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
@@ -928,6 +951,33 @@ export class HomeScreen {
   }
 
   getTutorialBounds(targetId) {
+    if (targetId === 'home.deploy') {
+      return {
+        x: DEPLOY.x,
+        y: DEPLOY.y - 6,
+        width: DEPLOY.width,
+        height: DEPLOY.height + 12,
+        radius: 14,
+      };
+    }
+
+    if (targetId === 'home.news') {
+      return {
+        x: 244,
+        y: 20,
+        width: 128,
+        height: 42,
+        radius: 12,
+      };
+    }
+
+    if (targetId === 'home.banner') {
+      return {
+        ...NEW_DINOS_BANNER,
+        radius: 14,
+      };
+    }
+
     if (targetId === 'home.companion') {
       return {
         ...COMPANION_HOME_PANEL,
@@ -1213,6 +1263,9 @@ export class HomeScreen {
 
   loadAssets() {
     const requests = [
+      ['homeBackgroundTop', ASSET_KEYS.homeUi?.homeBackgroundTop, HOME_ASSET_PATHS.homeBackgroundTop],
+      ['homeBackgroundHero', ASSET_KEYS.homeUi?.homeBackgroundHero, HOME_ASSET_PATHS.homeBackgroundHero],
+      ['homeBackgroundBottom', ASSET_KEYS.homeUi?.homeBackgroundBottom, HOME_ASSET_PATHS.homeBackgroundBottom],
       ['homeBackground', ASSET_KEYS.homeUi?.homeBackground, HOME_ASSET_PATHS.homeBackground],
       ['evolutionZeroLogo', ASSET_KEYS.homeUi?.evolutionZeroLogo, HOME_ASSET_PATHS.evolutionZeroLogo],
       ['resourcePanel', ASSET_KEYS.homeUi?.resourcePanel, HOME_ASSET_PATHS.resourcePanel],
@@ -1237,6 +1290,7 @@ export class HomeScreen {
       ['newsButtonBack', ASSET_KEYS.homeUi?.newsButtonBack, HOME_ASSET_PATHS.newsButtonBack],
       ['newsBadgeUpdate', ASSET_KEYS.homeUi?.newsBadgeUpdate, HOME_ASSET_PATHS.newsBadgeUpdate],
       ['newsBadgeNormal', ASSET_KEYS.homeUi?.newsBadgeNormal, HOME_ASSET_PATHS.newsBadgeNormal],
+      ['newDinosBanner', ASSET_KEYS.homeUi?.newDinosBanner, HOME_ASSET_PATHS.newDinosBanner],
       ['companionHomeFrame', ASSET_KEYS.companionUi?.homeFrame, HOME_ASSET_PATHS.companionHomeFrame],
       ['companionSelectPanel', ASSET_KEYS.companionUi?.selectPanel, HOME_ASSET_PATHS.companionSelectPanel],
       ['companionSelectCard', ASSET_KEYS.companionUi?.selectCard, HOME_ASSET_PATHS.companionSelectCard],
@@ -1292,15 +1346,28 @@ export class HomeScreen {
   }
 
   applyTextures(dinoId, evolutionId = null) {
-    this.applySprite(this.homeBackground, this.textures.get('homeBackground'), {
+    this.applySprite(this.homeBackgroundTop, this.textures.get('homeBackgroundTop'), {
       x: 0,
       y: 0,
       width: this.width,
-      height: this.height,
+      height: 92,
     }, 0.9);
+    this.applySprite(this.homeBackgroundHero, this.textures.get('homeBackgroundHero'), {
+      x: 0,
+      y: HERO.y,
+      width: this.width,
+      height: 410,
+    }, 0.9);
+    this.applySprite(this.homeBackgroundBottom, this.textures.get('homeBackgroundBottom'), {
+      x: 0,
+      y: 502,
+      width: this.width,
+      height: this.height - 502,
+    }, 0.9);
+    this.homeBackground.visible = false;
     this.applySprite(this.logoSprite, this.textures.get('evolutionZeroLogo'), { x: 12, y: 13, width: 138, height: 68 }, 0.96);
     this.logoFallback.visible = !this.logoSprite.visible;
-    this.applySprite(this.resourcePanel, this.textures.get('resourcePanel'), RESOURCE_PANEL, 0.92);
+    this.resourcePanel.visible = false;
     this.applySprite(this.infoPanel, this.textures.get('homeInfoPanelCommon'), INFO_PANEL, 0.94);
     this.applySprite(this.infoPanelGlow, this.textures.get('homeInfoPanelGlow'), {
       x: INFO_PANEL.x + 34,
@@ -1327,11 +1394,17 @@ export class HomeScreen {
       height: 50,
     }, 0.96);
     this.resourceIcons.forEach(({ item, sprite }) => {
-      this.applySprite(sprite, this.textures.get(item.iconName), { x: item.iconX - 10, y: 43, width: 20, height: 20 }, 0.95);
+      sprite.visible = false;
+    });
+    this.resourceTexts.forEach(({ label, value }) => {
+      label.visible = false;
+      value.visible = false;
     });
     this.applySprite(this.selectorPlate, this.textures.get('homeDinoSelector'), { x: SELECTOR.pillX, y: SELECTOR.y, width: 138, height: 28 }, 0.9);
-    this.applySprite(this.newsEntryFrame, this.textures.get('newsEntryButton'), { x: 204, y: 94, width: 172, height: 44 }, 0.96);
+    this.applySprite(this.newsEntryFrame, this.textures.get('newsEntryButton'), { x: 244, y: 20, width: 128, height: 42 }, 0.96);
     this.newsEntryFallback.visible = !this.newsEntryFrame.visible;
+    this.applySprite(this.newDinosBanner, this.textures.get('newDinosBanner'), NEW_DINOS_BANNER, 0.96);
+    this.newDinosBannerFallback.visible = !this.newDinosBanner.visible;
     this.applySprite(this.switchLeft, this.textures.get('homeDinoSwitchLeft'), { x: SELECTOR.leftX, y: SELECTOR.y - 2, width: 34, height: 34 }, 0.9);
     this.applySprite(this.switchRight, this.textures.get('homeDinoSwitchRight'), { x: SELECTOR.rightX, y: SELECTOR.y - 2, width: 34, height: 34 }, 0.9);
 
@@ -1416,7 +1489,7 @@ export class HomeScreen {
     this.newsEntryText.style.dropShadowColor = '#001014';
     this.newsEntryText.style.dropShadowBlur = 3;
     this.newsEntryText.anchor.set(0.5);
-    this.newsEntryText.position.set(284, 120);
+    this.newsEntryText.position.set(308, 42);
 
     this.deployTitle.anchor.set(0.5);
     this.deployTitle.position.set(this.width / 2 + 16, DEPLOY.y + 25);
@@ -1455,9 +1528,6 @@ export class HomeScreen {
 
     this.dailyTitle.position.set(DAILY_CONTENT.titleX, DAILY_CONTENT.titleY);
     this.dailyClaimAllButton.view.position.set(INFO_PANEL.x + INFO_PANEL.width - 92, INFO_PANEL.y + 12);
-    this.eventAreaTitle.position.set(EVENT_PANEL.x + 26, EVENT_PANEL.y + 18);
-    this.eventAreaBody.position.set(EVENT_PANEL.x + 26, EVENT_PANEL.y + 52);
-    this.eventAreaBody.style.lineHeight = 15;
     this.dailyRows.forEach(({ label, status, reward, button }, index) => {
       const y = DAILY_CONTENT.rowStartY + index * DAILY_CONTENT.rowGap;
 
@@ -1496,9 +1566,6 @@ export class HomeScreen {
       .ellipse(this.width / 2, 407, 78, 7)
       .fill({ color: dino.accentColor, alpha: 0.08 });
 
-    if (!this.resourcePanel.visible) {
-      this.drawPanel(this.panelGraphics, RESOURCE_PANEL.x, RESOURCE_PANEL.y, RESOURCE_PANEL.width, RESOURCE_PANEL.height, UI_COLORS.dna, 0.82);
-    }
     if (!this.deployFrame.visible) {
       this.drawPanel(this.panelGraphics, DEPLOY.x, DEPLOY.y, DEPLOY.width, DEPLOY.height, UI_COLORS.gold, 0.92);
     }
@@ -1509,7 +1576,7 @@ export class HomeScreen {
     if (!this.newsEntryFrame.visible) {
       this.newsEntryFallback
         .clear()
-        .roundRect(204, 94, 172, 44, 9)
+        .roundRect(244, 20, 128, 42, 9)
         .fill({ color: 0x061012, alpha: 0.82 })
         .stroke({ color: UI_COLORS.dna, width: 1.1, alpha: 0.66 });
     }
@@ -1528,16 +1595,6 @@ export class HomeScreen {
   }
 
   drawIcons() {
-    RESOURCE_ITEMS.forEach((item, index) => {
-      if (this.resourceIcons[index]?.sprite.visible) {
-        return;
-      }
-      this.iconGraphics
-        .circle(item.iconX, 54, 4.5)
-        .fill({ color: item.color, alpha: 0.24 })
-        .stroke({ color: item.color, width: 1.2, alpha: 0.75 });
-    });
-
     if (this.activeHomeInfoTab === 'unlock') {
       UNLOCK_STATUS_ITEMS.forEach((item, index) => {
       const y = UNLOCK_CONTENT.rowStartY + index * UNLOCK_CONTENT.rowGap + 5;
@@ -1595,19 +1652,27 @@ export class HomeScreen {
   drawEventPlaceholderPanel(dino) {
     const accent = dino?.accentColor ?? UI_COLORS.dna;
 
+    if (this.newDinosBannerFallback.visible) {
+      this.newDinosBannerFallback
+        .clear()
+        .roundRect(NEW_DINOS_BANNER.x, NEW_DINOS_BANNER.y, NEW_DINOS_BANNER.width, NEW_DINOS_BANNER.height, 14)
+        .fill({ color: 0x020708, alpha: 0.72 })
+        .stroke({ color: accent, width: 1.2, alpha: 0.58 })
+        .roundRect(NEW_DINOS_BANNER.x + 18, NEW_DINOS_BANNER.y + 22, 172, 72, 12)
+        .fill({ color: 0x001014, alpha: 0.62 })
+        .stroke({ color: 0x7cf7d4, width: 0.8, alpha: 0.4 });
+    } else {
+      this.newDinosBannerFallback.clear();
+    }
+
     this.panelGraphics
-      .roundRect(EVENT_PANEL.x, EVENT_PANEL.y, EVENT_PANEL.width, EVENT_PANEL.height, 14)
-      .fill({ color: 0x020708, alpha: 0.56 })
-      .stroke({ color: accent, width: 1.2, alpha: 0.38 })
-      .roundRect(EVENT_PANEL.x + 14, EVENT_PANEL.y + 14, EVENT_PANEL.width - 28, EVENT_PANEL.height - 28, 10)
-      .stroke({ color: 0x7cf7d4, width: 0.8, alpha: 0.16 })
-      .rect(EVENT_PANEL.x + 28, EVENT_PANEL.y + 84, EVENT_PANEL.width - 56, 1)
-      .fill({ color: accent, alpha: 0.18 })
-      .circle(EVENT_PANEL.x + EVENT_PANEL.width - 42, EVENT_PANEL.y + 38, 12)
-      .fill({ color: accent, alpha: 0.08 })
-      .stroke({ color: accent, width: 1, alpha: 0.28 })
-      .circle(EVENT_PANEL.x + EVENT_PANEL.width - 42, EVENT_PANEL.y + 38, 4)
-      .fill({ color: 0x7cf7d4, alpha: 0.18 });
+      .roundRect(NEW_DINOS_BANNER.x, NEW_DINOS_BANNER.y, NEW_DINOS_BANNER.width, NEW_DINOS_BANNER.height, 14)
+      .stroke({ color: accent, width: 1.2, alpha: 0.22 });
+  }
+
+  handleNewDinosBannerTap() {
+    this.playUiFeedback('ui_click');
+    this.onResearch?.(RESEARCH_CATEGORY_IDS.unknownDomain);
   }
 
   createNewsModal() {
@@ -2217,8 +2282,9 @@ export class HomeScreen {
 
     this.infoPanel.visible = false;
     this.infoPanelGlow.visible = false;
-    this.eventAreaTitle.visible = true;
-    this.eventAreaBody.visible = true;
+    const hasBannerTexture = !!this.newDinosBanner.texture && this.newDinosBanner.texture !== Texture.EMPTY;
+    this.newDinosBanner.visible = hasBannerTexture;
+    this.newDinosBannerFallback.visible = !hasBannerTexture;
     this.dailyTitle.visible = showDaily;
     this.dailyClaimAllButton.view.visible = showDaily;
     this.recordTitle.visible = showRecord;

@@ -347,6 +347,9 @@ export const ASSET_KEYS = {
     confirmButtonNo: 'commonUi.confirmButtonNo',
   },
   homeUi: {
+    homeBackgroundTop: 'homeUi.homeBackgroundTop',
+    homeBackgroundHero: 'homeUi.homeBackgroundHero',
+    homeBackgroundBottom: 'homeUi.homeBackgroundBottom',
     homeBackground: 'homeUi.homeBackground',
     evolutionZeroLogo: 'homeUi.evolutionZeroLogo',
     resourcePanel: 'homeUi.resourcePanel',
@@ -375,6 +378,7 @@ export const ASSET_KEYS = {
     newsButtonBack: 'homeUi.newsButtonBack',
     newsBadgeUpdate: 'homeUi.newsBadgeUpdate',
     newsBadgeNormal: 'homeUi.newsBadgeNormal',
+    newDinosBanner: 'homeUi.newDinosBanner',
   },
   titleSelectUi: {
     panel: 'titleSelectUi.panel',
@@ -3430,10 +3434,25 @@ export const ASSET_MANIFEST = {
     },
   },
   homeUi: {
+    homeBackgroundTop: {
+      path: 'assets/ui/home/home_background_top_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated top home backdrop for logo and news button area. Part of seamless three-zone home background.',
+    },
+    homeBackgroundHero: {
+      path: 'assets/ui/home/home_background_hero_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated middle home backdrop for dinosaur hero and sortie button area. Part of seamless three-zone home background.',
+    },
+    homeBackgroundBottom: {
+      path: 'assets/ui/home/home_background_bottom_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated bottom home backdrop for new-dino banner and menu area. Part of seamless three-zone home background.',
+    },
     homeBackground: {
       path: 'assets/ui/home/home_background.png',
       uiAsset: true,
-      note: 'ND10pre regenerated production dark sci-fi dinosaur evolution research facility background. Darkened for home UI readability.',
+      note: 'Existing home hero background retained for the dinosaur hero area.',
     },
     evolutionZeroLogo: {
       path: 'assets/ui/home/evolution_zero_logo.png',
@@ -3569,6 +3588,11 @@ export const ASSET_MANIFEST = {
       path: 'assets/ui/home/news_badge_update_a07d.png',
       uiAsset: true,
       note: 'MVP-A07d reuses compact badge chip; normal state is color/text-led.',
+    },
+    newDinosBanner: {
+      path: 'assets/ui/home/banner_new_dinos_six_nd10pre.png',
+      uiAsset: true,
+      note: 'ND10pre generated horizontal banner art for the six new playable dinosaurs with baked Japanese release text.',
     },
   },
   titleSelectUi: {

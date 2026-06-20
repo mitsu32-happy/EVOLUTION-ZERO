@@ -1,0 +1,46 @@
+{
+  "task": "ND10pre home segmented background and banner UI adjustment",
+  "branch": "feature/new-dinos-six-v1",
+  "mainMerged": false,
+  "versionUpdated": false,
+  "newsUpdated": false,
+  "assets": {
+    "segmentedBackgrounds": [
+      "public/assets/ui/home/home_background_top_nd10pre.png",
+      "public/assets/ui/home/home_background_hero_nd10pre.png",
+      "public/assets/ui/home/home_background_bottom_nd10pre.png"
+    ],
+    "banner": "public/assets/ui/home/banner_new_dinos_six_nd10pre.png",
+    "retainedHeroBackground": "public/assets/ui/home/home_background.png"
+  },
+  "layout": {
+    "dnaHomeDisplay": "removed from top right",
+    "newsButton": {
+      "x": 244,
+      "y": 20,
+      "width": 128,
+      "height": 42
+    },
+    "banner": {
+      "x": 18,
+      "y": 536,
+      "width": 354,
+      "height": 126,
+      "clickTarget": "research unknown_domain"
+    },
+    "tutorialBoundsUpdated": [
+      "home.deploy",
+      "home.news",
+      "home.banner"
+    ],
+    "loadingTextMojibake": "fixed in src/ui/loading_ui.js"
+  },
+  "qa": {
+    "homeScreenshot": "docs/assets/nd10pre_home_ui_layout_contact.png",
+    "bannerToUnknownScreenshot": "docs/assets/nd10pre_home_banner_to_unknown_contact.png",
+    "tutorialDeployScreenshot": "docs/assets/nd10pre_home_tutorial_deploy_contact.png",
+    "runtimeConsoleWarnError": 0,
+    "unknownTabCostText": "right-side DNA icon and number; left inline DNA amount removed",
+    "loadingMojibakeSourceCheck": "runtime loading UI strings replaced with Japanese text"
+  }
+}

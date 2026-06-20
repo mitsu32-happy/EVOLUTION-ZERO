@@ -375,7 +375,7 @@ export class ScreenManager {
       saveManager: this.saveManager,
       assetLoader: this.assetLoader,
       onDeploy: () => this.withUiClick(() => this.showStageSelect()),
-      onResearch: () => this.withUiClick(() => this.showResearch()),
+      onResearch: (categoryId = null) => this.withUiClick(() => this.showResearch(categoryId)),
       onCodex: () => this.withUiClick(() => this.showCodex()),
       onOptions: () => this.withUiClick(() => this.showOptions('home')),
       onUiFeedback: (id = 'ui_click') => this.playOptionalUi(id),
@@ -989,7 +989,8 @@ export class ScreenManager {
         'home.research': { x: 112, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.codex': { x: 198, y: bottomNavY, width: 78, height: 72, radius: 12 },
         'home.title': { x: Math.round(width / 2 - 88), y: 158, width: 176, height: 28, radius: 8 },
-        'home.news': { x: 226, y: 114, width: 130, height: 44, radius: 12 },
+        'home.news': { x: 244, y: 20, width: 128, height: 42, radius: 12 },
+        'home.banner': { x: 18, y: 536, width: 354, height: 126, radius: 14 },
         'home.companion': { x: 18, y: 92, width: 168, height: 58, radius: 12 },
         'home.options': { x: 286, y: bottomNavY, width: 78, height: 72, radius: 12 },
       },
@@ -1232,13 +1233,14 @@ export class ScreenManager {
     this.showTutorial('sortie');
   }
 
-  async showResearch() {
+  async showResearch(initialCategory = null) {
     this.saveManager.load();
     this.applyDebugResearchPt();
     this.saveManager.recordDailyProgress('openResearch', 1);
     await this.loadAssetGroups(['research'], '研究UI読み込み中');
     this.ensureResearchScreen();
     this.researchScreen.saveManager = this.saveManager;
+    this.researchScreen.setInitialCategory?.(initialCategory);
     this.show('research');
   }
 

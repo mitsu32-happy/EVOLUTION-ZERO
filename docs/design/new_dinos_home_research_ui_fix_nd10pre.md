@@ -106,3 +106,14 @@ QA artifact:
 
 - The lower home panel is intentionally temporary and should be replaced by a real event display in a later milestone.
 - The current locked silhouette is runtime-tinted from hero art. If art direction wants a bespoke silhouette file per dino later, those can be generated without changing save data.
+
+
+## ND10pre Home Banner / Segmented Background Follow-up
+
+- Home top-right DNA display was removed.
+- News button was moved to the top-right header area.
+- Home background was split into three connected generated areas: top, hero/sortie, and bottom.
+- The lower event placeholder was replaced with a generated new-six-dino banner.
+- The banner opens Research > Unknown Domain so the six new dino unlock cards are directly visible.
+- Unknown-domain dino cards no longer duplicate DNA cost text inside the description area; DNA cost is shown by the right-side DNA icon/value.
+- Home tutorial bounds were updated for the new news button position and banner area.

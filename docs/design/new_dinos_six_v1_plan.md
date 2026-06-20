@@ -881,3 +881,14 @@ Detailed implementation notes are in
 - Home lower half has a non-interactive future-event research panel.
 - Home background was regenerated as a production dark sci-fi research facility illustration.
 - Details: `docs/design/new_dinos_home_research_ui_fix_nd10pre.md`
+
+
+## ND10pre Home Banner / Segmented Background Follow-up
+
+- Home top-right DNA display was removed.
+- News button was moved to the top-right header area.
+- Home background was split into three connected generated areas: top, hero/sortie, and bottom.
+- The lower event placeholder was replaced with a generated new-six-dino banner.
+- The banner opens Research > Unknown Domain so the six new dino unlock cards are directly visible.
+- Unknown-domain dino cards no longer duplicate DNA cost text inside the description area; DNA cost is shown by the right-side DNA icon/value.
+- Home tutorial bounds were updated for the new news button position and banner area.

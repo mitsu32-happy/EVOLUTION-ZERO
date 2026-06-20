@@ -371,7 +371,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 220,
     unlockDinoId: 'spinosaurus',
-    unlockHint: 'DNA 1100で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'ankylosaurus_unlock',
@@ -387,7 +387,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 260,
     unlockDinoId: 'ankylosaurus',
-    unlockHint: 'DNA 2700で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'parasaurolophus_unlock',
@@ -403,7 +403,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 250,
     unlockDinoId: 'parasaurolophus',
-    unlockHint: 'DNA 2450で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'stegosaurus_unlock',
@@ -419,7 +419,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 270,
     unlockDinoId: 'stegosaurus',
-    unlockHint: 'DNA 2750で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'pteranodon_unlock',
@@ -435,7 +435,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 260,
     unlockDinoId: 'pteranodon',
-    unlockHint: 'DNA 2600で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'compsognathus_unlock',
@@ -451,7 +451,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 240,
     unlockDinoId: 'compsognathus',
-    unlockHint: 'DNA 2300で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'ornithomimus_unlock',
@@ -467,7 +467,7 @@ export const RESEARCH_ITEMS = [
     costStep: 0,
     researchPtCost: 250,
     unlockDinoId: 'ornithomimus',
-    unlockHint: 'DNA 2450で解放',
+    unlockHint: '研究で解放できます',
   },
   {
     id: 'deep_stage_scan',
