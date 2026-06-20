@@ -55,6 +55,14 @@ These are registered for later lightweight ambience or boss phase work, but are 
 
 These are registered under `bossEffects` for Z04-04 boss/gimmick telegraphs. They are static transparent textures with generous margins, not animated particle systems.
 
+Z04-04 usage:
+
+- `ruinsZeroReactorWarning`: boss warning telegraph.
+- `ruinsZeroLaserWarning`: reactor beam visual.
+- `ruinsZeroEmFieldWarning`: circular EM field visual.
+- `ruinsZeroShockwaveWarning`: core burst / shockwave visual.
+- The textures are selected per attack for `ruins_zero_second_boss` and `ruins_zero_final_boss`.
+
 ## Code Connections
 
 - `src/data/asset_manifest.js`

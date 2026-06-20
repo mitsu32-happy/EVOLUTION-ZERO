@@ -184,6 +184,13 @@ Runtime QA:
 - Add stage-specific ZERO hazard variants.
 - Tune warning visibility and effect count.
 
+Z04-04 status:
+
+- Dedicated phase 2 and final boss configs are now connected.
+- Dedicated boss assets are registered.
+- The route uses a `ruins` ZERO-specific enemy mix.
+- ZERO evolution research cards remain intentionally deferred.
+
 ### Z04-05
 
 - Add ZERO evolution research cards.

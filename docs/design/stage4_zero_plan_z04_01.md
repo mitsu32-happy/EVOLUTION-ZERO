@@ -523,3 +523,18 @@ Z04-03 added the dedicated visual shell for `ruins` ZERO while keeping boss impl
 - `ruins` ZERO reuses the existing two ruins stage gimmick definitions but swaps their visuals to ZERO reactor/laser textures; damage, count, interval, and active timing are unchanged.
 - Added `bossEffects.ruinsZero*Warning` static textures for Z04-04 boss/gimmick telegraph work.
 - No dedicated boss, new enemy behavior, or ZERO evolution research card connection was added in Z04-03.
+
+## Z04-04 Update
+
+Z04-04 added the first playable boss/gimmick layer for `ruins` ZERO.
+
+- Added dedicated boss assets and config for `ruins_zero_second_boss`.
+- Added dedicated boss assets and config for `ruins_zero_final_boss`.
+- Added a `ruins` ZERO-specific enemy weight mix that favors `ruinsShooter` / `ruinsElectro` pressure without raising raw spawn count.
+- `PlayScene.getZeroBossConfig()` now supports optional per-attack boss effect texture keys for beam / field / burst attacks.
+- Existing ZERO routes keep their previous `attackAssetKey` fallback behavior.
+- ZERO evolution research card connection remains deferred to Z04-05.
+
+Details:
+
+- `docs/design/stage4_zero_boss_gimmick_z04_04.md`

@@ -490,6 +490,10 @@ export class SpawnSystem {
       ];
     }
 
+    if (stageId === 'ruins' && gameState.selectedMode === 'zero') {
+      return this.getRuinsZeroEnemyWeights(elapsedTime, applyWeights);
+    }
+
     if (stageId === 'ruins') {
       return this.getRuinsEnemyWeights(elapsedTime, applyWeights);
     }
@@ -636,6 +640,44 @@ export class SpawnSystem {
       { type: 'ruinsShooter', weight: 0.36 },
       { type: 'ruinsElectro', weight: 0.24 },
       { type: 'ruinsSummoner', weight: 0.14 },
+    ]);
+  }
+
+  getRuinsZeroEnemyWeights(elapsedTime, applyWeights) {
+    if (elapsedTime < 25) {
+      return applyWeights([
+        { type: 'swarm', weight: 0.12 },
+        { type: 'ruinsShooter', weight: 0.56 },
+        { type: 'ruinsElectro', weight: 0.32 },
+      ]);
+    }
+
+    if (elapsedTime < 55) {
+      return applyWeights([
+        { type: 'swarm', weight: 0.08 },
+        { type: 'tank', weight: 0.06 },
+        { type: 'ruinsShooter', weight: 0.48 },
+        { type: 'ruinsElectro', weight: 0.3 },
+        { type: 'ruinsSummoner', weight: 0.08 },
+      ]);
+    }
+
+    if (elapsedTime < 95) {
+      return applyWeights([
+        { type: 'swarm', weight: 0.06 },
+        { type: 'tank', weight: 0.08 },
+        { type: 'ruinsShooter', weight: 0.4 },
+        { type: 'ruinsElectro', weight: 0.34 },
+        { type: 'ruinsSummoner', weight: 0.12 },
+      ]);
+    }
+
+    return applyWeights([
+      { type: 'swarm', weight: 0.05 },
+      { type: 'tank', weight: 0.09 },
+      { type: 'ruinsShooter', weight: 0.34 },
+      { type: 'ruinsElectro', weight: 0.36 },
+      { type: 'ruinsSummoner', weight: 0.16 },
     ]);
   }
 
