@@ -1292,6 +1292,13 @@ export class PlayScene {
       return;
     }
 
+    const adaptationFx = stats.adaptationEffects?.totals ?? {};
+    const adaptationTop = stats.adaptationEffects?.topOffenders ?? [];
+    const adaptationTopText = adaptationTop.length > 0
+      ? adaptationTop
+        .map((entry) => `${entry.skillId} g${entry.graphicsFallbackCount}/s${entry.skippedEffectCount}/m${entry.missingTextureCount}`)
+        .join(', ')
+      : '-';
     const lines = [
       `FPS ${stats.fps}`,
       `shed ${stats.loadSheddingLevel} children ${stats.containerChildrenTotal}`,
@@ -1300,6 +1307,8 @@ export class PlayScene {
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
+      `adaptFx tex ${adaptationFx.textureEffectCount ?? 0} / gfx ${adaptationFx.graphicsFallbackCount ?? 0} / skip ${adaptationFx.skippedEffectCount ?? 0} / miss ${adaptationFx.missingTextureCount ?? 0}`,
+      `adaptTop ${adaptationTopText}`,
       `dmg ${stats.damageNumbers}/${stats.caps.damageNumbers} pool ${stats.damageNumberPoolFree}/${stats.caps.damageNumberPool}`,
       `pickup ${stats.pickups}/${stats.caps.pickups}`,
       `comp fx ${stats.companionEffects}/${stats.caps.companionEffects} scan e${stats.companion?.targetScans ?? 0}/p${stats.companion?.pickupScans ?? 0}`,
@@ -1311,7 +1320,7 @@ export class PlayScene {
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 286, 180, 8)
+      .roundRect(8, 80, 320, 206, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -1454,6 +1463,7 @@ export class PlayScene {
       warningGuideCount,
       effectCount: combatStats.combatEffects ?? 0,
       ultimateEffectCount: this.ultimateSystem?.effects?.length ?? 0,
+      adaptationEffects: combatStats.adaptationEffects ?? null,
       damageTextCount: combatStats.damageNumbers ?? 0,
       criticalTextCount,
       pickupCount: this.pickups.length,

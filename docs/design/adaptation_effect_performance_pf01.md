@@ -315,6 +315,17 @@ PF02 should be a narrow implementation pass:
    - Graphics fallback only when texture is missing
 6. Keep effect numbers, damage, cooldown, and balance unchanged.
 
+## PF02 Instrumentation Update
+
+PF02 implemented the first two recommendations:
+
+- Added skill-level counters in `CombatSystem`.
+- Added aggregate `adaptFx` and `adaptTop` lines to `debugPerformance=1`.
+- Added `adaptationEffects` to the performance snapshot / dump path.
+- No effect visuals, skill balance, load-shedding thresholds, or fallback behavior were changed.
+
+PF03 should use the new counters to decide which fallback assets or load-shedding paths to fix first.
+
 ## QA Plan For PF02/PF03
 
 ### Static

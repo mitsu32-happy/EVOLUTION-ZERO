@@ -10,6 +10,16 @@ const MAX_CRITICAL_DAMAGE_NUMBERS = 24;
 const MAX_DAMAGE_NUMBER_POOL = 64;
 const MAX_GRAPHICS_POOL = 80;
 const MAX_SPRITE_POOL = 64;
+const ADAPTATION_EFFECT_STAT_KEYS = [
+  'textureEffectCount',
+  'graphicsFallbackCount',
+  'skippedEffectCount',
+  'missingTextureCount',
+  'pooledEffectReuseCount',
+  'newEffectCreateCount',
+  'loadSheddingEffectCount',
+  'loadSheddingSkippedCount',
+];
 
 export class CombatSystem {
   constructor({ assetLoader = null } = {}) {
@@ -48,6 +58,7 @@ export class CombatSystem {
     this.adaptationSynergyEffects = getAdaptationSynergyEffects(this.adaptationSynergy);
     this.companionSynergy = null;
     this.adaptationSkillStates = new Map();
+    this.adaptationEffectStats = new Map();
     this.projectiles = [];
     this.performancePressureLevel = 0;
   }
@@ -78,6 +89,7 @@ export class CombatSystem {
       damageNumberPoolFree: this.damageNumberPool.length,
       graphicsPoolFree: this.graphicsPool.length,
       spritePoolFree: this.spritePool.length,
+      adaptationEffects: this.getAdaptationEffectStats(),
       caps: {
         combatProjectiles: MAX_COMBAT_PROJECTILES,
         combatEffects: MAX_COMBAT_EFFECTS,
@@ -88,6 +100,63 @@ export class CombatSystem {
         spritePool: MAX_SPRITE_POOL,
       },
     };
+  }
+
+  createAdaptationEffectStat() {
+    return Object.fromEntries(ADAPTATION_EFFECT_STAT_KEYS.map((key) => [key, 0]));
+  }
+
+  getAdaptationEffectStat(skillId = null) {
+    const id = skillId ?? 'unknown';
+    const current = this.adaptationEffectStats.get(id);
+
+    if (current) {
+      return current;
+    }
+
+    const next = this.createAdaptationEffectStat();
+    this.adaptationEffectStats.set(id, next);
+    return next;
+  }
+
+  incrementAdaptationEffectStat(skillId, key, amount = 1) {
+    if (!ADAPTATION_EFFECT_STAT_KEYS.includes(key)) {
+      return;
+    }
+
+    const stats = this.getAdaptationEffectStat(skillId);
+    stats[key] += amount;
+  }
+
+  getAdaptationEffectStats() {
+    const bySkill = Object.fromEntries(
+      [...this.adaptationEffectStats.entries()].map(([skillId, stats]) => [skillId, { ...stats }]),
+    );
+    const totals = this.createAdaptationEffectStat();
+
+    Object.values(bySkill).forEach((stats) => {
+      ADAPTATION_EFFECT_STAT_KEYS.forEach((key) => {
+        totals[key] += stats[key] ?? 0;
+      });
+    });
+
+    const topOffenders = Object.entries(bySkill)
+      .map(([skillId, stats]) => ({
+        skillId,
+        graphicsFallbackCount: stats.graphicsFallbackCount ?? 0,
+        skippedEffectCount: stats.skippedEffectCount ?? 0,
+        missingTextureCount: stats.missingTextureCount ?? 0,
+        loadSheddingSkippedCount: stats.loadSheddingSkippedCount ?? 0,
+        score: (stats.graphicsFallbackCount ?? 0)
+          + (stats.skippedEffectCount ?? 0)
+          + (stats.missingTextureCount ?? 0),
+      }))
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map(({ score, ...entry }) => entry);
+
+    return { totals, bySkill, topOffenders };
   }
 
   setPerformancePressure(level = 0) {
@@ -113,6 +182,16 @@ export class CombatSystem {
     graphics.rotation = 0;
     graphics.scale.set(1);
     return graphics;
+  }
+
+  acquireTrackedAdaptationView(skillId, texture = null) {
+    const reused = texture ? this.spritePool.length > 0 : this.graphicsPool.length > 0;
+    const view = this.acquirePooledView(texture);
+    this.incrementAdaptationEffectStat(
+      skillId,
+      reused ? 'pooledEffectReuseCount' : 'newEffectCreateCount',
+    );
+    return view;
   }
 
   releasePooledView(view) {
@@ -150,6 +229,53 @@ export class CombatSystem {
 
     const pressureSkip = this.performancePressureLevel >= 2 ? 0.45 : 0.22;
     return this.effects.length >= MAX_COMBAT_EFFECTS * 0.72 && Math.random() < pressureSkip;
+  }
+
+  recordAdaptationEffectSkipped(stateOrSkillId) {
+    const skillId = typeof stateOrSkillId === 'string' ? stateOrSkillId : stateOrSkillId?.id;
+    this.incrementAdaptationEffectStat(skillId, 'skippedEffectCount');
+
+    if (this.performancePressureLevel > 0) {
+      this.incrementAdaptationEffectStat(skillId, 'loadSheddingSkippedCount');
+    }
+  }
+
+  recordAdaptationEffectSpawn(stateOrSkillId, { texture = null, expectedTextureKey = null } = {}) {
+    const skillId = typeof stateOrSkillId === 'string' ? stateOrSkillId : stateOrSkillId?.id;
+
+    if (texture) {
+      this.incrementAdaptationEffectStat(skillId, 'textureEffectCount');
+    } else {
+      this.incrementAdaptationEffectStat(skillId, 'graphicsFallbackCount');
+
+      if (expectedTextureKey) {
+        this.incrementAdaptationEffectStat(skillId, 'missingTextureCount');
+      }
+    }
+
+    if (this.performancePressureLevel > 0) {
+      this.incrementAdaptationEffectStat(skillId, 'loadSheddingEffectCount');
+    }
+  }
+
+  getExpectedAdaptationEffectKey(state, variant = 'main') {
+    if (!state) {
+      return null;
+    }
+
+    if (variant === 'trigger') {
+      return state.triggerEffectKey ?? null;
+    }
+
+    if (variant === 'explosion') {
+      return state.explosionEffectKey ?? null;
+    }
+
+    if (variant === 'fallback') {
+      return state.fallbackEffectKey ?? null;
+    }
+
+    return state.effectKey ?? state.fallbackEffectKey ?? null;
   }
 
   setAdaptationSynergy(synergy = {}) {
@@ -298,6 +424,7 @@ export class CombatSystem {
     this.setAdaptationSynergy();
     this.setCompanionSynergy();
     this.adaptationSkillStates.clear();
+    this.adaptationEffectStats.clear();
     this.currentEnemies = null;
     this.effects.forEach((effect) => this.releasePooledView(effect.view));
     this.effects = [];
@@ -1238,6 +1365,9 @@ export class CombatSystem {
 
   spawnSlashEffect(player, target, effectLayer, options = {}) {
     if (this.shouldShedSmallEffect()) {
+      if (options.adaptationSkillId) {
+        this.recordAdaptationEffectSkipped(options.adaptationSkillId);
+      }
       return;
     }
 
@@ -1245,6 +1375,9 @@ export class CombatSystem {
     const scale = options.scale ?? 1;
     const texture = options.texture ?? null;
     const size = options.size ?? { width: 128, height: 94 };
+    const view = options.adaptationSkillId
+      ? this.acquireTrackedAdaptationView(options.adaptationSkillId, texture)
+      : this.acquirePooledView(texture);
     const effect = {
       age: options.age ?? 0,
       duration: this.simpleEffects ? Math.min(duration, 0.16) : duration,
@@ -1254,7 +1387,7 @@ export class CombatSystem {
       sprite: Boolean(texture),
       baseWidth: size.width,
       baseHeight: size.height,
-      view: this.acquirePooledView(texture),
+      view,
     };
     const x = player.position.x + (target.position.x - player.position.x) * 0.62;
     const y = player.position.y + (target.position.y - player.position.y) * 0.62;
@@ -1327,6 +1460,7 @@ export class CombatSystem {
 
   spawnAdaptationSpriteEffect(state, player, target, effectLayer, options = {}) {
     if (this.shouldShedSmallEffect()) {
+      this.recordAdaptationEffectSkipped(state);
       return;
     }
 
@@ -1339,8 +1473,10 @@ export class CombatSystem {
     const duration = options.duration ?? 0.24;
 
     const texture = options.texture ?? this.getAdaptationTexture(state);
+    const expectedTextureKey = options.expectedTextureKey ?? this.getExpectedAdaptationEffectKey(state);
     if (texture) {
-      const sprite = this.acquirePooledView(texture);
+      this.recordAdaptationEffectSpawn(state, { texture, expectedTextureKey });
+      const sprite = this.acquireTrackedAdaptationView(state.id, texture);
       const effect = {
         age: 0,
         duration: this.simpleEffects ? Math.min(duration, 0.18) : duration,
@@ -1364,6 +1500,8 @@ export class CombatSystem {
       return;
     }
 
+    this.recordAdaptationEffectSpawn(state, { texture: null, expectedTextureKey });
+
     const visualTarget = {
       position: {
         x: player.position.x + facing.x * 110,
@@ -1379,6 +1517,7 @@ export class CombatSystem {
       style: state.id,
       duration,
       scale: state.id === 'shock_roar_wave' ? 1.35 : 1,
+      adaptationSkillId: state.id,
     });
     this.effectColor = previousColor;
     this.effectGlowColor = previousGlow;
@@ -1392,7 +1531,11 @@ export class CombatSystem {
     const startY = player.position.y + Math.sin(angle) * 22 + Math.sin(angle + Math.PI / 2) * side * 22;
     const damageResult = this.getAdaptationDamageResult(state, 1);
     const texture = state.texture ?? null;
-    const view = this.acquirePooledView(texture);
+    this.recordAdaptationEffectSpawn(state, {
+      texture,
+      expectedTextureKey: this.getExpectedAdaptationEffectKey(state),
+    });
+    const view = this.acquireTrackedAdaptationView(state.id, texture);
 
     if (texture) {
       view.anchor.set(0.5);
@@ -1425,7 +1568,11 @@ export class CombatSystem {
   spawnDelayedBurstProjectile(state, player, effectLayer, options = {}) {
     const level = state.level ?? 1;
     const texture = this.getAdaptationTexture(state);
-    const view = this.acquirePooledView(texture);
+    this.recordAdaptationEffectSpawn(state, {
+      texture,
+      expectedTextureKey: this.getExpectedAdaptationEffectKey(state),
+    });
+    const view = this.acquireTrackedAdaptationView(state.id, texture);
     const damageResult = this.getAdaptationDamageResult(state, 1.08);
 
     if (texture) {
@@ -1461,7 +1608,11 @@ export class CombatSystem {
   spawnSenseSpikeTrap(state, effectLayer, options = {}) {
     const level = state.level ?? 1;
     const texture = this.getAdaptationTexture(state);
-    const view = this.acquirePooledView(texture);
+    this.recordAdaptationEffectSpawn(state, {
+      texture,
+      expectedTextureKey: this.getExpectedAdaptationEffectKey(state),
+    });
+    const view = this.acquireTrackedAdaptationView(state.id, texture);
     const damageResult = this.getAdaptationDamageResult(state, 0.92);
 
     if (texture) {
@@ -1542,6 +1693,7 @@ export class CombatSystem {
           : [];
         this.spawnAdaptationAreaEffect(projectile.state, { position: projectile.view.position }, projectile.effectLayer, {
           texture: projectile.triggerTexture,
+          expectedTextureKey: this.getExpectedAdaptationEffectKey(projectile.state, 'trigger'),
           width: projectile.radius * 2.1,
           height: projectile.radius * 2.1,
           duration: 0.24,
@@ -1582,6 +1734,7 @@ export class CombatSystem {
         });
         this.spawnAdaptationAreaEffect(projectile.state, { position: projectile.view.position }, projectile.effectLayer, {
           texture: projectile.explosionTexture,
+          expectedTextureKey: this.getExpectedAdaptationEffectKey(projectile.state, 'explosion'),
           width: projectile.radius * 2.4,
           height: projectile.radius * 2.4,
           duration: 0.24,
@@ -1732,14 +1885,17 @@ export class CombatSystem {
 
   spawnAdaptationAreaEffect(state, player, effectLayer, options = {}) {
     if (this.shouldShedSmallEffect()) {
+      this.recordAdaptationEffectSkipped(state);
       return;
     }
 
     const duration = options.duration ?? 0.36;
     const texture = options.texture ?? this.getAdaptationTexture(state);
+    const expectedTextureKey = options.expectedTextureKey ?? this.getExpectedAdaptationEffectKey(state);
 
     if (texture) {
-      const sprite = this.acquirePooledView(texture);
+      this.recordAdaptationEffectSpawn(state, { texture, expectedTextureKey });
+      const sprite = this.acquireTrackedAdaptationView(state.id, texture);
       const effect = {
         age: 0,
         duration: this.simpleEffects ? Math.min(duration, 0.2) : duration,
@@ -1764,6 +1920,8 @@ export class CombatSystem {
       return;
     }
 
+    this.recordAdaptationEffectSpawn(state, { texture: null, expectedTextureKey });
+
     const effect = {
       age: 0,
       duration: this.simpleEffects ? Math.min(duration, 0.2) : duration,
@@ -1774,7 +1932,7 @@ export class CombatSystem {
       color: options.color ?? 0x52e4ff,
       baseWidth: options.width ?? 160,
       baseHeight: options.height ?? 160,
-      view: this.acquirePooledView(),
+      view: this.acquireTrackedAdaptationView(state.id),
     };
 
     effect.view.position.set(player.position.x, player.position.y);
