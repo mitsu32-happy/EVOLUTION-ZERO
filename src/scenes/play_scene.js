@@ -6540,24 +6540,29 @@ export class PlayScene {
     }
 
     if (stageId === 'ruins') {
+      const isRuinsZero = this.gameState.selectedMode === 'zero';
       const variants = [
         {
           type: 'electroPulse',
           shape: 'circle',
           color: 0x7bd8ff,
-          assetKey: ASSET_KEYS.stageGimmicks.ruinsElectroPulseSheet,
+          assetKey: isRuinsZero
+            ? ASSET_KEYS.stageGimmicks.ruinsZeroReactorPulse
+            : ASSET_KEYS.stageGimmicks.ruinsElectroPulseSheet,
           radius,
           damage: config.damage,
           slowMultiplier: config.slowMultiplier,
-          width: radius * 2.28,
-          height: radius * 2.28,
-          alpha: 0.72,
+          width: radius * (isRuinsZero ? 2.12 : 2.28),
+          height: radius * (isRuinsZero ? 2.12 : 2.28),
+          alpha: isRuinsZero ? 0.56 : 0.72,
         },
         {
           type: 'laser',
           shape: 'line',
           color: 0xff3848,
-          assetKey: ASSET_KEYS.stageGimmicks.ruinsLaserBeamSheet,
+          assetKey: isRuinsZero
+            ? ASSET_KEYS.stageGimmicks.ruinsZeroLaserWarning
+            : ASSET_KEYS.stageGimmicks.ruinsLaserBeamSheet,
           radius,
           damage: Math.round(config.damage * 1.15),
           lineLength: config.lineLength ?? 420,
@@ -6566,7 +6571,7 @@ export class PlayScene {
           height: (config.lineWidth ?? 48) * 1.9,
           rotation: Math.random() * Math.PI,
           active: Math.max(0.55, config.active * 0.72),
-          alpha: 0.86,
+          alpha: isRuinsZero ? 0.72 : 0.86,
         },
       ];
 
@@ -7338,7 +7343,7 @@ export class PlayScene {
 
   async loadStageBackground() {
     const stageId = this.gameState.selectedStage ?? 'jungle';
-    const key = ASSET_KEYS.stageBackgrounds?.[stageId] ?? ASSET_KEYS.stageBackgrounds?.jungle;
+    const key = this.getStageBackgroundAssetKey(stageId);
 
     if (!this.assetLoader || !key) {
       this.stageBackgroundStatus = 'fallback';
@@ -7376,6 +7381,14 @@ export class PlayScene {
     this.rebuildStageBackground();
     this.lastTileKey = '';
     this.updateMap(true);
+  }
+
+  getStageBackgroundAssetKey(stageId) {
+    if (stageId === 'ruins' && this.gameState.selectedMode === 'zero') {
+      return ASSET_KEYS.stageBackgrounds?.ruinsZero ?? ASSET_KEYS.stageBackgrounds?.ruins ?? ASSET_KEYS.stageBackgrounds?.jungle;
+    }
+
+    return ASSET_KEYS.stageBackgrounds?.[stageId] ?? ASSET_KEYS.stageBackgrounds?.jungle;
   }
 
   rebuildStageBackground() {

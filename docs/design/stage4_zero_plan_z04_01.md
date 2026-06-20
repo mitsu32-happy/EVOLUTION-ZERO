@@ -512,3 +512,14 @@ Z04-02 added the production route gate and boot path for `ruins` ZERO without ad
 - Clear state uses the existing `stageProgress.ruins.zero` entry created by `SaveManager.normalizeStageProgress()`.
 - ZERO evolution research unlock groundwork is exposed through `SaveManager.getRuinsZeroUnlockState().zeroResearchAvailable`, which becomes true after `stageProgress.ruins.zero.cleared`.
 - Direct ZERO evolution route rewards remain intentionally disabled for `ruins`; Z04-05 should connect DNA research cards to individual `unlockedZeroRoutes`.
+
+## Z04-03 Update
+
+Z04-03 added the dedicated visual shell for `ruins` ZERO while keeping boss implementation deferred.
+
+- Added `stageBackgrounds.ruinsZero` with `public/assets/maps/backgrounds/ruins_zero_battlefield_tile.png`.
+- `PlayScene` now selects the dedicated ZERO background only for `selectedStage === 'ruins'` and `selectedMode === 'zero'`.
+- Added low-cost static ZERO stage textures under `stageGimmicks.ruinsZero*`.
+- `ruins` ZERO reuses the existing two ruins stage gimmick definitions but swaps their visuals to ZERO reactor/laser textures; damage, count, interval, and active timing are unchanged.
+- Added `bossEffects.ruinsZero*Warning` static textures for Z04-04 boss/gimmick telegraph work.
+- No dedicated boss, new enemy behavior, or ZERO evolution research card connection was added in Z04-03.

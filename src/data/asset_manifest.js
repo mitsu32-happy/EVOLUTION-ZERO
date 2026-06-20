@@ -194,6 +194,10 @@ export const ASSET_KEYS = {
     ruinsLaserBeamSheet: 'bossEffects.ruinsLaserBeamSheet',
     ruinsSummonField: 'bossEffects.ruinsSummonField',
     ruinsSummonFieldSheet: 'bossEffects.ruinsSummonFieldSheet',
+    ruinsZeroReactorWarning: 'bossEffects.ruinsZeroReactorWarning',
+    ruinsZeroLaserWarning: 'bossEffects.ruinsZeroLaserWarning',
+    ruinsZeroEmFieldWarning: 'bossEffects.ruinsZeroEmFieldWarning',
+    ruinsZeroShockwaveWarning: 'bossEffects.ruinsZeroShockwaveWarning',
     zeroEclipseWarningSheet: 'bossEffects.zeroEclipseWarningSheet',
     zeroEclipseBeamSheet: 'bossEffects.zeroEclipseBeamSheet',
     zeroGravityFieldSheet: 'bossEffects.zeroGravityFieldSheet',
@@ -294,11 +298,17 @@ export const ASSET_KEYS = {
     ruinsLaserWarning: 'stageGimmicks.ruinsLaserWarning',
     ruinsLaserWarningSheet: 'stageGimmicks.ruinsLaserWarningSheet',
     ruinsLaserBeamSheet: 'stageGimmicks.ruinsLaserBeamSheet',
+    ruinsZeroReactorPulse: 'stageGimmicks.ruinsZeroReactorPulse',
+    ruinsZeroCorruptionMist: 'stageGimmicks.ruinsZeroCorruptionMist',
+    ruinsZeroBrokenLight: 'stageGimmicks.ruinsZeroBrokenLight',
+    ruinsZeroEnergyVein: 'stageGimmicks.ruinsZeroEnergyVein',
+    ruinsZeroLaserWarning: 'stageGimmicks.ruinsZeroLaserWarning',
   },
   stageBackgrounds: {
     jungle: 'stageBackgrounds.jungle',
     volcano: 'stageBackgrounds.volcano',
     ruins: 'stageBackgrounds.ruins',
+    ruinsZero: 'stageBackgrounds.ruinsZero',
     swamp: 'stageBackgrounds.swamp',
   },
   stageThumbnails: {
@@ -2602,6 +2612,22 @@ export const ASSET_MANIFEST = {
         animations: { active: { frames: 16, fps: 10 } },
       },
     },
+    ruinsZeroReactorWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_reactor_warning.png',
+      note: 'Z04-03 generated static ruins ZERO reactor pulse warning texture for future boss/gimmick telegraphs.',
+    },
+    ruinsZeroLaserWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_laser_warning.png',
+      note: 'Z04-03 generated static ruins ZERO laser line warning texture for future boss/gimmick telegraphs.',
+    },
+    ruinsZeroEmFieldWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_em_field_warning.png',
+      note: 'Z04-03 generated static ruins ZERO electromagnetic field warning texture for future boss/gimmick telegraphs.',
+    },
+    ruinsZeroShockwaveWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_shockwave_warning.png',
+      note: 'Z04-03 generated static ruins ZERO shockwave warning texture for future boss/gimmick telegraphs.',
+    },
     zeroEclipseWarningSheet: {
       path: 'assets/effects/boss/zero_boss_eclipse_warning_sheet.png',
       note: 'MVP-145 generated ZERO final boss purple-black warning sheet.',
@@ -3192,6 +3218,26 @@ export const ASSET_MANIFEST = {
         active: { frames: 16, fps: 13, loop: true },
       },
     },
+    ruinsZeroReactorPulse: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_reactor_pulse.png',
+      note: 'Z04-03 generated ruins ZERO reactor pulse texture for low-cost ZERO stage hazard display.',
+    },
+    ruinsZeroCorruptionMist: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_corruption_mist.png',
+      note: 'Z04-03 generated ruins ZERO corruption mist texture reserved for lightweight environment accents.',
+    },
+    ruinsZeroBrokenLight: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_broken_light.png',
+      note: 'Z04-03 generated ruins ZERO broken facility light texture reserved for lightweight environment accents.',
+    },
+    ruinsZeroEnergyVein: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_energy_vein.png',
+      note: 'Z04-03 generated ruins ZERO ground energy vein texture reserved for lightweight environment accents.',
+    },
+    ruinsZeroLaserWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_laser_warning.png',
+      note: 'Z04-03 generated ruins ZERO laser warning texture reused as ZERO route line hazard visual until Z04-04 boss/gimmicks.',
+    },
   },
   effects: {
     evolutionBurst: 'assets/effects/evolution_burst.png',
@@ -3225,6 +3271,11 @@ export const ASSET_MANIFEST = {
       path: 'assets/maps/backgrounds/ruins_battlefield_tile.png',
       tile: true,
       note: 'MVP-064 generated low-contrast ruined biome combat background tile for future stage use.',
+    },
+    ruinsZero: {
+      path: 'assets/maps/backgrounds/ruins_zero_battlefield_tile.png',
+      tile: true,
+      note: 'Z04-03 generated ruins ZERO contaminated reactor facility combat background tile.',
     },
     swamp: {
       path: 'assets/maps/backgrounds/swamp_battlefield_tile.png',
