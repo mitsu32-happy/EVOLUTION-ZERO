@@ -915,6 +915,32 @@ export class PlayScene {
     });
     this.miniPackVisualDebugBanner.position.set(12, 12);
     this.miniPackVisualDebugBanner.visible = false;
+    this.miniPackScreenDebugView = new Container();
+    this.miniPackScreenDebugView.visible = false;
+    this.miniPackScreenDebugView.zIndex = 10000;
+    this.miniPackScreenDebugActors = [];
+    for (let index = 0; index < MINIPACK_ACTOR_COUNT; index += 1) {
+      const view = new Container();
+      const marker = new Graphics();
+      const sprite = new Sprite(Texture.EMPTY);
+      const label = new Text({
+        text: `UI mini ${index === 0 ? 'A' : 'B'}`,
+        style: {
+          fill: '#ffffff',
+          fontFamily: 'Oxanium, Zen Kaku Gothic New, Noto Sans JP, sans-serif',
+          fontSize: 14,
+          fontWeight: '900',
+          letterSpacing: 0,
+          stroke: { color: '#ff0000', width: 4 },
+        },
+      });
+      sprite.anchor.set(0.5, 0.72);
+      label.anchor.set(0.5, 1);
+      label.position.set(0, -70);
+      view.addChild(marker, sprite, label);
+      this.miniPackScreenDebugView.addChild(view);
+      this.miniPackScreenDebugActors.push({ view, marker, sprite, label });
+    }
     this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
     this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
     this.lastTileKey = '';
@@ -973,6 +999,7 @@ export class PlayScene {
     this.createPerformanceDebugOverlay();
     this.uiLayer.addChild(this.miniPackDebugText);
     this.uiLayer.addChild(this.miniPackVisualDebugBanner);
+    this.uiLayer.addChild(this.miniPackScreenDebugView);
     this.bindPerformanceDiagnostics();
     this.bindInput();
     this.updateCamera(1);
@@ -1015,6 +1042,7 @@ export class PlayScene {
     this.updateBossClearSequence(delta);
     this.updateZeroPhaseNotice(delta);
     this.updateMiniPackVisualDebugBanner();
+    this.updateMiniPackScreenDebugView();
     this.ensureRunBgm();
 
     if (this.bossClearSequence) {
@@ -4024,7 +4052,31 @@ export class PlayScene {
       `miniPackEnabled=${this.isCompsognathusMiniPackEnabled() ? 1 : 0}`,
       `miniPack.active=${this.miniPackDebugStats?.active ? 1 : 0}`,
       `miniPack.count=${this.miniPackDebugStats?.count ?? 0}`,
+      ...this.getMiniPackActorDebugLines(),
     ].join('\n');
+  }
+
+  getMiniPackActorDebugLines() {
+    if (!this.isMiniPackDebugVisualEnabled()) {
+      return [];
+    }
+
+    return (this.miniPackActors ?? []).flatMap((actor) => {
+      const global = actor.view?.getGlobalPosition?.();
+      const parentName = actor.view?.parent === this.miniPackView
+        ? 'miniPackView(depthLayer)'
+        : actor.view?.parent === this.depthLayer
+          ? 'depthLayer'
+          : actor.view?.parent
+            ? 'other'
+            : 'none';
+      return [
+        `actor${actor.index} parent=${parentName}`,
+        `actor${actor.index} xy=${Math.round(actor.view?.x ?? 0)},${Math.round(actor.view?.y ?? 0)} global=${Math.round(global?.x ?? 0)},${Math.round(global?.y ?? 0)}`,
+        `actor${actor.index} vis=${actor.view?.visible !== false ? 1 : 0} rend=${actor.view?.renderable !== false ? 1 : 0} alpha=${Number(actor.view?.alpha ?? 0).toFixed(2)} z=${Number(actor.view?.zIndex ?? 0).toFixed(1)}`,
+        `actor${actor.index} tex=${actor.sprite?.texture ? 1 : 0} marker=${actor.marker?.visible ? 1 : 0} label=${actor.label?.visible ? 1 : 0}`,
+      ];
+    });
   }
 
   updateMiniPackVisualDebugBanner() {
@@ -4041,6 +4093,52 @@ export class PlayScene {
     this.miniPackVisualDebugBanner.text = 'MINIPACK VISUAL DEBUG ON';
     this.miniPackVisualDebugBanner.alpha = 1;
     this.miniPackVisualDebugBanner.zIndex = 9999;
+  }
+
+  updateMiniPackScreenDebugView() {
+    if (!this.miniPackScreenDebugView) {
+      return;
+    }
+
+    const visible = this.isMiniPackDebugVisualEnabled()
+      && this.isCompsognathusMiniPackEnabled()
+      && this.miniPackActors?.length > 0;
+    this.miniPackScreenDebugView.visible = visible;
+    this.miniPackScreenDebugView.alpha = 1;
+    this.miniPackScreenDebugView.zIndex = 10000;
+    if (!visible) {
+      return;
+    }
+
+    const centerX = this.width / 2;
+    const baseY = Math.min(this.height - 96, this.height / 2 + 120);
+    this.miniPackScreenDebugActors.forEach((debugActor, index) => {
+      const source = this.miniPackActors[index];
+      const x = centerX + (index === 0 ? -90 : 90);
+      const y = baseY;
+      debugActor.view.position.set(x, y);
+      debugActor.view.visible = true;
+      debugActor.view.renderable = true;
+      debugActor.view.alpha = 1;
+      debugActor.view.zIndex = 10000 + index;
+      debugActor.sprite.texture = source?.sprite?.texture ?? Texture.EMPTY;
+      debugActor.sprite.visible = Boolean(source?.sprite?.texture);
+      debugActor.sprite.alpha = 1;
+      debugActor.sprite.width = 96;
+      debugActor.sprite.height = 76;
+      debugActor.sprite.scale.x = Math.abs(debugActor.sprite.scale.x || 1) * (index === 0 ? -1 : 1);
+      debugActor.label.text = `UI mini ${index === 0 ? 'A' : 'B'}`;
+      debugActor.label.visible = true;
+      debugActor.marker.visible = true;
+      debugActor.marker
+        .clear()
+        .circle(0, -18, 46)
+        .fill({ color: 0xff0000, alpha: 0.18 })
+        .stroke({ color: 0xff0000, width: 5, alpha: 0.95 })
+        .circle(0, -18, 9)
+        .fill({ color: 0xffffff, alpha: 0.95 });
+    });
+    this.updateMiniPackDebugText();
   }
 
   setupCompanion() {
