@@ -3830,6 +3830,48 @@ export class PlayScene {
     return true;
   }
 
+  getMiniPackDebugPlayerTexture() {
+    if (!this.isMiniPackDebugVisualEnabled()) {
+      return null;
+    }
+
+    const texture = this.player?.assetSprite?.texture ?? null;
+    if (!texture || texture === Texture.EMPTY) {
+      return null;
+    }
+
+    const frameWidth = texture.frame?.width ?? texture.width ?? 0;
+    const frameHeight = texture.frame?.height ?? texture.height ?? 0;
+    if (frameWidth <= 1 || frameHeight <= 1) {
+      return null;
+    }
+
+    return texture;
+  }
+
+  applyMiniPackDebugPlayerTexture(actor) {
+    const texture = this.getMiniPackDebugPlayerTexture();
+    if (!texture || !this.applyMiniPackSpriteTexture(actor, texture)) {
+      return false;
+    }
+
+    actor.sprite.visible = true;
+    actor.sprite.renderable = true;
+    actor.sprite.alpha = 1;
+    actor.sprite.scale.x = Math.abs(actor.sprite.scale.x || 1) * (actor.facing || 1);
+    return true;
+  }
+
+  syncMiniPackDebugPlayerTextures() {
+    if (!this.isMiniPackDebugVisualEnabled()) {
+      return;
+    }
+
+    this.miniPackActors?.forEach((actor) => {
+      this.applyMiniPackDebugPlayerTexture(actor);
+    });
+  }
+
   updateMiniPackDebugVisual(actor) {
     if (!actor?.marker || !actor?.label) {
       return;
@@ -3854,7 +3896,7 @@ export class PlayScene {
       .circle(0, -16, Math.max(30, this.miniPackDisplaySize.width * 0.52))
       .stroke({ color, width: 3, alpha: 0.94 })
       .circle(0, -16, Math.max(20, this.miniPackDisplaySize.width * 0.36))
-      .fill({ color, alpha: 0.13 })
+      .fill({ color, alpha: 0.08 })
       .ellipse(0, 12, Math.max(30, this.miniPackDisplaySize.width * 0.52), 10)
       .stroke({ color: 0xffffff, width: 2, alpha: 0.72 });
   }
@@ -3944,6 +3986,9 @@ export class PlayScene {
           ? 'move'
           : 'idle';
       this.updateMiniPackSpriteAnimation(actor, state, delta);
+      if (debugVisual) {
+        this.applyMiniPackDebugPlayerTexture(actor);
+      }
     });
 
     this.updateMiniPackAttack(delta);
@@ -4065,10 +4110,13 @@ export class PlayScene {
     }
 
     const global = this.player?.view?.getGlobalPosition?.();
+    const texture = this.player?.assetSprite?.texture;
+    const frameWidth = texture?.frame?.width ?? texture?.width ?? 0;
+    const frameHeight = texture?.frame?.height ?? texture?.height ?? 0;
     return [
       `player world=${Math.round(this.player?.position?.x ?? 0)},${Math.round(this.player?.position?.y ?? 0)} global=${Math.round(global?.x ?? 0)},${Math.round(global?.y ?? 0)}`,
       `camera=${Math.round(this.camera?.x ?? 0)},${Math.round(this.camera?.y ?? 0)} viewportCenter=${Math.round((this.camera?.x ?? 0) + (this.camera?.visibleWidth ?? 0) / 2)},${Math.round((this.camera?.y ?? 0) + (this.camera?.visibleHeight ?? 0) / 2)}`,
-      `player vis=${this.player?.view?.visible !== false ? 1 : 0} rend=${this.player?.view?.renderable !== false ? 1 : 0} alpha=${Number(this.player?.view?.alpha ?? 0).toFixed(2)} tex=${this.player?.assetSprite?.texture ? 1 : 0}`,
+      `player vis=${this.player?.view?.visible !== false ? 1 : 0} rend=${this.player?.view?.renderable !== false ? 1 : 0} alpha=${Number(this.player?.view?.alpha ?? 0).toFixed(2)} tex=${texture && texture !== Texture.EMPTY ? 1 : 0} frame=${Math.round(frameWidth)}x${Math.round(frameHeight)}`,
     ];
   }
 
@@ -4090,7 +4138,7 @@ export class PlayScene {
         `actor${actor.index} parent=${parentName}`,
         `actor${actor.index} xy=${Math.round(actor.view?.x ?? 0)},${Math.round(actor.view?.y ?? 0)} global=${Math.round(global?.x ?? 0)},${Math.round(global?.y ?? 0)}`,
         `actor${actor.index} vis=${actor.view?.visible !== false ? 1 : 0} rend=${actor.view?.renderable !== false ? 1 : 0} alpha=${Number(actor.view?.alpha ?? 0).toFixed(2)} z=${Number(actor.view?.zIndex ?? 0).toFixed(1)}`,
-        `actor${actor.index} tex=${actor.sprite?.texture ? 1 : 0} marker=${actor.marker?.visible ? 1 : 0} label=${actor.label?.visible ? 1 : 0}`,
+        `actor${actor.index} tex=${actor.sprite?.texture && actor.sprite.texture !== Texture.EMPTY ? 1 : 0} marker=${actor.marker?.visible ? 1 : 0} label=${actor.label?.visible ? 1 : 0}`,
       ];
     });
   }
@@ -4102,7 +4150,7 @@ export class PlayScene {
 
     return (this.miniPackScreenDebugActors ?? []).flatMap((actor, index) => [
       `ui${index} xy=${Math.round(actor.view?.x ?? 0)},${Math.round(actor.view?.y ?? 0)} vis=${actor.view?.visible ? 1 : 0} rend=${actor.view?.renderable !== false ? 1 : 0} alpha=${Number(actor.view?.alpha ?? 0).toFixed(2)} z=${Number(actor.view?.zIndex ?? 0).toFixed(1)}`,
-      `ui${index} tex=${actor.sprite?.texture ? 1 : 0} wh=${Math.round(actor.sprite?.width ?? 0)}x${Math.round(actor.sprite?.height ?? 0)} spriteVis=${actor.sprite?.visible ? 1 : 0} spriteRend=${actor.sprite?.renderable !== false ? 1 : 0} spriteAlpha=${Number(actor.sprite?.alpha ?? 0).toFixed(2)}`,
+      `ui${index} tex=${actor.sprite?.texture && actor.sprite.texture !== Texture.EMPTY ? 1 : 0} samePlayer=${actor.sprite?.texture === this.player?.assetSprite?.texture ? 1 : 0} wh=${Math.round(actor.sprite?.width ?? 0)}x${Math.round(actor.sprite?.height ?? 0)} spriteVis=${actor.sprite?.visible ? 1 : 0} spriteRend=${actor.sprite?.renderable !== false ? 1 : 0} spriteAlpha=${Number(actor.sprite?.alpha ?? 0).toFixed(2)}`,
     ]);
   }
 
@@ -4137,19 +4185,22 @@ export class PlayScene {
       return;
     }
 
+    this.syncMiniPackDebugPlayerTextures();
     const centerX = this.width / 2;
     const baseY = Math.min(this.height / 2 + 42, this.height - 292);
+    const playerTexture = this.getMiniPackDebugPlayerTexture();
     this.miniPackScreenDebugActors.forEach((debugActor, index) => {
       const source = this.miniPackActors[index];
       const x = centerX + (index === 0 ? -90 : 90);
       const y = baseY;
+      const texture = playerTexture ?? source?.sprite?.texture ?? Texture.EMPTY;
       debugActor.view.position.set(x, y);
       debugActor.view.visible = true;
       debugActor.view.renderable = true;
       debugActor.view.alpha = 1;
       debugActor.view.zIndex = 10000 + index;
-      debugActor.sprite.texture = source?.sprite?.texture ?? Texture.EMPTY;
-      debugActor.sprite.visible = Boolean(source?.sprite?.texture);
+      debugActor.sprite.texture = texture;
+      debugActor.sprite.visible = texture !== Texture.EMPTY;
       debugActor.sprite.renderable = true;
       debugActor.sprite.alpha = 1;
       debugActor.sprite.width = 136;
@@ -4167,9 +4218,7 @@ export class PlayScene {
         .clear()
         .circle(0, -42, 64)
         .fill({ color: 0xff0000, alpha: 0.1 })
-        .stroke({ color: 0xff0000, width: 5, alpha: 0.95 })
-        .circle(0, -42, 9)
-        .fill({ color: 0xffffff, alpha: 0.95 });
+        .stroke({ color: 0xff0000, width: 5, alpha: 0.95 });
     });
     this.updateMiniPackDebugText();
   }
