@@ -58,3 +58,46 @@ Implement a visual prototype behind `debugCompsognathusMiniPack=1`, profile targ
 - Keep the activation derived from `selectedDino` or `selectedEvolution.dinoId`; do not require `debugCompsognathusMiniPack=1`.
 - Keep non-Compsognathus dinosaurs disabled even when running debug URLs.
 - Keep PF05 boundaries: no save data, companion roster, companion synergy, or asset manifest connection.
+
+## PF13 final implementation notes
+
+- miniPack is now a normal Compsognathus-only trait in `src/scenes/play_scene.js`.
+- Activation is based only on the active player dinosaur:
+  - `selectedDino === 'compsognathus'`
+  - or `selectedEvolution.dinoId === 'compsognathus'`
+- Non-Compsognathus dinosaurs do not create miniPack actors.
+- The pack remains PlayScene-local and does not write save data.
+- The pack does not use companion roster, companion synergy, or asset manifest entries.
+- The pack uses the active Compsognathus player/evolution sheet, including evolution texture refresh.
+- Two actors are created and kept under `miniPackView` in `depthLayer`.
+- `miniPackView` and actor views are registered in runtime active views so stale-child cleanup does not destroy them.
+- The debug-only `debugMiniPackVisual=1` screen clone, labels, red rings, white panels, and fixed debug text remain gated behind debug flags and are not visible in normal play.
+
+## PF13 movement and combat
+
+- Normal display size is about `88x69`, keeping miniPack visibly smaller than the player.
+- Normal positions start around player-relative `-108,+24` and `+72,+76`.
+- Actor movement uses velocity steering instead of direct position snapping:
+  - wander max speed: `210`
+  - attack approach max speed: `320`
+  - return max speed: `360`
+  - acceleration and slow-radius limits are applied for natural approach/deceleration.
+- Actors wander around the player with light orbit/drift/bob motion.
+- When an enemy enters the shared target range, actors approach naturally and attack at low frequency.
+- Damage remains low direct damage and does not receive companion synergy, adaptation, boss bonus, or critical handling.
+- A small shadow and subtle cyan rim sprite improve visibility without using debug labels, markers, or panels.
+
+## PF13 QA result
+
+- Compsognathus with normal URL shows 2 miniPack actors.
+- Non-Compsognathus route keeps miniPack disabled.
+- `compy_pack` companion debug route does not block miniPack creation or rendering.
+- Hits increased during runtime QA.
+- Runtime debug stats confirmed `miniPack.active=true`, `count=2`, and increasing `scans/hits/effects`.
+- Browser console warn/error: `0` in the final autoplay QA run.
+- Runtime exception: `0`.
+- Crash screen: not observed.
+- Save schema and save manager files unchanged.
+- `node --check src/scenes/play_scene.js`: passed.
+- `git diff --check`: passed, with only the existing Windows CRLF warning.
+- `npm.cmd run build`: passed, with only the existing Vite chunk size warning.
