@@ -61,6 +61,7 @@ export class CombatSystem {
     this.adaptationEffectStats = new Map();
     this.projectiles = [];
     this.performancePressureLevel = 0;
+    this.emergencyPerformanceMode = false;
   }
 
   trimRuntimeList(list, maxCount) {
@@ -163,6 +164,10 @@ export class CombatSystem {
     this.performancePressureLevel = Math.max(0, Math.min(2, Math.floor(level)));
   }
 
+  setEmergencyPerformanceMode(active = false) {
+    this.emergencyPerformanceMode = Boolean(active);
+  }
+
   acquirePooledView(texture = null) {
     if (texture) {
       const sprite = this.spritePool.pop() ?? new Sprite(texture);
@@ -223,6 +228,10 @@ export class CombatSystem {
   }
 
   shouldShedSmallEffect() {
+    if (this.emergencyPerformanceMode) {
+      return true;
+    }
+
     if (this.performancePressureLevel <= 0) {
       return false;
     }
@@ -2007,7 +2016,7 @@ export class CombatSystem {
   }
 
   spawnDamageNumber(effectLayer, target, amount, color = 0xfff0b0, offsetX = 0, options = {}) {
-    if (!this.damageNumbersEnabled) {
+    if (!this.damageNumbersEnabled || this.emergencyPerformanceMode) {
       return;
     }
 
