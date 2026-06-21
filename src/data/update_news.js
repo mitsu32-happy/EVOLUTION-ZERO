@@ -1,5 +1,19 @@
 export const UPDATE_NEWS = [
   {
+    id: 'whiteout-cleanup-exp-ring-v1-2026-06-22',
+    date: '2026/06/22',
+    category: 'HOTFIX',
+    title: 'シーン遷移時の安定性を改善しました',
+    isImportant: true,
+    body: [
+      '今回の修正内容',
+      '・ZEROクリア後やホーム復帰時の安定性を改善しました。',
+      '・PlayScene終了時のcleanupを強化し、残存オブジェクトや更新処理を残しにくくしました。',
+      '・経験値リング/カーソルを廃止し、経験値オーブ本体と取得処理はそのまま維持しました。',
+      '・シーン遷移、cleanup、経験値オーブ、緊急パフォーマンスの診断情報を追加しました。',
+    ],
+  },
+  {
     id: 'whiteout-render-culling-v1-2026-06-21',
     date: '2026/06/21',
     category: 'HOTFIX',
