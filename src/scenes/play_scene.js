@@ -3872,6 +3872,19 @@ export class PlayScene {
     });
   }
 
+  isMiniPackActorRuntimeValid(actor) {
+    return Boolean(
+      actor
+      && actor.view
+      && !actor.view.destroyed
+      && actor.view.position
+      && typeof actor.view.position.set === 'function'
+      && actor.sprite
+      && !actor.sprite.destroyed
+      && actor.sprite.scale
+    );
+  }
+
   updateMiniPackDebugVisual(actor) {
     if (!actor?.marker || !actor?.label) {
       return;
@@ -3938,6 +3951,14 @@ export class PlayScene {
 
     if (!this.miniPackActors?.length) {
       return;
+    }
+
+    if (this.miniPackActors.some((actor) => !this.isMiniPackActorRuntimeValid(actor))) {
+      this.cleanupMiniPack();
+      this.setupMiniPack();
+      if (!this.miniPackActors?.length || this.miniPackActors.some((actor) => !this.isMiniPackActorRuntimeValid(actor))) {
+        return;
+      }
     }
 
     this.refreshMiniPackTexture();
@@ -4077,8 +4098,7 @@ export class PlayScene {
   shouldShowMiniPackDebugText() {
     return getDebugFlag('debugMiniPackInfo')
       || getDebugFlag('debugCompsognathusMiniPack')
-      || this.gameState?.selectedDino === 'compsognathus'
-      || this.gameState?.selectedEvolution?.dinoId === 'compsognathus';
+      || this.isMiniPackDebugVisualEnabled();
   }
 
   updateMiniPackDebugText() {
