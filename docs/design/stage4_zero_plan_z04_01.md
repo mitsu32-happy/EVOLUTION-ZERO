@@ -1,0 +1,517 @@
+# Z04-01 Stage 4 ZERO Plan
+
+## Scope
+
+Z04-01 is investigation and design only. It does not implement the 4th stage ZERO route, change save data, unlock ZERO evolutions, add assets, update version, or update news.
+
+Target branch:
+
+- `feature/stage4-zero-v1`
+
+## Existing ZERO Structure
+
+### Stage and difficulty flow
+
+- Stage IDs are defined in `src/data/run_config.js` as `jungle`, `volcano`, `swamp`, and `ruins`.
+- Stage selection UI defines the same four stages in `src/ui/stage_select_screen.js`.
+- ZERO deploy mode uses `selectedMode = 'zero'` and `selectedDifficulty = 'expert'`.
+- ZERO is unlocked per stage after EXPERT clear.
+- `ruins` ZERO is currently blocked in both UI and save logic:
+  - `StageSelectScreen.getDeployLockState()` returns locked for `ruins` ZERO unless `debugAllowRuinsZero=1`.
+  - `SaveManager.isDifficultyUnlocked(stageId, 'zero')` returns false for `ruins`.
+  - `PlayScene.applyRuinsZeroPreReleaseLock()` forces `ruins` ZERO runs back to standard EXPERT unless debug unlocked.
+
+### ZERO scaling
+
+ZERO pacing and pressure are shared through `ZERO_SCALING_CONFIG` in `src/data/run_config.js`.
+
+Current structure:
+
+- Three ZERO boss timings: first, second, final.
+- Higher enemy HP, enemy damage, spawn rate, enemy cap, elite rate.
+- Boss phase multipliers for first, secondary, and final bosses.
+
+Design note:
+
+- Stage 4 ZERO should reuse this shared ZERO structure initially.
+- Stage-specific difficulty should come from boss, hazard, spawn mix, and reward routing instead of creating a separate mode.
+
+### ZERO boss structure
+
+ZERO boss routing is mainly in `PlayScene.getZeroBossConfig()`.
+
+Current behavior:
+
+- Phase 1 uses the selected stage boss scaled by ZERO rules.
+- Phase 2 has dedicated second bosses for `jungle`, `swamp`, and `volcano`.
+- Phase 3 has dedicated final bosses for `jungle`, `swamp`, and `volcano`.
+- Any other stage currently falls back to `zero_eclipse_protocol`, using `zeroEclipseProtocol` assets and `ruinsSummoner` summons.
+
+Implication for stage 4:
+
+- `ruins` already has a safe fallback final ZERO boss path, but it is generic.
+- Z04 should add explicit `ruins_zero_second_boss` and `ruins_zero_final_boss` definitions rather than relying on the generic fallback.
+
+### ZERO reward structure
+
+ZERO rewards are granted in `SaveManager.grantZeroRewards()`.
+
+Current stage route mapping:
+
+| Stage | ZERO route reward |
+| --- | --- |
+| `jungle` | `velociraptor_zero` |
+| `volcano` | `triceratops_zero` |
+| `swamp` | `tyrannosaurus_zero` |
+| `ruins` | none |
+
+Current title/frame rewards:
+
+- `reward_titles.js` defines stage-specific ZERO titles for `jungle`, `volcano`, and `swamp`.
+- `ruins` has normal / hard / expert clear titles but no ZERO title or ZERO frame.
+- `asset_manifest.js` defines title frame assets for `jungle_zero_frame`, `volcano_zero_frame`, and `swamp_zero_frame`, but no `ruins_zero_frame`.
+
+## Existing 4th Stage Structure
+
+The 4th stage is `ruins`.
+
+### Theme
+
+- Label: `遺跡地帯`
+- Stage select zone: `RUINS ZONE`
+- Concept: collapsed research facility / old facility ruins.
+- Color direction: dark violet / blue, electromagnetic, old facility, high-tech ruin.
+
+### Enemy mix
+
+Configured in `STAGE_CONFIGS.ruins`:
+
+- `ruinsShooter`
+- `ruinsElectro`
+- `ruinsSummoner`
+- standard enemy support from swarm / fast / tank weights
+
+The existing 4th stage already leans toward ranged pressure, electromagnetic hazards, and summons.
+
+### Stage gimmicks
+
+Configured in `STAGE_GIMMICK_CONFIGS.ruins`:
+
+- Electro pulse
+- Laser beam
+- Warning guide support
+- Slow multiplier
+- Line-based hazard parameters
+
+Implementation support is in `PlayScene.getNextStageGimmickDefinition()`, which already has `ruins` variants.
+
+### Normal ruins boss
+
+Configured in `STAGE_BOSS_CONFIGS.ruins`:
+
+- ID: `ruins_ark_revenant`
+- Name: `アーク・レヴナント`
+- Asset: `bosses.ruinsBoss`
+- Attacks:
+  - melee
+  - electroPulse
+  - laserBeam
+  - summon
+
+This boss can serve as the base for ZERO phase 1, but phase 2 and phase 3 should become dedicated ZERO variants.
+
+## Stage 4 ZERO Concept
+
+Working name:
+
+```text
+ZERO深層遺跡
+```
+
+Concept:
+
+```text
+ZERO汚染が旧研究施設の深部リアクターに到達し、遺跡地帯全体が臨界反応を起こしている。
+```
+
+Visual direction:
+
+- Preserve the ruins / old facility identity.
+- Add ZERO corruption through black, cyan, red-purple, fractured light, and unstable reactor patterns.
+- Avoid making the screen too bright or too noisy.
+- Warning guide visibility must remain high.
+- The route should feel more clinical and electromagnetic than volcano / swamp ZERO.
+
+Gameplay direction:
+
+- Endgame pressure, but not a raw enemy-count spike.
+- Use fewer but clearer hazards:
+  - telegraphed beams
+  - expanding reactor pulses
+  - controlled summon windows
+- Keep screen readability and mobile performance stable.
+- Use current high-load safeguards as a design constraint.
+
+## ZERO Boss Proposal
+
+### Phase 1
+
+Use `ruins_ark_revenant` scaled by existing ZERO rules.
+
+Purpose:
+
+- Familiar opening.
+- Lets the player read ruins-style electro / laser patterns before ZERO-specific escalation.
+
+### Phase 2 boss
+
+Proposed ID:
+
+```text
+ruins_zero_second_boss
+```
+
+Proposed name:
+
+```text
+アーク・レイス
+```
+
+Role:
+
+- Mid-route electromagnetic pursuer.
+- Pressure through beams and limited summons.
+
+Attack set:
+
+- Narrow ZERO laser with clear warning.
+- Reactor field that slows briefly but uses low active count.
+- Controlled summons using `ruinsShooter` / `ruinsElectro`, not large swarms.
+
+Asset needs:
+
+- Boss hero/sprite/portrait or boss PNG equivalent.
+- Warning sheet.
+- Attack sheet.
+
+### Phase 3 final boss
+
+Proposed ID:
+
+```text
+ruins_zero_final_boss
+```
+
+Proposed name:
+
+```text
+エクリプス・アーク
+```
+
+Role:
+
+- Final stage 4 ZERO endpoint.
+- Reactor-core boss using gravity/electro/laser motifs.
+
+Attack set:
+
+- Eclipse beam: long line warning, moderate active duration.
+- Core pulse: circular warning around player area, one active pulse.
+- Gravity lock field: short slow field, reduced count, readable alpha.
+- Summon gate: low-count `ruinsSummoner` or `ruinsElectro`, capped to avoid high-load spikes.
+
+Performance constraints:
+
+- No multi-layer full-screen flash residue.
+- No repeated large Graphics creation.
+- Reuse texture sheets and warning guide paths.
+- Keep active hazards near existing ZERO phase caps.
+
+## Enemy And Gimmick Proposal
+
+Stage 4 ZERO should not simply raise enemy count.
+
+Recommended adjustments:
+
+- Use ruins enemy family with ZERO pressure weights:
+  - more `ruinsElectro`
+  - controlled `ruinsSummoner`
+  - fewer tiny swarm enemies than jungle
+- Add stage-specific ZERO hazard variants:
+  - `ruinsZeroReactorPulseSheet`
+  - `ruinsZeroLaserWarningSheet`
+  - `ruinsZeroLaserBeamSheet`
+  - `ruinsZeroSummonGateSheet`
+- Keep warning durations readable:
+  - line hazards: around 1.0-1.2s warning
+  - pulse hazards: around 1.1-1.3s warning
+- Prefer one or two clear hazards over simultaneous clutter.
+
+## ZERO Reward Policy
+
+Z04-05 policy revision:
+
+```text
+ruins ZERO clear -> spinosaurus_zero
+```
+
+Rationale:
+
+- ZERO evolutions should remain direct ZERO-route clear rewards, matching existing progression.
+- `jungle` ZERO grants `velociraptor_zero`.
+- `volcano` ZERO grants `triceratops_zero`.
+- `swamp` ZERO grants `tyrannosaurus_zero`.
+- `ruins` ZERO grants `spinosaurus_zero`.
+- ZERO evolution research cards are not adopted for this update.
+
+## New ZERO Evolution Connection Plan
+
+Stage 4 ZERO connection:
+
+| Evolution ID | Current state | Proposed Z04 handling |
+| --- | --- | --- |
+| `spinosaurus_zero` | Data/assets exist, unlock condition says `ruins ZERO clear` | Direct reward from ruins ZERO clear |
+| `ankylosaurus_zero` | Pending ZERO branch with assets connected | Future stage 5 ZERO reward candidate |
+| `parasaurolophus_zero` | Pending ZERO branch with assets connected | Future stage 6 ZERO reward candidate |
+| `stegosaurus_zero` | Pending ZERO branch with assets connected | Future stage 7 ZERO reward candidate |
+| `pteranodon_zero` | Pending ZERO branch with assets connected | Future stage 8 ZERO reward candidate |
+| `compsognathus_zero` | Pending ZERO branch with assets connected | Future stage 9 ZERO reward candidate |
+| `ornithomimus_zero` | Pending ZERO branch with assets connected | Future stage 10 ZERO reward candidate |
+
+Unlock model:
+
+1. `ruins` ZERO clear grants:
+   - `ruins_zero_clear` title
+   - `ruins_zero_frame`
+   - `unlockedZeroRoutes.spinosaurus_zero`
+   - `discoveredEvolutions.spinosaurus_zero`
+2. ZERO evolution eligibility still requires:
+   - matching dino lineage
+   - player level 8+
+   - speed / hunting / attack Lv3+
+   - route unlocked from ZERO clear
+
+Do not unlock the new six ZERO routes in Z04.
+
+## Required Asset List
+
+### Stage / environment
+
+- `ruins_zero_background`
+- `ruins_zero_thumbnail`
+- ZERO stage select detail panel or existing panel tint update
+- ZERO route notice panel if current generic panel is not enough
+
+### Boss
+
+- `ruinsZeroSecondBoss`
+- `ruinsZeroSecondBossPortrait`
+- `ruinsZeroFinalBoss`
+- `ruinsZeroFinalBossPortrait`
+
+### Boss effects
+
+- `ruinsZeroSecondWarningSheet`
+- `ruinsZeroSecondAttackSheet`
+- `ruinsZeroFinalWarningSheet`
+- `ruinsZeroFinalAttackSheet`
+- `ruinsZeroSummonGateSheet`
+
+### Stage gimmicks
+
+- `ruinsZeroReactorPulseSheet`
+- `ruinsZeroLaserWarningSheet`
+- `ruinsZeroLaserBeamSheet`
+
+### Rewards / UI
+
+- `ruins_zero_frame`
+- ZERO title frame icon/preview if title select needs a dedicated frame asset
+- Research card icons for ZERO route analysis, ideally one reusable ZERO route analysis icon plus route-specific portrait usage
+
+## Files To Touch In Later Steps
+
+Likely implementation files:
+
+- `src/data/run_config.js`
+- `src/ui/stage_select_screen.js`
+- `src/scenes/play_scene.js`
+- `src/save/save_manager.js`
+- `src/data/reward_titles.js`
+- `src/data/research.js`
+- `src/ui/research_screen.js`
+- `src/data/evolution_data.js`
+- `src/ui/codex_screen.js`
+- `src/ui/result_ui.js`
+- `src/data/asset_manifest.js`
+- `public/assets/stages/`
+- `public/assets/bosses/`
+- `public/assets/effects/boss/`
+- `public/assets/ui/title_frames/`
+- `docs/design/`
+
+## Implementation Steps
+
+### Z04-01
+
+Design and investigation.
+
+### Z04-02
+
+Stage definition and route unlock groundwork.
+
+- Remove production `ruins` ZERO lock only when the route is ready.
+- Keep debug unlocks available.
+- Add reward identifiers and title/frame definitions.
+
+### Z04-03
+
+ZERO background, stage UI, boss, and effect assets.
+
+- Generate dedicated ruins ZERO stage background.
+- Generate dedicated phase 2 and final boss assets.
+- Generate warning/attack sheets.
+- Create contact sheets and edge reports.
+
+### Z04-04
+
+ZERO boss, enemies, and gimmicks.
+
+- Add `ruins` phase 2 / phase 3 explicit configs.
+- Add ruins ZERO hazard variants.
+- Tune hazard count around readability and iPhone performance.
+
+### Z04-05
+
+Direct ZERO clear reward connection.
+
+- Add `ruins -> spinosaurus_zero` to the ZERO route reward map.
+- Backfill old saves only when `stageProgress.ruins.zero.cleared` is already true.
+- Connect result/codex/evolution selection through existing ZERO reward structure.
+- Keep new six ZERO routes locked for future stage 5-10 rewards.
+
+### Z04-06
+
+QA and balance.
+
+- Full route smoke.
+- Debug fast route.
+- `spinosaurus_zero` reward unlock QA.
+- New six ZERO route locked QA.
+- iPhone high-load soak.
+
+### Z04-07
+
+Main integration prep.
+
+- Version/build/news update.
+- Release docs.
+- main merge/push only after approval.
+
+## QA Policy
+
+### Route QA
+
+- `ruins` NORMAL/HARD/EXPERT still work.
+- `ruins` ZERO stays locked before EXPERT clear.
+- `ruins` ZERO unlocks after EXPERT clear.
+- `debugAllowRuinsZero=1` continues to work for QA.
+- ZERO start / phase / final notices display correctly.
+
+### Boss QA
+
+- Phase 1 uses scaled ruins boss.
+- Phase 2 uses dedicated ruins ZERO second boss.
+- Phase 3 uses dedicated ruins ZERO final boss.
+- Warning guides are visible.
+- No fullscreen white residue.
+- No fallback boss asset unless intentionally in debug.
+
+### Reward QA
+
+- First ruins ZERO clear grants `ruins_zero_clear` and `ruins_zero_frame`.
+- First ruins ZERO clear grants `spinosaurus_zero`.
+- Duplicate ruins ZERO clear does not duplicate title/frame/route unlock state.
+- New six ZERO evolutions are not unlocked by ruins ZERO.
+
+### Evolution QA
+
+- `spinosaurus_zero` appears only after ruins ZERO route unlock and Lv/adaptation requirements.
+- New six ZERO evolutions stay future-route locked.
+- Codex hidden/known state updates correctly.
+
+### Performance QA
+
+- ZERO ruins short run.
+- ZERO ruins final boss debug route.
+- ENDLESS regression.
+- Companion on/off representative checks.
+- iPhone/Safari or iPhone PWA soak recommended.
+- Runtime console error/warn 0.
+- Whiteout dump does not show growing fullscreen graphics, orphan filters, or context loss.
+
+## Risks
+
+- Adding seven ZERO routes as direct clear rewards would over-reward a single clear.
+- Dedicated boss/effect assets can increase memory pressure if sheets are oversized.
+- Ruins ZERO beam/pulse hazards can obscure player/projectiles if alpha and warning duration are not tuned.
+- Existing `ruins` ZERO debug lock paths can conflict with production unlock if only one side is updated.
+- New six ZERO routes must stay locked until future stage 5-10 ZERO rewards.
+- `unlockedZeroRoutes` and `discoveredEvolutions` must stay synchronized for codex/result/evolution UI.
+- Z04-05 must not revive researchPt, daily systems, or ZERO route research cards.
+
+## Z04-02 Recommendation
+
+Next step should implement only low-risk data plumbing:
+
+1. Add `ruins_zero_clear` title and `ruins_zero_frame` definitions.
+2. Add production-safe unlock flag for ruins ZERO route.
+3. Add production-safe unlock flag for ruins ZERO route.
+4. Keep stage/boss visuals unchanged until Z04-03 assets are ready.
+5. Add docs and debug checks before gameplay tuning.
+
+## Z04-02 Update
+
+Z04-02 added the production route gate and boot path for `ruins` ZERO without adding dedicated boss/assets yet.
+
+- Unlock condition: `ruins` EXPERT clear plus `jungle`, `volcano`, and `swamp` ZERO clear.
+- Stage select now shows `ruins` ZERO as a real locked/unlocked candidate instead of "future update" only.
+- `PlayScene.applyRuinsZeroPreReleaseLock()` now allows `ruins` ZERO when the save data satisfies the production unlock condition.
+- `debugAllowRuinsZero=1` remains a QA bypass.
+- Clear state uses the existing `stageProgress.ruins.zero` entry created by `SaveManager.normalizeStageProgress()`.
+- Z04-05 policy later superseded the research-card proposal: ruins ZERO clear should directly unlock `spinosaurus_zero`.
+
+## Z04-03 Update
+
+Z04-03 added the dedicated visual shell for `ruins` ZERO while keeping boss implementation deferred.
+
+- Added `stageBackgrounds.ruinsZero` with `public/assets/maps/backgrounds/ruins_zero_battlefield_tile.png`.
+- `PlayScene` now selects the dedicated ZERO background only for `selectedStage === 'ruins'` and `selectedMode === 'zero'`.
+- Added low-cost static ZERO stage textures under `stageGimmicks.ruinsZero*`.
+- `ruins` ZERO reuses the existing two ruins stage gimmick definitions but swaps their visuals to ZERO reactor/laser textures; damage, count, interval, and active timing are unchanged.
+- Added `bossEffects.ruinsZero*Warning` static textures for Z04-04 boss/gimmick telegraph work.
+- No dedicated boss, new enemy behavior, or ZERO evolution research card connection was added in Z04-03.
+
+## Z04-04 Update
+
+Z04-04 added the first playable boss/gimmick layer for `ruins` ZERO.
+
+- Added dedicated boss assets and config for `ruins_zero_second_boss`.
+- Added dedicated boss assets and config for `ruins_zero_final_boss`.
+- Added a `ruins` ZERO-specific enemy weight mix that favors `ruinsShooter` / `ruinsElectro` pressure without raising raw spawn count.
+- `PlayScene.getZeroBossConfig()` now supports optional per-attack boss effect texture keys for beam / field / burst attacks.
+- Existing ZERO routes keep their previous `attackAssetKey` fallback behavior.
+- ZERO route reward connection remained deferred to Z04-05.
+
+Details:
+
+- `docs/design/stage4_zero_boss_gimmick_z04_04.md`
+
+## Z04-05 Update
+
+Z04-05 adopts the direct ZERO clear reward model.
+
+- Added `ruins -> spinosaurus_zero` to ZERO route rewards.
+- ZERO evolution research cards are not implemented.
+- Old saves with `stageProgress.ruins.zero.cleared === true` are backfilled to unlock `spinosaurus_zero`.
+- New six ZERO routes remain locked for future stage 5-10 ZERO rewards.

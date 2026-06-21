@@ -158,6 +158,10 @@ export const ASSET_KEYS = {
     volcanoZeroSecondBossPortrait: 'bosses.volcanoZeroSecondBossPortrait',
     volcanoZeroFinalBoss: 'bosses.volcanoZeroFinalBoss',
     volcanoZeroFinalBossPortrait: 'bosses.volcanoZeroFinalBossPortrait',
+    ruinsZeroSecondBoss: 'bosses.ruinsZeroSecondBoss',
+    ruinsZeroSecondBossPortrait: 'bosses.ruinsZeroSecondBossPortrait',
+    ruinsZeroFinalBoss: 'bosses.ruinsZeroFinalBoss',
+    ruinsZeroFinalBossPortrait: 'bosses.ruinsZeroFinalBossPortrait',
   },
   bossEffects: {
     jungleChargeWarning: 'bossEffects.jungleChargeWarning',
@@ -194,6 +198,10 @@ export const ASSET_KEYS = {
     ruinsLaserBeamSheet: 'bossEffects.ruinsLaserBeamSheet',
     ruinsSummonField: 'bossEffects.ruinsSummonField',
     ruinsSummonFieldSheet: 'bossEffects.ruinsSummonFieldSheet',
+    ruinsZeroReactorWarning: 'bossEffects.ruinsZeroReactorWarning',
+    ruinsZeroLaserWarning: 'bossEffects.ruinsZeroLaserWarning',
+    ruinsZeroEmFieldWarning: 'bossEffects.ruinsZeroEmFieldWarning',
+    ruinsZeroShockwaveWarning: 'bossEffects.ruinsZeroShockwaveWarning',
     zeroEclipseWarningSheet: 'bossEffects.zeroEclipseWarningSheet',
     zeroEclipseBeamSheet: 'bossEffects.zeroEclipseBeamSheet',
     zeroGravityFieldSheet: 'bossEffects.zeroGravityFieldSheet',
@@ -294,11 +302,17 @@ export const ASSET_KEYS = {
     ruinsLaserWarning: 'stageGimmicks.ruinsLaserWarning',
     ruinsLaserWarningSheet: 'stageGimmicks.ruinsLaserWarningSheet',
     ruinsLaserBeamSheet: 'stageGimmicks.ruinsLaserBeamSheet',
+    ruinsZeroReactorPulse: 'stageGimmicks.ruinsZeroReactorPulse',
+    ruinsZeroCorruptionMist: 'stageGimmicks.ruinsZeroCorruptionMist',
+    ruinsZeroBrokenLight: 'stageGimmicks.ruinsZeroBrokenLight',
+    ruinsZeroEnergyVein: 'stageGimmicks.ruinsZeroEnergyVein',
+    ruinsZeroLaserWarning: 'stageGimmicks.ruinsZeroLaserWarning',
   },
   stageBackgrounds: {
     jungle: 'stageBackgrounds.jungle',
     volcano: 'stageBackgrounds.volcano',
     ruins: 'stageBackgrounds.ruins',
+    ruinsZero: 'stageBackgrounds.ruinsZero',
     swamp: 'stageBackgrounds.swamp',
   },
   stageThumbnails: {
@@ -2126,6 +2140,70 @@ export const ASSET_MANIFEST = {
       path: 'assets/enemies/bosses/ruins_boss_portrait.png',
       note: 'MVP-140 generated ruins boss portrait for future boss archive/result UI.',
     },
+    ruinsZeroSecondBoss: {
+      path: 'assets/enemies/bosses/ruins_zero_second_boss_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'bosses.ruinsZeroSecondBossFallback',
+      note: 'Z04-04 generated ruins ZERO second boss Reactor Sentry sprite sheet.',
+      postprocess: {
+        tool: 'docs/assets/z04_04_ruins_zero_boss_asset_report.json',
+        targetWidth: 222,
+        targetHeight: 178,
+        footLine: 226,
+        overlap: 96,
+      },
+      sheet: {
+        columns: 4,
+        rows: 4,
+        frameWidth: 256,
+        frameHeight: 256,
+        displayWidth: 212,
+        displayHeight: 164,
+      },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        move: { row: 1, frames: [0, 1, 2, 3], fps: 5, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 8, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 4, loop: false },
+      },
+    },
+    ruinsZeroSecondBossFallback: 'assets/enemies/bosses/ruins_zero_second_boss.png',
+    ruinsZeroSecondBossPortrait: {
+      path: 'assets/enemies/bosses/ruins_zero_second_boss_portrait.png',
+      note: 'Z04-04 generated ruins ZERO second boss portrait fallback.',
+    },
+    ruinsZeroFinalBoss: {
+      path: 'assets/enemies/bosses/ruins_zero_final_boss_sheet.png',
+      spriteSheet: true,
+      fallbackKey: 'bosses.ruinsZeroFinalBossFallback',
+      note: 'Z04-04 generated ruins ZERO final boss Reactor Omega sprite sheet.',
+      postprocess: {
+        tool: 'docs/assets/z04_04_ruins_zero_boss_asset_report.json',
+        targetWidth: 230,
+        targetHeight: 184,
+        footLine: 226,
+        overlap: 96,
+      },
+      sheet: {
+        columns: 4,
+        rows: 4,
+        frameWidth: 256,
+        frameHeight: 256,
+        displayWidth: 220,
+        displayHeight: 168,
+      },
+      animations: {
+        idle: { row: 0, frames: [0, 1, 2, 3], fps: 4, loop: true },
+        move: { row: 1, frames: [0, 1, 2, 3], fps: 5, loop: true },
+        attack: { row: 2, frames: [0, 1, 2, 3], fps: 8, loop: false },
+        death: { row: 3, frames: [0, 1, 2, 3], fps: 4, loop: false },
+      },
+    },
+    ruinsZeroFinalBossFallback: 'assets/enemies/bosses/ruins_zero_final_boss.png',
+    ruinsZeroFinalBossPortrait: {
+      path: 'assets/enemies/bosses/ruins_zero_final_boss_portrait.png',
+      note: 'Z04-04 generated ruins ZERO final boss portrait fallback.',
+    },
     zeroEclipseProtocol: {
       path: 'assets/enemies/bosses/zero_eclipse_protocol_sheet.png',
       spriteSheet: true,
@@ -2601,6 +2679,22 @@ export const ASSET_MANIFEST = {
         sheet: { columns: 4, rows: 4, frameWidth: 512, frameHeight: 512 },
         animations: { active: { frames: 16, fps: 10 } },
       },
+    },
+    ruinsZeroReactorWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_reactor_warning.png',
+      note: 'Z04-03 generated static ruins ZERO reactor pulse warning texture for future boss/gimmick telegraphs.',
+    },
+    ruinsZeroLaserWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_laser_warning.png',
+      note: 'Z04-03 generated static ruins ZERO laser line warning texture for future boss/gimmick telegraphs.',
+    },
+    ruinsZeroEmFieldWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_em_field_warning.png',
+      note: 'Z04-03 generated static ruins ZERO electromagnetic field warning texture for future boss/gimmick telegraphs.',
+    },
+    ruinsZeroShockwaveWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_shockwave_warning.png',
+      note: 'Z04-03 generated static ruins ZERO shockwave warning texture for future boss/gimmick telegraphs.',
     },
     zeroEclipseWarningSheet: {
       path: 'assets/effects/boss/zero_boss_eclipse_warning_sheet.png',
@@ -3192,6 +3286,26 @@ export const ASSET_MANIFEST = {
         active: { frames: 16, fps: 13, loop: true },
       },
     },
+    ruinsZeroReactorPulse: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_reactor_pulse.png',
+      note: 'Z04-03 generated ruins ZERO reactor pulse texture for low-cost ZERO stage hazard display.',
+    },
+    ruinsZeroCorruptionMist: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_corruption_mist.png',
+      note: 'Z04-03 generated ruins ZERO corruption mist texture reserved for lightweight environment accents.',
+    },
+    ruinsZeroBrokenLight: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_broken_light.png',
+      note: 'Z04-03 generated ruins ZERO broken facility light texture reserved for lightweight environment accents.',
+    },
+    ruinsZeroEnergyVein: {
+      path: 'assets/effects/stage_gimmicks/ruins_zero/ruins_zero_energy_vein.png',
+      note: 'Z04-03 generated ruins ZERO ground energy vein texture reserved for lightweight environment accents.',
+    },
+    ruinsZeroLaserWarning: {
+      path: 'assets/effects/boss/ruins_zero/ruins_zero_laser_warning.png',
+      note: 'Z04-03 generated ruins ZERO laser warning texture reused as ZERO route line hazard visual until Z04-04 boss/gimmicks.',
+    },
   },
   effects: {
     evolutionBurst: 'assets/effects/evolution_burst.png',
@@ -3214,22 +3328,27 @@ export const ASSET_MANIFEST = {
     jungle: {
       path: 'assets/maps/backgrounds/jungle_battlefield_tile.png',
       tile: true,
-      note: 'MVP-064 generated low-contrast jungle combat background tile.',
+      note: 'Z04-06b generated seamless low-contrast jungle research-ruins battlefield tile used by all jungle difficulties.',
     },
     volcano: {
       path: 'assets/maps/backgrounds/volcanic_battlefield_tile.png',
       tile: true,
-      note: 'MVP-064 generated low-contrast volcanic combat background tile.',
+      note: 'Z04-06b generated seamless low-contrast volcanic facility battlefield tile used by all volcano difficulties.',
     },
     ruins: {
       path: 'assets/maps/backgrounds/ruins_battlefield_tile.png',
       tile: true,
-      note: 'MVP-064 generated low-contrast ruined biome combat background tile for future stage use.',
+      note: 'Z04-06a generated seamless low-contrast ruins research-facility battlefield tile used by all ruins difficulties.',
+    },
+    ruinsZero: {
+      path: 'assets/maps/backgrounds/ruins_battlefield_tile.png',
+      tile: true,
+      note: 'Legacy alias; ruins ZERO uses the common ruins battlefield tile plus ZERO-specific overlay/effect assets.',
     },
     swamp: {
       path: 'assets/maps/backgrounds/swamp_battlefield_tile.png',
       tile: true,
-      note: 'MVP-067 generated low-contrast swamp combat background tile.',
+      note: 'Z04-06b generated seamless low-contrast toxic swamp facility battlefield tile used by all swamp difficulties.',
     },
   },
   stageThumbnails: {

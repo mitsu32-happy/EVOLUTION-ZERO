@@ -1,0 +1,278 @@
+[
+  {
+    "stage": "jungle",
+    "mode": "normal",
+    "difficulty": "normal",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=jungle&debugDifficulty=normal&qaZ0406b=jungle_normal_normal&cacheBust=1781988229259",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "jungle",
+    "mode": "normal",
+    "difficulty": "hard",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=jungle&debugDifficulty=hard&qaZ0406b=jungle_normal_hard&cacheBust=1781988231982",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "jungle",
+    "mode": "normal",
+    "difficulty": "expert",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=jungle&debugDifficulty=expert&qaZ0406b=jungle_normal_expert&cacheBust=1781988234581",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "jungle",
+    "mode": "zero",
+    "difficulty": "expert",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=jungle&debugDifficulty=expert&qaZ0406b=jungle_zero_expert&cacheBust=1781988237212&debugMode=zero&debugAllowRuinsZero=1&debugAllowJungleZero=1&debugZeroBoss=1",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "volcano",
+    "mode": "normal",
+    "difficulty": "normal",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=volcano&debugDifficulty=normal&qaZ0406b=volcano_normal_normal&cacheBust=1781988239806",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "volcano",
+    "mode": "normal",
+    "difficulty": "hard",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=volcano&debugDifficulty=hard&qaZ0406b=volcano_normal_hard&cacheBust=1781988242411",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "volcano",
+    "mode": "normal",
+    "difficulty": "expert",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=volcano&debugDifficulty=expert&qaZ0406b=volcano_normal_expert&cacheBust=1781988244994",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "volcano",
+    "mode": "zero",
+    "difficulty": "expert",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=volcano&debugDifficulty=expert&qaZ0406b=volcano_zero_expert&cacheBust=1781988247607&debugMode=zero&debugAllowRuinsZero=1&debugAllowVolcanoZero=1&debugZeroBoss=1",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "swamp",
+    "mode": "normal",
+    "difficulty": "normal",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=swamp&debugDifficulty=normal&qaZ0406b=swamp_normal_normal&cacheBust=1781988250220",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "swamp",
+    "mode": "normal",
+    "difficulty": "hard",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=swamp&debugDifficulty=hard&qaZ0406b=swamp_normal_hard&cacheBust=1781988252810",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "swamp",
+    "mode": "normal",
+    "difficulty": "expert",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=swamp&debugDifficulty=expert&qaZ0406b=swamp_normal_expert&cacheBust=1781988255404",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  },
+  {
+    "stage": "swamp",
+    "mode": "zero",
+    "difficulty": "expert",
+    "metrics": {
+      "canvasCount": 1,
+      "firstCanvas": {
+        "height": 844,
+        "width": 430,
+        "x": 56,
+        "y": 84
+      },
+      "hasCrashScreen": false,
+      "href": "http://localhost:5180/EVOLUTION-ZERO/?debugIntroSeen=1&debugAutoPlay=1&debugInvincible=1&debugDino=velociraptor&debugStage=swamp&debugDifficulty=expert&qaZ0406b=swamp_zero_expert&cacheBust=1781988258000&debugMode=zero&debugAllowRuinsZero=1&debugAllowSwampZero=1&debugZeroBoss=1",
+      "perfLatestPresent": true,
+      "viewport": {
+        "height": 1011,
+        "width": 541
+      }
+    },
+    "logCount": 0,
+    "logs": []
+  }
+]

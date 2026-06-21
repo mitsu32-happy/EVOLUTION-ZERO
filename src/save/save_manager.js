@@ -36,6 +36,7 @@ const SAVE_KEY = 'evolution_zero_save_v1';
 const SAVE_VERSION = 1;
 const STAGE_IDS = ['jungle', 'volcano', 'swamp', 'ruins'];
 const STAGE_PROGRESS_KEYS = ['normal', 'hard', 'expert', 'endless', 'zero'];
+const RUINS_ZERO_REQUIRED_ZERO_STAGES = ['jungle', 'volcano', 'swamp'];
 const NEXT_DIFFICULTY_UNLOCKS = {
   normal: ['hard'],
   hard: ['expert'],
@@ -45,6 +46,7 @@ const ZERO_ROUTE_REWARD_BY_STAGE = {
   jungle: 'velociraptor_zero',
   volcano: 'triceratops_zero',
   swamp: 'tyrannosaurus_zero',
+  ruins: 'spinosaurus_zero',
 };
 const RESEARCH_DINO_UNLOCKS = {
   spinosaurus_unlock: 'spinosaurus',
@@ -162,8 +164,9 @@ export class SaveManager {
       const needsResearchPtMigration = !parsed?.researchPtConvertedToDna
         && Number.isFinite(parsed?.researchPt)
         && this.toNumber(parsed.researchPt) > 0;
+      const needsZeroRewardBackfill = this.needsZeroRewardBackfill(parsed);
       this.data = this.normalize(parsed);
-      if (needsResearchPtMigration) {
+      if (needsResearchPtMigration || needsZeroRewardBackfill) {
         this.save();
       }
     } catch {
@@ -229,7 +232,7 @@ export class SaveManager {
     }
 
     if (difficultyId === 'zero' && stageId === 'ruins') {
-      return false;
+      return this.isRuinsZeroUnlocked(progress);
     }
 
     if (difficultyId === 'endless' || difficultyId === 'zero') {
@@ -237,6 +240,29 @@ export class SaveManager {
     }
 
     return false;
+  }
+
+  isRuinsZeroUnlocked(progress = this.normalizeStageProgress(this.data.stageProgress)) {
+    const stageProgress = progress.ruins ?? {};
+    const hasRuinsExpertClear = Boolean(stageProgress.expert?.cleared);
+    const hasRequiredZeroClears = RUINS_ZERO_REQUIRED_ZERO_STAGES.every((stageId) => (
+      Boolean(progress[stageId]?.zero?.cleared)
+    ));
+
+    return hasRuinsExpertClear && hasRequiredZeroClears;
+  }
+
+  getRuinsZeroUnlockState() {
+    const progress = this.normalizeStageProgress(this.data.stageProgress);
+    const missingZeroStages = RUINS_ZERO_REQUIRED_ZERO_STAGES.filter((stageId) => !progress[stageId]?.zero?.cleared);
+
+    return {
+      unlocked: this.isRuinsZeroUnlocked(progress),
+      ruinsExpertCleared: Boolean(progress.ruins?.expert?.cleared),
+      requiredZeroStages: [...RUINS_ZERO_REQUIRED_ZERO_STAGES],
+      missingZeroStages,
+      zeroResearchAvailable: Boolean(progress.ruins?.zero?.cleared),
+    };
   }
 
   getAudioSettings() {
@@ -1080,6 +1106,8 @@ export class SaveManager {
       gameplaySettings: this.normalizeGameplaySettings(value?.gameplaySettings),
     };
 
+    this.backfillZeroRouteRewards(normalized);
+
     Object.entries(RESEARCH_DINO_UNLOCKS).forEach(([researchId, dinoId]) => {
       if ((normalized.researchLevels?.[researchId] ?? 0) <= 0) {
         return;
@@ -1093,6 +1121,49 @@ export class SaveManager {
     });
 
     return normalized;
+  }
+
+  needsZeroRewardBackfill(value = {}) {
+    const stageProgress = value?.stageProgress ?? {};
+    const unlockedZeroRoutes = this.normalizeZeroRoutes(value?.unlockedZeroRoutes);
+
+    return Object.entries(ZERO_ROUTE_REWARD_BY_STAGE).some(([stageId, routeId]) => (
+      Boolean(stageProgress?.[stageId]?.zero?.cleared)
+      && !unlockedZeroRoutes?.[routeId]?.unlocked
+    ));
+  }
+
+  backfillZeroRouteRewards(saveData) {
+    saveData.unlockedZeroRoutes = this.normalizeZeroRoutes(saveData.unlockedZeroRoutes);
+    saveData.discoveredEvolutions = normalizeDiscoveredEvolutions(saveData.discoveredEvolutions);
+
+    Object.entries(ZERO_ROUTE_REWARD_BY_STAGE).forEach(([stageId, routeId]) => {
+      if (!saveData.stageProgress?.[stageId]?.zero?.cleared || saveData.unlockedZeroRoutes?.[routeId]?.unlocked) {
+        return;
+      }
+
+      const routeBranch = getEvolutionBranchById(routeId);
+
+      if (!routeBranch) {
+        return;
+      }
+
+      const source = `${stageId}_zero_clear`;
+      saveData.unlockedZeroRoutes[routeId] = {
+        unlocked: true,
+        unlockedAt: null,
+        source,
+      };
+      saveData.discoveredEvolutions[routeId] = {
+        discovered: true,
+        id: routeId,
+        dinoId: routeBranch.dinoId,
+        tag: 'zero',
+        evolutionName: routeBranch.evolutionName ?? 'ZERO進化',
+        mutationName: routeBranch.mutationName ?? 'ZERO終端変異',
+        discoveredAt: null,
+      };
+    });
   }
 
   cloneGameplaySettings(settings) {

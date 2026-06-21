@@ -2332,6 +2332,10 @@ export class PlayScene {
       return;
     }
 
+    if (this.saveManager?.isDifficultyUnlocked?.('ruins', 'zero')) {
+      return;
+    }
+
     this.gameState.selectedMode = 'standard';
     this.gameState.selectedDifficulty = 'expert';
   }
@@ -5595,6 +5599,20 @@ export class PlayScene {
           warningAssetKey: ASSET_KEYS.bossEffects.volcanoZeroFinalWarningSheet,
           attackAssetKey: ASSET_KEYS.bossEffects.volcanoZeroFinalAttackSheet,
         },
+        ruins: {
+          id: 'ruins_zero_final_boss',
+          name: '\u30ea\u30a2\u30af\u30bf\u30fc\u30fb\u30aa\u30e1\u30ac',
+          assetKey: ASSET_KEYS.bosses.ruinsZeroFinalBoss,
+          summonEnemyType: 'ruinsElectro',
+          beamColor: 0x78faff,
+          fieldColor: 0xa12eff,
+          burstColor: 0xff4fd8,
+          warningAssetKey: ASSET_KEYS.bossEffects.ruinsZeroReactorWarning,
+          attackAssetKey: ASSET_KEYS.bossEffects.ruinsZeroShockwaveWarning,
+          beamAssetKey: ASSET_KEYS.bossEffects.ruinsZeroLaserWarning,
+          fieldAssetKey: ASSET_KEYS.bossEffects.ruinsZeroEmFieldWarning,
+          burstAssetKey: ASSET_KEYS.bossEffects.ruinsZeroShockwaveWarning,
+        },
       };
       const stageFinal = stageFinals[stageId] ?? {
         id: 'zero_eclipse_protocol',
@@ -5627,7 +5645,7 @@ export class PlayScene {
             lineWidth: 52,
             color: stageFinal.beamColor,
             alpha: 0.68,
-            assetKey: stageFinal.attackAssetKey,
+            assetKey: stageFinal.beamAssetKey ?? stageFinal.attackAssetKey,
             warningAssetKey: stageFinal.warningAssetKey ?? ASSET_KEYS.bossEffects.zeroEclipseWarningSheet,
           },
           gravityField: {
@@ -5641,7 +5659,7 @@ export class PlayScene {
             slowMultiplier: 0.48,
             color: stageFinal.fieldColor,
             alpha: 0.58,
-            assetKey: stageFinal.attackAssetKey,
+            assetKey: stageFinal.fieldAssetKey ?? stageFinal.attackAssetKey,
             warningAssetKey: stageFinal.warningAssetKey ?? ASSET_KEYS.bossEffects.zeroEclipseWarningSheet,
           },
           coreBurst: {
@@ -5654,13 +5672,13 @@ export class PlayScene {
             count: 1,
             color: stageFinal.burstColor,
             alpha: 0.74,
-            assetKey: stageFinal.attackAssetKey,
+            assetKey: stageFinal.burstAssetKey ?? stageFinal.attackAssetKey,
             warningAssetKey: stageFinal.warningAssetKey ?? ASSET_KEYS.bossEffects.zeroEclipseWarningSheet,
           },
           summon: { ...(finalBase.attacks?.summon ?? {}), enabled: true, cooldown: 14.5, windup: 1.1, count: 3, enemyType: stageFinal.summonEnemyType },
         },
         effectKeys: {
-          roarWave: stageFinal.attackAssetKey,
+          roarWave: stageFinal.burstAssetKey ?? stageFinal.attackAssetKey,
           summonSpore: ASSET_KEYS.bossEffects.zeroSummonGateSheet,
         },
       }, scale);
@@ -5721,6 +5739,23 @@ export class PlayScene {
           hpMultiplier: 1.24,
           radius: 64,
         },
+        ruins: {
+          id: 'ruins_zero_second_boss',
+          name: '\u30ea\u30a2\u30af\u30bf\u30fc\u30fb\u30bb\u30f3\u30c8\u30ea\u30fc',
+          assetKey: ASSET_KEYS.bosses.ruinsZeroSecondBoss,
+          warningAssetKey: ASSET_KEYS.bossEffects.ruinsZeroReactorWarning,
+          attackAssetKey: ASSET_KEYS.bossEffects.ruinsZeroEmFieldWarning,
+          beamAssetKey: ASSET_KEYS.bossEffects.ruinsZeroLaserWarning,
+          fieldAssetKey: ASSET_KEYS.bossEffects.ruinsZeroEmFieldWarning,
+          burstAssetKey: ASSET_KEYS.bossEffects.ruinsZeroShockwaveWarning,
+          summonEnemyType: 'ruinsShooter',
+          beamColor: 0x70f7ff,
+          fieldColor: 0x9234e8,
+          burstColor: 0xff4bc4,
+          speedMultiplier: 0.94,
+          hpMultiplier: 1.26,
+          radius: 66,
+        },
       };
       const stageId = stageSecondBosses[selectedStageId] ? selectedStageId : inferredStageId;
       const secondBoss = stageSecondBosses[stageId];
@@ -5756,7 +5791,7 @@ export class PlayScene {
               lineWidth: stageId === 'jungle' ? 44 : 50,
               color: secondBoss.beamColor,
               alpha: 0.64,
-              assetKey: secondBoss.attackAssetKey,
+              assetKey: secondBoss.beamAssetKey ?? secondBoss.attackAssetKey,
               warningAssetKey: secondBoss.warningAssetKey,
             },
             gravityField: {
@@ -5770,7 +5805,7 @@ export class PlayScene {
               slowMultiplier: stageId === 'jungle' ? 0.72 : 0.56,
               color: secondBoss.fieldColor,
               alpha: 0.54,
-              assetKey: secondBoss.attackAssetKey,
+              assetKey: secondBoss.fieldAssetKey ?? secondBoss.attackAssetKey,
               warningAssetKey: secondBoss.warningAssetKey,
             },
             coreBurst: {
@@ -5783,7 +5818,7 @@ export class PlayScene {
               count: 1,
               color: secondBoss.burstColor,
               alpha: 0.7,
-              assetKey: secondBoss.attackAssetKey,
+              assetKey: secondBoss.burstAssetKey ?? secondBoss.attackAssetKey,
               warningAssetKey: secondBoss.warningAssetKey,
             },
             summon: {
@@ -5797,7 +5832,7 @@ export class PlayScene {
           },
           effectKeys: {
             ...(base.effectKeys ?? {}),
-            roarWave: secondBoss.attackAssetKey,
+            roarWave: secondBoss.burstAssetKey ?? secondBoss.attackAssetKey,
             summonSpore: secondBoss.warningAssetKey,
           },
         }, scale);
@@ -6536,24 +6571,29 @@ export class PlayScene {
     }
 
     if (stageId === 'ruins') {
+      const isRuinsZero = this.gameState.selectedMode === 'zero';
       const variants = [
         {
           type: 'electroPulse',
           shape: 'circle',
           color: 0x7bd8ff,
-          assetKey: ASSET_KEYS.stageGimmicks.ruinsElectroPulseSheet,
+          assetKey: isRuinsZero
+            ? ASSET_KEYS.stageGimmicks.ruinsZeroReactorPulse
+            : ASSET_KEYS.stageGimmicks.ruinsElectroPulseSheet,
           radius,
           damage: config.damage,
           slowMultiplier: config.slowMultiplier,
-          width: radius * 2.28,
-          height: radius * 2.28,
-          alpha: 0.72,
+          width: radius * (isRuinsZero ? 2.12 : 2.28),
+          height: radius * (isRuinsZero ? 2.12 : 2.28),
+          alpha: isRuinsZero ? 0.56 : 0.72,
         },
         {
           type: 'laser',
           shape: 'line',
           color: 0xff3848,
-          assetKey: ASSET_KEYS.stageGimmicks.ruinsLaserBeamSheet,
+          assetKey: isRuinsZero
+            ? ASSET_KEYS.stageGimmicks.ruinsZeroLaserWarning
+            : ASSET_KEYS.stageGimmicks.ruinsLaserBeamSheet,
           radius,
           damage: Math.round(config.damage * 1.15),
           lineLength: config.lineLength ?? 420,
@@ -6562,7 +6602,7 @@ export class PlayScene {
           height: (config.lineWidth ?? 48) * 1.9,
           rotation: Math.random() * Math.PI,
           active: Math.max(0.55, config.active * 0.72),
-          alpha: 0.86,
+          alpha: isRuinsZero ? 0.72 : 0.86,
         },
       ];
 
@@ -7334,7 +7374,7 @@ export class PlayScene {
 
   async loadStageBackground() {
     const stageId = this.gameState.selectedStage ?? 'jungle';
-    const key = ASSET_KEYS.stageBackgrounds?.[stageId] ?? ASSET_KEYS.stageBackgrounds?.jungle;
+    const key = this.getStageBackgroundAssetKey(stageId);
 
     if (!this.assetLoader || !key) {
       this.stageBackgroundStatus = 'fallback';
@@ -7372,6 +7412,10 @@ export class PlayScene {
     this.rebuildStageBackground();
     this.lastTileKey = '';
     this.updateMap(true);
+  }
+
+  getStageBackgroundAssetKey(stageId) {
+    return ASSET_KEYS.stageBackgrounds?.[stageId] ?? ASSET_KEYS.stageBackgrounds?.jungle;
   }
 
   rebuildStageBackground() {

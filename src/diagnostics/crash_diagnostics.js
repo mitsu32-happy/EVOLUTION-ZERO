@@ -187,22 +187,23 @@ function storeCrashReport(report) {
 }
 
 function createStyles(node) {
-  const rect = getGameViewportRect();
+  const viewportWidth = window.innerWidth || 390;
+  const viewportHeight = window.innerHeight || 844;
 
   Object.assign(node.style, {
     position: 'fixed',
-    left: `${rect.left}px`,
-    top: `${rect.top}px`,
-    width: `${rect.width}px`,
-    height: `${rect.height}px`,
+    left: '0px',
+    top: '0px',
+    width: `${viewportWidth}px`,
+    height: `${viewportHeight}px`,
     zIndex: '2147483647',
-    overflow: 'hidden',
+    overflow: 'auto',
     boxSizing: 'border-box',
-    padding: 'max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom))',
-    background: 'linear-gradient(180deg, #02070d 0%, #07131c 100%)',
+    padding: '0',
+    background: 'transparent',
     color: '#e8fbff',
     display: 'flex',
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     WebkitOverflowScrolling: 'touch',
@@ -263,22 +264,39 @@ function renderCrashScreen(report) {
 
   root.innerHTML = `
     <style>
+      #evolution-zero-crash-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+        overflow: auto;
+        background:
+          radial-gradient(circle at 50% 18%, rgba(29, 167, 190, 0.22), rgba(3, 9, 15, 0.2) 42%, rgba(1, 5, 9, 0.88) 100%),
+          rgba(1, 6, 10, 0.94);
+        color: #eaffff;
+        overscroll-behavior: contain;
+      }
       #evolution-zero-crash-screen * { box-sizing: border-box; }
       .ez-crash-card {
-        width: min(100%, 520px);
-        max-height: 100%;
-        margin: 0 auto;
+        width: min(100%, 540px);
+        max-height: calc(100dvh - 24px);
+        margin: auto;
         border: 1px solid rgba(82, 227, 255, 0.58);
         border-radius: 12px;
         background: rgba(4, 13, 22, 0.96);
         box-shadow: 0 0 28px rgba(20, 210, 255, 0.18);
-        padding: 10px;
+        padding: 12px;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
-      .ez-crash-title { margin: 0 0 5px; font-size: 18px; line-height: 1.2; color: #ffffff; }
-      .ez-crash-body { margin: 0 0 8px; font-size: 11px; line-height: 1.45; color: #c9edf2; }
-      .ez-crash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin: 8px 0; }
+      .ez-crash-title { margin: 0 0 6px; font-size: 18px; line-height: 1.25; color: #ffffff; }
+      .ez-crash-body { margin: 0 0 8px; font-size: 12px; line-height: 1.5; color: #c9edf2; }
+      .ez-crash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
       .ez-crash-metric { min-width: 0; border: 1px solid rgba(96, 151, 174, 0.34); border-radius: 7px; padding: 5px 6px; background: rgba(9, 26, 38, 0.82); }
       .ez-crash-metric span { display: block; color: #8fb8c6; font-size: 9px; line-height: 1.15; }
       .ez-crash-metric b { display: block; color: #f4fdff; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere; }
@@ -313,13 +331,14 @@ function renderCrashScreen(report) {
         color: #eaffff;
         font-weight: 800;
         font-size: 13px;
-        padding: 8px 10px;
+        min-height: 40px;
+        padding: 8px 12px;
       }
       .ez-crash-copy-state { min-height: 18px; margin-top: 8px; color: #8effd7; font-size: 12px; }
       .ez-crash-compact { color: #9ec4cf; font-size: 11px; line-height: 1.45; margin-top: 10px; overflow-wrap: anywhere; }
       .ez-crash-report-text {
         width: 100%;
-        max-height: 62px;
+        max-height: min(26vh, 140px);
         margin-top: 8px;
         border: 1px solid rgba(96, 151, 174, 0.34);
         border-radius: 8px;
@@ -333,15 +352,17 @@ function renderCrashScreen(report) {
         -webkit-user-select: text;
       }
       @media (max-width: 380px) {
-        .ez-crash-card { padding: 8px; }
+        #evolution-zero-crash-screen { padding: 8px; align-items: flex-start; }
+        .ez-crash-card { width: 100%; max-height: calc(100dvh - 16px); padding: 8px; }
         .ez-crash-grid { grid-template-columns: 1fr; }
         .ez-crash-title { font-size: 17px; }
-        .ez-crash-body { font-size: 10px; }
+        .ez-crash-body { font-size: 11px; }
+        .ez-crash-actions button { flex: 1 1 100%; }
       }
     </style>
     <div class="ez-crash-card">
-      <h1 class="ez-crash-title">ゲームが停止しました</h1>
-      <p class="ez-crash-body">予期しないエラーが発生しました。下の「診断情報をコピー」を押して、開発元へ報告してください。コピーできない場合は、この画面のスクリーンショットでも大丈夫です。</p>
+      <h1 class="ez-crash-title">\u30b2\u30fc\u30e0\u304c\u505c\u6b62\u3057\u307e\u3057\u305f</h1>
+      <p class="ez-crash-body">\u4e88\u671f\u3057\u306a\u3044\u30a8\u30e9\u30fc\u304c\u767a\u751f\u3057\u307e\u3057\u305f\u3002\u8a3a\u65ad\u60c5\u5831\u3092\u30b3\u30d4\u30fc\u3057\u3066\u5831\u544a\u3057\u3066\u304f\u3060\u3055\u3044\u3002</p>
       <div class="ez-crash-grid">
         ${makeMetric('Version', report.version)}
         ${makeMetric('Build', report.build)}
@@ -362,12 +383,12 @@ function renderCrashScreen(report) {
       </div>
       <div class="ez-crash-error">${escapeHtml(`Error:\n${report.errorMessage}\n\nStack:\n${report.stack || '-'}`)}</div>
       <div class="ez-crash-actions">
-        <button type="button" id="ez-crash-copy">診断情報をコピー</button>
-        <button type="button" id="ez-crash-reload">再起動</button>
+        <button type="button" id="ez-crash-copy">\u8a3a\u65ad\u60c5\u5831\u3092\u30b3\u30d4\u30fc</button>
+        <button type="button" id="ez-crash-reload">\u518d\u8d77\u52d5</button>
       </div>
       <div class="ez-crash-copy-state" id="ez-crash-copy-state"></div>
-      <pre class="ez-crash-report-text" id="ez-crash-report-text" aria-label="診断情報">${escapeHtml(reportText)}</pre>
-      <div class="ez-crash-compact">保存キー: ${CRASH_REPORT_STORAGE_KEY}<br>Timestamp: ${report.timestamp}</div>
+      <pre class="ez-crash-report-text" id="ez-crash-report-text" aria-label="\u8a3a\u65ad\u60c5\u5831">${escapeHtml(reportText)}</pre>
+      <div class="ez-crash-compact">\u4fdd\u5b58\u30ad\u30fc: ${CRASH_REPORT_STORAGE_KEY}<br>Timestamp: ${report.timestamp}</div>
     </div>
   `;
 
@@ -375,6 +396,28 @@ function renderCrashScreen(report) {
   const reloadButton = root.querySelector('#ez-crash-reload');
   const state = root.querySelector('#ez-crash-copy-state');
   const reportTextarea = root.querySelector('#ez-crash-report-text');
+  const compact = root.querySelector('.ez-crash-compact');
+
+  const title = root.querySelector('.ez-crash-title');
+  const body = root.querySelector('.ez-crash-body');
+  if (title) {
+    title.textContent = '\u30b2\u30fc\u30e0\u304c\u505c\u6b62\u3057\u307e\u3057\u305f';
+  }
+  if (body) {
+    body.textContent = '\u4e88\u671f\u3057\u306a\u3044\u30a8\u30e9\u30fc\u304c\u767a\u751f\u3057\u307e\u3057\u305f\u3002\u8a3a\u65ad\u60c5\u5831\u3092\u30b3\u30d4\u30fc\u3057\u3066\u5831\u544a\u3057\u3066\u304f\u3060\u3055\u3044\u3002';
+  }
+  if (copyButton) {
+    copyButton.textContent = '\u8a3a\u65ad\u60c5\u5831\u3092\u30b3\u30d4\u30fc';
+  }
+  if (reloadButton) {
+    reloadButton.textContent = '\u518d\u8d77\u52d5';
+  }
+  if (reportTextarea) {
+    reportTextarea.setAttribute('aria-label', '\u8a3a\u65ad\u60c5\u5831');
+  }
+  if (compact) {
+    compact.textContent = `\u4fdd\u5b58\u30ad\u30fc: ${CRASH_REPORT_STORAGE_KEY} / Timestamp: ${report.timestamp}`;
+  }
 
   requestAnimationFrame?.(() => createStyles(root));
   window.setTimeout?.(() => createStyles(root), 300);
@@ -382,7 +425,7 @@ function renderCrashScreen(report) {
   copyButton?.addEventListener('click', async () => {
     const ok = await copyText(reportText);
     if (state) {
-      state.textContent = ok ? '診断情報をコピーしました。' : 'コピーできませんでした。下の診断情報欄を長押しコピー、または画面をスクリーンショットしてください。';
+      state.textContent = ok ? '\u8a3a\u65ad\u60c5\u5831\u3092\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f\u3002' : '\u30b3\u30d4\u30fc\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u8a3a\u65ad\u60c5\u5831\u6b04\u3092\u9577\u62bc\u3057\u3057\u3066\u304f\u3060\u3055\u3044\u3002';
     }
 
     if (!ok && reportTextarea) {

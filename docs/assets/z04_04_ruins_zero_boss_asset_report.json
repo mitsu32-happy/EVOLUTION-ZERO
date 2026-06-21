@@ -1,0 +1,743 @@
+{
+  "assets": {
+    "ruins_zero_final_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_081d9857929689dc016a36953b49a08191a01d0f61f3ba970f.png",
+      "sheet": "public\\assets\\enemies\\bosses\\ruins_zero_final_boss_sheet.png",
+      "fallback": "public\\assets\\enemies\\bosses\\ruins_zero_final_boss.png",
+      "portrait": "public\\assets\\enemies\\bosses\\ruins_zero_final_boss_portrait.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "cellSize": 256,
+      "fitSize": [
+        230,
+        184
+      ],
+      "sourceCells": [
+        {
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "scale": 0.3087248322147651,
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ]
+        },
+        {
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "scale": 0.3484848484848485,
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ]
+        },
+        {
+          "bbox": [
+            37,
+            34,
+            219,
+            218
+          ],
+          "scale": 0.33212996389891697,
+          "margins": [
+            37,
+            34,
+            37,
+            38
+          ]
+        },
+        {
+          "bbox": [
+            43,
+            34,
+            213,
+            218
+          ],
+          "scale": 0.33153153153153153,
+          "margins": [
+            43,
+            34,
+            43,
+            38
+          ]
+        }
+      ],
+      "sheetCells": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCell": 0,
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCell": 1,
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCell": 0,
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCell": 1,
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCell": 1,
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCell": 0,
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCell": 1,
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCell": 0,
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCell": 0,
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCell": 1,
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCell": 2,
+          "bbox": [
+            37,
+            34,
+            219,
+            218
+          ],
+          "margins": [
+            37,
+            34,
+            37,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCell": 3,
+          "bbox": [
+            43,
+            34,
+            213,
+            218
+          ],
+          "margins": [
+            43,
+            34,
+            43,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "sourceCell": 3,
+          "bbox": [
+            43,
+            34,
+            213,
+            218
+          ],
+          "margins": [
+            43,
+            34,
+            43,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "sourceCell": 2,
+          "bbox": [
+            37,
+            34,
+            219,
+            218
+          ],
+          "margins": [
+            37,
+            34,
+            37,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "sourceCell": 1,
+          "bbox": [
+            45,
+            34,
+            210,
+            218
+          ],
+          "margins": [
+            45,
+            34,
+            46,
+            38
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "sourceCell": 0,
+          "bbox": [
+            57,
+            34,
+            198,
+            218
+          ],
+          "margins": [
+            57,
+            34,
+            58,
+            38
+          ],
+          "edgeIssue": false
+        }
+      ]
+    },
+    "ruins_zero_second_boss": {
+      "source": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_081d9857929689dc016a3694e03d0c8191b40b5292739fe00b.png",
+      "sheet": "public\\assets\\enemies\\bosses\\ruins_zero_second_boss_sheet.png",
+      "fallback": "public\\assets\\enemies\\bosses\\ruins_zero_second_boss.png",
+      "portrait": "public\\assets\\enemies\\bosses\\ruins_zero_second_boss_portrait.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "cellSize": 256,
+      "fitSize": [
+        222,
+        178
+      ],
+      "sourceCells": [
+        {
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "scale": 0.36853002070393376,
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ]
+        },
+        {
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "scale": 0.357429718875502,
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ]
+        },
+        {
+          "bbox": [
+            26,
+            37,
+            204,
+            215
+          ],
+          "scale": 0.3625254582484725,
+          "margins": [
+            26,
+            37,
+            52,
+            41
+          ]
+        },
+        {
+          "bbox": [
+            19,
+            37,
+            238,
+            215
+          ],
+          "scale": 0.36105476673427994,
+          "margins": [
+            19,
+            37,
+            18,
+            41
+          ]
+        }
+      ],
+      "sheetCells": [
+        {
+          "row": 0,
+          "column": 0,
+          "sourceCell": 0,
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "sourceCell": 1,
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "sourceCell": 0,
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "sourceCell": 1,
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "sourceCell": 1,
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "sourceCell": 0,
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "sourceCell": 1,
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "sourceCell": 0,
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "sourceCell": 0,
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "sourceCell": 1,
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "sourceCell": 2,
+          "bbox": [
+            26,
+            37,
+            204,
+            215
+          ],
+          "margins": [
+            26,
+            37,
+            52,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "sourceCell": 3,
+          "bbox": [
+            19,
+            37,
+            238,
+            215
+          ],
+          "margins": [
+            19,
+            37,
+            18,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "sourceCell": 3,
+          "bbox": [
+            19,
+            37,
+            238,
+            215
+          ],
+          "margins": [
+            19,
+            37,
+            18,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "sourceCell": 2,
+          "bbox": [
+            26,
+            37,
+            204,
+            215
+          ],
+          "margins": [
+            26,
+            37,
+            52,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "sourceCell": 1,
+          "bbox": [
+            41,
+            37,
+            214,
+            215
+          ],
+          "margins": [
+            41,
+            37,
+            42,
+            41
+          ],
+          "edgeIssue": false
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "sourceCell": 0,
+          "bbox": [
+            47,
+            37,
+            208,
+            215
+          ],
+          "margins": [
+            47,
+            37,
+            48,
+            41
+          ],
+          "edgeIssue": false
+        }
+      ]
+    }
+  },
+  "summary": {
+    "missing": [],
+    "edgeIssues": [],
+    "cellContamination": []
+  }
+}

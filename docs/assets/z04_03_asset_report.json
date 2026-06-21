@@ -1,0 +1,226 @@
+{
+  "source": {
+    "background": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_081d9857929689dc016a368d34c040819189a524c2700b3b82.png",
+    "environmentSheet": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_081d9857929689dc016a368d8576b8819185ca478cd7610554.png",
+    "warningSheet": "C:\\Users\\oushi\\.codex\\generated_images\\019e5eb7-bc4f-76e3-b6c7-23276e187e20\\ig_081d9857929689dc016a368dd51de48191907c34ee379c8cfa.png"
+  },
+  "generatedAssets": [
+    {
+      "path": "public/assets/maps/backgrounds/ruins_zero_battlefield_tile.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "transparentCorners": false,
+      "minMargin": 0,
+      "margins": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "nonTransparentPixels": 1048576
+    },
+    {
+      "path": "public/assets/effects/stage_gimmicks/ruins_zero/ruins_zero_reactor_pulse.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        41,
+        68,
+        471,
+        444
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 41,
+        "top": 68,
+        "right": 41,
+        "bottom": 68
+      },
+      "nonTransparentPixels": 112271
+    },
+    {
+      "path": "public/assets/effects/stage_gimmicks/ruins_zero/ruins_zero_corruption_mist.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        46,
+        41,
+        466,
+        471
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 46,
+        "top": 41,
+        "right": 46,
+        "bottom": 41
+      },
+      "nonTransparentPixels": 82073
+    },
+    {
+      "path": "public/assets/effects/stage_gimmicks/ruins_zero/ruins_zero_broken_light.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        52,
+        41,
+        460,
+        471
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 52,
+        "top": 41,
+        "right": 52,
+        "bottom": 41
+      },
+      "nonTransparentPixels": 97693
+    },
+    {
+      "path": "public/assets/effects/stage_gimmicks/ruins_zero/ruins_zero_energy_vein.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        41,
+        80,
+        471,
+        431
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 41,
+        "top": 80,
+        "right": 41,
+        "bottom": 81
+      },
+      "nonTransparentPixels": 57824
+    },
+    {
+      "path": "public/assets/effects/boss/ruins_zero/ruins_zero_reactor_warning.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        41,
+        82,
+        471,
+        429
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 41,
+        "top": 82,
+        "right": 41,
+        "bottom": 83
+      },
+      "nonTransparentPixels": 92884
+    },
+    {
+      "path": "public/assets/effects/boss/ruins_zero/ruins_zero_laser_warning.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        41,
+        79,
+        471,
+        433
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 41,
+        "top": 79,
+        "right": 41,
+        "bottom": 79
+      },
+      "nonTransparentPixels": 35121
+    },
+    {
+      "path": "public/assets/effects/boss/ruins_zero/ruins_zero_em_field_warning.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        41,
+        90,
+        471,
+        421
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 41,
+        "top": 90,
+        "right": 41,
+        "bottom": 91
+      },
+      "nonTransparentPixels": 101735
+    },
+    {
+      "path": "public/assets/effects/boss/ruins_zero/ruins_zero_shockwave_warning.png",
+      "size": [
+        512,
+        512
+      ],
+      "hasAlpha": true,
+      "alphaBBox": [
+        41,
+        69,
+        471,
+        443
+      ],
+      "transparentCorners": true,
+      "minMargin": 41,
+      "margins": {
+        "left": 41,
+        "top": 69,
+        "right": 41,
+        "bottom": 69
+      },
+      "nonTransparentPixels": 66923
+    }
+  ],
+  "contacts": [
+    "docs/assets/z04_03_ruins_zero_background_contact.png",
+    "docs/assets/z04_03_ruins_zero_effect_contact.png",
+    "docs/assets/z04_03_ruins_zero_warning_contact.png"
+  ],
+  "qa": {
+    "background": "center-cropped and resized to 1024x1024 tile for PlayScene background use",
+    "effects": "2x2 generated sheet split to individual 512x512 transparent textures with generous margins",
+    "performance": "textures are static single sprites; no particle systems added"
+  }
+}
