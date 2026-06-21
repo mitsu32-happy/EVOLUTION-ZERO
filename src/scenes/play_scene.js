@@ -105,6 +105,18 @@ const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
 const LOAD_SHEDDING_SOFT_OBJECTS = 520;
 const LOAD_SHEDDING_HARD_OBJECTS = 760;
+const EMERGENCY_DELTA_AVERAGE_THRESHOLD = 0.042;
+const EMERGENCY_DELTA_SPIKE_THRESHOLD = 0.09;
+const EMERGENCY_ENEMY_THRESHOLD = 46;
+const EMERGENCY_PROJECTILE_THRESHOLD = 36;
+const EMERGENCY_EFFECT_THRESHOLD = 28;
+const EMERGENCY_DAMAGE_POPUP_THRESHOLD = 18;
+const EMERGENCY_RELEASE_SECONDS = 2.4;
+const EMERGENCY_MAX_ENEMY_PROJECTILES = 24;
+const EMERGENCY_MAX_STAGE_GIMMICKS = 14;
+const EMERGENCY_MAX_PICKUP_BURSTS = 6;
+const EMERGENCY_MAX_PICKUP_POPUPS = 0;
+const EMERGENCY_MAX_COMPANION_EFFECTS = 2;
 const ENEMY_VISUAL_CULL_CELL_SIZE = 14;
 const ENEMY_VISUAL_CULL_MAX_PER_CELL = 3;
 const ENEMY_OFFSCREEN_THROTTLE_MARGIN = 260;
@@ -777,6 +789,18 @@ export class PlayScene {
     this.debugFpsEstimate = 0;
     this.debugPerformanceEnabled = isDebugPerformanceEnabled();
     this.performanceLoadSheddingLevel = 0;
+    this.emergencyPerformance = {
+      active: false,
+      reason: null,
+      holdTimer: 0,
+      averageDelta: 0,
+      maxDelta: 0,
+      targetScanCount: 0,
+      collisionCheckCount: 0,
+      suppressedDamagePopups: 0,
+      suppressedEffects: 0,
+      lastMetrics: null,
+    };
     this.performanceHeartbeatSuspectCount = 0;
     this.frameCount = 0;
     this.lastUpdateTimestamp = 0;
@@ -1165,11 +1189,12 @@ export class PlayScene {
   }
 
   enforceRuntimeObjectCaps() {
-    this.trimEnemyProjectiles(MAX_ENEMY_PROJECTILES);
-    this.trimRuntimeList(this.stageGimmicks, MAX_STAGE_GIMMICKS, { children: true });
-    this.trimPickupBursts(MAX_PICKUP_BURSTS);
-    this.trimPickupPopups(MAX_PICKUP_POPUPS);
-    this.trimCompanionEffects(MAX_COMPANION_EFFECTS);
+    const emergency = this.isEmergencyPerformanceActive();
+    this.trimEnemyProjectiles(emergency ? EMERGENCY_MAX_ENEMY_PROJECTILES : MAX_ENEMY_PROJECTILES);
+    this.trimRuntimeList(this.stageGimmicks, emergency ? EMERGENCY_MAX_STAGE_GIMMICKS : MAX_STAGE_GIMMICKS, { children: true });
+    this.trimPickupBursts(emergency ? EMERGENCY_MAX_PICKUP_BURSTS : MAX_PICKUP_BURSTS);
+    this.trimPickupPopups(emergency ? EMERGENCY_MAX_PICKUP_POPUPS : MAX_PICKUP_POPUPS);
+    this.trimCompanionEffects(emergency ? EMERGENCY_MAX_COMPANION_EFFECTS : MAX_COMPANION_EFFECTS);
     this.trimWorldPickups();
     this.pruneStaleRuntimeChildren();
   }
@@ -1530,6 +1555,120 @@ export class PlayScene {
     this.combatSystem?.setPerformancePressure?.(Math.max(level, thermalLevel));
     this.ultimateSystem?.setPerformancePressure?.(level);
     this.audioManager?.setPerformanceLoadSheddingLevel?.(level);
+    this.updateEmergencyPerformanceMode(delta);
+  }
+
+  updateEmergencyPerformanceMode(delta = 0) {
+    const state = this.emergencyPerformance;
+    if (!state) {
+      return;
+    }
+
+    const activeBoss = this.getActiveBoss?.();
+    const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
+    const bossActive = Boolean(activeBoss && !activeBoss.isDead);
+    const isZeroBossPressure = this.gameState?.selectedMode === 'zero' && bossActive;
+    const projectileCount = this.enemyProjectiles.length + (combatStats.combatProjectiles ?? 0);
+    const effectCount = (combatStats.combatEffects ?? 0)
+      + this.companionEffects.length
+      + (this.ultimateSystem?.effects?.length ?? 0)
+      + this.pickupBursts.length;
+    const damagePopupCount = (combatStats.damageNumbers ?? 0) + this.pickupPopups.length;
+    const objectPressure = this.getRuntimeObjectPressureCount();
+
+    state.averageDelta = state.averageDelta > 0
+      ? state.averageDelta * 0.92 + delta * 0.08
+      : delta;
+    state.maxDelta = Math.max(delta, (state.maxDelta ?? 0) * 0.985);
+
+    const reasons = [];
+    if (isZeroBossPressure && this.enemies.length >= EMERGENCY_ENEMY_THRESHOLD) {
+      reasons.push('zero-boss-enemy-density');
+    }
+    if (isZeroBossPressure && projectileCount >= EMERGENCY_PROJECTILE_THRESHOLD) {
+      reasons.push('zero-boss-projectiles');
+    }
+    if (isZeroBossPressure && effectCount >= EMERGENCY_EFFECT_THRESHOLD) {
+      reasons.push('zero-boss-effects');
+    }
+    if (isZeroBossPressure && damagePopupCount >= EMERGENCY_DAMAGE_POPUP_THRESHOLD) {
+      reasons.push('zero-boss-popups');
+    }
+    if (isZeroBossPressure && this.mobileThermalSafetyLevel >= 2) {
+      reasons.push('thermal-safety');
+    }
+    if (isZeroBossPressure && this.performanceLoadSheddingLevel >= 2) {
+      reasons.push('load-shedding');
+    }
+    if (isZeroBossPressure && state.averageDelta >= EMERGENCY_DELTA_AVERAGE_THRESHOLD) {
+      reasons.push('average-delta');
+    }
+    if (isZeroBossPressure && state.maxDelta >= EMERGENCY_DELTA_SPIKE_THRESHOLD) {
+      reasons.push('delta-spike');
+    }
+    if (isZeroBossPressure && objectPressure >= LOAD_SHEDDING_SOFT_OBJECTS * 0.82) {
+      reasons.push('runtime-object-pressure');
+    }
+
+    if (getDebugFlag('debugEmergencyPerformance')) {
+      reasons.push('debug-forced');
+    }
+
+    if (reasons.length > 0) {
+      state.active = true;
+      state.reason = reasons.join(',');
+      state.holdTimer = EMERGENCY_RELEASE_SECONDS;
+    } else if (state.holdTimer > 0) {
+      state.holdTimer = Math.max(0, state.holdTimer - delta);
+    } else {
+      state.active = false;
+      state.reason = null;
+    }
+
+    this.combatSystem?.setEmergencyPerformanceMode?.(state.active);
+    if (state.active) {
+      this.combatSystem?.setPerformancePressure?.(2);
+      this.ultimateSystem?.setPerformancePressure?.(2);
+      this.audioManager?.setPerformanceLoadSheddingLevel?.(2);
+    }
+
+    state.lastMetrics = {
+      enemyCount: this.enemies.length,
+      bossActive,
+      effectCount,
+      damagePopupCount,
+      projectileCount,
+      targetScanCount: state.targetScanCount ?? 0,
+      collisionCheckCount: state.collisionCheckCount ?? 0,
+      averageDelta: Number((state.averageDelta ?? 0).toFixed(4)),
+      maxDelta: Number((state.maxDelta ?? 0).toFixed(4)),
+      thermalSafetyLevel: this.mobileThermalSafetyLevel ?? 0,
+    };
+  }
+
+  isEmergencyPerformanceActive() {
+    return Boolean(this.emergencyPerformance?.active);
+  }
+
+  getEmergencyPerformanceStats() {
+    const state = this.emergencyPerformance ?? {};
+    const metrics = state.lastMetrics ?? {};
+    return {
+      active: Boolean(state.active),
+      reason: state.reason ?? null,
+      enemyCount: metrics.enemyCount ?? this.enemies.length,
+      bossActive: Boolean(metrics.bossActive ?? this.getActiveBoss?.()),
+      effectCount: metrics.effectCount ?? 0,
+      damagePopupCount: metrics.damagePopupCount ?? 0,
+      projectileCount: metrics.projectileCount ?? this.enemyProjectiles.length,
+      targetScanCount: state.targetScanCount ?? 0,
+      collisionCheckCount: state.collisionCheckCount ?? 0,
+      averageDelta: metrics.averageDelta ?? Number((state.averageDelta ?? 0).toFixed(4)),
+      maxDelta: metrics.maxDelta ?? Number((state.maxDelta ?? 0).toFixed(4)),
+      thermalSafetyLevel: metrics.thermalSafetyLevel ?? this.mobileThermalSafetyLevel ?? 0,
+      suppressedDamagePopups: state.suppressedDamagePopups ?? 0,
+      suppressedEffects: state.suppressedEffects ?? 0,
+    };
   }
 
   createPerformanceDebugOverlay() {
@@ -1569,6 +1708,7 @@ export class PlayScene {
       `comp fx ${stats.companionEffects}/${stats.caps.companionEffects} scan e${stats.companion?.targetScans ?? 0}/p${stats.companion?.pickupScans ?? 0}`,
       `pool ep ${stats.enemyProjectilePoolFree}/${stats.caps.enemyProjectilePool}`,
       `audio ${stats.audioInstances ?? '-'}`,
+      `emergency ${stats.emergencyPerformance?.active ? 1 : 0} ${stats.emergencyPerformance?.reason ?? '-'}`,
       `whiteout ${stats.whiteout?.dumpCount ?? 0}:${stats.whiteout?.lastReason ?? '-'}`,
     ];
 
@@ -1730,6 +1870,7 @@ export class PlayScene {
       containerChildrenTotal: containerChildren.total,
       loadSheddingLevel: this.performanceLoadSheddingLevel,
       thermalSafetyLevel: this.mobileThermalSafetyLevel ?? 0,
+      emergencyPerformance: this.getEmergencyPerformanceStats(),
       spawnBudget: spawnStats.spawnBudget ?? null,
       activeAudioCount: this.audioManager?.activeAudios?.size ?? null,
       activeAudioBufferCount: this.audioManager?.activeBufferRecords?.size ?? null,
@@ -1805,6 +1946,7 @@ export class PlayScene {
         `compFx=${snapshot.companion?.effects ?? 0}`,
         `compScan=${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
         `mini=${snapshot.miniPack?.active ? snapshot.miniPack.count : 0}/${snapshot.miniPack?.scans ?? 0}`,
+        `emergency=${snapshot.emergencyPerformance?.active ? 1 : 0}:${snapshot.emergencyPerformance?.reason ?? '-'}`,
         `shed=${snapshot.loadSheddingLevel}`,
         `stress=${snapshot.debugStressKillEnabled ? 1 : 0}`,
         `ctx=${snapshot.diagnostics?.contextLost ?? 0}`,
@@ -1899,6 +2041,7 @@ export class PlayScene {
     const snapshot = this.buildPerformanceSnapshot(reason);
     const overlayDiagnostics = this.getOverlayDiagnostics();
     const activeFilters = overlayDiagnostics.reduce((total, entry) => total + (entry.filters ?? 0), 0);
+    const emergencyPerformance = snapshot.emergencyPerformance ?? this.getEmergencyPerformanceStats();
     const fullscreenGraphics = overlayDiagnostics
       .filter((entry) => entry.visible && ['bossDefeatFxLayer', 'damageFlash', 'visibilityBackgroundLift', 'zeroPhaseLayer'].includes(entry.label))
       .map((entry) => entry.label);
@@ -1915,10 +2058,16 @@ export class PlayScene {
       visibleEnemyCount: snapshot.visibleEnemyCount,
       offscreenEnemyCount: snapshot.offscreenEnemyCount,
       projectileCount: snapshot.projectileCount,
+      bossActive: emergencyPerformance.bossActive,
       hazardCount: snapshot.hazardCount,
       warningGuideCount: snapshot.warningGuideCount,
       effectCount: snapshot.effectCount,
       damageTextCount: snapshot.damageTextCount,
+      damagePopupCount: emergencyPerformance.damagePopupCount,
+      targetScanCount: emergencyPerformance.targetScanCount,
+      collisionCheckCount: emergencyPerformance.collisionCheckCount,
+      averageDelta: emergencyPerformance.averageDelta,
+      maxDelta: emergencyPerformance.maxDelta,
       criticalTextCount: snapshot.criticalTextCount,
       pickupCount: snapshot.pickupCount,
       enemyVisualBudget: snapshot.enemyVisualBudget,
@@ -1941,6 +2090,7 @@ export class PlayScene {
       webglContextLost: (snapshot.diagnostics?.contextLost ?? 0) > 0,
       loadSheddingLevel: snapshot.loadSheddingLevel,
       thermalSafetyLevel: snapshot.thermalSafetyLevel,
+      emergencyPerformance,
       bossClearSequence: this.bossClearSequence ? {
         age: Number((this.bossClearSequence.age ?? 0).toFixed(3)),
         duration: Number((this.bossClearSequence.duration ?? 0).toFixed(3)),
@@ -1981,6 +2131,7 @@ export class PlayScene {
         `compFx=${dump.compFx}`,
         `children=${dump.latestSnapshot?.containerChildrenTotal ?? '-'}`,
         `thermal=${dump.thermalSafetyLevel ?? 0}`,
+        `emergency=${dump.emergencyPerformance?.active ? 1 : 0}`,
         `ctx=${dump.webglContextLost ? 1 : 0}`,
       ].join(' '));
     } catch {
@@ -2092,6 +2243,7 @@ export class PlayScene {
       visibleEnemies: snapshot.visibleEnemyCount ?? 0,
       offscreenEnemies: snapshot.offscreenEnemyCount ?? 0,
       thermalSafetyLevel: snapshot.thermalSafetyLevel ?? 0,
+      emergencyPerformance: snapshot.emergencyPerformance ?? this.getEmergencyPerformanceStats(),
       enemyVisualBudget: snapshot.enemyVisualBudget ?? this.enemyVisualBudgetStats,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
       audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
@@ -4149,6 +4301,7 @@ export class PlayScene {
       return cachedTarget && !cachedTarget.isDead ? cachedTarget : null;
     }
 
+    this.emergencyPerformance.targetScanCount += 1;
     const targets = this.getAttackTargets?.() ?? [];
     this.miniPackTargetCache.scans += 1;
     this.miniPackTargetCache.lastScanSize = targets.length;
@@ -4166,7 +4319,9 @@ export class PlayScene {
       })[0]?.target ?? null;
 
     this.miniPackTargetCache.target = selected;
-    this.miniPackTargetCache.refreshTimer = MINIPACK_TARGET_REFRESH_INTERVAL;
+    this.miniPackTargetCache.refreshTimer = this.isEmergencyPerformanceActive()
+      ? MINIPACK_TARGET_REFRESH_INTERVAL * 2.6
+      : MINIPACK_TARGET_REFRESH_INTERVAL;
     return selected;
   }
 
@@ -4187,7 +4342,8 @@ export class PlayScene {
         return;
       }
 
-      actor.attackTimer = MINIPACK_ATTACK_INTERVAL + actor.index * 0.08;
+      const emergency = this.isEmergencyPerformanceActive();
+      actor.attackTimer = (MINIPACK_ATTACK_INTERVAL * (emergency ? 1.85 : 1)) + actor.index * 0.08;
       const target = this.getMiniPackTarget();
       if (!target || target.isDead || !target.position) {
         return;
@@ -4203,10 +4359,12 @@ export class PlayScene {
       actor.actionTarget = { x: target.position.x, y: target.position.y };
       actor.facing = target.position.x >= actor.position.x ? 1 : -1;
       this.miniPackDebugStats.hits += 1;
-      if (this.performanceLoadSheddingLevel <= 0 && this.miniPackEffectCounter < MINIPACK_EFFECT_CAP) {
+      if (!emergency && this.performanceLoadSheddingLevel <= 0 && this.miniPackEffectCounter < MINIPACK_EFFECT_CAP) {
         this.spawnPickupPopup(target.position.x, target.position.y - 24, `${damage}`, 0xc9fbff);
         this.miniPackEffectCounter += 1;
         this.miniPackDebugStats.effects += 1;
+      } else if (emergency) {
+        this.emergencyPerformance.suppressedEffects += 1;
       }
     });
   }
@@ -4953,6 +5111,7 @@ export class PlayScene {
       return null;
     }
 
+    this.emergencyPerformance.targetScanCount += 1;
     this.companionPerfStats.targetScans += 1;
     this.companionPerfStats.lastEnemyScanSize = this.enemies.length;
     const searchRadius = Math.max(radius + 120, behavior.range ?? 200);
@@ -5014,6 +5173,7 @@ export class PlayScene {
       return null;
     }
 
+    this.emergencyPerformance.targetScanCount += 1;
     this.companionPerfStats.pickupScans += 1;
     this.companionPerfStats.lastPickupScanSize = this.pickups.length;
     const searchRadius = Math.max(radius + 90, 150);
@@ -5095,7 +5255,9 @@ export class PlayScene {
         type === 'boss' ? 'boss' : 'enemy',
         () => this.findCompanionEnemyTarget(type, behavior, radius),
         radius,
-        this.performanceLoadSheddingLevel >= 1 ? COMPANION_TARGET_REFRESH_INTERVAL * 1.7 : COMPANION_TARGET_REFRESH_INTERVAL,
+        this.isEmergencyPerformanceActive()
+          ? COMPANION_TARGET_REFRESH_INTERVAL * 3.2
+          : this.performanceLoadSheddingLevel >= 1 ? COMPANION_TARGET_REFRESH_INTERVAL * 1.7 : COMPANION_TARGET_REFRESH_INTERVAL,
       );
       if (enemy?.position) {
         if (type === 'ranged') {
@@ -5118,7 +5280,9 @@ export class PlayScene {
         type,
         () => this.findCompanionPickupTarget(type === 'exp', radius),
         radius,
-        this.performanceLoadSheddingLevel >= 1 ? COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * 1.8 : COMPANION_PICKUP_TARGET_REFRESH_INTERVAL,
+        this.isEmergencyPerformanceActive()
+          ? COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * 3.4
+          : this.performanceLoadSheddingLevel >= 1 ? COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * 1.8 : COMPANION_PICKUP_TARGET_REFRESH_INTERVAL,
       );
       if (pickup?.position) {
         return { ...this.clampCompanionMovementPoint(pickup.position, radius), targetType: type === 'exp' ? 'exp' : 'pickup' };
@@ -5301,7 +5465,8 @@ export class PlayScene {
     }
 
     const behavior = getCompanionScaledBehavior(this.activeCompanion.id, this.activeCompanionUpgradeLevels) ?? this.activeCompanion.behavior ?? {};
-    const interval = Math.max(0.85, behavior.interval ?? 2.4);
+    const emergency = this.isEmergencyPerformanceActive();
+    const interval = Math.max(0.85, behavior.interval ?? 2.4) * (emergency ? 1.7 : 1);
     const range = behavior.range ?? (this.activeCompanion.type === 'boss' ? 260 : 205);
     const minRange = behavior.minRange ?? 0;
     const targets = this.enemies
@@ -5363,8 +5528,14 @@ export class PlayScene {
         : lowHpMultiplier;
       const damage = Math.round((behavior.damage ?? 8) * bossMultiplier * skillMultiplier);
       enemy.takeDamage?.(damage);
-      this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
-      this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
+      if (!emergency) {
+        this.spawnCompanionEffect(enemy.position.x, enemy.position.y - 18, this.activeCompanion);
+        this.spawnPickupPopup(enemy.position.x, enemy.position.y - 28, `${damage}`, COMPANION_TYPES[this.activeCompanion.type]?.accent ?? 0xc8fbff);
+      } else {
+        this.companionPerfStats.effectSuppressed += 1;
+        this.emergencyPerformance.suppressedEffects += 1;
+        this.emergencyPerformance.suppressedDamagePopups += 1;
+      }
     });
     this.companionLastAction = `${this.activeCompanion.type} hit`;
     this.companionLastTarget = primary?.isBoss ? 'boss' : primary?.enemyType ?? 'enemy';
@@ -5477,8 +5648,11 @@ export class PlayScene {
   }
 
   spawnCompanionEffect(x, y, companion = this.activeCompanion, options = {}) {
-    if (!companion?.effectAssetKey || this.performanceLoadSheddingLevel >= 2) {
+    if (!companion?.effectAssetKey || this.performanceLoadSheddingLevel >= 2 || this.isEmergencyPerformanceActive()) {
       this.companionPerfStats.effectSuppressed += 1;
+      if (this.isEmergencyPerformanceActive()) {
+        this.emergencyPerformance.suppressedEffects += 1;
+      }
       return;
     }
 
@@ -5751,14 +5925,24 @@ export class PlayScene {
     };
     const useEnemyVisualBudget = this.shouldUseEnemyVisualBudget();
     const occupiedVisualCells = new Map();
+    const emergency = this.isEmergencyPerformanceActive();
 
     this.enemies.forEach((enemy, index) => {
       const visualState = this.getEnemyVisualBudgetState(enemy, index, occupiedVisualCells, useEnemyVisualBudget);
       enemy.view.renderable = visualState.renderable;
+      const throttleOffscreenUpdate = emergency
+        && !visualState.updateVisuals
+        && (this.frameCount + index) % 3 !== 0;
+      if (throttleOffscreenUpdate) {
+        this.enemyVisualBudgetStats.throttledEnemyAnimations += 1;
+        return;
+      }
+
       enemy.update(delta, this.player, { updateVisuals: visualState.updateVisuals });
       this.updateRuinsEnemyAbility(delta, enemy);
       enemy.view.zIndex = enemy.position.y;
 
+      this.emergencyPerformance.collisionCheckCount += 1;
       if (!enemy.isDead && CollisionSystem.circlesOverlap(playerCollider, enemy.getCollider())) {
         if (enemy.contactSlowMultiplier && enemy.contactSlowMultiplier < 1) {
           const slow = Math.pow(enemy.contactSlowMultiplier, delta);
@@ -5813,6 +5997,11 @@ export class PlayScene {
   }
 
   spawnEnemyProjectile(enemy) {
+    if (this.isEmergencyPerformanceActive() && this.enemyProjectiles.length >= EMERGENCY_MAX_ENEMY_PROJECTILES) {
+      this.emergencyPerformance.suppressedEffects += 1;
+      return;
+    }
+
     const dx = this.player.position.x - enemy.position.x;
     const dy = this.player.position.y - enemy.position.y;
     const distance = Math.max(1, Math.hypot(dx, dy));
@@ -5829,7 +6018,7 @@ export class PlayScene {
       .stroke({ color: 0xa46cff, width: 2, alpha: 0.7 });
     view.rotation = Math.atan2(dy, dx);
     view.position.set(enemy.position.x, enemy.position.y - 8);
-    this.trimEnemyProjectiles(MAX_ENEMY_PROJECTILES - 1);
+    this.trimEnemyProjectiles((this.isEmergencyPerformanceActive() ? EMERGENCY_MAX_ENEMY_PROJECTILES : MAX_ENEMY_PROJECTILES) - 1);
     this.effectLayer.addChild(view);
     this.enemyProjectiles.push({
       type: 'ruinsShot',
@@ -5845,6 +6034,11 @@ export class PlayScene {
   }
 
   spawnEnemyElectroPulse(enemy) {
+    if (this.isEmergencyPerformanceActive() && this.enemyProjectiles.length >= EMERGENCY_MAX_ENEMY_PROJECTILES) {
+      this.emergencyPerformance.suppressedEffects += 1;
+      return;
+    }
+
     const view = this.acquireEnemyProjectileView();
     const radius = enemy.electroRadius || 84;
 
@@ -5856,7 +6050,7 @@ export class PlayScene {
       .circle(0, 0, radius * 0.44)
       .stroke({ color: 0xe8fbff, width: 2, alpha: 0.48 });
     view.position.set(enemy.position.x, enemy.position.y);
-    this.trimEnemyProjectiles(MAX_ENEMY_PROJECTILES - 1);
+    this.trimEnemyProjectiles((this.isEmergencyPerformanceActive() ? EMERGENCY_MAX_ENEMY_PROJECTILES : MAX_ENEMY_PROJECTILES) - 1);
     this.effectLayer.addChild(view);
     this.enemyProjectiles.push({
       type: 'ruinsElectroPulse',
@@ -5912,6 +6106,7 @@ export class PlayScene {
         }
       }
 
+      this.emergencyPerformance.collisionCheckCount += 1;
       const hitDistance = Math.hypot(this.player.position.x - projectile.x, this.player.position.y - projectile.y);
       const canHit = !projectile.didHit && hitDistance <= projectile.radius + (this.player.radius ?? 18);
 
@@ -5965,6 +6160,7 @@ export class PlayScene {
 
       this.updateBossHazardAttacks(delta, boss);
 
+      this.emergencyPerformance.collisionCheckCount += 1;
       if (!boss.isDead && CollisionSystem.circlesOverlap(playerCollider, boss.getCollider())) {
         if (this.gameState.damagePlayer(boss.damage)) {
           this.audioManager?.play('hit');
@@ -5996,12 +6192,15 @@ export class PlayScene {
       ? ((boss.zeroPhase ?? 1) >= 3 ? 3 : 2)
       : this.gameState.selectedDifficulty === 'expert' ? 2 : 1;
     const isZeroFinalPressure = this.gameState.selectedMode === 'zero' && (boss.zeroPhase ?? 1) >= 3;
-    const loadAdjustedOverlapLimit = (this.performanceLoadSheddingLevel >= 2
-      || (isZeroFinalPressure && this.performanceLoadSheddingLevel >= 1))
+    const emergency = this.isEmergencyPerformanceActive();
+    const loadAdjustedOverlapLimit = emergency
       ? 1
-      : this.performanceLoadSheddingLevel >= 1
-        ? Math.min(overlapLimit, 2)
-        : overlapLimit;
+      : (this.performanceLoadSheddingLevel >= 2
+      || (isZeroFinalPressure && this.performanceLoadSheddingLevel >= 1))
+        ? 1
+        : this.performanceLoadSheddingLevel >= 1
+          ? Math.min(overlapLimit, 2)
+          : overlapLimit;
 
     if (activeBossHazardCount >= loadAdjustedOverlapLimit) {
       return;
@@ -6023,7 +6222,7 @@ export class PlayScene {
         continue;
       }
 
-      const countLimit = this.gameState.selectedMode === 'zero'
+      const countLimit = emergency ? 1 : this.gameState.selectedMode === 'zero'
         ? ((boss.zeroPhase ?? 1) >= 3 ? (this.performanceLoadSheddingLevel >= 1 ? 2 : 4) : 3)
         : this.gameState.selectedDifficulty === 'expert' ? 3 : 2;
       const count = Math.min(countLimit, Math.max(1, config.count ?? 1));
@@ -6032,11 +6231,11 @@ export class PlayScene {
         this.spawnBossHazard(boss, attackKey, config, index);
       }
 
-      const cooldownPressure = this.gameState.selectedMode === 'zero'
+      const cooldownPressure = emergency ? 1.45 : this.gameState.selectedMode === 'zero'
         ? ((boss.zeroPhase ?? 1) >= 3 ? 0.78 : 0.86)
         : this.gameState.selectedDifficulty === 'expert' ? 0.9 : 1;
       boss.bossHazardTimers[attackKey] = (config.cooldown ?? 8) * cooldownPressure;
-      boss.bossHazardRecoveryTimer = this.gameState.selectedMode === 'zero'
+      boss.bossHazardRecoveryTimer = emergency ? 0.95 : this.gameState.selectedMode === 'zero'
         ? ((boss.zeroPhase ?? 1) >= 3 ? 0.38 : 0.46)
         : this.gameState.selectedDifficulty === 'expert' ? 0.58 : 0.75;
       break;
@@ -6839,6 +7038,7 @@ export class PlayScene {
   }
 
   getAttackTargets() {
+    this.emergencyPerformance.targetScanCount += 1;
     return [...this.enemies, ...this.bosses].filter((target) => !target.isDead);
   }
 
@@ -7047,7 +7247,9 @@ export class PlayScene {
     const corePulse = 0.72 + Math.max(0, pulse) * 0.34;
     const screenPoint = this.worldToScreenPoint(sequence.bossX, sequence.bossY);
     const radius = sequence.radius * (0.55 + progress * (sequence.zeroFinal ? 1.45 : 1.05));
-    const flashAlpha = Math.min(WHITEOUT_FLASH_ALPHA_LIMIT, (sequence.zeroFinal ? 0.28 : 0.2) * fade);
+    const flashAlpha = this.isEmergencyPerformanceActive()
+      ? Math.min(0.05, WHITEOUT_FLASH_ALPHA_LIMIT * 0.35 * fade)
+      : Math.min(WHITEOUT_FLASH_ALPHA_LIMIT, (sequence.zeroFinal ? 0.28 : 0.2) * fade);
     const fragmentCount = sequence.zeroFinal ? 9 : 6;
 
     if (!Number.isFinite(progress)
@@ -7205,6 +7407,7 @@ export class PlayScene {
       return;
     }
 
+    const emergency = this.isEmergencyPerformanceActive();
     this.stageGimmickTimer -= delta;
 
     if (this.stageGimmickTimer <= 0) {
@@ -7229,7 +7432,9 @@ export class PlayScene {
       const isActive = gimmick.age >= activeStart && gimmick.age < activeEnd;
       const warningProgress = Math.min(1, gimmick.age / Math.max(0.1, gimmick.warningDuration));
 
-      if (isWarning) {
+      const shouldUpdateHazardAnimation = !emergency || gimmick.type?.startsWith?.('boss_') || (this.frameCount % 3 === 0);
+
+      if (isWarning && shouldUpdateHazardAnimation) {
         this.updateStageGimmickAnimation(gimmick, delta, {
           sprite: gimmick.warningSprite,
           texturesKey: 'warningAnimationTextures',
@@ -7243,21 +7448,25 @@ export class PlayScene {
         }
       }
 
-      if (isActive) {
+      if (isActive && shouldUpdateHazardAnimation) {
         this.updateStageGimmickAnimation(gimmick, delta);
       }
 
       if (gimmick.warningSprite) {
         const hazardBoost = this.getVisibilityAssistConfig().hazardAlphaBoost;
         gimmick.warningSprite.visible = isWarning && gimmick.warningAssetLoaded;
-        gimmick.warningSprite.alpha = Math.min(0.78, (0.22 + warningProgress * 0.36) * hazardBoost);
+        gimmick.warningSprite.alpha = emergency
+          ? Math.min(0.34, (0.14 + warningProgress * 0.22) * hazardBoost)
+          : Math.min(0.78, (0.22 + warningProgress * 0.36) * hazardBoost);
       }
       gimmick.sprite.visible = (isActive || (isWarning && !gimmick.warningAssetLoaded)) && gimmick.assetLoaded;
       if (isWarning && (gimmick.warningSprite?.visible || gimmick.sprite.visible)) {
         this.showWarningGuideTutorialIfNeeded();
       }
       const hazardBoost = this.getVisibilityAssistConfig().hazardAlphaBoost;
-      gimmick.sprite.alpha = isActive
+      gimmick.sprite.alpha = emergency
+        ? (isActive ? Math.min(0.58, (gimmick.alpha ?? 0.82) * 0.72) : Math.min(0.28, 0.12 + warningProgress * 0.18))
+        : isActive
         ? Math.min(0.95, (gimmick.alpha ?? 0.82) * (1 + (hazardBoost - 1) * 0.32))
         : Math.min(0.62, (0.14 + warningProgress * 0.3) * hazardBoost);
       gimmick.view.visible = gimmick.age < activeEnd;
@@ -7588,7 +7797,8 @@ export class PlayScene {
     const simpleEffects = this.optionsSettings?.effects?.simpleEffects === true;
     const visibilityConfig = this.getVisibilityAssistConfig();
     const baseAlpha = (simpleEffects ? 0.42 : 0.58) * visibilityConfig.hazardAlphaBoost;
-    const maxWarningDraws = this.performanceLoadSheddingLevel >= 2 ? 14
+    const maxWarningDraws = this.isEmergencyPerformanceActive() ? 6
+      : this.performanceLoadSheddingLevel >= 2 ? 14
       : this.performanceLoadSheddingLevel >= 1 ? 24
         : Infinity;
     let warningDraws = 0;
@@ -7858,6 +8068,11 @@ export class PlayScene {
   }
 
   spawnPickupBurst(x, y, value = 1, type = 'exp') {
+    if (this.isEmergencyPerformanceActive()) {
+      this.emergencyPerformance.suppressedEffects += 1;
+      return;
+    }
+
     if (this.performanceLoadSheddingLevel >= 1 && type === 'exp') {
       return;
     }
@@ -7878,6 +8093,11 @@ export class PlayScene {
 
   spawnPickupPopup(x, y, label, color = 0xd7fff2) {
     if (this.optionsSettings?.effects?.damageNumbers === false) {
+      return;
+    }
+
+    if (this.isEmergencyPerformanceActive()) {
+      this.emergencyPerformance.suppressedDamagePopups += 1;
       return;
     }
 
@@ -9163,25 +9383,32 @@ export class PlayScene {
 
     this.zeroPhaseLayer.visible = true;
     this.zeroPhaseTimer = Math.max(0, this.zeroPhaseTimer - delta);
-    this.updateZeroPhaseAnimation(delta);
+    if (!this.isEmergencyPerformanceActive() || this.frameCount % 3 === 0) {
+      this.updateZeroPhaseAnimation(delta);
+    }
 
     const age = this.zeroPhaseDuration - this.zeroPhaseTimer;
     const fadeIn = Math.min(1, age / 0.18);
     const fadeOut = Math.min(1, this.zeroPhaseTimer / 0.28);
+    const pulseAmount = this.isEmergencyPerformanceActive() ? 0.004 : null;
     const pulse = this.zeroPhaseVariant === 'final'
-      ? 1 + Math.sin(age * 22) * 0.018
-      : 1 + Math.sin(age * 18) * 0.012;
+      ? 1 + Math.sin(age * 22) * (pulseAmount ?? 0.018)
+      : 1 + Math.sin(age * 18) * (pulseAmount ?? 0.012);
 
-    this.zeroPhaseLayer.alpha = Math.min(fadeIn, fadeOut);
+    this.zeroPhaseLayer.alpha = Math.min(fadeIn, fadeOut) * (this.isEmergencyPerformanceActive() ? 0.74 : 1);
     this.zeroPhaseLayer.scale.set(pulse);
     this.zeroPhaseLayer.pivot.set(this.width / 2, this.height / 2);
     this.zeroPhaseLayer.position.set(this.width / 2, this.height / 2);
   }
 
   updateZeroPhaseAnimation(delta) {
+    if (this.isEmergencyPerformanceActive() && this.zeroPhaseVariant !== 'final') {
+      return;
+    }
+
     if (this.zeroPhaseNoiseTextures?.length > 0) {
       this.zeroPhaseNoiseTimer += delta;
-      const frameTime = 1 / Math.max(1, this.zeroPhaseNoiseFps);
+      const frameTime = 1 / Math.max(1, this.isEmergencyPerformanceActive() ? 5 : this.zeroPhaseNoiseFps);
 
       while (this.zeroPhaseNoiseTimer >= frameTime) {
         this.zeroPhaseNoiseTimer -= frameTime;
@@ -9193,7 +9420,7 @@ export class PlayScene {
 
     if (this.zeroPhaseCoreTextures?.length > 0) {
       this.zeroPhaseCoreTimer += delta;
-      const frameTime = 1 / Math.max(1, this.zeroPhaseCoreFps);
+      const frameTime = 1 / Math.max(1, this.isEmergencyPerformanceActive() ? 5 : this.zeroPhaseCoreFps);
 
       while (this.zeroPhaseCoreTimer >= frameTime) {
         this.zeroPhaseCoreTimer -= frameTime;

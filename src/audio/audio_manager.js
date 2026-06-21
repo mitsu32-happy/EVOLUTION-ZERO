@@ -312,6 +312,10 @@ export class AudioManager {
       return;
     }
 
+    if (!this.hasUserActivation()) {
+      return;
+    }
+
     try {
       this.ensurePageActiveForPlayback();
       this.ensureAudioContext();
@@ -350,7 +354,7 @@ export class AudioManager {
       return;
     }
 
-    if (options.unlock !== false) {
+    if (options.unlock !== false && this.hasUserActivation()) {
       this.unlockAudio();
     }
 
@@ -409,6 +413,19 @@ export class AudioManager {
 
   playOptional(id, options = {}) {
     this.play(id, { ...options, optional: true });
+  }
+
+  hasUserActivation() {
+    if (typeof navigator === 'undefined') {
+      return true;
+    }
+
+    const activation = navigator.userActivation;
+    if (!activation) {
+      return true;
+    }
+
+    return activation.isActive === true || activation.hasBeenActive === true;
   }
 
   getLoadAdjustedCooldown(id, cooldown) {
