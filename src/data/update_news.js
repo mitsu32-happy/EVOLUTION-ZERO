@@ -1,5 +1,19 @@
 export const UPDATE_NEWS = [
   {
+    id: 'stage4-zero-v1-2026-06-21',
+    date: '2026/06/21',
+    category: '大型アップデート',
+    title: '第4ステージZEROを追加しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・第4ステージ「遺跡」にZEROルートを追加しました。',
+      '・新たなZEROボス、専用背景、警告演出を追加しました。',
+      '・遺跡ZEROクリアでスピノサウルスのZERO進化が解放されるようになりました。',
+      '・あわせてジャングル、火山、沼地、遺跡の各ステージ背景の品質改善を行いました。',
+    ],
+  },
+  {
     id: 'adaptation-effect-performance-v1-2026-06-20',
     date: '2026/06/20',
     category: '改善',
