@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'iphone-whiteout-emergency-pf01-2026-06-21',
+    date: '2026/06/21',
+    category: 'HOTFIX',
+    title: 'iPhone向けの緊急パフォーマンス対策を追加しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・ZERO終盤のボス戦など高密度状態で、端末保護用の緊急パフォーマンス制御を追加しました。',
+      '・高負荷時のみ演出、ダメージ表示、支援攻撃エフェクト、警告表示などを自動的に軽量化します。',
+      '・通常の序盤プレイや低負荷状態では、従来の表示と操作感を維持します。',
+    ],
+  },
+  {
     id: 'compsognathus-minipack-v1-2026-06-21',
     date: '2026/06/21',
     category: '大型アップデート',
