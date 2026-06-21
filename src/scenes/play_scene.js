@@ -79,11 +79,12 @@ const MINIPACK_ATTACK_INTERVAL = 1.6;
 const MINIPACK_DAMAGE_RATIO = 0.14;
 const MINIPACK_ATTACK_RANGE = 230;
 const MINIPACK_EFFECT_CAP = 2;
+const MINIPACK_ATTACK_APPROACH_WINDOW = 0.58;
 const MINIPACK_BASE_WIDTH = 42;
 const MINIPACK_BASE_HEIGHT = 34;
 const MINIPACK_OFFSETS = [
-  { x: -58, y: 34, phase: 0, side: -1 },
-  { x: 58, y: 46, phase: Math.PI, side: 1 },
+  { x: -108, y: 24, phase: 0, side: -1 },
+  { x: 72, y: 76, phase: Math.PI, side: 1 },
 ];
 const MINIPACK_DEBUG_VISUAL_OFFSETS = [
   { x: -116, y: 18, phase: 0, side: -1 },
@@ -1250,6 +1251,7 @@ export class PlayScene {
     const views = new Set([
       this.player?.view,
       this.companionView,
+      this.miniPackView,
       this.ultimateSystem?.overlay,
       this.hud?.view,
       this.gimmickWarningGraphics,
@@ -1262,6 +1264,7 @@ export class PlayScene {
     this.pickups.forEach((pickup) => views.add(pickup.view));
     this.pickupBursts.forEach((burst) => views.add(burst.view));
     this.pickupPopups.forEach((popup) => views.add(popup.view));
+    this.miniPackActors?.forEach((actor) => views.add(actor.view));
     this.companionEffects.forEach((effect) => views.add(effect.view));
     this.combatSystem?.effects?.forEach((effect) => views.add(effect.view));
     this.combatSystem?.projectiles?.forEach((projectile) => views.add(projectile.view));
@@ -3564,10 +3567,10 @@ export class PlayScene {
   }
 
   getMiniPackDisplaySize(sheet = {}) {
-    const scale = this.isMiniPackDebugVisualEnabled() ? 0.78 : 0.42;
+    const scale = this.isMiniPackDebugVisualEnabled() ? 0.78 : 0.72;
     return {
-      width: Math.max(this.isMiniPackDebugVisualEnabled() ? 76 : 28, (sheet.displayWidth ?? MINIPACK_BASE_WIDTH) * scale),
-      height: Math.max(this.isMiniPackDebugVisualEnabled() ? 58 : 24, (sheet.displayHeight ?? MINIPACK_BASE_HEIGHT) * scale),
+      width: Math.max(this.isMiniPackDebugVisualEnabled() ? 76 : 82, (sheet.displayWidth ?? MINIPACK_BASE_WIDTH) * scale),
+      height: Math.max(this.isMiniPackDebugVisualEnabled() ? 58 : 62, (sheet.displayHeight ?? MINIPACK_BASE_HEIGHT) * scale),
     };
   }
 
@@ -3579,6 +3582,7 @@ export class PlayScene {
       return;
     }
 
+    this.ensureMiniPackViewAttached();
     this.miniPackView.visible = true;
     this.miniPackView.alpha = 1;
     this.miniPackEffectCounter = 0;
@@ -3600,9 +3604,14 @@ export class PlayScene {
       const offset = this.getMiniPackOffset(index);
       const view = new Container();
       const shadow = new Graphics()
-        .ellipse(0, 8, 16, 5)
-        .fill({ color: 0x000000, alpha: 0.28 });
+        .ellipse(0, 18, 38, 10)
+        .fill({ color: 0x000000, alpha: 0.5 })
+        .ellipse(0, 11, 30, 7)
+        .fill({ color: 0x74e8ff, alpha: 0.14 })
+        .ellipse(0, 11, 30, 7)
+        .stroke({ color: 0xb9fbff, width: 1.2, alpha: 0.2 });
       const marker = new Graphics();
+      const rimSprite = new Sprite(Texture.EMPTY);
       const sprite = new Sprite(Texture.EMPTY);
       const label = new Text({
         text: `mini ${index === 0 ? 'A' : 'B'}`,
@@ -3616,13 +3625,17 @@ export class PlayScene {
         },
       });
 
+      rimSprite.anchor.set(0.5, 0.72);
+      rimSprite.visible = false;
+      rimSprite.alpha = 0.3;
+      rimSprite.tint = 0xb9fbff;
       sprite.anchor.set(0.5, 0.72);
       sprite.visible = false;
       label.anchor.set(0.5, 1);
       label.position.set(0, -54);
       label.visible = false;
       marker.visible = false;
-      view.addChild(shadow, marker, sprite, label);
+      view.addChild(shadow, rimSprite, marker, sprite, label);
       view.position.set(this.player.position.x + offset.x, this.player.position.y + offset.y);
       view.zIndex = this.player.position.y + offset.y + 0.7;
       this.miniPackView.addChild(view);
@@ -3631,6 +3644,7 @@ export class PlayScene {
         offset,
         view,
         shadow,
+        rimSprite,
         marker,
         sprite,
         label,
@@ -3641,7 +3655,7 @@ export class PlayScene {
         facing: offset.side,
         attackTimer: 0.42 + index * 0.48,
         actionTimer: 0,
-        actionDuration: 0.32,
+        actionDuration: 0.56,
         actionTarget: null,
         animationState: 'idle',
         animationFrame: 0,
@@ -3827,6 +3841,15 @@ export class PlayScene {
     actor.sprite.anchor?.set?.(0.5, 0.72);
     actor.sprite.width = this.miniPackDisplaySize.width;
     actor.sprite.height = this.miniPackDisplaySize.height;
+    if (actor.rimSprite && !actor.rimSprite.destroyed) {
+      actor.rimSprite.texture = texture;
+      actor.rimSprite.anchor?.set?.(0.5, 0.72);
+      actor.rimSprite.width = this.miniPackDisplaySize.width * 1.14;
+      actor.rimSprite.height = this.miniPackDisplaySize.height * 1.14;
+      actor.rimSprite.alpha = this.isMiniPackDebugVisualEnabled() ? 0 : 0.3;
+      actor.rimSprite.visible = !this.isMiniPackDebugVisualEnabled();
+      actor.rimSprite.tint = 0xb9fbff;
+    }
     return true;
   }
 
@@ -3872,6 +3895,31 @@ export class PlayScene {
     });
   }
 
+  ensureMiniPackViewAttached() {
+    if (!this.depthLayer) {
+      return false;
+    }
+
+    if (!this.miniPackView || this.miniPackView.destroyed || !this.miniPackView.position) {
+      this.miniPackView = new Container();
+      this.miniPackView.sortableChildren = true;
+      this.miniPackActors?.forEach((actor) => {
+        if (this.isMiniPackActorRuntimeValid(actor)) {
+          this.miniPackView.addChild(actor.view);
+        }
+      });
+    }
+
+    if (this.miniPackView.parent !== this.depthLayer) {
+      this.depthLayer.addChild(this.miniPackView);
+    }
+
+    this.miniPackView.visible = true;
+    this.miniPackView.renderable = true;
+    this.miniPackView.alpha = 1;
+    return true;
+  }
+
   isMiniPackActorRuntimeValid(actor) {
     return Boolean(
       actor
@@ -3895,6 +3943,10 @@ export class PlayScene {
     actor.marker.visible = enabled;
     actor.label.visible = enabled;
     actor.sprite.alpha = 1;
+    if (actor.rimSprite) {
+      actor.rimSprite.visible = !enabled && actor.sprite?.visible;
+      actor.rimSprite.alpha = enabled ? 0 : 0.3;
+    }
     actor.shadow.alpha = enabled ? 0.64 : 1;
     if (!enabled) {
       actor.marker.clear();
@@ -3953,6 +4005,10 @@ export class PlayScene {
       return;
     }
 
+    if (!this.ensureMiniPackViewAttached()) {
+      return;
+    }
+
     if (this.miniPackActors.some((actor) => !this.isMiniPackActorRuntimeValid(actor))) {
       this.cleanupMiniPack();
       this.setupMiniPack();
@@ -3970,16 +4026,30 @@ export class PlayScene {
     this.miniPackActors.forEach((actor) => {
       const offset = this.getMiniPackOffset(actor.index);
       actor.offset = offset;
-      const orbit = Math.sin(orbitTime * 2.6 + offset.phase) * (debugVisual ? 8 : 5);
-      const bob = Math.sin(orbitTime * 7.2 + offset.phase) * (debugVisual ? 5 : 3);
-      const targetX = this.player.position.x + offset.x + orbit * offset.side;
-      const targetY = this.player.position.y + offset.y + bob;
-      const blend = Math.min(1, 8.5 * delta);
+      const orbit = Math.sin(orbitTime * 1.8 + offset.phase) * (debugVisual ? 8 : 24);
+      const drift = Math.cos(orbitTime * 0.74 + offset.phase * 0.5) * (debugVisual ? 0 : 18);
+      const bob = Math.sin(orbitTime * 4.8 + offset.phase) * (debugVisual ? 5 : 12);
+      let targetX = this.player.position.x + offset.x + orbit * offset.side + drift;
+      let targetY = this.player.position.y + offset.y + bob;
+      let blend = Math.min(1, (debugVisual ? 8.5 : 5.8) * delta);
       const previousX = actor.position.x;
+
+      actor.actionTimer = Math.max(0, actor.actionTimer - delta);
+      if (actor.actionTimer <= 0) {
+        actor.actionTarget = null;
+      }
+
+      const approachTarget = actor.actionTarget
+        ?? (actor.attackTimer <= MINIPACK_ATTACK_APPROACH_WINDOW ? this.getMiniPackTarget() : null);
+      if (!debugVisual && approachTarget?.position && !approachTarget.isDead) {
+        const attackSide = actor.index === 0 ? -1 : 1;
+        targetX = approachTarget.position.x - attackSide * 34;
+        targetY = approachTarget.position.y + 18 + actor.index * 8;
+        blend = Math.min(1, 11.5 * delta);
+      }
 
       actor.position.x += (targetX - actor.position.x) * blend;
       actor.position.y += (targetY - actor.position.y) * blend;
-      actor.actionTimer = Math.max(0, actor.actionTimer - delta);
 
       const actionProgress = actor.actionTimer > 0
         ? Math.sin((1 - actor.actionTimer / Math.max(0.001, actor.actionDuration)) * Math.PI)
@@ -4000,6 +4070,10 @@ export class PlayScene {
       actor.view.zIndex = actor.position.y + (debugVisual ? 22 : 0.8);
       actor.sprite.scale.x = Math.abs(actor.sprite.scale.x || 1) * actor.facing;
       actor.sprite.rotation = Math.sin(orbitTime * 6 + offset.phase) * 0.06 + actor.facing * actionProgress * 0.06;
+      if (actor.rimSprite) {
+        actor.rimSprite.scale.x = Math.abs(actor.rimSprite.scale.x || 1) * actor.facing;
+        actor.rimSprite.rotation = actor.sprite.rotation;
+      }
       this.updateMiniPackDebugVisual(actor);
       const state = actionProgress > 0.18
         ? 'action'
