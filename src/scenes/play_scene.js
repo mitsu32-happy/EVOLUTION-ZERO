@@ -902,6 +902,19 @@ export class PlayScene {
     });
     this.miniPackDebugText.position.set(12, 156);
     this.miniPackDebugText.visible = false;
+    this.miniPackVisualDebugBanner = new Text({
+      text: 'MINIPACK VISUAL DEBUG ON',
+      style: {
+        fill: '#ffffff',
+        fontFamily: 'Oxanium, Zen Kaku Gothic New, Noto Sans JP, sans-serif',
+        fontSize: 16,
+        fontWeight: '900',
+        letterSpacing: 0,
+        stroke: { color: '#ff3848', width: 5 },
+      },
+    });
+    this.miniPackVisualDebugBanner.position.set(12, 12);
+    this.miniPackVisualDebugBanner.visible = false;
     this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
     this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
     this.lastTileKey = '';
@@ -959,6 +972,7 @@ export class PlayScene {
     this.createAdaptationSynergyHud();
     this.createPerformanceDebugOverlay();
     this.uiLayer.addChild(this.miniPackDebugText);
+    this.uiLayer.addChild(this.miniPackVisualDebugBanner);
     this.bindPerformanceDiagnostics();
     this.bindInput();
     this.updateCamera(1);
@@ -1000,6 +1014,7 @@ export class PlayScene {
     this.updateAdaptationSynergyNotice(delta);
     this.updateBossClearSequence(delta);
     this.updateZeroPhaseNotice(delta);
+    this.updateMiniPackVisualDebugBanner();
     this.ensureRunBgm();
 
     if (this.bossClearSequence) {
@@ -4010,6 +4025,22 @@ export class PlayScene {
       `miniPack.active=${this.miniPackDebugStats?.active ? 1 : 0}`,
       `miniPack.count=${this.miniPackDebugStats?.count ?? 0}`,
     ].join('\n');
+  }
+
+  updateMiniPackVisualDebugBanner() {
+    if (!this.miniPackVisualDebugBanner) {
+      return;
+    }
+
+    const visible = this.isMiniPackDebugVisualEnabled();
+    this.miniPackVisualDebugBanner.visible = visible;
+    if (!visible) {
+      return;
+    }
+
+    this.miniPackVisualDebugBanner.text = 'MINIPACK VISUAL DEBUG ON';
+    this.miniPackVisualDebugBanner.alpha = 1;
+    this.miniPackVisualDebugBanner.zIndex = 9999;
   }
 
   setupCompanion() {
