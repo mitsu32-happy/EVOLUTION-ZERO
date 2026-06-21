@@ -80,6 +80,16 @@ const MINIPACK_DAMAGE_RATIO = 0.14;
 const MINIPACK_ATTACK_RANGE = 230;
 const MINIPACK_EFFECT_CAP = 2;
 const MINIPACK_ATTACK_APPROACH_WINDOW = 0.58;
+const MINIPACK_WANDER_MAX_SPEED = 210;
+const MINIPACK_APPROACH_MAX_SPEED = 320;
+const MINIPACK_RETURN_MAX_SPEED = 360;
+const MINIPACK_WANDER_ACCELERATION = 680;
+const MINIPACK_APPROACH_ACCELERATION = 920;
+const MINIPACK_RETURN_ACCELERATION = 1180;
+const MINIPACK_WANDER_SLOW_RADIUS = 86;
+const MINIPACK_APPROACH_SLOW_RADIUS = 74;
+const MINIPACK_RETURN_SLOW_RADIUS = 150;
+const MINIPACK_LEASH_RADIUS = 260;
 const MINIPACK_BASE_WIDTH = 42;
 const MINIPACK_BASE_HEIGHT = 34;
 const MINIPACK_OFFSETS = [
@@ -3652,6 +3662,7 @@ export class PlayScene {
           x: this.player.position.x + offset.x,
           y: this.player.position.y + offset.y,
         },
+        velocity: { x: 0, y: 0 },
         facing: offset.side,
         attackTimer: 0.42 + index * 0.48,
         actionTimer: 0,
@@ -4031,8 +4042,11 @@ export class PlayScene {
       const bob = Math.sin(orbitTime * 4.8 + offset.phase) * (debugVisual ? 5 : 12);
       let targetX = this.player.position.x + offset.x + orbit * offset.side + drift;
       let targetY = this.player.position.y + offset.y + bob;
-      let blend = Math.min(1, (debugVisual ? 8.5 : 5.8) * delta);
+      let maxSpeed = debugVisual ? MINIPACK_WANDER_MAX_SPEED * 0.7 : MINIPACK_WANDER_MAX_SPEED;
+      let acceleration = debugVisual ? MINIPACK_WANDER_ACCELERATION * 0.7 : MINIPACK_WANDER_ACCELERATION;
+      let slowRadius = MINIPACK_WANDER_SLOW_RADIUS;
       const previousX = actor.position.x;
+      actor.velocity ??= { x: 0, y: 0 };
 
       actor.actionTimer = Math.max(0, actor.actionTimer - delta);
       if (actor.actionTimer <= 0) {
@@ -4041,15 +4055,53 @@ export class PlayScene {
 
       const approachTarget = actor.actionTarget
         ?? (actor.attackTimer <= MINIPACK_ATTACK_APPROACH_WINDOW ? this.getMiniPackTarget() : null);
+      const playerDistance = Math.hypot(
+        actor.position.x - this.player.position.x,
+        actor.position.y - this.player.position.y,
+      );
       if (!debugVisual && approachTarget?.position && !approachTarget.isDead) {
         const attackSide = actor.index === 0 ? -1 : 1;
         targetX = approachTarget.position.x - attackSide * 34;
         targetY = approachTarget.position.y + 18 + actor.index * 8;
-        blend = Math.min(1, 11.5 * delta);
+        maxSpeed = MINIPACK_APPROACH_MAX_SPEED;
+        acceleration = MINIPACK_APPROACH_ACCELERATION;
+        slowRadius = MINIPACK_APPROACH_SLOW_RADIUS;
+      } else if (!debugVisual && playerDistance > MINIPACK_LEASH_RADIUS) {
+        targetX = this.player.position.x + offset.x;
+        targetY = this.player.position.y + offset.y;
+        maxSpeed = MINIPACK_RETURN_MAX_SPEED;
+        acceleration = MINIPACK_RETURN_ACCELERATION;
+        slowRadius = MINIPACK_RETURN_SLOW_RADIUS;
       }
 
-      actor.position.x += (targetX - actor.position.x) * blend;
-      actor.position.y += (targetY - actor.position.y) * blend;
+      const targetDx = targetX - actor.position.x;
+      const targetDy = targetY - actor.position.y;
+      const targetDistance = Math.hypot(targetDx, targetDy);
+      const desiredSpeed = targetDistance > 0
+        ? Math.min(maxSpeed, maxSpeed * (targetDistance / Math.max(1, slowRadius)))
+        : 0;
+      const desiredVx = targetDistance > 1 ? (targetDx / targetDistance) * desiredSpeed : 0;
+      const desiredVy = targetDistance > 1 ? (targetDy / targetDistance) * desiredSpeed : 0;
+      const steeringX = desiredVx - actor.velocity.x;
+      const steeringY = desiredVy - actor.velocity.y;
+      const steeringLength = Math.hypot(steeringX, steeringY);
+      const maxSteering = acceleration * delta;
+      if (steeringLength > maxSteering && steeringLength > 0) {
+        actor.velocity.x += (steeringX / steeringLength) * maxSteering;
+        actor.velocity.y += (steeringY / steeringLength) * maxSteering;
+      } else {
+        actor.velocity.x += steeringX;
+        actor.velocity.y += steeringY;
+      }
+
+      const velocityLength = Math.hypot(actor.velocity.x, actor.velocity.y);
+      if (velocityLength > maxSpeed && velocityLength > 0) {
+        actor.velocity.x = (actor.velocity.x / velocityLength) * maxSpeed;
+        actor.velocity.y = (actor.velocity.y / velocityLength) * maxSpeed;
+      }
+
+      actor.position.x += actor.velocity.x * delta;
+      actor.position.y += actor.velocity.y * delta;
 
       const actionProgress = actor.actionTimer > 0
         ? Math.sin((1 - actor.actionTimer / Math.max(0.001, actor.actionDuration)) * Math.PI)
