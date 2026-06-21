@@ -884,6 +884,20 @@ export class PlayScene {
         stroke: { color: '#02070b', width: 2 },
       },
     });
+    this.miniPackDebugText = new Text({
+      text: '',
+      style: {
+        fill: '#e7fff6',
+        fontFamily: 'Oxanium, Zen Kaku Gothic New, Noto Sans JP, sans-serif',
+        fontSize: 10,
+        fontWeight: '700',
+        letterSpacing: 0,
+        lineHeight: 13,
+        stroke: { color: '#02070b', width: 2 },
+      },
+    });
+    this.miniPackDebugText.position.set(12, 156);
+    this.miniPackDebugText.visible = false;
     this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
     this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
     this.lastTileKey = '';
@@ -940,6 +954,7 @@ export class PlayScene {
     this.createGamepadNotice();
     this.createAdaptationSynergyHud();
     this.createPerformanceDebugOverlay();
+    this.uiLayer.addChild(this.miniPackDebugText);
     this.bindPerformanceDiagnostics();
     this.bindInput();
     this.updateCamera(1);
@@ -3550,7 +3565,9 @@ export class PlayScene {
     }
 
     this.refreshMiniPackTexture(true);
+    this.miniPackView.zIndex = this.player.position.y + 0.9;
     this.updateMiniPackDebugStats();
+    this.updateMiniPackDebugText();
   }
 
   cleanupMiniPack() {
@@ -3575,6 +3592,7 @@ export class PlayScene {
       lastScanSize: 0,
     };
     this.updateMiniPackDebugStats();
+    this.updateMiniPackDebugText();
   }
 
   getMiniPackSheetKey() {
@@ -3604,6 +3622,10 @@ export class PlayScene {
       return;
     }
 
+    if (this.applyMiniPackTextureFromPlayerSheet(sheetKey, force)) {
+      return;
+    }
+
     this.miniPackTextureKey = sheetKey;
     this.assetLoader?.load?.(sheetKey).then((texture) => {
       if (!texture || this.miniPackTextureKey !== sheetKey || !this.miniPackActors?.length) {
@@ -3629,6 +3651,38 @@ export class PlayScene {
         }
       });
     });
+  }
+
+  applyMiniPackTextureFromPlayerSheet(sheetKey, force = false) {
+    const playerAnimations = this.player?.sheetAnimations ?? {};
+    if (
+      this.player?.sheetKey !== sheetKey
+      || !playerAnimations.idle?.textures?.length
+    ) {
+      return false;
+    }
+
+    if (!force && this.miniPackTextureKey === sheetKey && this.miniPackAnimationTextures) {
+      return true;
+    }
+
+    this.miniPackTextureKey = sheetKey;
+    this.miniPackAnimationTextures = {
+      idle: playerAnimations.idle,
+      move: playerAnimations.run ?? playerAnimations.move ?? playerAnimations.idle,
+      action: playerAnimations.attack ?? playerAnimations.action ?? playerAnimations.idle,
+    };
+    const display = this.player?.sheetMeta?.sheet ?? {};
+    this.miniPackDisplaySize = {
+      width: Math.max(28, (display.displayWidth ?? MINIPACK_BASE_WIDTH) * 0.42),
+      height: Math.max(24, (display.displayHeight ?? MINIPACK_BASE_HEIGHT) * 0.42),
+    };
+    const firstTexture = this.miniPackAnimationTextures.idle.textures[0];
+    this.miniPackActors.forEach((actor) => {
+      this.applyMiniPackSpriteTexture(actor, firstTexture);
+      actor.sprite.visible = true;
+    });
+    return true;
   }
 
   createMiniPackAnimationTextures(texture, meta = {}) {
@@ -3737,6 +3791,7 @@ export class PlayScene {
     this.refreshMiniPackTexture();
     this.miniPackEffectCounter = Math.max(0, (this.miniPackEffectCounter ?? 0) - delta * 2.8);
     this.miniPackTargetCache.refreshTimer = Math.max(0, (this.miniPackTargetCache.refreshTimer ?? 0) - delta);
+    this.miniPackView.zIndex = this.player.position.y + 0.9;
     const orbitTime = this.gameState?.elapsedTime ?? 0;
     this.miniPackActors.forEach((actor) => {
       const offset = actor.offset ?? MINIPACK_OFFSETS[actor.index] ?? MINIPACK_OFFSETS[0];
@@ -3780,6 +3835,7 @@ export class PlayScene {
 
     this.updateMiniPackAttack(delta);
     this.updateMiniPackDebugStats();
+    this.updateMiniPackDebugText();
   }
 
   getMiniPackTarget() {
@@ -3858,6 +3914,33 @@ export class PlayScene {
       hits: this.miniPackDebugStats?.hits ?? 0,
       effects: this.miniPackDebugStats?.effects ?? 0,
     };
+  }
+
+  shouldShowMiniPackDebugText() {
+    return getDebugFlag('debugMiniPackInfo')
+      || getDebugFlag('debugCompsognathusMiniPack')
+      || this.gameState?.selectedDino === 'compsognathus'
+      || this.gameState?.selectedEvolution?.dinoId === 'compsognathus';
+  }
+
+  updateMiniPackDebugText() {
+    if (!this.miniPackDebugText) {
+      return;
+    }
+
+    const visible = this.shouldShowMiniPackDebugText();
+    this.miniPackDebugText.visible = visible;
+    if (!visible) {
+      return;
+    }
+
+    this.miniPackDebugText.text = [
+      `miniPack selectedDino=${this.gameState?.selectedDino ?? '-'}`,
+      `selectedEvolution.dinoId=${this.gameState?.selectedEvolution?.dinoId ?? '-'}`,
+      `miniPackEnabled=${this.isCompsognathusMiniPackEnabled() ? 1 : 0}`,
+      `miniPack.active=${this.miniPackDebugStats?.active ? 1 : 0}`,
+      `miniPack.count=${this.miniPackDebugStats?.count ?? 0}`,
+    ].join('\n');
   }
 
   setupCompanion() {
