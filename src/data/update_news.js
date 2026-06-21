@@ -1,5 +1,19 @@
 export const UPDATE_NEWS = [
   {
+    id: 'whiteout-render-culling-v1-2026-06-21',
+    date: '2026/06/21',
+    category: 'HOTFIX',
+    title: 'iPhone向けの描画負荷対策を強化しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・敵のリング/カーソル描画を整理し、高密度状態での点滅と描画負荷を抑えました。',
+      '・画面内の敵が距離だけで突然消えにくくなるよう、敵描画の間引き方式を改善しました。',
+      '・品質プリセットの基盤を追加し、端末状況に応じた描画制御をしやすくしました。',
+      '・敵描画数、リング/カーソル、緊急パフォーマンス状態などの監視情報を強化しました。',
+    ],
+  },
+  {
     id: 'iphone-whiteout-emergency-pf01-2026-06-21',
     date: '2026/06/21',
     category: 'HOTFIX',
