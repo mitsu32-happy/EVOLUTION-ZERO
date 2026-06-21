@@ -921,6 +921,7 @@ export class PlayScene {
     this.miniPackScreenDebugActors = [];
     for (let index = 0; index < MINIPACK_ACTOR_COUNT; index += 1) {
       const view = new Container();
+      const backing = new Graphics();
       const marker = new Graphics();
       const sprite = new Sprite(Texture.EMPTY);
       const label = new Text({
@@ -936,10 +937,10 @@ export class PlayScene {
       });
       sprite.anchor.set(0.5, 0.72);
       label.anchor.set(0.5, 1);
-      label.position.set(0, -70);
-      view.addChild(marker, sprite, label);
+      label.position.set(0, -96);
+      view.addChild(backing, marker, sprite, label);
       this.miniPackScreenDebugView.addChild(view);
-      this.miniPackScreenDebugActors.push({ view, marker, sprite, label });
+      this.miniPackScreenDebugActors.push({ view, backing, marker, sprite, label });
     }
     this.handleGamepadConnected = (event) => this.handleGamepadConnection(event?.gamepad, true);
     this.handleGamepadDisconnected = (event) => this.handleGamepadConnection(event?.gamepad, false);
@@ -4052,8 +4053,23 @@ export class PlayScene {
       `miniPackEnabled=${this.isCompsognathusMiniPackEnabled() ? 1 : 0}`,
       `miniPack.active=${this.miniPackDebugStats?.active ? 1 : 0}`,
       `miniPack.count=${this.miniPackDebugStats?.count ?? 0}`,
+      ...this.getMiniPackPlayerDebugLines(),
       ...this.getMiniPackActorDebugLines(),
+      ...this.getMiniPackScreenDebugLines(),
     ].join('\n');
+  }
+
+  getMiniPackPlayerDebugLines() {
+    if (!this.isMiniPackDebugVisualEnabled()) {
+      return [];
+    }
+
+    const global = this.player?.view?.getGlobalPosition?.();
+    return [
+      `player world=${Math.round(this.player?.position?.x ?? 0)},${Math.round(this.player?.position?.y ?? 0)} global=${Math.round(global?.x ?? 0)},${Math.round(global?.y ?? 0)}`,
+      `camera=${Math.round(this.camera?.x ?? 0)},${Math.round(this.camera?.y ?? 0)} viewportCenter=${Math.round((this.camera?.x ?? 0) + (this.camera?.visibleWidth ?? 0) / 2)},${Math.round((this.camera?.y ?? 0) + (this.camera?.visibleHeight ?? 0) / 2)}`,
+      `player vis=${this.player?.view?.visible !== false ? 1 : 0} rend=${this.player?.view?.renderable !== false ? 1 : 0} alpha=${Number(this.player?.view?.alpha ?? 0).toFixed(2)} tex=${this.player?.assetSprite?.texture ? 1 : 0}`,
+    ];
   }
 
   getMiniPackActorDebugLines() {
@@ -4077,6 +4093,17 @@ export class PlayScene {
         `actor${actor.index} tex=${actor.sprite?.texture ? 1 : 0} marker=${actor.marker?.visible ? 1 : 0} label=${actor.label?.visible ? 1 : 0}`,
       ];
     });
+  }
+
+  getMiniPackScreenDebugLines() {
+    if (!this.isMiniPackDebugVisualEnabled()) {
+      return [];
+    }
+
+    return (this.miniPackScreenDebugActors ?? []).flatMap((actor, index) => [
+      `ui${index} xy=${Math.round(actor.view?.x ?? 0)},${Math.round(actor.view?.y ?? 0)} vis=${actor.view?.visible ? 1 : 0} rend=${actor.view?.renderable !== false ? 1 : 0} alpha=${Number(actor.view?.alpha ?? 0).toFixed(2)} z=${Number(actor.view?.zIndex ?? 0).toFixed(1)}`,
+      `ui${index} tex=${actor.sprite?.texture ? 1 : 0} wh=${Math.round(actor.sprite?.width ?? 0)}x${Math.round(actor.sprite?.height ?? 0)} spriteVis=${actor.sprite?.visible ? 1 : 0} spriteRend=${actor.sprite?.renderable !== false ? 1 : 0} spriteAlpha=${Number(actor.sprite?.alpha ?? 0).toFixed(2)}`,
+    ]);
   }
 
   updateMiniPackVisualDebugBanner() {
@@ -4111,7 +4138,7 @@ export class PlayScene {
     }
 
     const centerX = this.width / 2;
-    const baseY = Math.min(this.height - 96, this.height / 2 + 120);
+    const baseY = Math.min(this.height / 2 + 42, this.height - 292);
     this.miniPackScreenDebugActors.forEach((debugActor, index) => {
       const source = this.miniPackActors[index];
       const x = centerX + (index === 0 ? -90 : 90);
@@ -4123,19 +4150,25 @@ export class PlayScene {
       debugActor.view.zIndex = 10000 + index;
       debugActor.sprite.texture = source?.sprite?.texture ?? Texture.EMPTY;
       debugActor.sprite.visible = Boolean(source?.sprite?.texture);
+      debugActor.sprite.renderable = true;
       debugActor.sprite.alpha = 1;
-      debugActor.sprite.width = 96;
-      debugActor.sprite.height = 76;
+      debugActor.sprite.width = 136;
+      debugActor.sprite.height = 108;
       debugActor.sprite.scale.x = Math.abs(debugActor.sprite.scale.x || 1) * (index === 0 ? -1 : 1);
       debugActor.label.text = `UI mini ${index === 0 ? 'A' : 'B'}`;
       debugActor.label.visible = true;
       debugActor.marker.visible = true;
+      debugActor.backing
+        .clear()
+        .roundRect(-82, -118, 164, 126, 12)
+        .fill({ color: 0xffffff, alpha: 0.18 })
+        .stroke({ color: 0xffffff, width: 3, alpha: 0.82 });
       debugActor.marker
         .clear()
-        .circle(0, -18, 46)
-        .fill({ color: 0xff0000, alpha: 0.18 })
+        .circle(0, -42, 64)
+        .fill({ color: 0xff0000, alpha: 0.1 })
         .stroke({ color: 0xff0000, width: 5, alpha: 0.95 })
-        .circle(0, -18, 9)
+        .circle(0, -42, 9)
         .fill({ color: 0xffffff, alpha: 0.95 });
     });
     this.updateMiniPackDebugText();
