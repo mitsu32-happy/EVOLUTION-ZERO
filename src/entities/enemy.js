@@ -316,6 +316,7 @@ export class Enemy {
     this.didDropExp = false;
     this.hitFlashTime = 0;
     this.hitImpact = 0;
+    this.lastDamagedAt = 0;
     this.deathTime = 0;
     this.statusEffects = {};
     this.walkTime = Math.random() * Math.PI * 2;
@@ -575,6 +576,7 @@ export class Enemy {
     this.hp = Math.max(0, this.hp - appliedAmount);
     this.hitFlashTime = impact?.strength > 30 ? 0.18 : 0.13;
     this.hitImpact = Math.min(1, Math.max(this.hitImpact, appliedAmount / 32));
+    this.lastDamagedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
 
     if (impact?.strength > 0) {
       const dx = this.position.x - impact.from.x;
@@ -598,6 +600,14 @@ export class Enemy {
     }
 
     return true;
+  }
+
+  setSupplementalVisualsVisible(visible) {
+    const nextVisible = visible !== false;
+
+    this.marker.visible = nextVisible;
+    this.typeLabel.visible = nextVisible && this.displayLabel.length > 0;
+    this.typeLabelBg.visible = nextVisible && this.displayLabel.length > 0;
   }
 
   applyStatus(type, duration = 2.4, power = 1) {
