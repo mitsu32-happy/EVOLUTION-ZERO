@@ -41,3 +41,13 @@ PF04b keeps this as a known deferred item. The performance branch now has enemy 
 ## PF05 proposal
 
 Implement a visual prototype behind `debugCompsognathusMiniPack=1`, profile target scans/effects, then decide whether to ship it as a real Compsognathus trait.
+
+## PF05 debug prototype notes
+
+- Implement in `src/scenes/play_scene.js` only as PlayScene-local temporary combat actors.
+- Enable only when `debugCompsognathusMiniPack=1` and the selected dino or selected evolution dinoId is `compsognathus`.
+- Keep the actors out of companion roster, companion synergy, save data, and asset manifest.
+- Use the active Compsognathus player/evolution sheet at reduced size; refresh the miniPack texture after `player.setSheetKey` during evolution.
+- Use one shared target cache at a 0.45 second refresh interval and actor-local 1.6 second attack timers.
+- Apply low direct damage without companion synergy, adaptation, boss bonus, or critical handling.
+- Expose debug stats as `miniPack.active`, `miniPack.count`, `miniPack.scans`, `miniPack.hits`, and `miniPack.effects` in runtime debug stats.

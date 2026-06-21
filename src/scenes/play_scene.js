@@ -73,6 +73,18 @@ const COMPANION_DEFAULT_ARRIVAL_RADIUS = 24;
 const COMPANION_DEFAULT_SLOW_RADIUS = 96;
 const COMPANION_TARGET_REFRESH_INTERVAL = 0.18;
 const COMPANION_PICKUP_TARGET_REFRESH_INTERVAL = 0.28;
+const MINIPACK_ACTOR_COUNT = 2;
+const MINIPACK_TARGET_REFRESH_INTERVAL = 0.45;
+const MINIPACK_ATTACK_INTERVAL = 1.6;
+const MINIPACK_DAMAGE_RATIO = 0.14;
+const MINIPACK_ATTACK_RANGE = 230;
+const MINIPACK_EFFECT_CAP = 2;
+const MINIPACK_BASE_WIDTH = 42;
+const MINIPACK_BASE_HEIGHT = 34;
+const MINIPACK_OFFSETS = [
+  { x: -58, y: 34, phase: 0, side: -1 },
+  { x: 58, y: 46, phase: Math.PI, side: 1 },
+];
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -711,6 +723,26 @@ export class PlayScene {
     this.companionEffectTextureCache = new Map();
     this.companionEffectAnimationCache = new Map();
     this.companionPickupEffectTimer = 0;
+    this.miniPackActors = [];
+    this.miniPackView = new Container();
+    this.miniPackView.sortableChildren = true;
+    this.miniPackTextureKey = null;
+    this.miniPackAnimationTextures = null;
+    this.miniPackDisplaySize = { width: MINIPACK_BASE_WIDTH, height: MINIPACK_BASE_HEIGHT };
+    this.miniPackTargetCache = {
+      target: null,
+      refreshTimer: 0,
+      scans: 0,
+      lastScanSize: 0,
+    };
+    this.miniPackEffectCounter = 0;
+    this.miniPackDebugStats = {
+      active: false,
+      count: 0,
+      scans: 0,
+      hits: 0,
+      effects: 0,
+    };
     this.companionTargetCache = {
       type: null,
       target: null,
@@ -891,6 +923,8 @@ export class PlayScene {
     this.pickups.forEach((pickup) => this.depthLayer.addChild(pickup.view));
     this.setupCompanion();
     this.depthLayer.addChild(this.companionView);
+    this.setupMiniPack();
+    this.depthLayer.addChild(this.miniPackView);
     this.depthLayer.addChild(this.player.view);
 
     this.uiLayer.addChild(this.ultimateSystem.overlay);
@@ -995,6 +1029,7 @@ export class PlayScene {
       this.applyPlayerStatusMovement();
       this.player.clampToBounds(STAGE_BOUNDS);
       this.updateCompanion(delta);
+      this.updateMiniPack(delta);
       this.applyStageGimmicks(delta);
       this.updateDebugStressKillState();
       this.updatePickups(delta);
@@ -1028,6 +1063,7 @@ export class PlayScene {
       this.player.setMoveInput({ x: 0, y: 0, power: 0 });
       if (this.gameState.isGameOver) {
         this.player.playAction('death');
+        this.cleanupMiniPack();
       }
       this.player.updateVisuals(delta);
       this.input.x = 0;
@@ -1636,6 +1672,13 @@ export class PlayScene {
         effectSpawns: this.companionPerfStats?.effectSpawns ?? 0,
         effectSuppressed: this.companionPerfStats?.effectSuppressed ?? 0,
       },
+      miniPack: {
+        active: Boolean(this.miniPackDebugStats?.active),
+        count: this.miniPackDebugStats?.count ?? 0,
+        scans: this.miniPackDebugStats?.scans ?? 0,
+        hits: this.miniPackDebugStats?.hits ?? 0,
+        effects: this.miniPackDebugStats?.effects ?? 0,
+      },
       pools: {
         damageTextFree: combatStats.damageNumberPoolFree ?? 0,
         graphicsFree: combatStats.graphicsPoolFree ?? 0,
@@ -1685,6 +1728,7 @@ export class PlayScene {
         `children=${snapshot.containerChildrenTotal}`,
         `compFx=${snapshot.companion?.effects ?? 0}`,
         `compScan=${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
+        `mini=${snapshot.miniPack?.active ? snapshot.miniPack.count : 0}/${snapshot.miniPack?.scans ?? 0}`,
         `shed=${snapshot.loadSheddingLevel}`,
         `stress=${snapshot.debugStressKillEnabled ? 1 : 0}`,
         `ctx=${snapshot.diagnostics?.contextLost ?? 0}`,
@@ -1804,6 +1848,7 @@ export class PlayScene {
       enemyVisualBudget: snapshot.enemyVisualBudget,
       compFx: snapshot.companion?.effects ?? 0,
       compScan: `${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
+      miniPack: snapshot.miniPack ?? null,
       renderer: {
         canvasWidth: this.canvas?.width ?? null,
         canvasHeight: this.canvas?.height ?? null,
@@ -1954,6 +1999,13 @@ export class PlayScene {
         lastPickupScanSize: this.companionPerfStats?.lastPickupScanSize ?? 0,
         effectSpawns: this.companionPerfStats?.effectSpawns ?? 0,
         effectSuppressed: this.companionPerfStats?.effectSuppressed ?? 0,
+      },
+      miniPack: {
+        active: Boolean(this.miniPackDebugStats?.active),
+        count: this.miniPackDebugStats?.count ?? 0,
+        scans: this.miniPackDebugStats?.scans ?? 0,
+        hits: this.miniPackDebugStats?.hits ?? 0,
+        effects: this.miniPackDebugStats?.effects ?? 0,
       },
       pickups: this.pickups.length,
       effectChildren: this.effectLayer.children.length,
@@ -3429,6 +3481,387 @@ export class PlayScene {
 
     this.screenShakeTimer = 0.16;
     this.screenShakeIntensity = Math.max(this.screenShakeIntensity, intensity);
+  }
+
+  isCompsognathusMiniPackEnabled() {
+    if (typeof window === 'undefined' || !getDebugFlag('debugCompsognathusMiniPack')) {
+      return false;
+    }
+
+    const selectedEvolutionDinoId = this.gameState?.selectedEvolution?.dinoId ?? null;
+    const selectedDino = this.gameState?.selectedDino ?? null;
+    return selectedEvolutionDinoId === 'compsognathus' || (!selectedEvolutionDinoId && selectedDino === 'compsognathus');
+  }
+
+  setupMiniPack() {
+    this.cleanupMiniPack();
+
+    if (!this.isCompsognathusMiniPackEnabled()) {
+      this.updateMiniPackDebugStats();
+      return;
+    }
+
+    this.miniPackView.visible = true;
+    this.miniPackView.alpha = 1;
+    this.miniPackEffectCounter = 0;
+    this.miniPackDebugStats = {
+      active: false,
+      count: 0,
+      scans: 0,
+      hits: 0,
+      effects: 0,
+    };
+    this.miniPackTargetCache = {
+      target: null,
+      refreshTimer: 0,
+      scans: 0,
+      lastScanSize: 0,
+    };
+
+    for (let index = 0; index < MINIPACK_ACTOR_COUNT; index += 1) {
+      const offset = MINIPACK_OFFSETS[index] ?? MINIPACK_OFFSETS[0];
+      const view = new Container();
+      const shadow = new Graphics()
+        .ellipse(0, 8, 16, 5)
+        .fill({ color: 0x000000, alpha: 0.28 });
+      const sprite = new Sprite(Texture.EMPTY);
+
+      sprite.anchor.set(0.5, 0.72);
+      sprite.visible = false;
+      view.addChild(shadow, sprite);
+      view.position.set(this.player.position.x + offset.x, this.player.position.y + offset.y);
+      view.zIndex = this.player.position.y + offset.y + 0.7;
+      this.miniPackView.addChild(view);
+      this.miniPackActors.push({
+        index,
+        offset,
+        view,
+        shadow,
+        sprite,
+        position: {
+          x: this.player.position.x + offset.x,
+          y: this.player.position.y + offset.y,
+        },
+        facing: offset.side,
+        attackTimer: 0.42 + index * 0.48,
+        actionTimer: 0,
+        actionDuration: 0.32,
+        actionTarget: null,
+        animationState: 'idle',
+        animationFrame: 0,
+        animationTimer: 0,
+      });
+    }
+
+    this.refreshMiniPackTexture(true);
+    this.updateMiniPackDebugStats();
+  }
+
+  cleanupMiniPack() {
+    if (this.miniPackActors?.length) {
+      this.miniPackActors.forEach((actor) => {
+        actor.view?.parent?.removeChild(actor.view);
+        actor.view?.destroy?.({ children: true });
+      });
+    }
+
+    this.miniPackActors = [];
+    this.miniPackView?.removeChildren?.();
+    if (this.miniPackView) {
+      this.miniPackView.visible = false;
+    }
+    this.miniPackTextureKey = null;
+    this.miniPackAnimationTextures = null;
+    this.miniPackTargetCache = {
+      target: null,
+      refreshTimer: 0,
+      scans: 0,
+      lastScanSize: 0,
+    };
+    this.updateMiniPackDebugStats();
+  }
+
+  getMiniPackSheetKey() {
+    const selectedEvolution = this.gameState?.selectedEvolution;
+    if (selectedEvolution?.dinoId === 'compsognathus') {
+      return this.getEvolutionSheetKey(selectedEvolution);
+    }
+
+    if (this.gameState?.selectedDino === 'compsognathus') {
+      return this.getPlayerSheetKey();
+    }
+
+    return null;
+  }
+
+  refreshMiniPackTexture(force = false) {
+    if (!this.miniPackActors?.length) {
+      return;
+    }
+
+    const sheetKey = this.getMiniPackSheetKey();
+    if (!sheetKey) {
+      return;
+    }
+
+    if (!force && this.miniPackTextureKey === sheetKey && this.miniPackAnimationTextures) {
+      return;
+    }
+
+    this.miniPackTextureKey = sheetKey;
+    this.assetLoader?.load?.(sheetKey).then((texture) => {
+      if (!texture || this.miniPackTextureKey !== sheetKey || !this.miniPackActors?.length) {
+        return;
+      }
+
+      const item = this.assetLoader?.getItem?.(sheetKey);
+      this.miniPackAnimationTextures = this.createMiniPackAnimationTextures(texture, item?.meta);
+      const display = item?.meta?.sheet ?? {};
+      this.miniPackDisplaySize = {
+        width: Math.max(28, (display.displayWidth ?? MINIPACK_BASE_WIDTH) * 0.42),
+        height: Math.max(24, (display.displayHeight ?? MINIPACK_BASE_HEIGHT) * 0.42),
+      };
+      const firstTexture = this.miniPackAnimationTextures?.idle?.textures?.[0] ?? texture;
+      this.miniPackActors.forEach((actor) => {
+        this.applyMiniPackSpriteTexture(actor, firstTexture);
+        actor.sprite.visible = true;
+      });
+    }).catch(() => {
+      this.miniPackActors.forEach((actor) => {
+        if (actor.sprite) {
+          actor.sprite.visible = false;
+        }
+      });
+    });
+  }
+
+  createMiniPackAnimationTextures(texture, meta = {}) {
+    const sheet = meta?.sheet;
+    const columns = sheet?.columns ?? 0;
+    const rows = sheet?.rows ?? 0;
+    const frameWidth = sheet?.frameWidth ?? 0;
+    const frameHeight = sheet?.frameHeight ?? 0;
+    const textureWidth = texture?.width ?? texture?.source?.width ?? 0;
+    const textureHeight = texture?.height ?? texture?.source?.height ?? 0;
+    const canAnimate = meta?.spriteSheet === true
+      && columns > 0
+      && rows > 0
+      && frameWidth > 0
+      && frameHeight > 0
+      && texture?.source
+      && textureWidth >= columns * frameWidth
+      && textureHeight >= rows * frameHeight;
+
+    if (!canAnimate) {
+      return null;
+    }
+
+    const makeFrames = (animationName, fallbackRow) => {
+      const animation = meta.animations?.[animationName] ?? {};
+      const row = Math.max(0, Math.min(rows - 1, animation.row ?? fallbackRow));
+      const frameIndexes = Array.isArray(animation.frames) && animation.frames.length > 0
+        ? animation.frames
+        : Array.from({ length: columns }, (_, index) => index);
+
+      return {
+        textures: frameIndexes
+          .map((frameIndex) => Math.max(0, Math.min(columns - 1, Number(frameIndex) || 0)))
+          .map((column) => new Texture({
+            source: texture.source,
+            frame: new Rectangle(
+              column * frameWidth,
+              row * frameHeight,
+              frameWidth,
+              frameHeight,
+            ),
+            orig: new Rectangle(0, 0, frameWidth, frameHeight),
+          })),
+        fps: animation.fps ?? (animationName === 'action' ? 13 : animationName === 'move' ? 9 : 5),
+      };
+    };
+
+    return {
+      idle: makeFrames('idle', 0),
+      move: makeFrames('move', 1),
+      action: makeFrames('action', 2),
+    };
+  }
+
+  applyMiniPackSpriteTexture(actor, texture) {
+    if (!actor?.sprite || actor.sprite.destroyed || !texture) {
+      return false;
+    }
+
+    actor.sprite.texture = texture;
+    actor.sprite.anchor?.set?.(0.5, 0.72);
+    actor.sprite.width = this.miniPackDisplaySize.width;
+    actor.sprite.height = this.miniPackDisplaySize.height;
+    return true;
+  }
+
+  updateMiniPackSpriteAnimation(actor, state, delta) {
+    const animation = this.miniPackAnimationTextures?.[state];
+    if (!actor?.sprite?.visible || !animation?.textures?.length) {
+      return;
+    }
+
+    if (actor.animationState !== state) {
+      actor.animationState = state;
+      actor.animationFrame = 0;
+      actor.animationTimer = 0;
+      this.applyMiniPackSpriteTexture(actor, animation.textures[0]);
+      return;
+    }
+
+    const frameDuration = 1 / Math.max(1, animation.fps ?? 8);
+    actor.animationTimer += delta;
+    while (actor.animationTimer >= frameDuration) {
+      actor.animationTimer -= frameDuration;
+      actor.animationFrame = (actor.animationFrame + 1) % animation.textures.length;
+      this.applyMiniPackSpriteTexture(actor, animation.textures[actor.animationFrame]);
+    }
+  }
+
+  updateMiniPack(delta) {
+    if (!this.isCompsognathusMiniPackEnabled()) {
+      if (this.miniPackActors?.length) {
+        this.cleanupMiniPack();
+      }
+      return;
+    }
+
+    if (!this.miniPackActors?.length) {
+      this.setupMiniPack();
+    }
+
+    if (!this.miniPackActors?.length) {
+      return;
+    }
+
+    this.refreshMiniPackTexture();
+    this.miniPackEffectCounter = Math.max(0, (this.miniPackEffectCounter ?? 0) - delta * 2.8);
+    this.miniPackTargetCache.refreshTimer = Math.max(0, (this.miniPackTargetCache.refreshTimer ?? 0) - delta);
+    const orbitTime = this.gameState?.elapsedTime ?? 0;
+    this.miniPackActors.forEach((actor) => {
+      const offset = actor.offset ?? MINIPACK_OFFSETS[actor.index] ?? MINIPACK_OFFSETS[0];
+      const orbit = Math.sin(orbitTime * 2.6 + offset.phase) * 5;
+      const bob = Math.sin(orbitTime * 7.2 + offset.phase) * 3;
+      const targetX = this.player.position.x + offset.x + orbit * offset.side;
+      const targetY = this.player.position.y + offset.y + bob;
+      const blend = Math.min(1, 8.5 * delta);
+      const previousX = actor.position.x;
+
+      actor.position.x += (targetX - actor.position.x) * blend;
+      actor.position.y += (targetY - actor.position.y) * blend;
+      actor.actionTimer = Math.max(0, actor.actionTimer - delta);
+
+      const actionProgress = actor.actionTimer > 0
+        ? Math.sin((1 - actor.actionTimer / Math.max(0.001, actor.actionDuration)) * Math.PI)
+        : 0;
+      const lungeX = actor.actionTarget
+        ? this.clamp((actor.actionTarget.x - actor.position.x) / 150, -1, 1) * actionProgress * 18
+        : actor.facing * actionProgress * 10;
+      const lungeY = actionProgress > 0 ? -Math.abs(actionProgress) * 4 : 0;
+      const movedX = actor.position.x - previousX;
+      if (Math.abs(movedX) > 0.6) {
+        actor.facing = movedX >= 0 ? 1 : -1;
+      }
+      if (actor.actionTarget && actionProgress > 0.1) {
+        actor.facing = actor.actionTarget.x >= actor.position.x ? 1 : -1;
+      }
+
+      actor.view.position.set(actor.position.x + lungeX, actor.position.y + lungeY);
+      actor.view.zIndex = actor.position.y + 0.8;
+      actor.sprite.scale.x = Math.abs(actor.sprite.scale.x || 1) * actor.facing;
+      actor.sprite.rotation = Math.sin(orbitTime * 6 + offset.phase) * 0.06 + actor.facing * actionProgress * 0.06;
+      const state = actionProgress > 0.18
+        ? 'action'
+        : Math.abs(movedX) > 0.2
+          ? 'move'
+          : 'idle';
+      this.updateMiniPackSpriteAnimation(actor, state, delta);
+    });
+
+    this.updateMiniPackAttack(delta);
+    this.updateMiniPackDebugStats();
+  }
+
+  getMiniPackTarget() {
+    const cachedTarget = this.miniPackTargetCache?.target;
+    if (this.miniPackTargetCache?.refreshTimer > 0) {
+      return cachedTarget && !cachedTarget.isDead ? cachedTarget : null;
+    }
+
+    const targets = this.getAttackTargets?.() ?? [];
+    this.miniPackTargetCache.scans += 1;
+    this.miniPackTargetCache.lastScanSize = targets.length;
+    const rangeSquared = MINIPACK_ATTACK_RANGE * MINIPACK_ATTACK_RANGE;
+    const selected = targets
+      .filter((target) => target && !target.isDead && target.position)
+      .map((target) => ({
+        target,
+        distance: CollisionSystem.distanceSquared(this.player.position, target.position),
+      }))
+      .filter((entry) => entry.distance <= rangeSquared)
+      .sort((a, b) => {
+        const bossBias = Number(Boolean(b.target.isBoss)) - Number(Boolean(a.target.isBoss));
+        return bossBias || a.distance - b.distance;
+      })[0]?.target ?? null;
+
+    this.miniPackTargetCache.target = selected;
+    this.miniPackTargetCache.refreshTimer = MINIPACK_TARGET_REFRESH_INTERVAL;
+    return selected;
+  }
+
+  updateMiniPackAttack(delta) {
+    if (
+      this.gameState?.isPaused
+      || this.gameState?.isGameOver
+      || this.isTutorialPaused
+      || this.evolutionFeedbackTimer > 0
+      || !this.miniPackActors?.length
+    ) {
+      return;
+    }
+
+    this.miniPackActors.forEach((actor) => {
+      actor.attackTimer -= delta;
+      if (actor.attackTimer > 0) {
+        return;
+      }
+
+      actor.attackTimer = MINIPACK_ATTACK_INTERVAL + actor.index * 0.08;
+      const target = this.getMiniPackTarget();
+      if (!target || target.isDead || !target.position) {
+        return;
+      }
+
+      const damage = Math.max(1, Math.round((this.combatSystem?.damage ?? 8) * MINIPACK_DAMAGE_RATIO));
+      const didHit = target.takeDamage?.(damage, { from: actor.position, strength: 4 });
+      if (!didHit) {
+        return;
+      }
+
+      actor.actionTimer = actor.actionDuration;
+      actor.actionTarget = { x: target.position.x, y: target.position.y };
+      actor.facing = target.position.x >= actor.position.x ? 1 : -1;
+      this.miniPackDebugStats.hits += 1;
+      if (this.performanceLoadSheddingLevel <= 0 && this.miniPackEffectCounter < MINIPACK_EFFECT_CAP) {
+        this.spawnPickupPopup(target.position.x, target.position.y - 24, `${damage}`, 0xc9fbff);
+        this.miniPackEffectCounter += 1;
+        this.miniPackDebugStats.effects += 1;
+      }
+    });
+  }
+
+  updateMiniPackDebugStats() {
+    this.miniPackDebugStats = {
+      active: Boolean(this.miniPackActors?.length),
+      count: this.miniPackActors?.length ?? 0,
+      scans: this.miniPackTargetCache?.scans ?? 0,
+      hits: this.miniPackDebugStats?.hits ?? 0,
+      effects: this.miniPackDebugStats?.effects ?? 0,
+    };
   }
 
   setupCompanion() {
@@ -7284,6 +7717,7 @@ export class PlayScene {
 
     if (evolutionSheetKey) {
       this.player.setSheetKey(evolutionSheetKey, { force: selectedEvolution.tag === 'zero' });
+      this.refreshMiniPackTexture(true);
     }
 
     this.combatSystem.applyEvolution(selectedEvolution);
@@ -8323,6 +8757,7 @@ export class PlayScene {
     const selectedMode = this.gameState.selectedMode;
 
     this.clearInput();
+    this.cleanupMiniPack();
     this.gameState = new GameState();
     this.gameState.selectedStage = selectedStage;
     this.gameState.selectedDifficulty = selectedDifficulty;
@@ -8420,6 +8855,8 @@ export class PlayScene {
     this.companionView.parent?.removeChild(this.companionView);
     this.setupCompanion();
     this.depthLayer.addChild(this.companionView);
+    this.setupMiniPack();
+    this.depthLayer.addChild(this.miniPackView);
     this.depthLayer.addChild(this.player.view);
     this.camera.x = 0;
     this.camera.y = 0;
@@ -8445,6 +8882,7 @@ export class PlayScene {
 
   returnHome() {
     this.saveManager?.saveSelections(this.gameState);
+    this.cleanupMiniPack();
 
     if (this.onHome) {
       this.onHome();
