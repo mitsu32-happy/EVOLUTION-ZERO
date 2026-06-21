@@ -51,3 +51,10 @@ Implement a visual prototype behind `debugCompsognathusMiniPack=1`, profile targ
 - Use one shared target cache at a 0.45 second refresh interval and actor-local 1.6 second attack timers.
 - Apply low direct damage without companion synergy, adaptation, boss bonus, or critical handling.
 - Expose debug stats as `miniPack.active`, `miniPack.count`, `miniPack.scans`, `miniPack.hits`, and `miniPack.effects` in runtime debug stats.
+
+## PF06 formal enablement notes
+
+- Enable miniPack by default for Compsognathus in normal play.
+- Keep the activation derived from `selectedDino` or `selectedEvolution.dinoId`; do not require `debugCompsognathusMiniPack=1`.
+- Keep non-Compsognathus dinosaurs disabled even when running debug URLs.
+- Keep PF05 boundaries: no save data, companion roster, companion synergy, or asset manifest connection.

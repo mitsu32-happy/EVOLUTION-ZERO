@@ -3484,10 +3484,6 @@ export class PlayScene {
   }
 
   isCompsognathusMiniPackEnabled() {
-    if (typeof window === 'undefined' || !getDebugFlag('debugCompsognathusMiniPack')) {
-      return false;
-    }
-
     const selectedEvolutionDinoId = this.gameState?.selectedEvolution?.dinoId ?? null;
     const selectedDino = this.gameState?.selectedDino ?? null;
     return selectedEvolutionDinoId === 'compsognathus' || (!selectedEvolutionDinoId && selectedDino === 'compsognathus');
