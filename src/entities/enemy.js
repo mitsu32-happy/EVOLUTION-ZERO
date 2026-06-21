@@ -610,6 +610,17 @@ export class Enemy {
     this.typeLabelBg.visible = nextVisible && this.displayLabel.length > 0;
   }
 
+  setMarkerVisible(visible) {
+    this.marker.visible = visible !== false;
+  }
+
+  setLabelVisible(visible) {
+    const nextVisible = visible !== false && this.displayLabel.length > 0;
+
+    this.typeLabel.visible = nextVisible;
+    this.typeLabelBg.visible = nextVisible;
+  }
+
   applyStatus(type, duration = 2.4, power = 1) {
     if (this.isDead) {
       return;
