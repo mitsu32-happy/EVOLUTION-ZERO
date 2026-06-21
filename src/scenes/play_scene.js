@@ -117,9 +117,69 @@ const EMERGENCY_MAX_STAGE_GIMMICKS = 14;
 const EMERGENCY_MAX_PICKUP_BURSTS = 6;
 const EMERGENCY_MAX_PICKUP_POPUPS = 0;
 const EMERGENCY_MAX_COMPANION_EFFECTS = 2;
-const ENEMY_VISUAL_CULL_CELL_SIZE = 14;
+const ENEMY_VISUAL_CULL_CELL_SIZE = 96;
 const ENEMY_VISUAL_CULL_MAX_PER_CELL = 3;
-const ENEMY_OFFSCREEN_THROTTLE_MARGIN = 260;
+const ENEMY_CULLING_STABILITY_HOLD_MS = 240;
+const ENEMY_RING_PRIORITY_LEVEL = 8;
+const PERFORMANCE_PRESET_PROFILES = {
+  high: {
+    label: 'High',
+    fpsCap: 60,
+    resolutionScale: 1,
+    effectDensity: 1,
+    enemyRenderBudget: 132,
+    cursorBudget: 0,
+    clusterMaxPerCell: 3,
+    offscreenMargin: 320,
+    targetScanMultiplier: 1,
+    collisionSplitFrequency: 1,
+    backgroundAnimationFrequency: 1,
+    glowEnabled: true,
+  },
+  balanced: {
+    label: 'Balanced',
+    fpsCap: 60,
+    resolutionScale: 0.9,
+    effectDensity: 0.72,
+    enemyRenderBudget: 86,
+    cursorBudget: 0,
+    clusterMaxPerCell: 3,
+    offscreenMargin: 260,
+    targetScanMultiplier: 1.16,
+    collisionSplitFrequency: 1,
+    backgroundAnimationFrequency: 0.78,
+    glowEnabled: false,
+  },
+  performance: {
+    label: 'Performance',
+    fpsCap: 45,
+    resolutionScale: 0.8,
+    effectDensity: 0.46,
+    enemyRenderBudget: 58,
+    cursorBudget: 0,
+    clusterMaxPerCell: 3,
+    offscreenMargin: 210,
+    targetScanMultiplier: 1.36,
+    collisionSplitFrequency: 2,
+    backgroundAnimationFrequency: 0.5,
+    glowEnabled: false,
+  },
+  battery: {
+    label: 'Battery Saver',
+    fpsCap: 30,
+    resolutionScale: 0.7,
+    effectDensity: 0.26,
+    enemyRenderBudget: 38,
+    cursorBudget: 0,
+    clusterMaxPerCell: 3,
+    offscreenMargin: 170,
+    targetScanMultiplier: 1.62,
+    collisionSplitFrequency: 3,
+    backgroundAnimationFrequency: 0.34,
+    glowEnabled: false,
+  },
+};
+const PERFORMANCE_PRESET_IDS = new Set(['auto', ...Object.keys(PERFORMANCE_PRESET_PROFILES)]);
 const PERFORMANCE_SNAPSHOT_LIMIT = 90;
 const TICKER_STALL_WARN_MS = 2500;
 const TICKER_STALL_FATAL_MS = 6500;
@@ -394,6 +454,15 @@ function getDebugPerformanceTimeScale() {
   }
 
   return Math.min(24, value);
+}
+
+function getDebugPerformancePreset() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const preset = new URLSearchParams(window.location.search).get('debugPerfPreset');
+  return PERFORMANCE_PRESET_IDS.has(preset) ? preset : null;
 }
 
 function getDebugSkillLevel() {
@@ -788,6 +857,15 @@ export class PlayScene {
     this.debugStatsTimer = 0;
     this.debugFpsEstimate = 0;
     this.debugPerformanceEnabled = isDebugPerformanceEnabled();
+    this.performancePresetState = this.resolvePerformancePreset();
+    this.enemyIndicatorBudgetState = null;
+    this.enemyRenderCullingState = new WeakMap();
+    this.performancePresetFrameBudget = {
+      visualFrameModulo: 1,
+      resolutionApplied: false,
+      resolutionFallbackReason: 'play-scene-local',
+    };
+    this.updateQualityPresetFrameBudget();
     this.performanceLoadSheddingLevel = 0;
     this.emergencyPerformance = {
       active: false,
@@ -826,10 +904,47 @@ export class PlayScene {
     };
     this.runtimeInvalidCounts = {};
     this.enemyVisualBudgetStats = {
+      totalCount: 0,
+      activeCount: 0,
+      renderedCount: 0,
+      culledByOffscreen: 0,
+      culledByCluster: 0,
+      culledByRenderCap: 0,
+      visibleViewCount: 0,
       culledEnemySprites: 0,
       offscreenRenderCulled: 0,
       throttledEnemyAnimations: 0,
       visibleEnemySprites: 0,
+      cursor: {
+        total: this.enemies.filter((enemy) => enemy && !enemy.isDead).length,
+        rendered: 0,
+        culled: 0,
+        duplicateRemoved: 0,
+      },
+      targetRing: {
+        total: this.enemies.filter((enemy) => enemy && !enemy.isDead).length,
+        rendered: 0,
+        culled: 0,
+        duplicateRemoved: 0,
+      },
+      enemyRing: {
+        total: 0,
+        rendered: 0,
+        disabledByPreset: 0,
+      },
+      renderKeepByOnscreen: 0,
+      renderKeepByPriority: 0,
+      renderKeepByClusterRepresentative: 0,
+      clusterCellCount: 0,
+      clusterMaxPerType: ENEMY_VISUAL_CULL_MAX_PER_CELL,
+      culling: {
+        stabilityHoldMs: ENEMY_CULLING_STABILITY_HOLD_MS,
+        representativeStableCount: 0,
+      },
+      displayObjects: {
+        enemyLayerChildren: 0,
+        cursorLayerChildren: 0,
+      },
     };
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
@@ -1337,6 +1452,132 @@ export class PlayScene {
     };
   }
 
+  resolvePerformancePreset() {
+    const requested = getDebugPerformancePreset() ?? 'auto';
+    const autoDetected = this.detectAutoPerformancePreset();
+    const current = requested === 'auto' ? autoDetected : requested;
+    const profile = PERFORMANCE_PRESET_PROFILES[current] ?? PERFORMANCE_PRESET_PROFILES.balanced;
+
+    return {
+      requested,
+      current,
+      autoDetected,
+      profile,
+      device: this.getPerformanceDeviceHints(),
+    };
+  }
+
+  getPerformanceDeviceHints() {
+    if (typeof navigator === 'undefined' || typeof window === 'undefined') {
+      return {
+        hardwareConcurrency: null,
+        deviceMemory: null,
+        devicePixelRatio: 1,
+        isIOS: false,
+        isSafari: false,
+        isMobile: false,
+      };
+    }
+
+    const userAgent = navigator.userAgent ?? '';
+    const platform = navigator.platform ?? '';
+    const isIOS = /iPhone|iPad|iPod/i.test(userAgent)
+      || (platform === 'MacIntel' && (navigator.maxTouchPoints ?? 0) > 1);
+    const isSafari = /Safari/i.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg/i.test(userAgent);
+    const isMobile = isIOS || /Android|Mobile/i.test(userAgent);
+
+    return {
+      hardwareConcurrency: Number.isFinite(navigator.hardwareConcurrency) ? navigator.hardwareConcurrency : null,
+      deviceMemory: Number.isFinite(navigator.deviceMemory) ? navigator.deviceMemory : null,
+      devicePixelRatio: window.devicePixelRatio || 1,
+      screenWidth: window.screen?.width ?? null,
+      screenHeight: window.screen?.height ?? null,
+      isIOS,
+      isSafari,
+      isMobile,
+    };
+  }
+
+  detectAutoPerformancePreset() {
+    const hints = this.getPerformanceDeviceHints();
+    const cores = hints.hardwareConcurrency ?? 4;
+    const memory = hints.deviceMemory ?? (hints.isIOS ? 3 : 4);
+    const dpr = hints.devicePixelRatio ?? 1;
+
+    if ((hints.isIOS && hints.isSafari) || (hints.isMobile && dpr >= 2.6)) {
+      return cores <= 4 || memory <= 3 ? 'performance' : 'balanced';
+    }
+
+    if (hints.isMobile) {
+      return cores <= 4 || memory <= 3 ? 'performance' : 'balanced';
+    }
+
+    if (cores >= 8 && memory >= 8 && dpr <= 2) {
+      return 'high';
+    }
+
+    return 'balanced';
+  }
+
+  refreshPerformancePresetState() {
+    const nextState = this.resolvePerformancePreset();
+    const previous = this.performancePresetState?.current;
+    this.performancePresetState = nextState;
+
+    if (previous !== nextState.current) {
+      this.updateQualityPresetFrameBudget();
+    }
+  }
+
+  getPerformancePresetProfile() {
+    return this.performancePresetState?.profile ?? PERFORMANCE_PRESET_PROFILES.balanced;
+  }
+
+  getPerformancePresetStats() {
+    const state = this.performancePresetState ?? this.resolvePerformancePreset();
+    const profile = state.profile ?? PERFORMANCE_PRESET_PROFILES.balanced;
+
+    return {
+      current: state.current,
+      requested: state.requested,
+      autoDetected: state.autoDetected,
+      fpsCap: profile.fpsCap,
+      resolutionScale: profile.resolutionScale,
+      effectDensity: profile.effectDensity,
+      cursorBudget: profile.cursorBudget,
+      enemyRenderBudget: profile.enemyRenderBudget,
+      targetScanMultiplier: profile.targetScanMultiplier,
+      collisionSplitFrequency: profile.collisionSplitFrequency,
+      backgroundAnimationFrequency: profile.backgroundAnimationFrequency,
+      glowEnabled: profile.glowEnabled,
+      resolutionApplied: Boolean(this.performancePresetFrameBudget?.resolutionApplied),
+      resolutionFallbackReason: this.performancePresetFrameBudget?.resolutionFallbackReason ?? null,
+    };
+  }
+
+  getPerformanceTargetScanMultiplier() {
+    const profile = this.getPerformancePresetProfile();
+    let multiplier = profile.targetScanMultiplier ?? 1;
+
+    if (this.isEmergencyPerformanceActive()) {
+      multiplier = Math.max(multiplier, 2.2);
+    } else if (this.performanceLoadSheddingLevel >= 2 || this.mobileThermalSafetyLevel >= 2) {
+      multiplier = Math.max(multiplier, 1.55);
+    }
+
+    return multiplier;
+  }
+
+  updateQualityPresetFrameBudget() {
+    const profile = this.getPerformancePresetProfile();
+    const visualFrameModulo = profile.fpsCap <= 30 ? 2 : 1;
+    this.performancePresetFrameBudget = {
+      visualFrameModulo,
+      resolutionApplied: false,
+      resolutionFallbackReason: 'renderer-owned-by-main',
+    };
+  }
+
   isMobileThermalRiskDevice() {
     if (typeof navigator === 'undefined') {
       return false;
@@ -1389,7 +1630,12 @@ export class PlayScene {
   }
 
   shouldUseEnemyVisualBudget() {
-    if (this.enemies.length < 54 && this.mobileThermalSafetyLevel <= 0 && this.performanceLoadSheddingLevel <= 0) {
+    const preset = this.performancePresetState?.current ?? 'balanced';
+    if (['performance', 'battery'].includes(preset) && this.enemies.length >= 24) {
+      return true;
+    }
+
+    if (this.enemies.length < 42 && this.mobileThermalSafetyLevel <= 0 && this.performanceLoadSheddingLevel <= 0) {
       return false;
     }
 
@@ -1397,57 +1643,275 @@ export class PlayScene {
     return this.mobileThermalSafetyLevel >= 1
       || this.performanceLoadSheddingLevel >= 1
       || this.debugStressKillEnabled
-      || this.enemies.length >= 72
+      || this.enemies.length >= 42
       || children >= LOAD_SHEDDING_SOFT_CHILDREN * 0.72;
   }
 
+  getCullingNowMs() {
+    return typeof performance !== 'undefined' ? performance.now() : Date.now();
+  }
+
   shouldProtectEnemyVisual(enemy) {
+    const recentlyDamaged = (typeof performance !== 'undefined' ? performance.now() : Date.now()) - (enemy?.lastDamagedAt ?? 0) < 650;
+    const playerDistance = Math.hypot(
+      (this.player?.position?.x ?? 0) - (enemy?.position?.x ?? 0),
+      (this.player?.position?.y ?? 0) - (enemy?.position?.y ?? 0),
+    );
+
     return enemy?.isDead
       || enemy?.projectileCooldown > 0
       || enemy?.electroCooldown > 0
       || enemy?.summonCooldown > 0
       || (enemy?.enemyLevel ?? 1) >= 8
-      || (enemy?.hp ?? 1) <= Math.max(1, (enemy?.maxHp ?? 1) * 0.18);
+      || (enemy?.hp ?? 1) <= Math.max(1, (enemy?.maxHp ?? 1) * 0.18)
+      || recentlyDamaged
+      || playerDistance <= 210;
+  }
+
+  shouldKeepEnemyRing(enemy) {
+    if (!enemy || enemy.isDead || this.isEmergencyPerformanceActive()) {
+      return false;
+    }
+
+    return (enemy.enemyLevel ?? 1) >= ENEMY_RING_PRIORITY_LEVEL
+      || enemy.projectileCooldown > 0
+      || enemy.electroCooldown > 0
+      || enemy.summonCooldown > 0;
+  }
+
+  getEnemyRenderBudget() {
+    const profile = this.getPerformancePresetProfile();
+    let budget = profile.enemyRenderBudget ?? 86;
+
+    if (this.isEmergencyPerformanceActive()) {
+      budget = Math.min(budget, 34);
+    } else if (this.mobileThermalSafetyLevel >= 2) {
+      budget = Math.min(budget, 42);
+    } else if (this.performanceLoadSheddingLevel >= 2) {
+      budget = Math.min(budget, 50);
+    }
+
+    return Math.max(12, budget);
+  }
+
+  getEnemyIndicatorBudget() {
+    let budget = this.getPerformancePresetProfile().cursorBudget ?? 0;
+
+    if (this.isEmergencyPerformanceActive()) {
+      return 0;
+    }
+
+    if (this.mobileThermalSafetyLevel >= 1 || this.performanceLoadSheddingLevel >= 1) {
+      budget = Math.min(budget, 2);
+    }
+
+    return Math.max(0, budget);
+  }
+
+  resetEnemyVisualBudgetStats() {
+    const activeEnemyCount = this.enemies.filter((enemy) => enemy && !enemy.isDead).length;
+    const clusterMaxPerType = this.getPerformancePresetProfile().clusterMaxPerCell ?? ENEMY_VISUAL_CULL_MAX_PER_CELL;
+    this.enemyVisualBudgetStats = {
+      totalCount: this.enemies.length,
+      activeCount: activeEnemyCount,
+      renderedCount: 0,
+      culledByOffscreen: 0,
+      offscreenCulled: 0,
+      culledByCluster: 0,
+      clusterCulled: 0,
+      culledByRenderCap: 0,
+      visibleViewCount: 0,
+      culledEnemySprites: 0,
+      offscreenRenderCulled: 0,
+      throttledEnemyAnimations: 0,
+      visibleEnemySprites: 0,
+      renderBudget: this.getEnemyRenderBudget(),
+      cursor: {
+        total: activeEnemyCount,
+        rendered: 0,
+        culled: 0,
+        duplicateRemoved: 0,
+        disabledByPreset: 0,
+      },
+      targetRing: {
+        total: activeEnemyCount,
+        rendered: 0,
+        culled: 0,
+        duplicateRemoved: 0,
+        disabledByPreset: 0,
+      },
+      enemyRing: {
+        total: activeEnemyCount,
+        rendered: 0,
+        disabledByPreset: 0,
+      },
+      renderKeepByOnscreen: 0,
+      renderKeepByPriority: 0,
+      renderKeepByClusterRepresentative: 0,
+      clusterCellCount: 0,
+      clusterMaxPerType,
+      culling: {
+        stabilityHoldMs: ENEMY_CULLING_STABILITY_HOLD_MS,
+        representativeStableCount: 0,
+      },
+      displayObjects: {
+        enemyLayerChildren: this.depthLayer?.children?.length ?? 0,
+        cursorLayerChildren: 0,
+      },
+    };
+    this.enemyIndicatorBudgetState = {
+      budget: this.getEnemyIndicatorBudget(),
+      rendered: 0,
+      seenMarkerViews: new WeakSet(),
+      seenRingViews: new WeakSet(),
+    };
+  }
+
+  shouldRenderEnemyIndicator(enemy, visualState) {
+    const state = this.enemyIndicatorBudgetState;
+    const stats = this.enemyVisualBudgetStats;
+
+    if (!state || !enemy || enemy.isDead) {
+      return false;
+    }
+
+    if (!visualState.renderable) {
+      stats.cursor.culled += 1;
+      stats.targetRing.culled += 1;
+      stats.enemyRing.disabledByPreset += 1;
+      return false;
+    }
+
+    if (!this.shouldKeepEnemyRing(enemy)) {
+      stats.cursor.disabledByPreset += 1;
+      stats.targetRing.disabledByPreset += 1;
+      stats.enemyRing.disabledByPreset += 1;
+      return false;
+    }
+
+    const markerView = enemy.marker;
+    if (markerView && state.seenMarkerViews.has(markerView)) {
+      stats.cursor.duplicateRemoved += 1;
+      stats.targetRing.duplicateRemoved += 1;
+      return false;
+    }
+
+    if (markerView) {
+      state.seenMarkerViews.add(markerView);
+    }
+
+    if (state.rendered >= state.budget) {
+      stats.cursor.culled += 1;
+      stats.targetRing.culled += 1;
+      return false;
+    }
+
+    const profile = this.getPerformancePresetProfile();
+    if ((profile.cursorBudget ?? 0) <= 0) {
+      stats.cursor.culled += 1;
+      stats.targetRing.culled += 1;
+      stats.cursor.disabledByPreset += 1;
+      stats.targetRing.disabledByPreset += 1;
+      stats.enemyRing.disabledByPreset += 1;
+      return false;
+    }
+
+    state.rendered += 1;
+    stats.cursor.rendered += 1;
+    stats.targetRing.rendered += 1;
+    stats.enemyRing.rendered += 1;
+    return true;
+  }
+
+  applyEnemyRenderStability(enemy, desiredRenderable, reason, canHold = true) {
+    if (!enemy) {
+      return desiredRenderable;
+    }
+
+    const now = this.getCullingNowMs();
+    const holdMs = ENEMY_CULLING_STABILITY_HOLD_MS;
+    let state = this.enemyRenderCullingState?.get?.(enemy);
+
+    if (!state) {
+      state = {
+        renderable: desiredRenderable,
+        reason,
+        holdUntil: now + holdMs,
+      };
+      this.enemyRenderCullingState?.set?.(enemy, state);
+      return desiredRenderable;
+    }
+
+    if (state.renderable !== desiredRenderable && canHold && now < (state.holdUntil ?? 0)) {
+      this.enemyVisualBudgetStats.culling.representativeStableCount += 1;
+      return state.renderable;
+    }
+
+    if (state.renderable !== desiredRenderable || state.reason !== reason) {
+      state.renderable = desiredRenderable;
+      state.reason = reason;
+      state.holdUntil = now + holdMs;
+    }
+
+    return state.renderable;
   }
 
   getEnemyVisualBudgetState(enemy, index, occupiedCells, enabled) {
     const stats = this.enemyVisualBudgetStats;
-    const onScreen = this.isEnemyWithinCameraMargin(enemy, 96);
-    const nearScreen = this.isEnemyWithinCameraMargin(enemy, ENEMY_OFFSCREEN_THROTTLE_MARGIN);
-
-    if (!enabled || this.shouldProtectEnemyVisual(enemy)) {
-      stats.visibleEnemySprites += 1;
-      return { renderable: true, updateVisuals: true };
-    }
-
-    if (!nearScreen) {
-      stats.offscreenRenderCulled += 1;
-      return { renderable: false, updateVisuals: false };
-    }
+    const profile = this.getPerformancePresetProfile();
+    const onScreen = this.isEnemyWithinCameraMargin(enemy, 0);
+    const protectedVisual = this.shouldProtectEnemyVisual(enemy);
 
     if (!onScreen) {
-      const updateVisuals = (this.frameCount + index) % (this.mobileThermalSafetyLevel >= 1 ? 4 : 3) === 0;
-      if (!updateVisuals) {
-        stats.throttledEnemyAnimations += 1;
-      }
-      stats.visibleEnemySprites += 1;
-      return { renderable: true, updateVisuals };
+      const renderable = this.applyEnemyRenderStability(enemy, false, 'offscreen', false);
+      stats.offscreenRenderCulled += 1;
+      stats.culledByOffscreen += 1;
+      stats.offscreenCulled += 1;
+      return { renderable, updateVisuals: false, protectedVisual, reason: 'offscreen' };
     }
 
-    const cellX = Math.round((enemy.position?.x ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
-    const cellY = Math.round((enemy.position?.y ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
-    const sizeKey = Math.round((enemy.radius ?? 0) / 4);
-    const key = `${enemy.enemyType}:${sizeKey}:${cellX}:${cellY}`;
+    if (!enabled) {
+      stats.visibleEnemySprites += 1;
+      stats.renderedCount += 1;
+      stats.visibleViewCount += 1;
+      stats.renderKeepByOnscreen += 1;
+      return { renderable: true, updateVisuals: true, protectedVisual, reason: 'onscreen' };
+    }
+
+    if (protectedVisual) {
+      stats.visibleEnemySprites += 1;
+      stats.renderedCount += 1;
+      stats.visibleViewCount += 1;
+      stats.renderKeepByPriority += 1;
+      return { renderable: true, updateVisuals: true, protectedVisual, reason: 'priority' };
+    }
+
+    const cellX = Math.floor((enemy.position?.x ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
+    const cellY = Math.floor((enemy.position?.y ?? 0) / ENEMY_VISUAL_CULL_CELL_SIZE);
+    const key = `${enemy.enemyType}:${cellX}:${cellY}`;
     const count = occupiedCells.get(key) ?? 0;
     occupiedCells.set(key, count + 1);
+    stats.clusterCellCount = occupiedCells.size;
 
-    if (count >= ENEMY_VISUAL_CULL_MAX_PER_CELL) {
-      stats.culledEnemySprites += 1;
-      return { renderable: false, updateVisuals: false };
+    const maxPerCell = profile.clusterMaxPerCell ?? ENEMY_VISUAL_CULL_MAX_PER_CELL;
+    if (count >= maxPerCell) {
+      const renderable = this.applyEnemyRenderStability(enemy, false, 'cluster', true);
+      if (!renderable) {
+        stats.culledEnemySprites += 1;
+        stats.culledByCluster += 1;
+        stats.clusterCulled += 1;
+        return { renderable: false, updateVisuals: false, protectedVisual, reason: 'cluster' };
+      }
+
+      stats.culling.representativeStableCount += 1;
     }
 
     stats.visibleEnemySprites += 1;
-    return { renderable: true, updateVisuals: true };
+    stats.renderedCount += 1;
+    stats.visibleViewCount += 1;
+    stats.renderKeepByClusterRepresentative += 1;
+    this.applyEnemyRenderStability(enemy, true, 'cluster-representative', true);
+    return { renderable: true, updateVisuals: true, protectedVisual, reason: 'cluster-representative' };
   }
 
   getRuntimeObjectPressureCount() {
@@ -1695,9 +2159,13 @@ export class PlayScene {
     const lines = [
       `FPS ${stats.fps}`,
       `shed ${stats.loadSheddingLevel} thermal ${stats.thermalSafetyLevel ?? 0} children ${stats.containerChildrenTotal}`,
+      `preset ${stats.performancePreset?.current ?? '-'} fps${stats.performancePreset?.fpsCap ?? '-'} res${stats.performancePreset?.resolutionScale ?? '-'}`,
       `spawn ${stats.spawn?.spawnBudget ?? '-'}/${stats.spawn?.maxSpawnBudget ?? '-'}`,
       `enemy ${stats.enemies}/${stats.caps.enemies ?? '-'} vis/off ${stats.visibleEnemies ?? '-'}/${stats.offscreenEnemies ?? '-'}`,
-      `enemyCull c${stats.enemyVisualBudget?.culledEnemySprites ?? 0}/o${stats.enemyVisualBudget?.offscreenRenderCulled ?? 0}/a${stats.enemyVisualBudget?.throttledEnemyAnimations ?? 0}`,
+      `render ${stats.enemyRender?.renderedCount ?? 0}/${stats.enemyRender?.totalCount ?? stats.enemies} cap${stats.enemyVisualBudget?.renderBudget ?? '-'}`,
+      `enemyCull c${stats.enemyRender?.clusterCulled ?? stats.enemyRender?.culledByCluster ?? 0}/o${stats.enemyRender?.offscreenCulled ?? stats.enemyRender?.culledByOffscreen ?? 0}/a${stats.enemyVisualBudget?.throttledEnemyAnimations ?? 0}`,
+      `keep on${stats.enemyRender?.renderKeepByOnscreen ?? 0}/p${stats.enemyRender?.renderKeepByPriority ?? 0}/rep${stats.enemyRender?.renderKeepByClusterRepresentative ?? 0}`,
+      `rings ${stats.enemyRing?.rendered ?? stats.targetRing?.rendered ?? 0}/${stats.enemyRing?.total ?? stats.targetRing?.total ?? 0} off${stats.enemyRing?.disabledByPreset ?? stats.targetRing?.disabledByPreset ?? 0}`,
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
@@ -1715,7 +2183,7 @@ export class PlayScene {
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 320, 206, 8)
+      .roundRect(8, 80, 360, 232, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -1866,6 +2334,31 @@ export class PlayScene {
       criticalTextCount,
       pickupCount: this.pickups.length,
       enemyVisualBudget: { ...(this.enemyVisualBudgetStats ?? {}) },
+      enemies: {
+        totalCount: this.enemyVisualBudgetStats?.totalCount ?? this.enemies.length,
+        activeCount: this.enemyVisualBudgetStats?.activeCount ?? this.enemies.filter((enemy) => enemy && !enemy.isDead).length,
+        renderedCount: this.enemyVisualBudgetStats?.renderedCount ?? 0,
+        culledByOffscreen: this.enemyVisualBudgetStats?.culledByOffscreen ?? 0,
+        offscreenCulled: this.enemyVisualBudgetStats?.offscreenCulled ?? this.enemyVisualBudgetStats?.culledByOffscreen ?? 0,
+        culledByCluster: this.enemyVisualBudgetStats?.culledByCluster ?? 0,
+        clusterCulled: this.enemyVisualBudgetStats?.clusterCulled ?? this.enemyVisualBudgetStats?.culledByCluster ?? 0,
+        culledByRenderCap: this.enemyVisualBudgetStats?.culledByRenderCap ?? 0,
+        visibleViewCount: this.enemyVisualBudgetStats?.visibleViewCount ?? 0,
+        renderKeepByOnscreen: this.enemyVisualBudgetStats?.renderKeepByOnscreen ?? 0,
+        renderKeepByPriority: this.enemyVisualBudgetStats?.renderKeepByPriority ?? 0,
+        renderKeepByClusterRepresentative: this.enemyVisualBudgetStats?.renderKeepByClusterRepresentative ?? 0,
+        clusterCellCount: this.enemyVisualBudgetStats?.clusterCellCount ?? 0,
+        clusterMaxPerType: this.enemyVisualBudgetStats?.clusterMaxPerType ?? ENEMY_VISUAL_CULL_MAX_PER_CELL,
+      },
+      enemyCursor: { ...(this.enemyVisualBudgetStats?.cursor ?? {}) },
+      targetRing: { ...(this.enemyVisualBudgetStats?.targetRing ?? {}) },
+      enemyRing: { ...(this.enemyVisualBudgetStats?.enemyRing ?? this.enemyVisualBudgetStats?.targetRing ?? {}) },
+      culling: { ...(this.enemyVisualBudgetStats?.culling ?? {}) },
+      displayObjects: {
+        enemyLayerChildren: this.enemyVisualBudgetStats?.displayObjects?.enemyLayerChildren ?? this.depthLayer?.children?.length ?? 0,
+        cursorLayerChildren: this.enemyVisualBudgetStats?.displayObjects?.cursorLayerChildren ?? 0,
+      },
+      performancePreset: this.getPerformancePresetStats(),
       containerChildren,
       containerChildrenTotal: containerChildren.total,
       loadSheddingLevel: this.performanceLoadSheddingLevel,
@@ -2071,6 +2564,13 @@ export class PlayScene {
       criticalTextCount: snapshot.criticalTextCount,
       pickupCount: snapshot.pickupCount,
       enemyVisualBudget: snapshot.enemyVisualBudget,
+      enemies: snapshot.enemies,
+      enemyCursor: snapshot.enemyCursor,
+      targetRing: snapshot.targetRing,
+      enemyRing: snapshot.enemyRing,
+      culling: snapshot.culling,
+      displayObjects: snapshot.displayObjects,
+      performancePreset: snapshot.performancePreset,
       compFx: snapshot.companion?.effects ?? 0,
       compScan: `${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
       miniPack: snapshot.miniPack ?? null,
@@ -2245,6 +2745,13 @@ export class PlayScene {
       thermalSafetyLevel: snapshot.thermalSafetyLevel ?? 0,
       emergencyPerformance: snapshot.emergencyPerformance ?? this.getEmergencyPerformanceStats(),
       enemyVisualBudget: snapshot.enemyVisualBudget ?? this.enemyVisualBudgetStats,
+      enemyRender: snapshot.enemies,
+      enemyCursor: snapshot.enemyCursor,
+      targetRing: snapshot.targetRing,
+      enemyRing: snapshot.enemyRing,
+      culling: snapshot.culling,
+      displayObjects: snapshot.displayObjects,
+      performancePreset: snapshot.performancePreset,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
       audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
@@ -4319,9 +4826,7 @@ export class PlayScene {
       })[0]?.target ?? null;
 
     this.miniPackTargetCache.target = selected;
-    this.miniPackTargetCache.refreshTimer = this.isEmergencyPerformanceActive()
-      ? MINIPACK_TARGET_REFRESH_INTERVAL * 2.6
-      : MINIPACK_TARGET_REFRESH_INTERVAL;
+    this.miniPackTargetCache.refreshTimer = MINIPACK_TARGET_REFRESH_INTERVAL * this.getPerformanceTargetScanMultiplier();
     return selected;
   }
 
@@ -5255,9 +5760,7 @@ export class PlayScene {
         type === 'boss' ? 'boss' : 'enemy',
         () => this.findCompanionEnemyTarget(type, behavior, radius),
         radius,
-        this.isEmergencyPerformanceActive()
-          ? COMPANION_TARGET_REFRESH_INTERVAL * 3.2
-          : this.performanceLoadSheddingLevel >= 1 ? COMPANION_TARGET_REFRESH_INTERVAL * 1.7 : COMPANION_TARGET_REFRESH_INTERVAL,
+        COMPANION_TARGET_REFRESH_INTERVAL * this.getPerformanceTargetScanMultiplier(),
       );
       if (enemy?.position) {
         if (type === 'ranged') {
@@ -5280,9 +5783,7 @@ export class PlayScene {
         type,
         () => this.findCompanionPickupTarget(type === 'exp', radius),
         radius,
-        this.isEmergencyPerformanceActive()
-          ? COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * 3.4
-          : this.performanceLoadSheddingLevel >= 1 ? COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * 1.8 : COMPANION_PICKUP_TARGET_REFRESH_INTERVAL,
+        COMPANION_PICKUP_TARGET_REFRESH_INTERVAL * this.getPerformanceTargetScanMultiplier(),
       );
       if (pickup?.position) {
         return { ...this.clampCompanionMovementPoint(pickup.position, radius), targetType: type === 'exp' ? 'exp' : 'pickup' };
@@ -5917,28 +6418,33 @@ export class PlayScene {
     const playerCollider = this.player.getCollider();
 
     this.enemies = this.enemies.filter((enemy) => this.isRuntimeEntityUsable(enemy, 'enemy'));
-    this.enemyVisualBudgetStats = {
-      culledEnemySprites: 0,
-      offscreenRenderCulled: 0,
-      throttledEnemyAnimations: 0,
-      visibleEnemySprites: 0,
-    };
+    this.refreshPerformancePresetState();
+    this.resetEnemyVisualBudgetStats();
     const useEnemyVisualBudget = this.shouldUseEnemyVisualBudget();
     const occupiedVisualCells = new Map();
     const emergency = this.isEmergencyPerformanceActive();
+    const visualFrameModulo = this.performancePresetFrameBudget?.visualFrameModulo ?? 1;
 
     this.enemies.forEach((enemy, index) => {
       const visualState = this.getEnemyVisualBudgetState(enemy, index, occupiedVisualCells, useEnemyVisualBudget);
+      const renderIndicator = this.shouldRenderEnemyIndicator(enemy, visualState);
       enemy.view.renderable = visualState.renderable;
+      enemy.view.visible = true;
       const throttleOffscreenUpdate = emergency
         && !visualState.updateVisuals
         && (this.frameCount + index) % 3 !== 0;
       if (throttleOffscreenUpdate) {
         this.enemyVisualBudgetStats.throttledEnemyAnimations += 1;
-        return;
       }
 
-      enemy.update(delta, this.player, { updateVisuals: visualState.updateVisuals });
+      const updateVisuals = visualState.updateVisuals
+        && (visualFrameModulo <= 1 || visualState.protectedVisual || (this.frameCount + index) % visualFrameModulo === 0);
+      if (!updateVisuals && visualState.updateVisuals) {
+        this.enemyVisualBudgetStats.throttledEnemyAnimations += 1;
+      }
+      enemy.update(delta, this.player, { updateVisuals });
+      enemy.setMarkerVisible?.(renderIndicator);
+      enemy.setLabelVisible?.(visualState.renderable);
       this.updateRuinsEnemyAbility(delta, enemy);
       enemy.view.zIndex = enemy.position.y;
 
@@ -5956,6 +6462,8 @@ export class PlayScene {
         }
       }
     });
+    this.enemyVisualBudgetStats.displayObjects.enemyLayerChildren = this.depthLayer?.children?.length ?? 0;
+    this.enemyVisualBudgetStats.displayObjects.cursorLayerChildren = this.enemyVisualBudgetStats.cursor.rendered;
   }
 
   updateRuinsEnemyAbility(delta, enemy) {
