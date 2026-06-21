@@ -193,7 +193,7 @@ export class Pickup {
     this.assetRequestId = requestId;
 
     this.assetLoader.load(this.assetKey).then((texture) => {
-      if (!texture || requestId !== this.assetRequestId) {
+      if (!texture || requestId !== this.assetRequestId || this.view.destroyed || this.assetSprite.destroyed) {
         return;
       }
 
@@ -206,6 +206,9 @@ export class Pickup {
   }
 
   draw() {
+    this.glow.clear();
+    this.crystal.clear();
+
     if (this.type === 'heal') {
       this.glow
         .circle(0, 4, this.visualRule.glowRadius)
@@ -250,13 +253,12 @@ export class Pickup {
     const highlightColor = this.value >= 4 ? 0xfff0b0 : this.value >= 2 ? 0xc8fbff : 0xd9b4ff;
     const s = this.sizeScale;
 
+    // EXP helper rings are intentionally disabled; the orb body and pickup logic remain unchanged.
     this.glow
       .circle(0, 6, this.visualRule.glowRadius)
       .fill({ color: glowColor, alpha: 0.18 + this.value * 0.02 })
       .circle(0, 6, this.visualRule.glowRadius * 0.5)
-      .fill({ color: glowColor, alpha: 0.32 + this.value * 0.026 })
-      .circle(0, 6, this.visualRule.glowRadius * 1.34)
-      .stroke({ color: glowColor, width: this.value >= 4 ? 2.4 : 1.4, alpha: this.value >= 2 ? 0.52 : 0.24 });
+      .fill({ color: glowColor, alpha: 0.24 + this.value * 0.018 });
     this.glow.scale.set(s);
 
     this.crystal
@@ -267,5 +269,10 @@ export class Pickup {
       .poly([0, -18, 4, 15, -3, 3])
       .fill({ color: highlightColor, alpha: 0.26 });
     this.crystal.scale.set(s);
+  }
+
+  destroy(options = undefined) {
+    this.assetRequestId += 1;
+    this.view?.destroy?.(options ?? { children: true });
   }
 }

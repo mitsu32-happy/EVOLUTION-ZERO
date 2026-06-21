@@ -540,6 +540,17 @@ export class PlayScene {
     this.tutorialUi = tutorialUi;
     this.gamepadManager = gamepadManager;
     this.isActive = true;
+    this.isDisposed = false;
+    this.isTransitioning = false;
+    this.disposedUpdateSkipped = 0;
+    this.sceneTransition = {
+      current: 'play',
+      previous: null,
+      disposedUpdateSkipped: 0,
+    };
+    this.sceneCleanupStats = this.createEmptySceneCleanupStats();
+    this.boundInputHandlers = null;
+    this.boundHudHandlers = null;
     this.isTutorialPaused = false;
     this.pendingUltimateTutorialAfterEvolution = false;
     this.view = new Container();
@@ -870,9 +881,19 @@ export class PlayScene {
     this.emergencyPerformance = {
       active: false,
       reason: null,
+      lastReason: null,
       holdTimer: 0,
       averageDelta: 0,
       maxDelta: 0,
+      activatedAt: null,
+      deactivatedAt: null,
+      durationMs: 0,
+      activationCount: 0,
+      maxDeltaAtActivation: 0,
+      enemyCountAtActivation: 0,
+      renderedEnemyCountAtActivation: 0,
+      effectCountAtActivation: 0,
+      expOrbCountAtActivation: 0,
       targetScanCount: 0,
       collisionCheckCount: 0,
       suppressedDamagePopups: 0,
@@ -946,6 +967,7 @@ export class PlayScene {
         cursorLayerChildren: 0,
       },
     };
+    this.expOrbStats = this.createEmptyExpOrbStats();
     this.damageFlashTimer = 0;
     this.damageFlash.clear();
     this.screenShakeTimer = 0;
@@ -1162,17 +1184,31 @@ export class PlayScene {
   }
 
   show() {
+    if (this.isDisposed) {
+      return;
+    }
+
     this.isActive = true;
+    this.isTransitioning = false;
+    this.sceneTransition.previous = this.sceneTransition.current;
+    this.sceneTransition.current = 'play';
     this.view.visible = true;
   }
 
   hide() {
     this.isActive = false;
+    this.isTransitioning = this.sceneTransition.current !== 'play';
     this.clearInput();
     this.view.visible = false;
   }
 
   update(delta) {
+    if (this.isDisposed || this.isTransitioning) {
+      this.disposedUpdateSkipped += 1;
+      this.sceneTransition.disposedUpdateSkipped = this.disposedUpdateSkipped;
+      return;
+    }
+
     const rawDelta = delta;
     this.debugPerformanceTimeScale = getDebugPerformanceTimeScale();
     if (this.debugPerformanceTimeScale > 1) {
@@ -1303,6 +1339,33 @@ export class PlayScene {
     this.publishDebugRuntimeStats(rawDelta);
   }
 
+  createEmptySceneCleanupStats() {
+    return {
+      playSceneDisposed: false,
+      enemyViewsRemaining: 0,
+      effectViewsRemaining: 0,
+      expViewsRemaining: 0,
+      overlayViewsRemaining: 0,
+      companionViewsRemaining: 0,
+      miniPackViewsRemaining: 0,
+      timersRemaining: 0,
+      listenersRemaining: 0,
+      orphanDisplayObjects: 0,
+    };
+  }
+
+  createEmptyExpOrbStats() {
+    return {
+      totalCount: 0,
+      renderedCount: 0,
+      ringRendered: 0,
+      cursorRendered: 0,
+      ringDisabledByPreset: 0,
+      cursorDisabledByPreset: 0,
+      staleViewsRemoved: 0,
+    };
+  }
+
   enforceRuntimeObjectCaps() {
     const emergency = this.isEmergencyPerformanceActive();
     this.trimEnemyProjectiles(emergency ? EMERGENCY_MAX_ENEMY_PROJECTILES : MAX_ENEMY_PROJECTILES);
@@ -1340,7 +1403,8 @@ export class PlayScene {
         }
       }
 
-      pickup?.view?.destroy?.();
+      pickup?.destroy?.();
+      this.expOrbStats.staleViewsRemoved += pickup?.type === 'exp' ? 1 : 0;
     }
   }
 
@@ -1436,6 +1500,187 @@ export class PlayScene {
 
     if (stale.length > 0) {
       this.runtimeInvalidCounts[`${label}StaleChild`] = (this.runtimeInvalidCounts[`${label}StaleChild`] ?? 0) + stale.length;
+    }
+  }
+
+  destroyDisplayList(list) {
+    if (!Array.isArray(list)) {
+      return;
+    }
+
+    list.forEach((entry) => {
+      const view = entry?.view ?? entry;
+      view?.parent?.removeChild?.(view);
+      if (view && !view.destroyed) {
+        view.destroy({ children: true });
+      }
+    });
+    list.length = 0;
+  }
+
+  destroyPool(list) {
+    if (!Array.isArray(list)) {
+      return;
+    }
+
+    list.forEach((view) => {
+      view?.parent?.removeChild?.(view);
+      if (view && !view.destroyed) {
+        view.destroy({ children: true });
+      }
+    });
+    list.length = 0;
+  }
+
+  countLiveViews(list) {
+    return Array.isArray(list)
+      ? list.filter((entry) => {
+        const view = entry?.view ?? entry;
+        return view && !view.destroyed;
+      }).length
+      : 0;
+  }
+
+  countOverlayViewsRemaining() {
+    return [
+      this.bossWarningLayer,
+      this.zeroPhaseLayer,
+      this.evolutionWarningLayer,
+      this.ultimateSystem?.overlay,
+      this.bossDefeatFxLayer,
+      this.bossDefeatAssetLayer,
+      this.damageFlash,
+      this.visibilityGuideLayer,
+      this.performanceDebugBg,
+      this.performanceDebugText,
+      this.miniPackDebugText,
+      this.miniPackVisualDebugBanner,
+      this.miniPackScreenDebugView,
+    ].filter((view) => view && !view.destroyed).length;
+  }
+
+  cleanupSceneResources(reason = 'dispose') {
+    if (this.isDisposed) {
+      return this.sceneCleanupStats;
+    }
+
+    this.sceneTransition.previous = this.sceneTransition.current;
+    this.sceneTransition.current = reason;
+    this.isTransitioning = true;
+    this.isActive = false;
+    this.clearInput();
+    this.unbindInput();
+    this.unbindPerformanceDiagnostics();
+    try {
+      document?.getElementById?.('evolution-zero-performance-fallback')?.remove?.();
+    } catch {
+      // DOM cleanup is best-effort.
+    }
+    this.tutorialUi?.hide?.();
+    this.levelUpUi?.hide?.();
+    this.evolutionReadyUi?.hide?.();
+    this.evolutionSequence?.hide?.();
+    this.pauseUi?.hide?.();
+    this.resultUi?.hide?.();
+    this.cleanupMiniPack();
+
+    this.combatSystem?.reset?.();
+    this.ultimateSystem?.reset?.();
+
+    this.enemies?.forEach((enemy) => enemy?.view?.destroy?.({ children: true }));
+    this.enemies = [];
+    this.bosses?.forEach((boss) => boss?.view?.destroy?.({ children: true }));
+    this.bosses = [];
+    this.enemyProjectiles?.forEach((projectile) => this.releaseEnemyProjectileView(projectile?.view));
+    this.enemyProjectiles = [];
+    this.stageGimmicks?.forEach((gimmick) => gimmick?.view?.destroy?.({ children: true }));
+    this.stageGimmicks = [];
+    this.pickups?.forEach((pickup) => pickup?.destroy?.());
+    this.pickups = [];
+    this.pickupBursts?.forEach((burst) => this.releasePickupBurstView(burst?.view));
+    this.pickupBursts = [];
+    this.pickupPopups?.forEach((popup) => this.releasePickupPopupText(popup?.view));
+    this.pickupPopups = [];
+    this.companionEffects?.forEach((effect) => this.releaseCompanionEffectSprite(effect?.view));
+    this.companionEffects = [];
+
+    this.destroyPool(this.enemyProjectilePool);
+    this.destroyPool(this.pickupBurstPool);
+    this.destroyPool(this.pickupPopupPool);
+    this.destroyPool(this.companionEffectPool);
+    this.destroyPool(this.combatSystem?.graphicsPool);
+    this.destroyPool(this.combatSystem?.spritePool);
+    this.destroyPool(this.combatSystem?.damageNumberPool);
+    this.destroyPool(this.ultimateSystem?.graphicsPool);
+    this.destroyPool(this.ultimateSystem?.spritePool);
+
+    [
+      this.backgroundLayer,
+      this.gimmickLayer,
+      this.depthLayer,
+      this.effectLayer,
+      this.uiLayer,
+      this.world,
+    ].forEach((container) => {
+      container?.removeChildren?.().forEach((child) => {
+        if (child && !child.destroyed) {
+          child.destroy({ children: true });
+        }
+      });
+    });
+
+    this.view?.parent?.removeChild?.(this.view);
+    if (this.view && !this.view.destroyed) {
+      this.view.destroy({ children: true });
+    }
+
+    this.sceneCleanupStats = {
+      playSceneDisposed: true,
+      enemyViewsRemaining: this.countLiveViews(this.enemies) + this.countLiveViews(this.bosses),
+      effectViewsRemaining: this.countLiveViews(this.companionEffects)
+        + this.countLiveViews(this.pickupBursts)
+        + this.countLiveViews(this.pickupPopups)
+        + this.countLiveViews(this.combatSystem?.effects)
+        + this.countLiveViews(this.ultimateSystem?.effects),
+      expViewsRemaining: this.countLiveViews(this.pickups),
+      overlayViewsRemaining: this.countOverlayViewsRemaining(),
+      companionViewsRemaining: this.companionView && !this.companionView.destroyed ? 1 : 0,
+      miniPackViewsRemaining: this.miniPackView && !this.miniPackView.destroyed ? 1 : 0,
+      timersRemaining: this.performanceHeartbeatTimer ? 1 : 0,
+      listenersRemaining: (this.boundInputHandlers ? 4 : 0)
+        + (this.boundHudHandlers ? 2 : 0)
+        + (this.handleRuntimeError ? 1 : 0)
+        + (this.handleUnhandledRejection ? 1 : 0)
+        + (this.handleContextLost ? 1 : 0)
+        + (this.handleContextRestored ? 1 : 0),
+      orphanDisplayObjects: (this.view?.children?.length ?? 0)
+        + (this.world?.children?.length ?? 0)
+        + (this.depthLayer?.children?.length ?? 0)
+        + (this.effectLayer?.children?.length ?? 0)
+        + (this.uiLayer?.children?.length ?? 0),
+    };
+
+    this.isDisposed = true;
+    this.publishSceneCleanupStats();
+    return this.sceneCleanupStats;
+  }
+
+  publishSceneCleanupStats() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const payload = {
+      sceneCleanup: { ...this.sceneCleanupStats },
+      sceneTransition: { ...this.sceneTransition },
+      timestamp: Date.now(),
+    };
+
+    try {
+      window.__EVOLUTION_ZERO_LAST_SCENE_CLEANUP__ = payload;
+      document?.body?.setAttribute?.('data-ez-scene-cleanup', JSON.stringify(payload));
+    } catch {
+      // Cleanup diagnostics are optional.
     }
   }
 
@@ -2078,15 +2323,38 @@ export class PlayScene {
       reasons.push('debug-forced');
     }
 
+    const wasActive = Boolean(state.active);
+
     if (reasons.length > 0) {
       state.active = true;
       state.reason = reasons.join(',');
+      state.lastReason = state.reason;
       state.holdTimer = EMERGENCY_RELEASE_SECONDS;
     } else if (state.holdTimer > 0) {
       state.holdTimer = Math.max(0, state.holdTimer - delta);
     } else {
       state.active = false;
       state.reason = null;
+    }
+
+    if (!wasActive && state.active) {
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      state.activatedAt = now;
+      state.deactivatedAt = null;
+      state.durationMs = 0;
+      state.activationCount = (state.activationCount ?? 0) + 1;
+      state.maxDeltaAtActivation = Number((state.maxDelta ?? 0).toFixed(4));
+      state.enemyCountAtActivation = this.enemies.length;
+      state.renderedEnemyCountAtActivation = this.enemyVisualBudgetStats?.renderedCount ?? 0;
+      state.effectCountAtActivation = effectCount;
+      state.expOrbCountAtActivation = this.pickups.filter((pickup) => pickup?.type === 'exp' && !pickup.isCollected).length;
+    } else if (state.active && state.activatedAt) {
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      state.durationMs = Math.max(0, Math.round(now - state.activatedAt));
+    } else if (wasActive && !state.active) {
+      const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      state.deactivatedAt = now;
+      state.durationMs = state.activatedAt ? Math.max(0, Math.round(now - state.activatedAt)) : state.durationMs;
     }
 
     this.combatSystem?.setEmergencyPerformanceMode?.(state.active);
@@ -2120,6 +2388,16 @@ export class PlayScene {
     return {
       active: Boolean(state.active),
       reason: state.reason ?? null,
+      lastReason: state.lastReason ?? null,
+      activatedAt: state.activatedAt ?? null,
+      deactivatedAt: state.deactivatedAt ?? null,
+      durationMs: state.durationMs ?? 0,
+      activationCount: state.activationCount ?? 0,
+      maxDeltaAtActivation: state.maxDeltaAtActivation ?? 0,
+      enemyCountAtActivation: state.enemyCountAtActivation ?? 0,
+      renderedEnemyCountAtActivation: state.renderedEnemyCountAtActivation ?? 0,
+      effectCountAtActivation: state.effectCountAtActivation ?? 0,
+      expOrbCountAtActivation: state.expOrbCountAtActivation ?? 0,
       enemyCount: metrics.enemyCount ?? this.enemies.length,
       bossActive: Boolean(metrics.bossActive ?? this.getActiveBoss?.()),
       effectCount: metrics.effectCount ?? 0,
@@ -2269,6 +2547,50 @@ export class PlayScene {
     this.canvas?.addEventListener?.('webglcontextrestored', this.handleContextRestored, false);
   }
 
+  unbindPerformanceDiagnostics() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (this.handlePerformanceDumpKey) {
+      window.removeEventListener('keydown', this.handlePerformanceDumpKey);
+      this.handlePerformanceDumpKey = null;
+    }
+
+    if (this.performanceHeartbeatTimer) {
+      window.clearInterval(this.performanceHeartbeatTimer);
+      this.performanceHeartbeatTimer = null;
+    }
+
+    if (this.handleRuntimeError) {
+      window.removeEventListener('error', this.handleRuntimeError);
+      this.handleRuntimeError = null;
+    }
+
+    if (this.handleUnhandledRejection) {
+      window.removeEventListener('unhandledrejection', this.handleUnhandledRejection);
+      this.handleUnhandledRejection = null;
+    }
+
+    if (this.handleContextLost) {
+      this.canvas?.removeEventListener?.('webglcontextlost', this.handleContextLost, false);
+      this.handleContextLost = null;
+    }
+
+    if (this.handleContextRestored) {
+      this.canvas?.removeEventListener?.('webglcontextrestored', this.handleContextRestored, false);
+      this.handleContextRestored = null;
+    }
+
+    if (window.__EVOLUTION_ZERO_DUMP_PERF__) {
+      try {
+        delete window.__EVOLUTION_ZERO_DUMP_PERF__;
+      } catch {
+        window.__EVOLUTION_ZERO_DUMP_PERF__ = null;
+      }
+    }
+  }
+
   showPerformanceDomFallback(message) {
     if (typeof document === 'undefined') {
       return;
@@ -2309,6 +2631,7 @@ export class PlayScene {
       const activeStart = gimmick.warningDuration ?? 0;
       return gimmick.age < activeStart;
     }).length;
+    const expOrb = this.getExpOrbStats();
 
     return {
       reason,
@@ -2333,6 +2656,7 @@ export class PlayScene {
       damageTextCount: combatStats.damageNumbers ?? 0,
       criticalTextCount,
       pickupCount: this.pickups.length,
+      expOrb,
       enemyVisualBudget: { ...(this.enemyVisualBudgetStats ?? {}) },
       enemies: {
         totalCount: this.enemyVisualBudgetStats?.totalCount ?? this.enemies.length,
@@ -2364,6 +2688,8 @@ export class PlayScene {
       loadSheddingLevel: this.performanceLoadSheddingLevel,
       thermalSafetyLevel: this.mobileThermalSafetyLevel ?? 0,
       emergencyPerformance: this.getEmergencyPerformanceStats(),
+      sceneCleanup: { ...(this.sceneCleanupStats ?? this.createEmptySceneCleanupStats()) },
+      sceneTransition: { ...(this.sceneTransition ?? {}) },
       spawnBudget: spawnStats.spawnBudget ?? null,
       activeAudioCount: this.audioManager?.activeAudios?.size ?? null,
       activeAudioBufferCount: this.audioManager?.activeBufferRecords?.size ?? null,
@@ -2563,6 +2889,7 @@ export class PlayScene {
       maxDelta: emergencyPerformance.maxDelta,
       criticalTextCount: snapshot.criticalTextCount,
       pickupCount: snapshot.pickupCount,
+      expOrb: snapshot.expOrb,
       enemyVisualBudget: snapshot.enemyVisualBudget,
       enemies: snapshot.enemies,
       enemyCursor: snapshot.enemyCursor,
@@ -2591,6 +2918,8 @@ export class PlayScene {
       loadSheddingLevel: snapshot.loadSheddingLevel,
       thermalSafetyLevel: snapshot.thermalSafetyLevel,
       emergencyPerformance,
+      sceneCleanup: snapshot.sceneCleanup,
+      sceneTransition: snapshot.sceneTransition,
       bossClearSequence: this.bossClearSequence ? {
         age: Number((this.bossClearSequence.age ?? 0).toFixed(3)),
         duration: Number((this.bossClearSequence.duration ?? 0).toFixed(3)),
@@ -2654,6 +2983,30 @@ export class PlayScene {
       webglContextLost: (this.performanceDiagnostics?.contextLost ?? 0) > 0,
       latestSnapshot: snapshot,
     };
+  }
+
+  getExpOrbStats() {
+    const expPickups = this.pickups.filter((pickup) => pickup?.type === 'exp' && !pickup.isCollected);
+    const renderedCount = expPickups.filter((pickup) => (
+      pickup?.view
+      && !pickup.view.destroyed
+      && pickup.view.visible !== false
+      && pickup.view.renderable !== false
+    )).length;
+    const staleViewsRemoved = this.expOrbStats?.staleViewsRemoved ?? 0;
+    const disabledCount = expPickups.length;
+
+    this.expOrbStats = {
+      totalCount: expPickups.length,
+      renderedCount,
+      ringRendered: 0,
+      cursorRendered: 0,
+      ringDisabledByPreset: disabledCount,
+      cursorDisabledByPreset: disabledCount,
+      staleViewsRemoved,
+    };
+
+    return { ...this.expOrbStats };
   }
 
   publishDebugRuntimeStats(delta = 0) {
@@ -2735,6 +3088,7 @@ export class PlayScene {
         effects: this.miniPackDebugStats?.effects ?? 0,
       },
       pickups: this.pickups.length,
+      expOrb: snapshot.expOrb,
       effectChildren: this.effectLayer.children.length,
       gimmickChildren: this.gimmickLayer.children.length,
       depthChildren: this.depthLayer.children.length,
@@ -2744,6 +3098,8 @@ export class PlayScene {
       offscreenEnemies: snapshot.offscreenEnemyCount ?? 0,
       thermalSafetyLevel: snapshot.thermalSafetyLevel ?? 0,
       emergencyPerformance: snapshot.emergencyPerformance ?? this.getEmergencyPerformanceStats(),
+      sceneCleanup: snapshot.sceneCleanup,
+      sceneTransition: snapshot.sceneTransition,
       enemyVisualBudget: snapshot.enemyVisualBudget ?? this.enemyVisualBudgetStats,
       enemyRender: snapshot.enemies,
       enemyCursor: snapshot.enemyCursor,
@@ -3509,14 +3865,12 @@ export class PlayScene {
   }
 
   bindInput() {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('gamepadconnected', this.handleGamepadConnected);
-      window.addEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
-      this.refreshConnectedGamepad();
+    if (this.boundInputHandlers) {
+      return;
     }
 
-    this.canvas.addEventListener('pointerdown', (event) => {
-      if (!this.isActive) {
+    const pointerDown = (event) => {
+      if (!this.isActive || this.isDisposed || this.isTransitioning) {
         return;
       }
 
@@ -3541,10 +3895,10 @@ export class PlayScene {
       this.input.currentY = point.y;
       this.canvas.setPointerCapture(event.pointerId);
       this.updateInputVector();
-    });
+    };
 
-    this.canvas.addEventListener('pointermove', (event) => {
-      if (!this.isActive) {
+    const pointerMove = (event) => {
+      if (!this.isActive || this.isDisposed || this.isTransitioning) {
         return;
       }
 
@@ -3556,10 +3910,10 @@ export class PlayScene {
       this.input.currentX = point.x;
       this.input.currentY = point.y;
       this.updateInputVector();
-    });
+    };
 
     const clearInput = (event) => {
-      if (!this.isActive) {
+      if (!this.isActive && !this.isDisposed) {
         return;
       }
 
@@ -3575,18 +3929,67 @@ export class PlayScene {
       this.input.power = 0;
     };
 
+    this.boundInputHandlers = {
+      pointerDown,
+      pointerMove,
+      pointerUp: clearInput,
+      pointerCancel: clearInput,
+    };
+
+    this.boundHudHandlers = {
+      pause: () => {
+        if (this.isDisposed || this.isTransitioning) {
+          return;
+        }
+
+        this.audioManager?.play('ui_click');
+        this.clearInput();
+        this.togglePause();
+      },
+      ultimate: () => {
+        if (this.isDisposed || this.isTransitioning) {
+          return;
+        }
+
+        this.activateUltimate();
+      },
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('gamepadconnected', this.handleGamepadConnected);
+      window.addEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
+      this.refreshConnectedGamepad();
+    }
+
+    this.canvas.addEventListener('pointerdown', pointerDown);
+    this.canvas.addEventListener('pointermove', pointerMove);
     this.canvas.addEventListener('pointerup', clearInput);
     this.canvas.addEventListener('pointercancel', clearInput);
 
-    this.hud.pauseButton.on('pointertap', () => {
-      this.audioManager?.play('ui_click');
-      this.clearInput();
-      this.togglePause();
-    });
-    this.hud.ultimateButton.on('pointertap', () => {
-      this.activateUltimate();
-    });
+    this.hud.pauseButton.on('pointertap', this.boundHudHandlers.pause);
+    this.hud.ultimateButton.on('pointertap', this.boundHudHandlers.ultimate);
 
+  }
+
+  unbindInput() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('gamepadconnected', this.handleGamepadConnected);
+      window.removeEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
+    }
+
+    if (this.boundInputHandlers) {
+      this.canvas?.removeEventListener?.('pointerdown', this.boundInputHandlers.pointerDown);
+      this.canvas?.removeEventListener?.('pointermove', this.boundInputHandlers.pointerMove);
+      this.canvas?.removeEventListener?.('pointerup', this.boundInputHandlers.pointerUp);
+      this.canvas?.removeEventListener?.('pointercancel', this.boundInputHandlers.pointerCancel);
+      this.boundInputHandlers = null;
+    }
+
+    if (this.boundHudHandlers) {
+      this.hud?.pauseButton?.off?.('pointertap', this.boundHudHandlers.pause);
+      this.hud?.ultimateButton?.off?.('pointertap', this.boundHudHandlers.ultimate);
+      this.boundHudHandlers = null;
+    }
   }
 
   clearInput() {
@@ -4397,7 +4800,7 @@ export class PlayScene {
 
     this.miniPackTextureKey = sheetKey;
     this.assetLoader?.load?.(sheetKey).then((texture) => {
-      if (!texture || this.miniPackTextureKey !== sheetKey || !this.miniPackActors?.length) {
+      if (this.isDisposed || !texture || this.miniPackTextureKey !== sheetKey || !this.miniPackActors?.length) {
         return;
       }
 
@@ -4412,6 +4815,9 @@ export class PlayScene {
         this.updateMiniPackDebugVisual(actor);
       });
     }).catch(() => {
+      if (this.isDisposed) {
+        return;
+      }
       this.miniPackActors.forEach((actor) => {
         if (actor.sprite) {
           actor.sprite.visible = false;
@@ -5105,7 +5511,7 @@ export class PlayScene {
 
     this.drawCompanionFallback();
     this.assetLoader?.load?.(companion.assetKey).then((texture) => {
-      if (!texture || this.activeCompanion?.id !== companion.id) {
+      if (this.isDisposed || !texture || this.activeCompanion?.id !== companion.id) {
         return;
       }
 
@@ -5116,6 +5522,9 @@ export class PlayScene {
       this.companionFallback.visible = false;
       this.updateCompanionDebugLabel('sprite');
     }).catch(() => {
+      if (this.isDisposed) {
+        return;
+      }
       this.companionSprite.visible = false;
       this.companionFallback.visible = true;
       this.updateCompanionDebugLabel('fallback');
@@ -6196,7 +6605,7 @@ export class PlayScene {
     }
 
     this.assetLoader?.load?.(effect.key).then((texture) => {
-      if (!texture || !this.companionEffects.includes(effect)) {
+      if (this.isDisposed || !texture || !this.companionEffects.includes(effect)) {
         return;
       }
 
@@ -6205,6 +6614,9 @@ export class PlayScene {
       effect.view.visible = true;
       effect.view.alpha = effect.maxAlpha ?? 0.9;
     }).catch(() => {
+      if (this.isDisposed) {
+        return;
+      }
       this.releaseCompanionEffectSprite(effect.view);
       this.companionEffects = this.companionEffects.filter((entry) => entry !== effect);
     });
@@ -6882,10 +7294,10 @@ export class PlayScene {
     }
 
     this.assetLoader?.load(assetKey).then((texture) => {
-      if (!texture || !gimmick.view || gimmick.view.destroyed) {
+      if (this.isDisposed || !texture || !gimmick.view || gimmick.view.destroyed) {
         const fallbackKey = this.assetLoader?.getItem?.(assetKey)?.meta?.fallbackKey;
 
-        if (!texture && fallbackKey) {
+        if (!this.isDisposed && !texture && fallbackKey) {
           this.loadBossHazardWarningAsset(gimmick, fallbackKey);
         }
 
@@ -8051,10 +8463,10 @@ export class PlayScene {
 
   loadStageGimmickAsset(gimmick, assetKey, definition) {
     this.assetLoader?.load(assetKey).then((texture) => {
-      if (!texture || !gimmick.view || gimmick.view.destroyed) {
+      if (this.isDisposed || !texture || !gimmick.view || gimmick.view.destroyed) {
         const fallbackKey = this.assetLoader?.getItem?.(assetKey)?.meta?.fallbackKey;
 
-        if (!texture && fallbackKey) {
+        if (!this.isDisposed && !texture && fallbackKey) {
           this.loadStageGimmickAsset(gimmick, fallbackKey, definition);
         }
 
@@ -9059,7 +9471,7 @@ export class PlayScene {
 
     const texture = await this.assetLoader.load(key);
 
-    if (!this.isActive) {
+    if (!this.isActive || this.isDisposed) {
       return;
     }
 
@@ -9228,7 +9640,7 @@ export class PlayScene {
       }
 
       this.assetLoader?.load(key).then((texture) => {
-        if (texture && !texture.destroyed) {
+        if (!this.isDisposed && texture && !texture.destroyed) {
           this.bossDeathTextures.set(name, texture);
         }
       }).catch(() => {});
@@ -9476,7 +9888,7 @@ export class PlayScene {
       }
 
       this.assetLoader?.load(key).then((texture) => {
-        if (texture) {
+        if (!this.isDisposed && texture) {
           this.bossWarningTextures.set(name, texture);
           this.layoutBossWarningAssets();
         }
@@ -9652,7 +10064,7 @@ export class PlayScene {
       }
 
       this.assetLoader?.load(key).then((texture) => {
-        if (texture) {
+        if (!this.isDisposed && texture) {
           this.zeroPhaseTextures.set(name, texture);
           if (this.zeroPhaseLayer.visible || this.zeroPhaseTimer > 0) {
             this.layoutZeroPhaseNotice();
@@ -9670,6 +10082,10 @@ export class PlayScene {
       }
 
       this.assetLoader?.load(key).then((texture) => {
+        if (this.isDisposed) {
+          return;
+        }
+
         const item = this.assetLoader?.getItem?.(key);
         const animation = texture ? this.createGimmickAnimation(texture, item?.meta) : null;
 
@@ -9990,6 +10406,13 @@ export class PlayScene {
   }
 
   restart() {
+    if (this.isDisposed) {
+      return;
+    }
+
+    this.isTransitioning = false;
+    this.sceneTransition.previous = this.sceneTransition.current;
+    this.sceneTransition.current = 'play';
     this.saveManager?.saveSelections(this.gameState);
     const selectedStage = this.gameState.selectedStage;
     const selectedDifficulty = this.gameState.selectedDifficulty;
@@ -10088,7 +10511,7 @@ export class PlayScene {
     this.pickupPopups.forEach((popup) => this.releasePickupPopupText(popup.view));
     this.pickupPopups = [];
 
-    this.pickups.forEach((pickup) => pickup.view.destroy());
+    this.pickups.forEach((pickup) => pickup.destroy?.());
     this.pickups = this.createPickups();
     this.pickups.forEach((pickup) => this.depthLayer.addChild(pickup.view));
 
@@ -10122,7 +10545,7 @@ export class PlayScene {
 
   returnHome() {
     this.saveManager?.saveSelections(this.gameState);
-    this.cleanupMiniPack();
+    this.cleanupSceneResources('play-to-home');
 
     if (this.onHome) {
       this.onHome();

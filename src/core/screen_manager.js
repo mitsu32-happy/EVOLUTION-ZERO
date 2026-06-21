@@ -290,6 +290,7 @@ export class ScreenManager {
     this.stageSelectScreen = null;
     this.dinoSelectScreen = null;
     this.playScene = null;
+    this.lastPlaySceneCleanup = null;
 
     this.screens = {
       title: this.titleScreen,
@@ -507,6 +508,10 @@ export class ScreenManager {
   }
 
   ensurePlayScene() {
+    if (this.playScene?.isDisposed) {
+      this.disposePlayScene('stale-play-scene');
+    }
+
     if (this.playScene) {
       return this.playScene;
     }
@@ -527,6 +532,21 @@ export class ScreenManager {
     }));
 
     return this.playScene;
+  }
+
+  disposePlayScene(reason = 'screen-transition') {
+    if (!this.playScene) {
+      return null;
+    }
+
+    const scene = this.playScene;
+    this.gameState = scene.gameState ?? this.gameState;
+    const cleanupStats = scene.cleanupSceneResources?.(reason) ?? null;
+    this.lastPlaySceneCleanup = cleanupStats;
+    scene.view?.parent?.removeChild?.(scene.view);
+    delete this.screens.play;
+    this.playScene = null;
+    return cleanupStats;
   }
 
   async loadAssetGroups(groupIds, label, title = 'ロード中') {
@@ -916,6 +936,7 @@ export class ScreenManager {
     return {
       currentScreen: this.currentScreen,
       screen: this.currentScreen,
+      lastPlaySceneCleanup: this.lastPlaySceneCleanup,
       ...playContext,
     };
   }
@@ -1027,6 +1048,7 @@ export class ScreenManager {
   async showHome() {
     if (this.playScene) {
       this.gameState = this.playScene.gameState;
+      this.disposePlayScene('show-home');
     }
     this.saveManager.load();
     this.applyDebugResearchPt();
