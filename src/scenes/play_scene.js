@@ -85,6 +85,10 @@ const MINIPACK_OFFSETS = [
   { x: -58, y: 34, phase: 0, side: -1 },
   { x: 58, y: 46, phase: Math.PI, side: 1 },
 ];
+const MINIPACK_DEBUG_VISUAL_OFFSETS = [
+  { x: -116, y: 18, phase: 0, side: -1 },
+  { x: 116, y: 26, phase: Math.PI, side: 1 },
+];
 const MAX_WORLD_PICKUPS = 180;
 const LOAD_SHEDDING_SOFT_CHILDREN = 680;
 const LOAD_SHEDDING_HARD_CHILDREN = 980;
@@ -3504,6 +3508,25 @@ export class PlayScene {
     return selectedEvolutionDinoId === 'compsognathus' || (!selectedEvolutionDinoId && selectedDino === 'compsognathus');
   }
 
+  isMiniPackDebugVisualEnabled() {
+    return getDebugFlag('debugMiniPackVisual');
+  }
+
+  getMiniPackOffset(index = 0) {
+    const offsets = this.isMiniPackDebugVisualEnabled()
+      ? MINIPACK_DEBUG_VISUAL_OFFSETS
+      : MINIPACK_OFFSETS;
+    return offsets[index] ?? offsets[0] ?? MINIPACK_OFFSETS[0];
+  }
+
+  getMiniPackDisplaySize(sheet = {}) {
+    const scale = this.isMiniPackDebugVisualEnabled() ? 0.78 : 0.42;
+    return {
+      width: Math.max(this.isMiniPackDebugVisualEnabled() ? 76 : 28, (sheet.displayWidth ?? MINIPACK_BASE_WIDTH) * scale),
+      height: Math.max(this.isMiniPackDebugVisualEnabled() ? 58 : 24, (sheet.displayHeight ?? MINIPACK_BASE_HEIGHT) * scale),
+    };
+  }
+
   setupMiniPack() {
     this.cleanupMiniPack();
 
@@ -3530,16 +3553,32 @@ export class PlayScene {
     };
 
     for (let index = 0; index < MINIPACK_ACTOR_COUNT; index += 1) {
-      const offset = MINIPACK_OFFSETS[index] ?? MINIPACK_OFFSETS[0];
+      const offset = this.getMiniPackOffset(index);
       const view = new Container();
       const shadow = new Graphics()
         .ellipse(0, 8, 16, 5)
         .fill({ color: 0x000000, alpha: 0.28 });
+      const marker = new Graphics();
       const sprite = new Sprite(Texture.EMPTY);
+      const label = new Text({
+        text: `mini ${index === 0 ? 'A' : 'B'}`,
+        style: {
+          fill: '#ffffff',
+          fontFamily: 'Oxanium, Zen Kaku Gothic New, Noto Sans JP, sans-serif',
+          fontSize: 12,
+          fontWeight: '900',
+          letterSpacing: 0,
+          stroke: { color: '#061219', width: 3 },
+        },
+      });
 
       sprite.anchor.set(0.5, 0.72);
       sprite.visible = false;
-      view.addChild(shadow, sprite);
+      label.anchor.set(0.5, 1);
+      label.position.set(0, -54);
+      label.visible = false;
+      marker.visible = false;
+      view.addChild(shadow, marker, sprite, label);
       view.position.set(this.player.position.x + offset.x, this.player.position.y + offset.y);
       view.zIndex = this.player.position.y + offset.y + 0.7;
       this.miniPackView.addChild(view);
@@ -3548,7 +3587,9 @@ export class PlayScene {
         offset,
         view,
         shadow,
+        marker,
         sprite,
+        label,
         position: {
           x: this.player.position.x + offset.x,
           y: this.player.position.y + offset.y,
@@ -3565,7 +3606,7 @@ export class PlayScene {
     }
 
     this.refreshMiniPackTexture(true);
-    this.miniPackView.zIndex = this.player.position.y + 0.9;
+    this.miniPackView.zIndex = this.player.position.y + (this.isMiniPackDebugVisualEnabled() ? 24 : 0.9);
     this.updateMiniPackDebugStats();
     this.updateMiniPackDebugText();
   }
@@ -3635,14 +3676,12 @@ export class PlayScene {
       const item = this.assetLoader?.getItem?.(sheetKey);
       this.miniPackAnimationTextures = this.createMiniPackAnimationTextures(texture, item?.meta);
       const display = item?.meta?.sheet ?? {};
-      this.miniPackDisplaySize = {
-        width: Math.max(28, (display.displayWidth ?? MINIPACK_BASE_WIDTH) * 0.42),
-        height: Math.max(24, (display.displayHeight ?? MINIPACK_BASE_HEIGHT) * 0.42),
-      };
+      this.miniPackDisplaySize = this.getMiniPackDisplaySize(display);
       const firstTexture = this.miniPackAnimationTextures?.idle?.textures?.[0] ?? texture;
       this.miniPackActors.forEach((actor) => {
         this.applyMiniPackSpriteTexture(actor, firstTexture);
         actor.sprite.visible = true;
+        this.updateMiniPackDebugVisual(actor);
       });
     }).catch(() => {
       this.miniPackActors.forEach((actor) => {
@@ -3673,14 +3712,12 @@ export class PlayScene {
       action: playerAnimations.attack ?? playerAnimations.action ?? playerAnimations.idle,
     };
     const display = this.player?.sheetMeta?.sheet ?? {};
-    this.miniPackDisplaySize = {
-      width: Math.max(28, (display.displayWidth ?? MINIPACK_BASE_WIDTH) * 0.42),
-      height: Math.max(24, (display.displayHeight ?? MINIPACK_BASE_HEIGHT) * 0.42),
-    };
+    this.miniPackDisplaySize = this.getMiniPackDisplaySize(display);
     const firstTexture = this.miniPackAnimationTextures.idle.textures[0];
     this.miniPackActors.forEach((actor) => {
       this.applyMiniPackSpriteTexture(actor, firstTexture);
       actor.sprite.visible = true;
+      this.updateMiniPackDebugVisual(actor);
     });
     return true;
   }
@@ -3749,6 +3786,35 @@ export class PlayScene {
     return true;
   }
 
+  updateMiniPackDebugVisual(actor) {
+    if (!actor?.marker || !actor?.label) {
+      return;
+    }
+
+    const enabled = this.isMiniPackDebugVisualEnabled();
+    actor.view.alpha = 1;
+    actor.marker.visible = enabled;
+    actor.label.visible = enabled;
+    actor.sprite.alpha = 1;
+    actor.shadow.alpha = enabled ? 0.64 : 1;
+    if (!enabled) {
+      actor.marker.clear();
+      return;
+    }
+
+    actor.label.text = `mini ${actor.index === 0 ? 'A' : 'B'}`;
+    actor.label.position.set(0, -Math.max(56, this.miniPackDisplaySize.height * 0.78));
+    const color = actor.index === 0 ? 0x35d7ff : 0xffd24d;
+    actor.marker
+      .clear()
+      .circle(0, -16, Math.max(30, this.miniPackDisplaySize.width * 0.52))
+      .stroke({ color, width: 3, alpha: 0.94 })
+      .circle(0, -16, Math.max(20, this.miniPackDisplaySize.width * 0.36))
+      .fill({ color, alpha: 0.13 })
+      .ellipse(0, 12, Math.max(30, this.miniPackDisplaySize.width * 0.52), 10)
+      .stroke({ color: 0xffffff, width: 2, alpha: 0.72 });
+  }
+
   updateMiniPackSpriteAnimation(actor, state, delta) {
     const animation = this.miniPackAnimationTextures?.[state];
     if (!actor?.sprite?.visible || !animation?.textures?.length) {
@@ -3791,12 +3857,14 @@ export class PlayScene {
     this.refreshMiniPackTexture();
     this.miniPackEffectCounter = Math.max(0, (this.miniPackEffectCounter ?? 0) - delta * 2.8);
     this.miniPackTargetCache.refreshTimer = Math.max(0, (this.miniPackTargetCache.refreshTimer ?? 0) - delta);
-    this.miniPackView.zIndex = this.player.position.y + 0.9;
+    const debugVisual = this.isMiniPackDebugVisualEnabled();
+    this.miniPackView.zIndex = this.player.position.y + (debugVisual ? 24 : 0.9);
     const orbitTime = this.gameState?.elapsedTime ?? 0;
     this.miniPackActors.forEach((actor) => {
-      const offset = actor.offset ?? MINIPACK_OFFSETS[actor.index] ?? MINIPACK_OFFSETS[0];
-      const orbit = Math.sin(orbitTime * 2.6 + offset.phase) * 5;
-      const bob = Math.sin(orbitTime * 7.2 + offset.phase) * 3;
+      const offset = this.getMiniPackOffset(actor.index);
+      actor.offset = offset;
+      const orbit = Math.sin(orbitTime * 2.6 + offset.phase) * (debugVisual ? 8 : 5);
+      const bob = Math.sin(orbitTime * 7.2 + offset.phase) * (debugVisual ? 5 : 3);
       const targetX = this.player.position.x + offset.x + orbit * offset.side;
       const targetY = this.player.position.y + offset.y + bob;
       const blend = Math.min(1, 8.5 * delta);
@@ -3822,9 +3890,10 @@ export class PlayScene {
       }
 
       actor.view.position.set(actor.position.x + lungeX, actor.position.y + lungeY);
-      actor.view.zIndex = actor.position.y + 0.8;
+      actor.view.zIndex = actor.position.y + (debugVisual ? 22 : 0.8);
       actor.sprite.scale.x = Math.abs(actor.sprite.scale.x || 1) * actor.facing;
       actor.sprite.rotation = Math.sin(orbitTime * 6 + offset.phase) * 0.06 + actor.facing * actionProgress * 0.06;
+      this.updateMiniPackDebugVisual(actor);
       const state = actionProgress > 0.18
         ? 'action'
         : Math.abs(movedX) > 0.2
