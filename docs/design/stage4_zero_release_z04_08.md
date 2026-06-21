@@ -70,11 +70,17 @@
 
 ## push 結果
 
-- pending: release commit 後に `origin/main` へ push する。
+- release push: success
+- command: `git push origin main`
+- pushed range: `4988c0f..a1db77d`
+- release commit: `a1db77d719f752801e89a1e0a6d146d68e21f622`
 
 ## origin/main 反映確認
 
-- pending: push 後に `main` と `origin/main` の hash 一致を確認する。
+- checked after release push
+- `main`: `a1db77d719f752801e89a1e0a6d146d68e21f622`
+- `origin/main`: `a1db77d719f752801e89a1e0a6d146d68e21f622`
+- result: matched
 
 ## 残課題
 
