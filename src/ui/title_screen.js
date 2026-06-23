@@ -15,7 +15,8 @@ const TITLE_ASSET_PATHS = {
 
 const LOGO_RECT = { x: 35, y: 336, width: 320, height: 160 };
 const START_RECT = { x: 36, y: 604, width: 318, height: 96 };
-const INTRO_RECT = { x: 126, y: 712, width: 138, height: 38 };
+const INTRO_RECT = { x: 70, y: 712, width: 118, height: 38 };
+const ASSET_CACHE_RECT = { x: 202, y: 712, width: 118, height: 38 };
 const WARNING_RECT = { x: 16, y: 26, width: 180, height: 72 };
 const SUBTITLE_Y = 530;
 const VERSION_Y = 802;
@@ -31,7 +32,7 @@ function isDebugMode() {
 }
 
 export class TitleScreen {
-  constructor({ width, height, assetLoader = null, onStart, onIntro, onUiFeedback, onApplyUpdate }) {
+  constructor({ width, height, assetLoader = null, onStart, onIntro, onUiFeedback, onApplyUpdate, onAssetCache }) {
     this.width = width;
     this.height = height;
     this.assetLoader = assetLoader;
@@ -39,6 +40,7 @@ export class TitleScreen {
     this.onIntro = onIntro;
     this.onUiFeedback = onUiFeedback;
     this.onApplyUpdate = onApplyUpdate;
+    this.onAssetCache = onAssetCache;
     this.textures = new Map();
     this.starting = false;
     this.glowTimer = null;
@@ -61,6 +63,7 @@ export class TitleScreen {
     this.version = this.createText(`EVOLUTION ZERO PROTOCOL INITIATED\n${APP_VERSION_LABEL}`, 10, '#c94b43', 310);
     this.startButton = this.createStartButton();
     this.introButton = this.createIntroButton();
+    this.assetCacheButton = this.createAssetCacheButton();
     this.loadingOverlay = this.createLoadingOverlay();
 
     this.view.addChild(
@@ -78,6 +81,7 @@ export class TitleScreen {
       this.subtitle,
       this.startButton.view,
       this.introButton.view,
+      this.assetCacheButton.view,
       this.version,
       this.loadingOverlay.view,
     );
@@ -98,6 +102,7 @@ export class TitleScreen {
       this.setStartPressed(false);
     });
     this.introButton.view.on('pointertap', () => this.handleIntroTap());
+    this.assetCacheButton.view.on('pointertap', () => this.handleAssetCacheTap());
 
     this.drawStatic();
     this.loadAssets();
@@ -155,8 +160,10 @@ export class TitleScreen {
 
     this.startButton.view.position.set(START_RECT.x, START_RECT.y);
     this.introButton.view.position.set(INTRO_RECT.x, INTRO_RECT.y);
+    this.assetCacheButton.view.position.set(ASSET_CACHE_RECT.x, ASSET_CACHE_RECT.y);
     this.renderFallbackStart();
     this.renderIntroButton();
+    this.renderAssetCacheButton();
     this.applyTextures();
     this.renderLoadingOverlay();
   }
@@ -251,7 +258,7 @@ export class TitleScreen {
     const view = new Container();
     const bg = new Graphics();
     const text = this.createText('LOADING...', 16, '#d7fff2', 220);
-    const sub = this.createText('ASSETS INITIALIZING', 9, '#7cf7d4', 220);
+    const sub = this.createText('DATA LOADING', 9, '#7cf7d4', 220);
 
     text.anchor.set(0.5);
     text.position.set(this.width / 2, this.height / 2 - 8);
@@ -276,6 +283,7 @@ export class TitleScreen {
     this.loadingOverlay.view.visible = !this.assetsReady;
     this.startButton.view.eventMode = this.assetsReady ? 'static' : 'none';
     this.introButton.view.eventMode = this.assetsReady ? 'static' : 'none';
+    this.assetCacheButton.view.eventMode = this.assetsReady ? 'static' : 'none';
   }
 
   updateDebugBadge() {
@@ -344,7 +352,7 @@ export class TitleScreen {
   createIntroButton() {
     const view = new Container();
     const bg = new Graphics();
-    const text = this.createText('INTRO', 15, '#d7fff2', INTRO_RECT.width - 20);
+    const text = this.createText('INTRO', 14, '#d7fff2', INTRO_RECT.width - 20);
 
     text.anchor.set(0.5);
     text.position.set(INTRO_RECT.width / 2, INTRO_RECT.height / 2);
@@ -356,9 +364,33 @@ export class TitleScreen {
     return { view, bg, text };
   }
 
+  createAssetCacheButton() {
+    const view = new Container();
+    const bg = new Graphics();
+    const text = this.createText('DOWNLOAD', 12, '#d7fff2', ASSET_CACHE_RECT.width - 20);
+
+    text.anchor.set(0.5);
+    text.position.set(ASSET_CACHE_RECT.width / 2, ASSET_CACHE_RECT.height / 2);
+    view.eventMode = 'static';
+    view.cursor = 'pointer';
+    view.hitArea = new Rectangle(0, 0, ASSET_CACHE_RECT.width, ASSET_CACHE_RECT.height);
+    view.addChild(bg, text);
+
+    return { view, bg, text };
+  }
+
   renderIntroButton() {
     drawButtonFrame(this.introButton.bg, INTRO_RECT.width, INTRO_RECT.height, {
       accent: UI_COLORS.dna,
+      selected: false,
+      glow: true,
+      radius: 8,
+    });
+  }
+
+  renderAssetCacheButton() {
+    drawButtonFrame(this.assetCacheButton.bg, ASSET_CACHE_RECT.width, ASSET_CACHE_RECT.height, {
+      accent: UI_COLORS.gold,
       selected: false,
       glow: true,
       radius: 8,
@@ -409,6 +441,18 @@ export class TitleScreen {
       duration: 90,
     });
     this.onIntro?.();
+  }
+
+  handleAssetCacheTap() {
+    playPressFeedback(this.assetCacheButton.view, {
+      width: ASSET_CACHE_RECT.width,
+      height: ASSET_CACHE_RECT.height,
+      scale: 0.97,
+      alpha: 0.88,
+      duration: 90,
+    });
+    this.onUiFeedback?.('ui_click');
+    this.onAssetCache?.();
   }
 
   hasStartButtonAssets() {

@@ -6,6 +6,7 @@ import {
   markCrashDiagnosticsHeartbeat,
   showCrashDiagnostics,
 } from './diagnostics/crash_diagnostics.js';
+import { syncAssetCacheServiceWorker } from './utils/asset_cache_manager.js';
 import './style.css';
 
 const DESIGN_WIDTH = 390;
@@ -45,6 +46,7 @@ function registerServiceWorker() {
     navigator.serviceWorker
       .register(`${baseUrl}service-worker.js`, { scope: baseUrl })
       .then((registration) => {
+        syncAssetCacheServiceWorker();
         notifyPwaUpdateIfWaiting(registration);
         registration.update().catch(() => {});
         registration.addEventListener('updatefound', () => {
@@ -119,8 +121,12 @@ function installPwaUpdateBridge() {
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('controllerchange', () => {
+      syncAssetCacheServiceWorker();
       reloadOnceForPwaUpdate();
     });
+    navigator.serviceWorker.ready
+      .then(() => syncAssetCacheServiceWorker())
+      .catch(() => {});
   }
 }
 

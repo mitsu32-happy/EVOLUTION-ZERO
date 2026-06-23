@@ -132,6 +132,7 @@ export class OptionsScreen {
     height,
     saveManager,
     audioManager,
+    assetCacheManager = null,
     onBack,
     onHome,
     onResearch,
@@ -144,6 +145,7 @@ export class OptionsScreen {
     this.height = height;
     this.saveManager = saveManager;
     this.audioManager = audioManager;
+    this.assetCacheManager = assetCacheManager;
     this.onBack = onBack;
     this.onHome = onHome;
     this.onResearch = onResearch;
@@ -155,6 +157,8 @@ export class OptionsScreen {
     this.audioSettings = this.saveManager.getAudioSettings();
     this.gameplaySettings = this.saveManager.getOptionsSettings();
     this.assetTextures = {};
+    this.assetCacheAbortController = null;
+    this.assetCacheState = this.createAssetCacheState();
 
     this.view = new Container();
     this.background = new Graphics();
@@ -172,6 +176,8 @@ export class OptionsScreen {
     this.muteRow = this.createMuteRow();
     this.tutorialButton = this.createTutorialButton();
     this.assetPreviewButton = this.createDevButton();
+    this.assetCacheButton = this.createAssetCacheButton();
+    this.assetCacheOverlay = this.createAssetCacheOverlay();
     this.bottomNav = createBottomNav({
       width: this.width,
       height: this.height,
@@ -208,7 +214,14 @@ export class OptionsScreen {
     this.createSliders();
     this.view.addChild(this.muteRow.view);
     this.createSettingRows();
-    this.view.addChild(this.tutorialButton.view, this.assetPreviewButton.view, this.noticeText, this.bottomNav.view);
+    this.view.addChild(
+      this.tutorialButton.view,
+      this.assetPreviewButton.view,
+      this.assetCacheButton.view,
+      this.noticeText,
+      this.bottomNav.view,
+      this.assetCacheOverlay.view,
+    );
 
     this.backButton.view.on('pointertap', () => this.onBack?.());
     this.muteRow.view.on('pointertap', (event) => this.handleMuteToggle(event));
@@ -223,6 +236,11 @@ export class OptionsScreen {
       this.playUiClick();
       this.onShowTutorial?.();
     });
+    this.assetCacheButton.view.on('pointertap', () => {
+      this.playUiClick();
+      this.showAssetCacheOverlay();
+    });
+    this.bindAssetCacheOverlayActions();
 
     this.drawStatic();
     this.loadAssets();
@@ -270,6 +288,7 @@ export class OptionsScreen {
     this.gameplaySettings = this.saveManager.getOptionsSettings();
     this.audioManager.applySettings(this.audioSettings);
     this.applyNavigationMode();
+    this.refreshAssetCacheStatus();
     this.render();
     this.view.visible = true;
   }
@@ -440,6 +459,298 @@ export class OptionsScreen {
     return row;
   }
 
+  createAssetCacheState() {
+    return {
+      supported: false,
+      cacheName: '',
+      total: 0,
+      cached: 0,
+      failed: 0,
+      progress: 0,
+      estimatedBytes: 0,
+      storageUsage: null,
+      storageQuota: null,
+      oldCachesCount: 0,
+      lastUpdatedBuild: null,
+      currentCategory: '',
+      currentUrl: '',
+      isDownloading: false,
+      message: '',
+    };
+  }
+
+  createAssetCacheButton() {
+    const row = this.createRowShell();
+    row.label = this.createText('データDL', 10, '#dfffff', 98);
+    row.sub = this.createText('', 8, '#91aaa4', 98);
+
+    row.view.position.set(238, 114);
+    row.view.eventMode = 'static';
+    row.view.cursor = 'pointer';
+    row.view.hitArea = new Rectangle(0, 0, 106, 30);
+    row.label.anchor.set(0.5);
+    row.label.position.set(53, 9);
+    row.sub.anchor.set(0.5);
+    row.sub.position.set(53, 21);
+    row.view.addChild(row.label, row.sub);
+
+    return row;
+  }
+
+  createAssetCacheOverlay() {
+    const view = new Container();
+    const shade = new Graphics();
+    const panel = new Graphics();
+    const title = this.createText('データダウンロード', 18, '#f4f7f5', 240);
+    const status = this.createText('', 13, '#d7fff2', 286);
+    const detail = this.createText('', 10, '#91aaa4', 286);
+    const warning = this.createText(
+      '通信量と端末容量を使用します。\n保存したデータはOSにより削除される場合があります。\nアップデート時は最新データをダウンロードし直します。',
+      9,
+      '#ffd36b',
+      286,
+    );
+    const buttons = {
+      save: this.createAssetCacheOverlayButton('DL開始', 0, 0, 78),
+      cancel: this.createAssetCacheOverlayButton('中止', 86, 0, 60),
+      retry: this.createAssetCacheOverlayButton('再試行', 154, 0, 66),
+      clearOld: this.createAssetCacheOverlayButton('旧DL削除', 228, 0, 62),
+      clearCurrent: this.createAssetCacheOverlayButton('現DL削除', 0, 38, 92),
+      close: this.createAssetCacheOverlayButton('閉じる', 198, 38, 92),
+    };
+    const buttonLayer = new Container();
+
+    shade
+      .rect(0, 0, this.width, this.height)
+      .fill({ color: 0x000000, alpha: 0.58 });
+    panel
+      .roundRect(30, 180, 330, 312, 12)
+      .fill({ color: 0x061316, alpha: 0.96 })
+      .stroke({ color: UI_COLORS.dna, width: 1.6, alpha: 0.72 });
+    title.anchor.set(0.5);
+    title.position.set(this.width / 2, 204);
+    status.position.set(52, 236);
+    detail.position.set(52, 300);
+    warning.position.set(52, 360);
+    buttonLayer.position.set(50, 426);
+    Object.values(buttons).forEach((button) => buttonLayer.addChild(button.view));
+
+    view.visible = false;
+    view.eventMode = 'static';
+    view.hitArea = new Rectangle(0, 0, this.width, this.height);
+    view.addChild(shade, panel, title, status, detail, warning, buttonLayer);
+
+    return {
+      view,
+      shade,
+      panel,
+      title,
+      status,
+      detail,
+      warning,
+      buttons,
+    };
+  }
+
+  createAssetCacheOverlayButton(label, x, y, width) {
+    const view = new Container();
+    const bg = new Graphics();
+    const text = this.createText(label, 10, '#f4f7f5', width - 8);
+
+    view.position.set(x, y);
+    view.eventMode = 'static';
+    view.cursor = 'pointer';
+    view.hitArea = new Rectangle(0, 0, width, 28);
+    text.anchor.set(0.5);
+    text.position.set(width / 2, 14);
+    view.addChild(bg, text);
+
+    return { view, bg, text, width };
+  }
+
+  bindAssetCacheOverlayActions() {
+    const buttons = this.assetCacheOverlay.buttons;
+
+    buttons.save.view.on('pointertap', () => {
+      this.playUiClick();
+      this.startAssetCacheDownload();
+    });
+    buttons.cancel.view.on('pointertap', () => {
+      this.playUiClick();
+      this.cancelAssetCacheDownload();
+    });
+    buttons.retry.view.on('pointertap', () => {
+      this.playUiClick();
+      this.startAssetCacheDownload();
+    });
+    buttons.clearOld.view.on('pointertap', () => {
+      this.playUiClick();
+      this.clearOldAssetCaches();
+    });
+    buttons.clearCurrent.view.on('pointertap', () => {
+      this.playUiClick();
+      this.clearCurrentAssetCache();
+    });
+    buttons.close.view.on('pointertap', () => {
+      this.playUiClick();
+      this.hideAssetCacheOverlay();
+    });
+  }
+
+  showAssetCacheOverlay() {
+    this.assetCacheOverlay.view.visible = true;
+    this.refreshAssetCacheStatus();
+    this.render();
+  }
+
+  hideAssetCacheOverlay() {
+    this.assetCacheOverlay.view.visible = false;
+    this.render();
+  }
+
+  async refreshAssetCacheStatus() {
+    if (!this.assetCacheManager) {
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        supported: false,
+        message: 'データダウンロードはこの環境では利用できません',
+      };
+      this.render();
+      return;
+    }
+
+    try {
+      const status = await this.assetCacheManager.getCacheStatus();
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        ...status,
+        supportStatus: status.supportStatus,
+        message: status.supported ? '' : this.getAssetCacheUnsupportedMessage(status.supportStatus),
+      };
+    } catch (error) {
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        message: `状態取得に失敗: ${error?.message ?? 'unknown'}`,
+      };
+    }
+    this.render();
+  }
+
+  getAssetCacheUnsupportedMessage(support = {}) {
+    if (support.unsupportedReason === 'cache-storage-unavailable') {
+      return 'このブラウザではデータ保存機能が利用できません。Safari/PWAの設定を確認してください。';
+    }
+
+    if (support.unsupportedReason === 'secure-context-required') {
+      return 'HTTPS / PWA / localhost で利用できます。iPhoneのHTTP LAN接続では非対応になる場合があります。';
+    }
+
+    return 'この環境ではデータダウンロードを利用できません。HTTPSまたはPWAでお試しください。';
+  }
+
+  async startAssetCacheDownload() {
+    if (!this.assetCacheManager || this.assetCacheState.isDownloading) {
+      return;
+    }
+
+    this.assetCacheAbortController = new AbortController();
+    this.assetCacheState = {
+      ...this.assetCacheState,
+      isDownloading: true,
+      message: 'ダウンロードを開始しました',
+    };
+    this.render();
+
+    try {
+      const result = await this.assetCacheManager.downloadAll({
+        includeAudio: false,
+        signal: this.assetCacheAbortController.signal,
+        onProgress: (progress) => {
+          this.assetCacheState = {
+            ...this.assetCacheState,
+            ...progress,
+            message: progress.isDownloading ? '画像データをダウンロード中' : 'ダウンロードが完了しました',
+          };
+          this.render();
+        },
+      });
+
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        ...result,
+        isDownloading: false,
+        message: this.assetCacheAbortController.signal.aborted
+          ? 'ダウンロードを中止しました'
+          : result.failed > 0
+            ? `${result.failed}件のダウンロードに失敗しました`
+            : '画像データをダウンロードしました',
+      };
+    } catch (error) {
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        isDownloading: false,
+        message: this.assetCacheAbortController?.signal?.aborted
+          ? 'ダウンロードを中止しました'
+          : `ダウンロードに失敗: ${error?.message ?? 'unknown'}`,
+      };
+    } finally {
+      this.assetCacheAbortController = null;
+      this.render();
+    }
+  }
+
+  cancelAssetCacheDownload() {
+    this.assetCacheAbortController?.abort();
+    this.assetCacheState = {
+      ...this.assetCacheState,
+      isDownloading: false,
+      message: 'ダウンロードを中止しています',
+    };
+    this.render();
+  }
+
+  async clearOldAssetCaches() {
+    if (!this.assetCacheManager || this.assetCacheState.isDownloading) {
+      return;
+    }
+
+    try {
+      const result = await this.assetCacheManager.clearOldCaches();
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        message: `古いダウンロードデータを${result.deleted}件削除しました`,
+      };
+      await this.refreshAssetCacheStatus();
+    } catch (error) {
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        message: `古いダウンロードデータ削除に失敗: ${error?.message ?? 'unknown'}`,
+      };
+      this.render();
+    }
+  }
+
+  async clearCurrentAssetCache() {
+    if (!this.assetCacheManager || this.assetCacheState.isDownloading) {
+      return;
+    }
+
+    try {
+      await this.assetCacheManager.clearCurrentCache();
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        message: '現在のダウンロードデータを削除しました',
+      };
+      await this.refreshAssetCacheStatus();
+    } catch (error) {
+      this.assetCacheState = {
+        ...this.assetCacheState,
+        message: `現在のダウンロードデータ削除に失敗: ${error?.message ?? 'unknown'}`,
+      };
+      this.render();
+    }
+  }
+
   handleSliderInput(event, slider) {
     const local = this.getLocalPointer(event, slider.view);
     const startX = 132;
@@ -574,6 +885,7 @@ export class OptionsScreen {
       ...this.sliders.map((target) => ({ kind: 'slider', target })),
       { kind: 'mute', target: this.muteRow },
       ...this.settingRows.map((target) => ({ kind: 'row', target })),
+      ...(this.assetCacheButton.view.visible ? [{ kind: 'assetCache', target: this.assetCacheButton }] : []),
       ...(this.tutorialButton.view.visible ? [{ kind: 'tutorial', target: this.tutorialButton }] : []),
       ...(this.assetPreviewButton.view.visible ? [{ kind: 'asset', target: this.assetPreviewButton }] : []),
     ];
@@ -596,6 +908,9 @@ export class OptionsScreen {
     } else if (item.kind === 'tutorial') {
       this.playUiClick();
       this.onShowTutorial?.();
+    } else if (item.kind === 'assetCache') {
+      this.playUiClick();
+      this.showAssetCacheOverlay();
     } else if (item.kind === 'asset') {
       this.playUiClick();
       this.onAssetPreview?.();
@@ -672,6 +987,11 @@ export class OptionsScreen {
     this.tutorialButton.view.eventMode = showTutorialButton ? 'static' : 'none';
     this.assetPreviewButton.view.visible = showAssetPreview;
     this.assetPreviewButton.view.eventMode = showAssetPreview ? 'static' : 'none';
+    this.assetCacheButton.view.visible = !isPlaySettings;
+    this.assetCacheButton.view.eventMode = isPlaySettings ? 'none' : 'static';
+    if (isPlaySettings) {
+      this.assetCacheOverlay.view.visible = false;
+    }
   }
 
   setAudioSetting(key, value) {
@@ -776,6 +1096,8 @@ export class OptionsScreen {
     this.renderSliders();
     this.renderMuteRow();
     this.renderSettingRows();
+    this.renderAssetCacheButton();
+    this.renderAssetCacheOverlay();
     this.renderTutorialButton();
     this.renderDevButton();
     this.noticeText.text = this.audioSettings.muted ? '全音声を停止中' : '';
@@ -939,6 +1261,103 @@ export class OptionsScreen {
 
   renderTutorialButton() {
     this.renderRowFrame(this.tutorialButton, SAFE.rowWidth, 46, this.assetTextures.optionButtonV3 ?? this.assetTextures.optionButtonV2);
+  }
+
+  renderAssetCacheButton() {
+    const state = this.assetCacheState;
+
+    this.renderRowFrame(this.assetCacheButton, 106, 30, this.assetTextures.optionButtonV3 ?? this.assetTextures.optionButtonV2);
+    this.assetCacheButton.label.text = state.isDownloading ? 'DL中...' : 'データDL';
+    this.assetCacheButton.sub.text = state.total > 0
+      ? `${state.cached}/${state.total}`
+      : (state.supported ? '未確認' : '非対応');
+    this.assetCacheButton.label.style.fill = state.supported ? '#dfffff' : '#9aa4a0';
+    this.assetCacheButton.sub.style.fill = state.failed > 0 ? '#ffd36b' : '#91aaa4';
+  }
+
+  renderAssetCacheOverlay() {
+    const overlay = this.assetCacheOverlay;
+    const state = this.assetCacheState;
+    const progressPercent = Math.round((state.progress ?? 0) * 100);
+    const support = state.supportStatus ?? {};
+    const statusLine = state.supported
+      ? state.isDownloading
+        ? 'データをダウンロードしています'
+        : state.cached >= state.total && state.total > 0
+          ? '最新データはダウンロード済みです'
+          : '追加データをダウンロードできます'
+      : 'この環境では利用できません';
+    const countLine = state.total > 0
+      ? `${state.cached}/${state.total}件  ${progressPercent}%`
+      : '対象データを確認中';
+    const sizeLine = state.estimatedBytes > 0 ? `目安: 約${this.formatBytes(state.estimatedBytes)}` : '';
+    const failedLine = state.failed > 0 ? `失敗: ${state.failed}件` : '';
+    const oldLine = state.oldCachesCount > 0 ? `古いデータ: ${state.oldCachesCount}件` : '';
+    const supportLine = !state.supported && support.unsupportedReason
+      ? this.getAssetCacheUnsupportedMessage(support)
+      : '';
+    const currentLine = state.currentCategory
+      ? `処理中: ${state.currentCategory}`
+      : (state.message || '画像データのみダウンロードします。音声はPhase 1対象外です。');
+
+    overlay.status.text = [
+      statusLine,
+      countLine,
+      [sizeLine, failedLine, oldLine].filter(Boolean).join(' / '),
+    ].filter(Boolean).join('\n');
+    overlay.detail.text = [currentLine, supportLine].filter(Boolean).join('\n');
+    this.renderAssetCacheOverlayButton(overlay.buttons.save, {
+      enabled: state.supported && !state.isDownloading,
+      accent: UI_COLORS.dna,
+    });
+    this.renderAssetCacheOverlayButton(overlay.buttons.cancel, {
+      enabled: state.isDownloading,
+      accent: UI_COLORS.danger,
+    });
+    this.renderAssetCacheOverlayButton(overlay.buttons.retry, {
+      enabled: state.supported && !state.isDownloading && state.failed > 0,
+      accent: UI_COLORS.gold,
+    });
+    this.renderAssetCacheOverlayButton(overlay.buttons.clearOld, {
+      enabled: state.supported && !state.isDownloading && state.oldCachesCount > 0,
+      accent: UI_COLORS.gold,
+    });
+    this.renderAssetCacheOverlayButton(overlay.buttons.clearCurrent, {
+      enabled: state.supported && !state.isDownloading && state.cached > 0,
+      accent: UI_COLORS.danger,
+    });
+    this.renderAssetCacheOverlayButton(overlay.buttons.close, {
+      enabled: !state.isDownloading,
+      accent: UI_COLORS.dna,
+    });
+  }
+
+  renderAssetCacheOverlayButton(button, { enabled = true, accent = UI_COLORS.dna } = {}) {
+    button.view.alpha = enabled ? 1 : 0.42;
+    button.view.eventMode = enabled ? 'static' : 'none';
+    button.view.cursor = enabled ? 'pointer' : 'default';
+    button.bg
+      .clear()
+      .roundRect(0, 0, button.width, 28, 8)
+      .fill({ color: enabled ? 0x061b1d : 0x12191a, alpha: 0.92 })
+      .stroke({ color: accent, width: 1.2, alpha: enabled ? 0.82 : 0.28 });
+    button.text.style.fill = enabled ? '#f4f7f5' : '#74817e';
+  }
+
+  formatBytes(value) {
+    if (!Number.isFinite(value) || value <= 0) {
+      return '-';
+    }
+
+    if (value >= 1024 * 1024 * 1024) {
+      return `${(value / (1024 * 1024 * 1024)).toFixed(1)}GB`;
+    }
+
+    if (value >= 1024 * 1024) {
+      return `${(value / (1024 * 1024)).toFixed(1)}MB`;
+    }
+
+    return `${Math.round(value / 1024)}KB`;
   }
 
   renderRowFrame(row, width, height, texture) {
