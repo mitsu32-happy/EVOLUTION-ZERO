@@ -411,9 +411,8 @@ export class Enemy {
     const requestId = this.assetRequestId + 1;
     this.assetRequestId = requestId;
 
-    this.assetLoader.load(this.assetKey).then((texture) => {
+    const applyPrimaryTexture = (texture) => {
       if (!texture || requestId !== this.assetRequestId) {
-        this.loadFallbackAsset(requestId);
         return;
       }
 
@@ -437,6 +436,23 @@ export class Enemy {
       this.assetSprite.height = this.visualRule.spriteHeight;
       this.assetSprite.visible = true;
       this.body.visible = false;
+    };
+
+    this.assetLoader.load(this.assetKey, {
+      assetType: 'enemy',
+      timeoutMs: 15000,
+      onLateLoad: applyPrimaryTexture,
+    }).then((texture) => {
+      if (!texture || requestId !== this.assetRequestId) {
+        const status = this.assetLoader?.getStatus?.(this.assetKey);
+        this.assetLoader?.recordAssetFallback?.(status?.timedOut ? 'timeout' : 'permanentMissing');
+        if (!status?.timedOut) {
+          this.loadFallbackAsset(requestId);
+        }
+        return;
+      }
+
+      applyPrimaryTexture(texture);
     });
   }
 
@@ -447,8 +463,13 @@ export class Enemy {
       return;
     }
 
-    this.assetLoader.load(fallbackKey).then((texture) => {
+    this.assetLoader.load(fallbackKey, {
+      assetType: 'enemy',
+      timeoutMs: 15000,
+    }).then((texture) => {
       if (!texture || requestId !== this.assetRequestId) {
+        const status = this.assetLoader?.getStatus?.(fallbackKey);
+        this.assetLoader?.recordAssetFallback?.(status?.timedOut ? 'timeout' : 'permanentMissing');
         return;
       }
 

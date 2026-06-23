@@ -1,14 +1,28 @@
-﻿import { Assets } from 'pixi.js';
+import { Assets } from 'pixi.js';
 import { flattenAssetManifest } from '../data/asset_manifest.js';
 
 const DEFAULT_LOAD_TIMEOUT_MS = 8000;
+const CRITICAL_LOAD_TIMEOUT_MS = 20000;
+
+class AssetLoadTimeoutError extends Error {
+  constructor(key, timeoutMs) {
+    super(`Asset load timed out after ${timeoutMs}ms: ${key}`);
+    this.name = 'AssetLoadTimeoutError';
+    this.key = key;
+    this.timeoutMs = timeoutMs;
+    this.isAssetTimeout = true;
+  }
+}
 
 export class AssetLoader {
   constructor(manifest = null) {
     this.items = flattenAssetManifest(manifest ?? undefined);
     this.cache = new Map();
     this.missing = new Set();
+    this.timedOut = new Set();
+    this.retryableTimeouts = new Set();
     this.pending = new Map();
+    this.lateLoadSubscribers = new Map();
     this.groupPending = new Map();
     this.loadedGroups = new Set();
     this.failedGroups = new Map();
@@ -32,18 +46,33 @@ export class AssetLoader {
       cacheHitApprox: 0,
       lastCriticalLabel: null,
       lastCriticalMissingKeys: [],
+      lastCriticalTimedOutKeys: [],
+      lastCriticalPermanentMissingKeys: [],
+      retryCount: 0,
+      retrySuccessCount: 0,
+      retryFailedCount: 0,
+      companionTimeoutCount: 0,
+      enemyTimeoutCount: 0,
+      fallbackBecauseTimeoutCount: 0,
+      fallbackBecausePermanentMissingCount: 0,
+      lateAssetSwapCount: 0,
     };
   }
 
   async load(key, options = {}) {
     const force = options.force === true;
     const cacheBust = options.cacheBust === true;
+    const timeoutMs = options.timeoutMs ?? DEFAULT_LOAD_TIMEOUT_MS;
 
     if (force) {
       this.cache.delete(key);
       this.missing.delete(key);
+      this.timedOut.delete(key);
+      this.retryableTimeouts.delete(key);
       this.pending.delete(key);
     }
+
+    this.subscribeLateLoad(key, options.onLateLoad);
 
     if (this.cache.has(key)) {
       this.diagnostics.cacheHitApprox += 1;
@@ -59,6 +88,11 @@ export class AssetLoader {
       return this.pending.get(key);
     }
 
+    const retryingAfterTimeout = this.retryableTimeouts.has(key);
+    if (retryingAfterTimeout) {
+      this.diagnostics.retryCount += 1;
+    }
+
     const item = this.items.find((entry) => entry.key === key);
 
     if (!item) {
@@ -67,19 +101,56 @@ export class AssetLoader {
       return null;
     }
 
-    const task = this.withTimeout(
-      Assets.load(this.toUrl(item.path, cacheBust ? this.reloadVersion : null)),
-      options.timeoutMs ?? DEFAULT_LOAD_TIMEOUT_MS,
-    )
+    let task = null;
+    const assetTask = Assets.load(this.toUrl(item.path, cacheBust ? this.reloadVersion : null))
       .then((texture) => {
         this.cache.set(key, texture);
-        this.pending.delete(key);
+        if (this.pending.get(key) === task) {
+          this.pending.delete(key);
+        }
+        if (retryingAfterTimeout) {
+          this.diagnostics.retrySuccessCount += 1;
+        }
+        if (this.timedOut.has(key) || this.retryableTimeouts.has(key)) {
+          this.recordLateAssetSwap();
+          this.notifyLateLoad(key, texture);
+        }
+        this.timedOut.delete(key);
+        this.retryableTimeouts.delete(key);
         this.checkedAt.set(key, new Date());
         return texture;
       })
       .catch(() => {
+        if (this.pending.get(key) === task) {
+          this.pending.delete(key);
+        }
+        if (retryingAfterTimeout) {
+          this.diagnostics.retryFailedCount += 1;
+        }
         this.missing.add(key);
-        this.pending.delete(key);
+        this.timedOut.delete(key);
+        this.retryableTimeouts.delete(key);
+        this.checkedAt.set(key, new Date());
+        return null;
+      });
+
+    task = this.withTimeout(assetTask, timeoutMs, key)
+      .catch((error) => {
+        if (error?.isAssetTimeout) {
+          if (this.pending.get(key) === task) {
+            this.pending.delete(key);
+          }
+          this.timedOut.add(key);
+          this.retryableTimeouts.add(key);
+          this.checkedAt.set(key, new Date());
+          this.recordAssetTimeout(options.assetType ?? this.getAssetType(key));
+          return null;
+        }
+
+        if (this.pending.get(key) === task) {
+          this.pending.delete(key);
+        }
+        this.missing.add(key);
         this.checkedAt.set(key, new Date());
         return null;
       });
@@ -98,26 +169,39 @@ export class AssetLoader {
     this.diagnostics.lastCriticalLabel = label;
 
     const results = await Promise.all(uniqueKeys.map(async (key) => {
-      const texture = await this.load(key);
-      return { key, loaded: Boolean(texture), missing: !texture };
+      const texture = await this.load(key, {
+        timeoutMs: CRITICAL_LOAD_TIMEOUT_MS,
+        assetType: this.getAssetType(key),
+      });
+      const status = this.getStatus(key);
+      return {
+        key,
+        loaded: Boolean(texture),
+        missing: !texture && status.missing,
+        timedOut: !texture && status.timedOut,
+      };
     }));
 
     const loaded = results.filter((entry) => entry.loaded).length;
     const missingKeys = results.filter((entry) => entry.missing).map((entry) => entry.key);
+    const timedOutKeys = results.filter((entry) => entry.timedOut).map((entry) => entry.key);
 
     this.diagnostics.criticalLoaded += loaded;
     this.diagnostics.criticalMissing += missingKeys.length;
-    this.diagnostics.playSceneStartCriticalReady = missingKeys.length === 0;
+    this.diagnostics.playSceneStartCriticalReady = missingKeys.length === 0 && timedOutKeys.length === 0;
     this.diagnostics.preloadDurationMs = Math.round(this.now() - startedAt);
     this.diagnostics.lastCriticalMissingKeys = missingKeys;
+    this.diagnostics.lastCriticalTimedOutKeys = timedOutKeys;
+    this.diagnostics.lastCriticalPermanentMissingKeys = missingKeys;
 
     return {
       label,
       requested: uniqueKeys.length,
       loaded,
       missing: missingKeys,
+      timedOut: timedOutKeys,
       durationMs: this.diagnostics.preloadDurationMs,
-      ready: missingKeys.length === 0,
+      ready: missingKeys.length === 0 && timedOutKeys.length === 0,
     };
   }
 
@@ -145,10 +229,35 @@ export class AssetLoader {
     }
   }
 
+  recordAssetTimeout(assetType = null) {
+    if (assetType === 'companion') {
+      this.diagnostics.companionTimeoutCount += 1;
+    } else if (assetType === 'enemy') {
+      this.diagnostics.enemyTimeoutCount += 1;
+    }
+  }
+
+  recordAssetFallback(reason = 'permanentMissing') {
+    if (reason === 'timeout') {
+      this.diagnostics.fallbackBecauseTimeoutCount += 1;
+    } else {
+      this.diagnostics.fallbackBecausePermanentMissingCount += 1;
+    }
+  }
+
+  recordLateAssetSwap() {
+    this.diagnostics.lateAssetSwapCount += 1;
+  }
+
   getDiagnostics() {
     const count = this.diagnostics.effectRequestToDisplayCount;
     return {
       ...this.diagnostics,
+      permanentMissingKeys: [...this.missing],
+      timedOutKeys: [...this.timedOut],
+      retryableTimeoutKeys: [...this.retryableTimeouts],
+      criticalTimedOutKeys: [...(this.diagnostics.lastCriticalTimedOutKeys ?? [])],
+      criticalPermanentMissingKeys: [...(this.diagnostics.lastCriticalPermanentMissingKeys ?? [])],
       effectRequestToDisplayAverageMs: count > 0
         ? Math.round(this.diagnostics.effectRequestToDisplayTotalMs / count)
         : 0,
@@ -159,7 +268,7 @@ export class AssetLoader {
     return typeof performance !== 'undefined' ? performance.now() : Date.now();
   }
 
-  withTimeout(promise, timeoutMs) {
+  withTimeout(promise, timeoutMs, key = null) {
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || typeof window === 'undefined') {
       return promise;
     }
@@ -167,7 +276,7 @@ export class AssetLoader {
     let timeoutId = null;
     const timeout = new Promise((_, reject) => {
       timeoutId = window.setTimeout(() => {
-        reject(new Error(`Asset load timed out after ${timeoutMs}ms`));
+        reject(new AssetLoadTimeoutError(key, timeoutMs));
       }, timeoutMs);
     });
 
@@ -217,7 +326,7 @@ export class AssetLoader {
     let loaded = 0;
     const failed = [];
     const task = Promise.all(keys.map(async (key) => {
-      const texture = await this.load(key, { force });
+      const texture = await this.load(key, { force, assetType: this.getAssetType(key) });
       loaded += 1;
       options.onProgress?.({
         groupId,
@@ -290,6 +399,7 @@ export class AssetLoader {
       count: items.length,
       loaded: items.filter((item) => this.cache.has(item.key)).length,
       missing: items.filter((item) => this.missing.has(item.key)).map((item) => item.key),
+      timedOut: items.filter((item) => this.timedOut.has(item.key)).map((item) => item.key),
       pending: items.filter((item) => this.pending.has(item.key)).map((item) => item.key),
       failed: this.failedGroups.get(groupId) ?? [],
     };
@@ -363,13 +473,36 @@ export class AssetLoader {
     }
   }
 
+  getAssetType(key = '') {
+    if (key.startsWith('companions.')) {
+      return 'companion';
+    }
+    if (key.startsWith('enemies.')) {
+      return 'enemy';
+    }
+    if (key.startsWith('bosses.')) {
+      return 'boss';
+    }
+    if (key.startsWith('pickups.') || key.startsWith('items.')) {
+      return 'pickup';
+    }
+    if (key.includes('Effects.') || key.endsWith('Effect')) {
+      return 'effect';
+    }
+    return null;
+  }
+
   clearMissing(key = null) {
     if (key) {
       this.missing.delete(key);
+      this.timedOut.delete(key);
+      this.retryableTimeouts.delete(key);
       return;
     }
 
     this.missing.clear();
+    this.timedOut.clear();
+    this.retryableTimeouts.clear();
   }
 
   list() {
@@ -377,6 +510,8 @@ export class AssetLoader {
       ...item,
       loaded: this.cache.has(item.key),
       missing: this.missing.has(item.key),
+      timedOut: this.timedOut.has(item.key),
+      retryableTimeout: this.retryableTimeouts.has(item.key),
       checkedAt: this.checkedAt.get(item.key) ?? null,
     }));
   }
@@ -393,6 +528,8 @@ export class AssetLoader {
       item: this.getItem(key),
       loaded: this.cache.has(key),
       missing: this.missing.has(key),
+      timedOut: this.timedOut.has(key),
+      retryableTimeout: this.retryableTimeouts.has(key),
       pending: this.pending.has(key),
       checkedAt: this.checkedAt.get(key) ?? null,
       dummy: this.getItem(key)?.meta?.testOnly === true,
@@ -423,5 +560,31 @@ export class AssetLoader {
 
     const separator = url.includes('?') ? '&' : '?';
     return `${url}${separator}asset_reload=${encodeURIComponent(cacheBust)}`;
+  }
+
+  subscribeLateLoad(key, callback) {
+    if (!key || typeof callback !== 'function') {
+      return;
+    }
+
+    const subscribers = this.lateLoadSubscribers.get(key) ?? new Set();
+    subscribers.add(callback);
+    this.lateLoadSubscribers.set(key, subscribers);
+  }
+
+  notifyLateLoad(key, texture) {
+    const subscribers = this.lateLoadSubscribers.get(key);
+    if (!subscribers?.size) {
+      return;
+    }
+
+    subscribers.forEach((callback) => {
+      try {
+        callback(texture, key);
+      } catch {
+        // Late-load subscribers are best-effort visual recovery hooks.
+      }
+    });
+    this.lateLoadSubscribers.delete(key);
   }
 }

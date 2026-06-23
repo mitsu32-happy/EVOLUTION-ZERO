@@ -5599,7 +5599,7 @@ export class PlayScene {
     }
 
     this.drawCompanionFallback();
-    this.assetLoader?.load?.(companion.assetKey).then((texture) => {
+    const applyCompanionTexture = (texture) => {
       if (this.isDisposed || !texture || this.activeCompanion?.id !== companion.id) {
         return;
       }
@@ -5610,10 +5610,28 @@ export class PlayScene {
       this.companionSprite.visible = true;
       this.companionFallback.visible = false;
       this.updateCompanionDebugLabel('sprite');
+    };
+
+    this.assetLoader?.load?.(companion.assetKey, {
+      assetType: 'companion',
+      timeoutMs: 15000,
+      onLateLoad: applyCompanionTexture,
+    }).then((texture) => {
+      if (!texture) {
+        const status = this.assetLoader?.getStatus?.(companion.assetKey);
+        this.assetLoader?.recordAssetFallback?.(status?.timedOut ? 'timeout' : 'permanentMissing');
+        this.companionSprite.visible = false;
+        this.companionFallback.visible = true;
+        this.updateCompanionDebugLabel(status?.timedOut ? 'timeout-retry' : 'fallback');
+        return;
+      }
+
+      applyCompanionTexture(texture);
     }).catch(() => {
       if (this.isDisposed) {
         return;
       }
+      this.assetLoader?.recordAssetFallback?.('permanentMissing');
       this.companionSprite.visible = false;
       this.companionFallback.visible = true;
       this.updateCompanionDebugLabel('fallback');

@@ -1738,7 +1738,7 @@ export const ASSET_MANIFEST = {
         death: { row: 3, frames: [0, 1, 2, 3], fps: 5, loop: false },
       },
     },
-    tankFallback: 'assets/enemies/tank.png',
+    tankFallback: 'assets/enemies/tank_sheet.png',
     volcanoHeavy: {
       path: 'assets/enemies/volcano/volcano_heavy_sheet.png',
       spriteSheet: true,
@@ -2043,7 +2043,7 @@ export const ASSET_MANIFEST = {
         death: { row: 3, frames: [0, 1, 2, 3], fps: 5, loop: false },
       },
     },
-    mutantPredatorFallback: 'assets/bosses/mutant_predator.png',
+    mutantPredatorFallback: 'assets/bosses/mutant_predator_sheet.png',
     volcanoBoss: {
       path: 'assets/enemies/bosses/volcano_boss_sheet.png',
       spriteSheet: true,
@@ -2895,7 +2895,7 @@ export const ASSET_MANIFEST = {
       path: 'assets/pickups/exp_crystal_large.png',
       note: 'MVP-134 generated large EXP crystal pickup.',
     },
-    expBoss: 'assets/effects/pickups/exp_boss.png',
+    expBoss: 'assets/pickups/exp_crystal_large.png',
     companionEgg: {
       path: 'assets/companions/companion_egg_p01.png',
       note: 'MVP-P01 companion egg pickup icon.',
@@ -5501,9 +5501,9 @@ export const ASSET_MANIFEST = {
     },
   },
   evolutionEffects: {
-    speed: 'assets/effects/evolution/speed_burst.png',
-    hunting: 'assets/effects/evolution/hunting_pulse.png',
-    attack: 'assets/effects/evolution/attack_impact.png',
+    speed: 'assets/effects/specials/special_speed_slash.png',
+    hunting: 'assets/effects/specials/special_hunting_swarm.png',
+    attack: 'assets/effects/specials/special_attack_burst.png',
   },
   specialEffects: {
     speedSlash: {
@@ -5653,9 +5653,9 @@ export const ASSET_MANIFEST = {
       animations: { active: { row: 0, frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], fps: 18, loop: false } },
     },
   hitEffects: {
-    slash: 'assets/effects/hit/slash.png',
-    impact: 'assets/effects/hit/impact.png',
-    pickup: 'assets/effects/hit/pickup_flash.png',
+    slash: 'assets/effects/attacks/raptor_claw_slash.png',
+    impact: 'assets/effects/attacks/triceratops_horn_impact.png',
+    pickup: 'assets/pickups/exp_crystal_small.png',
   },
 };
 
