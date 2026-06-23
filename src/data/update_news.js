@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'minipack-effect-v1-2026-06-23',
+    date: '2026/06/23',
+    category: 'HOTFIX',
+    title: 'コンプソグナトゥスのミニ群れ演出を改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・コンプソグナトゥスのミニ群れが攻撃時に小型の公式エフェクトを表示するよう改善しました。',
+      '・既存の描画負荷対策と読み込み改善は維持しています。',
+    ],
+  },
+  {
     id: 'effect-quality-loading-v1-2026-06-23',
     date: '2026/06/23',
     category: 'HOTFIX',
