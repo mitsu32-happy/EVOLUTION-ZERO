@@ -46,9 +46,13 @@ export class CombatSystem {
     this.normalAttackDefinition = null;
     this.normalAttackEffectTexture = null;
     this.normalAttackEffectKey = null;
+    this.normalAttackEffectLoadPending = false;
+    this.normalAttackEffectMissing = false;
     this.evolutionNormalAttackEffectTexture = null;
     this.evolutionNormalAttackEffectKey = null;
     this.evolutionNormalAttackEffectId = null;
+    this.evolutionNormalAttackEffectLoadPending = false;
+    this.evolutionNormalAttackEffectMissing = false;
     this.adaptationDamageMultiplier = 1;
     this.adaptationSynergy = {
       speed: 0,
@@ -91,6 +95,16 @@ export class CombatSystem {
       graphicsPoolFree: this.graphicsPool.length,
       spritePoolFree: this.spritePool.length,
       adaptationEffects: this.getAdaptationEffectStats(),
+      normalAttackEffect: {
+        key: this.normalAttackEffectKey,
+        loaded: Boolean(this.normalAttackEffectTexture),
+        pending: Boolean(this.normalAttackEffectLoadPending),
+        missing: Boolean(this.normalAttackEffectMissing),
+        evolutionKey: this.evolutionNormalAttackEffectKey,
+        evolutionLoaded: Boolean(this.evolutionNormalAttackEffectTexture),
+        evolutionPending: Boolean(this.evolutionNormalAttackEffectLoadPending),
+        evolutionMissing: Boolean(this.evolutionNormalAttackEffectMissing),
+      },
       caps: {
         combatProjectiles: MAX_COMBAT_PROJECTILES,
         combatEffects: MAX_COMBAT_EFFECTS,
@@ -426,9 +440,13 @@ export class CombatSystem {
     this.normalAttackDefinition = null;
     this.normalAttackEffectTexture = null;
     this.normalAttackEffectKey = null;
+    this.normalAttackEffectLoadPending = false;
+    this.normalAttackEffectMissing = false;
     this.evolutionNormalAttackEffectTexture = null;
     this.evolutionNormalAttackEffectKey = null;
     this.evolutionNormalAttackEffectId = null;
+    this.evolutionNormalAttackEffectLoadPending = false;
+    this.evolutionNormalAttackEffectMissing = false;
     this.adaptationDamageMultiplier = 1;
     this.setAdaptationSynergy();
     this.setCompanionSynergy();
@@ -473,12 +491,15 @@ export class CombatSystem {
   loadNormalAttackEffect(attack) {
     this.normalAttackEffectTexture = null;
     this.normalAttackEffectKey = attack?.effectKey ?? null;
+    this.normalAttackEffectLoadPending = false;
+    this.normalAttackEffectMissing = false;
 
     if (!this.assetLoader || !this.normalAttackEffectKey) {
       return;
     }
 
     const expectedKey = this.normalAttackEffectKey;
+    this.normalAttackEffectLoadPending = true;
     this.assetLoader.load(expectedKey).then((texture) => {
       if (this.normalAttackEffectKey !== expectedKey) {
         return;
@@ -486,6 +507,13 @@ export class CombatSystem {
 
       const item = this.assetLoader.getItem?.(expectedKey);
       this.normalAttackEffectTexture = this.getRenderableEffectTexture(texture, item?.meta);
+      this.normalAttackEffectMissing = !this.normalAttackEffectTexture;
+      this.normalAttackEffectLoadPending = false;
+    }).catch(() => {
+      if (this.normalAttackEffectKey === expectedKey) {
+        this.normalAttackEffectMissing = true;
+        this.normalAttackEffectLoadPending = false;
+      }
     });
   }
 
@@ -493,6 +521,8 @@ export class CombatSystem {
     this.evolutionNormalAttackEffectTexture = null;
     this.evolutionNormalAttackEffectKey = effectKey ?? null;
     this.evolutionNormalAttackEffectId = effectId ?? null;
+    this.evolutionNormalAttackEffectLoadPending = false;
+    this.evolutionNormalAttackEffectMissing = false;
 
     if (!this.assetLoader || !this.evolutionNormalAttackEffectKey) {
       return;
@@ -500,6 +530,7 @@ export class CombatSystem {
 
     const expectedKey = this.evolutionNormalAttackEffectKey;
     const expectedId = this.evolutionNormalAttackEffectId;
+    this.evolutionNormalAttackEffectLoadPending = true;
     this.assetLoader.load(expectedKey).then((texture) => {
       if (this.evolutionNormalAttackEffectKey !== expectedKey || this.evolutionNormalAttackEffectId !== expectedId) {
         return;
@@ -507,6 +538,13 @@ export class CombatSystem {
 
       const item = this.assetLoader.getItem?.(expectedKey);
       this.evolutionNormalAttackEffectTexture = this.getRenderableEffectTexture(texture, item?.meta);
+      this.evolutionNormalAttackEffectMissing = !this.evolutionNormalAttackEffectTexture;
+      this.evolutionNormalAttackEffectLoadPending = false;
+    }).catch(() => {
+      if (this.evolutionNormalAttackEffectKey === expectedKey && this.evolutionNormalAttackEffectId === expectedId) {
+        this.evolutionNormalAttackEffectMissing = true;
+        this.evolutionNormalAttackEffectLoadPending = false;
+      }
     });
   }
 
@@ -1436,8 +1474,11 @@ export class CombatSystem {
   }
 
   spawnNormalAttackEffect(player, target, effectLayer, attack, facing) {
-    const texture = this.evolutionNormalAttackEffectTexture
-      ?? (this.normalAttackEffectKey === attack.effectKey ? this.normalAttackEffectTexture : null);
+    const requestedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const expectsEvolutionEffect = Boolean(this.evolutionNormalAttackEffectKey);
+    const texture = expectsEvolutionEffect
+      ? this.evolutionNormalAttackEffectTexture
+      : (this.normalAttackEffectKey === attack.effectKey ? this.normalAttackEffectTexture : null);
     const origin = this.getAttackOrigin(player, attack, facing);
     const distance = attack.range * (attack.effectOffset ?? 0.55);
     const x = origin.x + facing.x * distance;
@@ -1447,6 +1488,16 @@ export class CombatSystem {
     const size = this.evolutionNormalAttackEffectTexture
       ? this.getEvolutionNormalAttackEffectSize(this.attackPattern)
       : (attack.effectSize ?? { width: 112, height: 92 });
+
+    const pressureEffectCap = this.emergencyPerformanceMode ? 0
+      : this.performancePressureLevel >= 2 ? Math.floor(MAX_COMBAT_EFFECTS * 0.38)
+        : this.performancePressureLevel >= 1 ? Math.floor(MAX_COMBAT_EFFECTS * 0.58)
+          : MAX_COMBAT_EFFECTS;
+
+    if (pressureEffectCap <= 0 || this.effects.length >= pressureEffectCap) {
+      this.assetLoader?.recordEffectSkippedBecauseBudget?.();
+      return;
+    }
 
     if (texture) {
       const sprite = this.acquirePooledView(texture);
@@ -1468,23 +1519,24 @@ export class CombatSystem {
       sprite.width = size.width;
       sprite.height = size.height;
       sprite.alpha = 0;
+      this.trimRuntimeList(this.effects, MAX_COMBAT_EFFECTS - 1);
       effectLayer.addChild(sprite);
       this.effects.push(effect);
+      this.assetLoader?.recordEffectDisplayed?.(requestedAt);
       return;
     }
 
-    const visualTarget = {
-      position: {
-        x: origin.x + facing.x * attack.range,
-        y: origin.y + facing.y * attack.range,
-      },
-    };
+    this.assetLoader?.recordEffectSkippedBecauseMissing?.();
+    if (this.assetLoader && expectsEvolutionEffect && this.evolutionNormalAttackEffectKey && !this.evolutionNormalAttackEffectLoadPending) {
+      this.assetLoader.recordEffectRetried?.();
+      this.loadEvolutionNormalAttackEffect(this.evolutionNormalAttackEffectKey, this.evolutionNormalAttackEffectId);
+      return;
+    }
 
-    this.spawnSlashEffect(player, visualTarget, effectLayer, {
-      style: attack.id,
-      duration,
-      scale: attack.attackType === NORMAL_ATTACK_HIT_SHAPES.CONE ? 1.35 : attack.attackType === NORMAL_ATTACK_HIT_SHAPES.RECTANGLE ? 1.18 : 0.95,
-    });
+    if (this.assetLoader && attack.effectKey && !expectsEvolutionEffect && !this.normalAttackEffectLoadPending) {
+      this.assetLoader.recordEffectRetried?.();
+      this.loadNormalAttackEffect(attack);
+    }
   }
 
   spawnAdaptationSpriteEffect(state, player, target, effectLayer, options = {}) {

@@ -22,6 +22,11 @@ import {
   ZERO_TITLES,
   getTitleFrameForTitle,
 } from '../data/reward_titles.js';
+import { ASSET_KEYS } from '../data/asset_manifest.js';
+import { getCompanionById } from '../data/companion_dinos.js';
+import { getEvolutionBranchesForDino } from '../data/evolution_data.js';
+import { getNormalAttackById } from '../data/normal_attacks.js';
+import { getDinoConfig, getStageBossConfig, getStageConfig } from '../data/run_config.js';
 import { RESEARCH_PT_TO_DNA_RATE } from '../data/research.js';
 
 function getDebugResearchPt() {
@@ -239,6 +244,7 @@ export class ScreenManager {
     this.applyDebugTitleRewards();
     this.applyDebugDailyMissions();
     this.assetLoader = new AssetLoader();
+    this.loadingTimings = this.createLoadingTimingState();
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
     this.audioManager.installPageLifecycleHandlers();
     this.introOverlay = new IntroOverlay({
@@ -570,6 +576,142 @@ export class ScreenManager {
     } finally {
       this.loadingUi.hide();
     }
+  }
+
+  createLoadingTimingState() {
+    const now = this.now();
+    const bootStart = typeof window !== 'undefined'
+      ? (window.__EVOLUTION_ZERO_LOADING_TIMINGS__?.appBootStart ?? now)
+      : now;
+    return {
+      appBootStart: bootStart,
+      titleVisible: null,
+      homeVisible: null,
+      playSceneStart: null,
+      firstControllableFrame: null,
+      criticalAssetsReady: null,
+      appBootToTitleVisibleMs: null,
+      titleToHomeVisibleMs: null,
+      homeToPlaySceneStartMs: null,
+      playSceneStartToFirstControllableFrameMs: null,
+      playSceneStartToCriticalAssetsReadyMs: null,
+    };
+  }
+
+  now() {
+    return typeof performance !== 'undefined' ? performance.now() : Date.now();
+  }
+
+  recordLoadingTiming(name) {
+    const now = this.now();
+    this.loadingTimings[name] = now;
+
+    if (this.loadingTimings.titleVisible !== null) {
+      this.loadingTimings.appBootToTitleVisibleMs = Math.round(this.loadingTimings.titleVisible - this.loadingTimings.appBootStart);
+    }
+    if (this.loadingTimings.titleVisible !== null && this.loadingTimings.homeVisible !== null) {
+      this.loadingTimings.titleToHomeVisibleMs = Math.round(this.loadingTimings.homeVisible - this.loadingTimings.titleVisible);
+    }
+    if (this.loadingTimings.homeVisible !== null && this.loadingTimings.playSceneStart !== null) {
+      this.loadingTimings.homeToPlaySceneStartMs = Math.round(this.loadingTimings.playSceneStart - this.loadingTimings.homeVisible);
+    }
+    if (this.loadingTimings.playSceneStart !== null && this.loadingTimings.firstControllableFrame !== null) {
+      this.loadingTimings.playSceneStartToFirstControllableFrameMs = Math.round(this.loadingTimings.firstControllableFrame - this.loadingTimings.playSceneStart);
+    }
+    if (this.loadingTimings.playSceneStart !== null && this.loadingTimings.criticalAssetsReady !== null) {
+      this.loadingTimings.playSceneStartToCriticalAssetsReadyMs = Math.round(this.loadingTimings.criticalAssetsReady - this.loadingTimings.playSceneStart);
+    }
+
+    this.publishLoadingDiagnostics();
+  }
+
+  publishLoadingDiagnostics() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const payload = {
+      ...this.loadingTimings,
+      assets: this.assetLoader?.getDiagnostics?.() ?? null,
+    };
+
+    try {
+      window.__EVOLUTION_ZERO_LOADING_TIMINGS__ = payload;
+      document.querySelector('#app').__EVOLUTION_ZERO_LOADING_TIMINGS__ = payload;
+    } catch {
+      // Loading diagnostics are optional.
+    }
+  }
+
+  toAssetKeySuffix(id = '') {
+    return String(id).replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+  }
+
+  collectObjectAssetKeys(value, keys = []) {
+    if (!value || typeof value !== 'object') {
+      return keys;
+    }
+
+    Object.entries(value).forEach(([entryKey, entryValue]) => {
+      if (typeof entryValue === 'string' && (entryKey === 'assetKey' || entryKey === 'warningAssetKey' || entryKey === 'attackAssetKey' || entryKey === 'beamAssetKey' || entryKey === 'fieldAssetKey' || entryKey === 'burstAssetKey')) {
+        keys.push(entryValue);
+      } else if (entryValue && typeof entryValue === 'object') {
+        this.collectObjectAssetKeys(entryValue, keys);
+      }
+    });
+
+    return keys;
+  }
+
+  getSelectedCompanionForCriticalAssets() {
+    const saveData = this.saveManager?.getData?.();
+    const companionId = this.gameState?.selectedCompanionId
+      ?? saveData?.companion?.selectedId
+      ?? null;
+
+    return companionId ? getCompanionById(companionId) : null;
+  }
+
+  getSelectedRunCriticalAssetKeys() {
+    const dinoId = this.gameState.selectedDino ?? 'velociraptor';
+    const stageId = this.gameState.selectedStage ?? 'jungle';
+    const difficultyId = this.gameState.selectedDifficulty ?? 'normal';
+    const dinoConfig = getDinoConfig(dinoId);
+    const normalAttack = getNormalAttackById(dinoConfig.normalAttackId);
+    const stageConfig = getStageConfig(stageId);
+    const bossConfig = getStageBossConfig(stageId, difficultyId);
+    const companion = this.getSelectedCompanionForCriticalAssets();
+    const enemyTypes = new Set(['swarm', 'fast', 'tank']);
+
+    Object.keys(stageConfig.enemyWeights ?? {}).forEach((enemyType) => enemyTypes.add(enemyType));
+    Object.keys(stageConfig.difficultyEnemyWeights?.[difficultyId] ?? {}).forEach((enemyType) => enemyTypes.add(enemyType));
+
+    const keys = [
+      ASSET_KEYS.player?.[dinoId],
+      ASSET_KEYS.playerSheets?.[dinoId],
+      normalAttack?.effectKey,
+      normalAttack?.iconKey,
+      companion?.assetKey,
+      companion?.effectAssetKey,
+      companion?.iconAssetKey,
+      ...[...enemyTypes].map((enemyType) => ASSET_KEYS.enemies?.[enemyType]),
+      bossConfig?.assetKey,
+      ...Object.values(bossConfig?.effectKeys ?? {}),
+      ...this.collectObjectAssetKeys(bossConfig?.attacks ?? {}),
+    ];
+
+    getEvolutionBranchesForDino(dinoId).forEach((branch) => {
+      keys.push(
+        ASSET_KEYS.evolutionSheets?.[this.toAssetKeySuffix(branch.id)],
+        branch.normalAttackEffectKey,
+      );
+    });
+
+    if (dinoId === 'compsognathus') {
+      keys.push(normalAttack?.effectKey);
+    }
+
+    return [...new Set(keys.filter(Boolean))];
   }
 
   update(delta) {
@@ -926,7 +1068,14 @@ export class ScreenManager {
     this.syncPwaUpdateNotice();
     this.updateBgmForScreen(screenName);
     if (screenName === 'title') {
+      if (this.loadingTimings.titleVisible === null) {
+        this.recordLoadingTiming('titleVisible');
+      }
       this.queueTitleCue();
+    } else if (screenName === 'home') {
+      this.recordLoadingTiming('homeVisible');
+    } else if (screenName === 'play') {
+      this.recordLoadingTiming('firstControllableFrame');
     }
   }
 
@@ -1544,6 +1693,7 @@ export class ScreenManager {
 
   async showPlay() {
     this.applyDebugRunSelection();
+    this.recordLoadingTiming('playSceneStart');
     this.saveManager.recordDailyProgress('runStarted', 1);
     if (this.gameState.selectedMode === 'standard') {
       this.saveManager.recordDailyProgress('normalStagePlayed', 1);
@@ -1554,7 +1704,13 @@ export class ScreenManager {
       `dino:${this.gameState.selectedDino ?? 'velociraptor'}`,
       this.gameState.selectedMode === 'zero' ? 'zero' : null,
     ].filter(Boolean);
+    const criticalPreloadTask = this.assetLoader.preloadCritical(
+      this.getSelectedRunCriticalAssetKeys(),
+      { label: 'play:selected-run' },
+    );
     await this.loadAssetGroups(playGroups, 'プレイ資源読み込み中', 'ロード中');
+    await criticalPreloadTask;
+    this.recordLoadingTiming('criticalAssetsReady');
     this.audioManager.preload([
       'home_bgm',
       'jungle_bgm',
