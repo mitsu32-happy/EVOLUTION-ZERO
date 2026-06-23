@@ -5,6 +5,7 @@ import { GamepadManager } from '../input/gamepad_manager.js';
 import { IntroOverlay } from '../intro/intro_overlay.js';
 import { SaveManager } from '../save/save_manager.js';
 import { PlayScene } from '../scenes/play_scene.js';
+import { AssetBulkCacheManager } from '../utils/asset_cache_manager.js';
 import { AssetLoader } from '../utils/asset_loader.js';
 import { AssetPreviewScreen } from '../ui/asset_preview_screen.js';
 import { CodexScreen } from '../ui/codex_screen.js';
@@ -244,6 +245,7 @@ export class ScreenManager {
     this.applyDebugTitleRewards();
     this.applyDebugDailyMissions();
     this.assetLoader = new AssetLoader();
+    this.assetCacheManager = new AssetBulkCacheManager();
     this.loadingTimings = this.createLoadingTimingState();
     this.audioManager.applySettings(this.saveManager.getAudioSettings());
     this.audioManager.installPageLifecycleHandlers();
@@ -444,6 +446,7 @@ export class ScreenManager {
       height: this.height,
       saveManager: this.saveManager,
       audioManager: this.audioManager,
+      assetCacheManager: this.assetCacheManager,
       onBack: () => this.withUiClick(() => this.returnFromOptions()),
       onHome: () => this.withUiClick(() => this.showHome()),
       onResearch: () => this.withUiClick(() => this.showResearch()),
@@ -633,6 +636,7 @@ export class ScreenManager {
     const payload = {
       ...this.loadingTimings,
       assets: this.assetLoader?.getDiagnostics?.() ?? null,
+      assetCache: this.assetCacheManager?.getDiagnostics?.() ?? null,
     };
 
     try {
@@ -1086,6 +1090,7 @@ export class ScreenManager {
       currentScreen: this.currentScreen,
       screen: this.currentScreen,
       lastPlaySceneCleanup: this.lastPlaySceneCleanup,
+      assetCache: this.assetCacheManager?.getDiagnostics?.() ?? null,
       ...playContext,
     };
   }
