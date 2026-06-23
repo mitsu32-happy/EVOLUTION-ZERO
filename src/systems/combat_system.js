@@ -1473,7 +1473,7 @@ export class CombatSystem {
     this.effects.push(effect);
   }
 
-  spawnNormalAttackEffect(player, target, effectLayer, attack, facing) {
+  spawnNormalAttackEffect(player, target, effectLayer, attack, facing, options = {}) {
     const requestedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
     const expectsEvolutionEffect = Boolean(this.evolutionNormalAttackEffectKey);
     const texture = expectsEvolutionEffect
@@ -1485,9 +1485,14 @@ export class CombatSystem {
     const y = origin.y + facing.y * distance;
     const angle = Math.atan2(facing.y, facing.x);
     const duration = attack.effectDuration ?? 0.22;
-    const size = this.evolutionNormalAttackEffectTexture
+    const baseSize = this.evolutionNormalAttackEffectTexture
       ? this.getEvolutionNormalAttackEffectSize(this.attackPattern)
       : (attack.effectSize ?? { width: 112, height: 92 });
+    const sizeScale = Math.max(0.1, options.sizeScale ?? 1);
+    const size = {
+      width: baseSize.width * sizeScale,
+      height: baseSize.height * sizeScale,
+    };
 
     const pressureEffectCap = this.emergencyPerformanceMode ? 0
       : this.performancePressureLevel >= 2 ? Math.floor(MAX_COMBAT_EFFECTS * 0.38)
@@ -1503,9 +1508,9 @@ export class CombatSystem {
       const sprite = this.acquirePooledView(texture);
       const effect = {
         age: 0,
-        duration: this.simpleEffects ? Math.min(duration, 0.18) : duration,
+        duration: this.simpleEffects ? Math.min(duration, 0.18) : duration * (options.durationScale ?? 1),
         style: attack.id,
-        scale: this.simpleEffects ? 0.78 : 1,
+        scale: this.simpleEffects ? 0.78 : (options.effectScale ?? 1),
         side: 0,
         sprite: true,
         baseWidth: size.width,
