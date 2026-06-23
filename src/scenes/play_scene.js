@@ -79,6 +79,7 @@ const MINIPACK_ATTACK_INTERVAL = 1.6;
 const MINIPACK_DAMAGE_RATIO = 0.14;
 const MINIPACK_ATTACK_RANGE = 230;
 const MINIPACK_EFFECT_CAP = 2;
+const MINIPACK_ATTACK_EFFECT_SCALE = 0.75;
 const MINIPACK_ATTACK_APPROACH_WINDOW = 0.58;
 const MINIPACK_WANDER_MAX_SPEED = 210;
 const MINIPACK_APPROACH_MAX_SPEED = 320;
@@ -5248,6 +5249,88 @@ export class PlayScene {
     return selected;
   }
 
+  getMiniPackPerformancePresetId() {
+    return this.getPerformancePresetStats?.()?.current ?? null;
+  }
+
+  recordMiniPackSuppressedEffect() {
+    if (this.emergencyPerformance) {
+      this.emergencyPerformance.suppressedEffects = (this.emergencyPerformance.suppressedEffects ?? 0) + 1;
+    }
+  }
+
+  shouldSpawnMiniPackAttackEffect(actor) {
+    if (
+      this.isEmergencyPerformanceActive()
+      || this.performanceLoadSheddingLevel >= 2
+      || this.miniPackEffectCounter >= MINIPACK_EFFECT_CAP
+      || !this.combatSystem?.normalAttackDefinition
+      || !this.effectLayer
+    ) {
+      this.recordMiniPackSuppressedEffect();
+      return false;
+    }
+
+    const combatStats = this.combatSystem?.getPerformanceStats?.() ?? {};
+    const effectCap = combatStats.caps?.combatEffects ?? 96;
+    if ((combatStats.combatEffects ?? 0) >= effectCap) {
+      this.recordMiniPackSuppressedEffect();
+      return false;
+    }
+
+    const preset = this.getMiniPackPerformancePresetId();
+    const hits = this.miniPackDebugStats?.hits ?? 0;
+    if (preset === 'battery' && (hits + actor.index) % 3 !== 0) {
+      return false;
+    }
+    if ((preset === 'performance' || this.performanceLoadSheddingLevel >= 1) && (hits + actor.index) % 2 !== 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  spawnMiniPackAttackEffect(actor, target) {
+    if (!this.shouldSpawnMiniPackAttackEffect(actor) || !target?.position) {
+      return false;
+    }
+
+    const dx = target.position.x - actor.position.x;
+    const dy = target.position.y - actor.position.y;
+    const distance = Math.max(1, Math.hypot(dx, dy));
+    const facing = {
+      x: dx / distance,
+      y: dy / distance,
+    };
+    const actorSource = {
+      position: actor.position,
+      facing,
+    };
+    const beforeCount = this.combatSystem.effects?.length ?? 0;
+
+    this.combatSystem.spawnNormalAttackEffect(
+      actorSource,
+      target,
+      this.effectLayer,
+      this.combatSystem.normalAttackDefinition,
+      facing,
+      {
+        sizeScale: MINIPACK_ATTACK_EFFECT_SCALE,
+        effectScale: MINIPACK_ATTACK_EFFECT_SCALE,
+        durationScale: 0.9,
+      },
+    );
+
+    if ((this.combatSystem.effects?.length ?? 0) <= beforeCount) {
+      this.recordMiniPackSuppressedEffect();
+      return false;
+    }
+
+    this.miniPackEffectCounter += 1;
+    this.miniPackDebugStats.effects += 1;
+    return true;
+  }
+
   updateMiniPackAttack(delta) {
     if (
       this.gameState?.isPaused
@@ -5282,13 +5365,7 @@ export class PlayScene {
       actor.actionTarget = { x: target.position.x, y: target.position.y };
       actor.facing = target.position.x >= actor.position.x ? 1 : -1;
       this.miniPackDebugStats.hits += 1;
-      if (!emergency && this.performanceLoadSheddingLevel <= 0 && this.miniPackEffectCounter < MINIPACK_EFFECT_CAP) {
-        this.spawnPickupPopup(target.position.x, target.position.y - 24, `${damage}`, 0xc9fbff);
-        this.miniPackEffectCounter += 1;
-        this.miniPackDebugStats.effects += 1;
-      } else if (emergency) {
-        this.emergencyPerformance.suppressedEffects += 1;
-      }
+      this.spawnMiniPackAttackEffect(actor, target);
     });
   }
 
