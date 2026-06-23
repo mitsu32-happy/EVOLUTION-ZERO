@@ -14,6 +14,25 @@ export class AssetLoader {
     this.failedGroups = new Map();
     this.checkedAt = new Map();
     this.reloadVersion = 0;
+    this.diagnostics = {
+      criticalRequested: 0,
+      criticalLoaded: 0,
+      criticalMissing: 0,
+      effectFallbackCount: 0,
+      effectSkippedBecauseMissing: 0,
+      effectSkippedBecauseBudget: 0,
+      effectRetried: 0,
+      effectDisplayed: 0,
+      effectRequestToDisplayTotalMs: 0,
+      effectRequestToDisplayCount: 0,
+      playSceneStartCriticalReady: false,
+      preloadDurationMs: 0,
+      deferredLoadCount: 0,
+      duplicateLoadAvoided: 0,
+      cacheHitApprox: 0,
+      lastCriticalLabel: null,
+      lastCriticalMissingKeys: [],
+    };
   }
 
   async load(key, options = {}) {
@@ -27,6 +46,7 @@ export class AssetLoader {
     }
 
     if (this.cache.has(key)) {
+      this.diagnostics.cacheHitApprox += 1;
       return this.cache.get(key);
     }
 
@@ -35,6 +55,7 @@ export class AssetLoader {
     }
 
     if (this.pending.has(key)) {
+      this.diagnostics.duplicateLoadAvoided += 1;
       return this.pending.get(key);
     }
 
@@ -65,6 +86,77 @@ export class AssetLoader {
 
     this.pending.set(key, task);
     return task;
+  }
+
+  async preloadCritical(keys = [], { label = 'critical' } = {}) {
+    const uniqueKeys = [...new Set((Array.isArray(keys) ? keys : [keys]).filter(Boolean))];
+    const startedAt = this.now();
+    const beforePending = uniqueKeys.filter((key) => this.pending.has(key)).length;
+
+    this.diagnostics.criticalRequested += uniqueKeys.length;
+    this.diagnostics.deferredLoadCount += beforePending;
+    this.diagnostics.lastCriticalLabel = label;
+
+    const results = await Promise.all(uniqueKeys.map(async (key) => {
+      const texture = await this.load(key);
+      return { key, loaded: Boolean(texture), missing: !texture };
+    }));
+
+    const loaded = results.filter((entry) => entry.loaded).length;
+    const missingKeys = results.filter((entry) => entry.missing).map((entry) => entry.key);
+
+    this.diagnostics.criticalLoaded += loaded;
+    this.diagnostics.criticalMissing += missingKeys.length;
+    this.diagnostics.playSceneStartCriticalReady = missingKeys.length === 0;
+    this.diagnostics.preloadDurationMs = Math.round(this.now() - startedAt);
+    this.diagnostics.lastCriticalMissingKeys = missingKeys;
+
+    return {
+      label,
+      requested: uniqueKeys.length,
+      loaded,
+      missing: missingKeys,
+      durationMs: this.diagnostics.preloadDurationMs,
+      ready: missingKeys.length === 0,
+    };
+  }
+
+  recordEffectFallback() {
+    this.diagnostics.effectFallbackCount += 1;
+  }
+
+  recordEffectSkippedBecauseMissing() {
+    this.diagnostics.effectSkippedBecauseMissing += 1;
+  }
+
+  recordEffectSkippedBecauseBudget() {
+    this.diagnostics.effectSkippedBecauseBudget += 1;
+  }
+
+  recordEffectRetried() {
+    this.diagnostics.effectRetried += 1;
+  }
+
+  recordEffectDisplayed(requestedAt = null) {
+    this.diagnostics.effectDisplayed += 1;
+    if (Number.isFinite(requestedAt)) {
+      this.diagnostics.effectRequestToDisplayTotalMs += Math.max(0, this.now() - requestedAt);
+      this.diagnostics.effectRequestToDisplayCount += 1;
+    }
+  }
+
+  getDiagnostics() {
+    const count = this.diagnostics.effectRequestToDisplayCount;
+    return {
+      ...this.diagnostics,
+      effectRequestToDisplayAverageMs: count > 0
+        ? Math.round(this.diagnostics.effectRequestToDisplayTotalMs / count)
+        : 0,
+    };
+  }
+
+  now() {
+    return typeof performance !== 'undefined' ? performance.now() : Date.now();
   }
 
   withTimeout(promise, timeoutMs) {
@@ -254,13 +346,9 @@ export class AssetLoader {
           'pauseUi',
           'selectionUi',
           'evolutionUi',
-          'player',
-          'playerSheets',
           'pickups',
           'items',
           'hitEffects',
-          'normalAttackEffects',
-          'normalAttackIcons',
           'adaptationIcons',
           'adaptationSkillEffects',
           'adaptationSkillIcons',

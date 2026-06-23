@@ -18,6 +18,14 @@ let screenManager;
 let pendingServiceWorker = null;
 let hasReloadedForServiceWorker = false;
 
+try {
+  window.__EVOLUTION_ZERO_LOADING_TIMINGS__ = {
+    appBootStart: typeof performance !== 'undefined' ? performance.now() : Date.now(),
+  };
+} catch {
+  // Loading diagnostics are optional.
+}
+
 installCrashDiagnostics({
   getContext: (reason) => screenManager?.getCrashDiagnosticsContext?.(reason) ?? {
     currentScreen: screenManager?.currentScreen ?? 'boot',

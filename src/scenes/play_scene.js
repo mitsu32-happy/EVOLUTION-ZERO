@@ -2447,6 +2447,7 @@ export class PlayScene {
       `proj ${stats.enemyProjectiles}/${stats.caps.enemyProjectiles} + ${stats.combatProjectiles}/${stats.caps.combatProjectiles}`,
       `hazard ${stats.stageGimmicks}/${stats.caps.stageGimmicks}`,
       `fx ${stats.combatEffects}/${stats.caps.combatEffects} ult ${stats.ultimateEffects ?? 0}/${stats.caps.ultimateEffects ?? '-'}`,
+      `asset critical ${stats.assets?.criticalLoaded ?? 0}/${stats.assets?.criticalRequested ?? 0} miss${stats.assets?.criticalMissing ?? 0} skip m${stats.assets?.effectSkippedBecauseMissing ?? 0}/b${stats.assets?.effectSkippedBecauseBudget ?? 0}`,
       `adaptFx tex ${adaptationFx.textureEffectCount ?? 0} / gfx ${adaptationFx.graphicsFallbackCount ?? 0} / skip ${adaptationFx.skippedEffectCount ?? 0} / miss ${adaptationFx.missingTextureCount ?? 0}`,
       `adaptTop ${adaptationTopText}`,
       `dmg ${stats.damageNumbers}/${stats.caps.damageNumbers} pool ${stats.damageNumberPoolFree}/${stats.caps.damageNumberPool}`,
@@ -2461,7 +2462,7 @@ export class PlayScene {
     this.performanceDebugText.text = lines.join('\n');
     this.performanceDebugBg
       .clear()
-      .roundRect(8, 80, 360, 232, 8)
+      .roundRect(8, 80, 360, 246, 8)
       .fill({ color: 0x02070d, alpha: 0.76 })
       .stroke({ color: 0x35d7ff, width: 1.4, alpha: 0.42 });
     this.performanceDebugBg.visible = true;
@@ -2632,6 +2633,10 @@ export class PlayScene {
       return gimmick.age < activeStart;
     }).length;
     const expOrb = this.getExpOrbStats();
+    const assetDiagnostics = this.assetLoader?.getDiagnostics?.() ?? {};
+    const loadingTimings = typeof window !== 'undefined'
+      ? (window.__EVOLUTION_ZERO_LOADING_TIMINGS__ ?? {})
+      : {};
 
     return {
       reason,
@@ -2653,6 +2658,7 @@ export class PlayScene {
       effectCount: combatStats.combatEffects ?? 0,
       ultimateEffectCount: this.ultimateSystem?.effects?.length ?? 0,
       adaptationEffects: combatStats.adaptationEffects ?? null,
+      normalAttackEffect: combatStats.normalAttackEffect ?? null,
       damageTextCount: combatStats.damageNumbers ?? 0,
       criticalTextCount,
       pickupCount: this.pickups.length,
@@ -2683,6 +2689,8 @@ export class PlayScene {
         cursorLayerChildren: this.enemyVisualBudgetStats?.displayObjects?.cursorLayerChildren ?? 0,
       },
       performancePreset: this.getPerformancePresetStats(),
+      assets: assetDiagnostics,
+      loading: loadingTimings,
       containerChildren,
       containerChildrenTotal: containerChildren.total,
       loadSheddingLevel: this.performanceLoadSheddingLevel,
@@ -2765,6 +2773,7 @@ export class PlayScene {
         `compFx=${snapshot.companion?.effects ?? 0}`,
         `compScan=${snapshot.companion?.targetScans ?? 0}/${snapshot.companion?.pickupScans ?? 0}`,
         `mini=${snapshot.miniPack?.active ? snapshot.miniPack.count : 0}/${snapshot.miniPack?.scans ?? 0}`,
+        `asset=${snapshot.assets?.criticalLoaded ?? 0}/${snapshot.assets?.criticalRequested ?? 0}/miss${snapshot.assets?.criticalMissing ?? 0}`,
         `emergency=${snapshot.emergencyPerformance?.active ? 1 : 0}:${snapshot.emergencyPerformance?.reason ?? '-'}`,
         `shed=${snapshot.loadSheddingLevel}`,
         `stress=${snapshot.debugStressKillEnabled ? 1 : 0}`,
@@ -3062,6 +3071,7 @@ export class PlayScene {
       ultimateEffects: ultimateStats.ultimateEffects ?? this.ultimateSystem?.effects?.length ?? 0,
       ultimateGraphicsPoolFree: ultimateStats.ultimateGraphicsPoolFree ?? 0,
       ultimateSpritePoolFree: ultimateStats.ultimateSpritePoolFree ?? 0,
+      normalAttackEffect: combatStats.normalAttackEffect ?? null,
       enemyProjectilePoolFree: this.enemyProjectilePool.length,
       pickupBursts: this.pickupBursts.length,
       pickupPopups: this.pickupPopups.length,
@@ -3108,6 +3118,8 @@ export class PlayScene {
       culling: snapshot.culling,
       displayObjects: snapshot.displayObjects,
       performancePreset: snapshot.performancePreset,
+      assets: snapshot.assets,
+      loading: snapshot.loading,
       audioInstances: this.audioManager?.activeAudios?.size ?? null,
       audioBufferInstances: this.audioManager?.activeBufferRecords?.size ?? null,
       fps: Number((this.debugFpsEstimate || 0).toFixed(1)),
