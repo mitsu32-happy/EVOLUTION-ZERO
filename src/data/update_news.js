@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'asset-timeout-retry-v1-2026-06-23',
+    date: '2026/06/23',
+    category: 'HOTFIX',
+    title: 'アセット読み込みの安定性を改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・一部環境で敵やお供恐竜が簡易表示になる問題を修正しました。',
+      '・アセット読み込みのタイムアウト処理を改善し、読み込み遅延時でも正式アセットへ復帰できるようになりました。',
+    ],
+  },
+  {
     id: 'minipack-effect-v1-2026-06-23',
     date: '2026/06/23',
     category: 'HOTFIX',
