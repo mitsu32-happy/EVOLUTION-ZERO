@@ -1,5 +1,18 @@
 export const UPDATE_NEWS = [
   {
+    id: 'asset-bulk-download-v1-2026-06-23',
+    date: '2026/06/23',
+    category: 'UPDATE',
+    title: 'データダウンロード機能を追加しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・タイトル画面と設定画面からデータダウンロードを利用できるようになりました。',
+      '・対応環境では画像アセットを端末に保存し、読み込みを高速化できます。',
+      '・HTTPS、localhost、PWAなど利用可能な環境が分かりやすくなるよう表示を改善しました。',
+    ],
+  },
+  {
     id: 'asset-timeout-retry-v1-2026-06-23',
     date: '2026/06/23',
     category: 'HOTFIX',
