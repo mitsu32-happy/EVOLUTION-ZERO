@@ -289,6 +289,7 @@ export class ScreenManager {
       onIntro: () => this.playIntroFromTitle(),
       onUiFeedback: (id = 'ui_confirm') => this.playOptionalUi(id),
       onApplyUpdate: () => this.applyPwaUpdate(),
+      onAssetCache: () => this.withUiClick(() => this.showAssetCacheOptionsFromTitle()),
     });
     this.homeScreen = null;
     this.researchScreen = null;
@@ -478,6 +479,14 @@ export class ScreenManager {
     }));
 
     return this.assetPreviewScreen;
+  }
+
+  async showAssetCacheOptionsFromTitle() {
+    const optionsScreen = this.ensureOptionsScreen();
+
+    optionsScreen.setReturnScreen?.('home');
+    this.show('options');
+    optionsScreen.showAssetCacheOverlay?.();
   }
 
   ensureStageSelectScreen() {

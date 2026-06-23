@@ -73,6 +73,18 @@ function isSecureLocalhost() {
   return host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host === '::1';
 }
 
+function isPwaDisplayMode() {
+  if (!isBrowser()) {
+    return false;
+  }
+
+  return Boolean(
+    window.matchMedia?.('(display-mode: standalone)')?.matches
+    || window.matchMedia?.('(display-mode: fullscreen)')?.matches
+    || window.navigator?.standalone,
+  );
+}
+
 function isManifestAssetEligible(entry) {
   if (!entry?.path || LEGACY_MISSING_CATEGORIES.has(entry.category) || LEGACY_MISSING_KEYS.has(entry.key)) {
     return false;
@@ -153,13 +165,32 @@ export class AssetBulkCacheManager {
   getSupportStatus() {
     const cacheStorageSupported = isBrowser() && 'caches' in window;
     const serviceWorkerSupported = isBrowser() && 'serviceWorker' in navigator;
-    const secureContext = isBrowser() && (window.isSecureContext || isSecureLocalhost());
+    const protocol = isBrowser() ? window.location.protocol : '';
+    const hostname = isBrowser() ? window.location.hostname : '';
+    const localhost = isSecureLocalhost();
+    const https = protocol === 'https:';
+    const pwa = isPwaDisplayMode();
+    const secureContext = isBrowser() && Boolean(window.isSecureContext || localhost || https);
+    const supported = Boolean(cacheStorageSupported && secureContext);
+    let unsupportedReason = '';
+
+    if (!cacheStorageSupported) {
+      unsupportedReason = 'cache-storage-unavailable';
+    } else if (!secureContext) {
+      unsupportedReason = 'secure-context-required';
+    }
 
     return {
-      supported: Boolean(cacheStorageSupported && secureContext),
+      supported,
       cacheStorageSupported,
       serviceWorkerSupported,
       secureContext,
+      localhost,
+      https,
+      pwa,
+      protocol,
+      hostname,
+      unsupportedReason,
       cacheName: this.cacheName,
       build: this.build,
       version: this.version,
@@ -249,6 +280,7 @@ export class AssetBulkCacheManager {
     this.lastProgress = {
       ...this.lastProgress,
       supported: support.supported,
+      supportStatus: support,
       cacheName: this.cacheName,
       total: items.length,
       cached,
@@ -275,6 +307,7 @@ export class AssetBulkCacheManager {
       this.lastProgress = {
         ...this.lastProgress,
         supported: false,
+        supportStatus: support,
         total: items.length,
         estimatedBytes: this.getEstimatedBytes({ includeAudio }),
         storageUsage: storage.usage,
@@ -294,6 +327,7 @@ export class AssetBulkCacheManager {
     this.lastProgress = {
       ...this.lastProgress,
       supported: true,
+      supportStatus: support,
       total: items.length,
       cached: 0,
       downloaded: 0,
@@ -413,6 +447,7 @@ export class AssetBulkCacheManager {
   getDiagnostics() {
     return {
       supported: this.lastProgress.supported,
+      supportStatus: this.lastProgress.supportStatus ?? this.getSupportStatus(),
       cacheName: this.cacheName,
       total: this.lastProgress.total,
       cached: this.lastProgress.cached,

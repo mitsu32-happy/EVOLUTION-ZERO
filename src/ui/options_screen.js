@@ -481,7 +481,7 @@ export class OptionsScreen {
 
   createAssetCacheButton() {
     const row = this.createRowShell();
-    row.label = this.createText('アセット保存', 10, '#dfffff', 98);
+    row.label = this.createText('データDL', 10, '#dfffff', 98);
     row.sub = this.createText('', 8, '#91aaa4', 98);
 
     row.view.position.set(238, 114);
@@ -501,21 +501,21 @@ export class OptionsScreen {
     const view = new Container();
     const shade = new Graphics();
     const panel = new Graphics();
-    const title = this.createText('アセット保存', 18, '#f4f7f5', 240);
-    const status = this.createText('', 11, '#d7fff2', 286);
-    const detail = this.createText('', 9, '#91aaa4', 286);
+    const title = this.createText('データダウンロード', 18, '#f4f7f5', 240);
+    const status = this.createText('', 13, '#d7fff2', 286);
+    const detail = this.createText('', 10, '#91aaa4', 286);
     const warning = this.createText(
-      '通信量と端末容量を使用します。\n保存データはOSにより削除される場合があります。\nアップデート時は最新データを保存し直します。',
+      '通信量と端末容量を使用します。\n保存したデータはOSにより削除される場合があります。\nアップデート時は最新データをダウンロードし直します。',
       9,
       '#ffd36b',
       286,
     );
     const buttons = {
-      save: this.createAssetCacheOverlayButton('保存', 0, 0, 78),
+      save: this.createAssetCacheOverlayButton('DL開始', 0, 0, 78),
       cancel: this.createAssetCacheOverlayButton('中止', 86, 0, 60),
       retry: this.createAssetCacheOverlayButton('再試行', 154, 0, 66),
-      clearOld: this.createAssetCacheOverlayButton('旧削除', 228, 0, 62),
-      clearCurrent: this.createAssetCacheOverlayButton('現在削除', 0, 38, 92),
+      clearOld: this.createAssetCacheOverlayButton('旧DL削除', 228, 0, 62),
+      clearCurrent: this.createAssetCacheOverlayButton('現DL削除', 0, 38, 92),
       close: this.createAssetCacheOverlayButton('閉じる', 198, 38, 92),
     };
     const buttonLayer = new Container();
@@ -529,9 +529,9 @@ export class OptionsScreen {
       .stroke({ color: UI_COLORS.dna, width: 1.6, alpha: 0.72 });
     title.anchor.set(0.5);
     title.position.set(this.width / 2, 204);
-    status.position.set(52, 232);
-    detail.position.set(52, 312);
-    warning.position.set(52, 366);
+    status.position.set(52, 236);
+    detail.position.set(52, 300);
+    warning.position.set(52, 360);
     buttonLayer.position.set(50, 426);
     Object.values(buttons).forEach((button) => buttonLayer.addChild(button.view));
 
@@ -613,7 +613,7 @@ export class OptionsScreen {
       this.assetCacheState = {
         ...this.assetCacheState,
         supported: false,
-        message: 'アセット保存はこの環境では利用できません',
+        message: 'データダウンロードはこの環境では利用できません',
       };
       this.render();
       return;
@@ -624,7 +624,8 @@ export class OptionsScreen {
       this.assetCacheState = {
         ...this.assetCacheState,
         ...status,
-        message: status.supported ? '' : 'Cache Storage非対応または安全でない接続です',
+        supportStatus: status.supportStatus,
+        message: status.supported ? '' : this.getAssetCacheUnsupportedMessage(status.supportStatus),
       };
     } catch (error) {
       this.assetCacheState = {
@@ -633,6 +634,18 @@ export class OptionsScreen {
       };
     }
     this.render();
+  }
+
+  getAssetCacheUnsupportedMessage(support = {}) {
+    if (support.unsupportedReason === 'cache-storage-unavailable') {
+      return 'このブラウザではデータ保存機能が利用できません。Safari/PWAの設定を確認してください。';
+    }
+
+    if (support.unsupportedReason === 'secure-context-required') {
+      return 'HTTPS / PWA / localhost で利用できます。iPhoneのHTTP LAN接続では非対応になる場合があります。';
+    }
+
+    return 'この環境ではデータダウンロードを利用できません。HTTPSまたはPWAでお試しください。';
   }
 
   async startAssetCacheDownload() {
@@ -644,7 +657,7 @@ export class OptionsScreen {
     this.assetCacheState = {
       ...this.assetCacheState,
       isDownloading: true,
-      message: '保存を開始しました',
+      message: 'ダウンロードを開始しました',
     };
     this.render();
 
@@ -656,7 +669,7 @@ export class OptionsScreen {
           this.assetCacheState = {
             ...this.assetCacheState,
             ...progress,
-            message: progress.isDownloading ? '画像アセットを保存中' : '保存処理が完了しました',
+            message: progress.isDownloading ? '画像データをダウンロード中' : 'ダウンロードが完了しました',
           };
           this.render();
         },
@@ -667,18 +680,18 @@ export class OptionsScreen {
         ...result,
         isDownloading: false,
         message: this.assetCacheAbortController.signal.aborted
-          ? '保存を中止しました'
+          ? 'ダウンロードを中止しました'
           : result.failed > 0
-            ? `${result.failed}件の保存に失敗しました`
-            : '画像アセットを保存しました',
+            ? `${result.failed}件のダウンロードに失敗しました`
+            : '画像データをダウンロードしました',
       };
     } catch (error) {
       this.assetCacheState = {
         ...this.assetCacheState,
         isDownloading: false,
         message: this.assetCacheAbortController?.signal?.aborted
-          ? '保存を中止しました'
-          : `保存に失敗: ${error?.message ?? 'unknown'}`,
+          ? 'ダウンロードを中止しました'
+          : `ダウンロードに失敗: ${error?.message ?? 'unknown'}`,
       };
     } finally {
       this.assetCacheAbortController = null;
@@ -691,7 +704,7 @@ export class OptionsScreen {
     this.assetCacheState = {
       ...this.assetCacheState,
       isDownloading: false,
-      message: '中止しています',
+      message: 'ダウンロードを中止しています',
     };
     this.render();
   }
@@ -705,13 +718,13 @@ export class OptionsScreen {
       const result = await this.assetCacheManager.clearOldCaches();
       this.assetCacheState = {
         ...this.assetCacheState,
-        message: `古い保存データを${result.deleted}件削除しました`,
+        message: `古いダウンロードデータを${result.deleted}件削除しました`,
       };
       await this.refreshAssetCacheStatus();
     } catch (error) {
       this.assetCacheState = {
         ...this.assetCacheState,
-        message: `古い保存データ削除に失敗: ${error?.message ?? 'unknown'}`,
+        message: `古いダウンロードデータ削除に失敗: ${error?.message ?? 'unknown'}`,
       };
       this.render();
     }
@@ -726,13 +739,13 @@ export class OptionsScreen {
       await this.assetCacheManager.clearCurrentCache();
       this.assetCacheState = {
         ...this.assetCacheState,
-        message: '現在の保存データを削除しました',
+        message: '現在のダウンロードデータを削除しました',
       };
       await this.refreshAssetCacheStatus();
     } catch (error) {
       this.assetCacheState = {
         ...this.assetCacheState,
-        message: `現在の保存データ削除に失敗: ${error?.message ?? 'unknown'}`,
+        message: `現在のダウンロードデータ削除に失敗: ${error?.message ?? 'unknown'}`,
       };
       this.render();
     }
@@ -1254,7 +1267,7 @@ export class OptionsScreen {
     const state = this.assetCacheState;
 
     this.renderRowFrame(this.assetCacheButton, 106, 30, this.assetTextures.optionButtonV3 ?? this.assetTextures.optionButtonV2);
-    this.assetCacheButton.label.text = state.isDownloading ? '保存中...' : 'アセット保存';
+    this.assetCacheButton.label.text = state.isDownloading ? 'DL中...' : 'データDL';
     this.assetCacheButton.sub.text = state.total > 0
       ? `${state.cached}/${state.total}`
       : (state.supported ? '未確認' : '非対応');
@@ -1266,24 +1279,33 @@ export class OptionsScreen {
     const overlay = this.assetCacheOverlay;
     const state = this.assetCacheState;
     const progressPercent = Math.round((state.progress ?? 0) * 100);
-    const storageLine = state.storageQuota
-      ? `Storage: ${this.formatBytes(state.storageUsage)} / ${this.formatBytes(state.storageQuota)}`
-      : 'Storage: 取得不可';
-    const buildLine = `Build: ${state.cacheName || '-'} / last: ${state.lastUpdatedBuild ?? 'なし'}`;
-    const targetLine = `対象: 画像 ${state.cached}/${state.total} (${progressPercent}%) / 失敗 ${state.failed}`;
-    const estimateLine = `推定容量: ${this.formatBytes(state.estimatedBytes)} / 古い保存 ${state.oldCachesCount}`;
+    const support = state.supportStatus ?? {};
+    const statusLine = state.supported
+      ? state.isDownloading
+        ? 'データをダウンロードしています'
+        : state.cached >= state.total && state.total > 0
+          ? '最新データはダウンロード済みです'
+          : '追加データをダウンロードできます'
+      : 'この環境では利用できません';
+    const countLine = state.total > 0
+      ? `${state.cached}/${state.total}件  ${progressPercent}%`
+      : '対象データを確認中';
+    const sizeLine = state.estimatedBytes > 0 ? `目安: 約${this.formatBytes(state.estimatedBytes)}` : '';
+    const failedLine = state.failed > 0 ? `失敗: ${state.failed}件` : '';
+    const oldLine = state.oldCachesCount > 0 ? `古いデータ: ${state.oldCachesCount}件` : '';
+    const supportLine = !state.supported && support.unsupportedReason
+      ? this.getAssetCacheUnsupportedMessage(support)
+      : '';
     const currentLine = state.currentCategory
-      ? `現在: ${state.currentCategory} ${state.currentUrl ? `\n${state.currentUrl}` : ''}`
-      : (state.message || '画像アセットのみ保存します。音声はPhase 1対象外です。');
+      ? `処理中: ${state.currentCategory}`
+      : (state.message || '画像データのみダウンロードします。音声はPhase 1対象外です。');
 
     overlay.status.text = [
-      state.supported ? '状態: 使用可能' : '状態: 非対応',
-      targetLine,
-      estimateLine,
-      storageLine,
-      buildLine,
-    ].join('\n');
-    overlay.detail.text = currentLine;
+      statusLine,
+      countLine,
+      [sizeLine, failedLine, oldLine].filter(Boolean).join(' / '),
+    ].filter(Boolean).join('\n');
+    overlay.detail.text = [currentLine, supportLine].filter(Boolean).join('\n');
     this.renderAssetCacheOverlayButton(overlay.buttons.save, {
       enabled: state.supported && !state.isDownloading,
       accent: UI_COLORS.dna,
