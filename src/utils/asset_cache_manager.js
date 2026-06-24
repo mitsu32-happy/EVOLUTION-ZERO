@@ -1,6 +1,7 @@
 import { AUDIO_PATHS } from '../audio/audio_catalog.js';
 import { APP_BUILD, APP_VERSION } from '../data/app_version.js';
 import { flattenAssetManifest } from '../data/asset_manifest.js';
+import { getAssetExtension, toAssetAbsoluteUrl } from './asset_url.js';
 
 export const ASSET_CACHE_PREFIX = 'evolution-zero-assets-';
 
@@ -19,27 +20,6 @@ const PROGRESS_UPDATED_AT_KEY = 'evolutionZeroAssetCacheLastUpdatedAt';
 
 function isBrowser() {
   return typeof window !== 'undefined';
-}
-
-function getBaseUrl() {
-  return import.meta.env.BASE_URL || '/';
-}
-
-function getExtension(path = '') {
-  const cleanPath = String(path).split('?')[0].split('#')[0];
-  const dotIndex = cleanPath.lastIndexOf('.');
-
-  return dotIndex >= 0 ? cleanPath.slice(dotIndex).toLowerCase() : '';
-}
-
-function toAbsoluteAssetUrl(path = '') {
-  const cleanPath = String(path).replace(/^\/+/, '');
-
-  if (!isBrowser()) {
-    return `${getBaseUrl()}${cleanPath}`;
-  }
-
-  return new URL(`${getBaseUrl()}${cleanPath}`, window.location.origin).href;
 }
 
 function getLocalStorage() {
@@ -90,7 +70,7 @@ function isManifestAssetEligible(entry) {
     return false;
   }
 
-  return IMAGE_EXTENSIONS.has(getExtension(entry.path));
+  return IMAGE_EXTENSIONS.has(getAssetExtension(entry.path));
 }
 
 function uniqueByUrl(items) {
@@ -140,6 +120,8 @@ export class AssetBulkCacheManager {
     this.cacheName = getAssetCacheName(build);
     this.lastProgress = this.createEmptyProgress();
     this.lastFailures = [];
+    this.fetchStats = this.createEmptyFetchStats();
+    this.installServiceWorkerStatsListener();
   }
 
   createEmptyProgress() {
@@ -159,6 +141,19 @@ export class AssetBulkCacheManager {
       currentCategory: '',
       currentUrl: '',
       isDownloading: false,
+    };
+  }
+
+  createEmptyFetchStats() {
+    return {
+      fetchRequests: 0,
+      fetchCacheHits: 0,
+      fetchCacheMisses: 0,
+      fetchNetworkFallbacks: 0,
+      lastHitUrl: '',
+      lastMissUrl: '',
+      lastMatchedCacheUrl: '',
+      urlMismatchSamples: [],
     };
   }
 
@@ -204,18 +199,18 @@ export class AssetBulkCacheManager {
         key: entry.key,
         category: entry.category,
         path: entry.path,
-        url: toAbsoluteAssetUrl(entry.path),
+        url: toAssetAbsoluteUrl(entry.path, { stripQuery: true }),
         type: 'image',
       }));
 
     const audioAssets = includeAudio
       ? Object.entries(AUDIO_PATHS)
-        .filter(([, value]) => value?.path && AUDIO_EXTENSIONS.has(getExtension(value.path)))
+        .filter(([, value]) => value?.path && AUDIO_EXTENSIONS.has(getAssetExtension(value.path)))
         .map(([key, value]) => ({
           key: `audio.${key}`,
           category: `audio:${value.category ?? 'misc'}`,
           path: value.path,
-          url: toAbsoluteAssetUrl(value.path),
+          url: toAssetAbsoluteUrl(value.path, { stripQuery: true }),
           type: 'audio',
         }))
       : [];
@@ -295,6 +290,8 @@ export class AssetBulkCacheManager {
     };
 
     syncAssetCacheServiceWorker();
+    this.requestServiceWorkerStats();
+    this.mergeFetchDiagnosticsIntoProgress();
     return { ...this.lastProgress, failures: [...this.lastFailures] };
   }
 
@@ -406,6 +403,8 @@ export class AssetBulkCacheManager {
       lastUpdatedBuild: failures.length === 0 && !signal?.aborted ? this.markUpdated() : this.getLastUpdatedBuild(),
     };
     syncAssetCacheServiceWorker();
+    this.requestServiceWorkerStats();
+    this.mergeFetchDiagnosticsIntoProgress();
     onProgress?.({ ...this.lastProgress, failures: [...failures] });
 
     return { ...this.lastProgress, failures: [...failures] };
@@ -445,12 +444,21 @@ export class AssetBulkCacheManager {
   }
 
   getDiagnostics() {
+    const serviceWorkerControlled = this.isServiceWorkerControlled();
+    this.fetchStats = {
+      ...this.fetchStats,
+      ...AssetBulkCacheManager.latestFetchStats,
+    };
+
     return {
       supported: this.lastProgress.supported,
       supportStatus: this.lastProgress.supportStatus ?? this.getSupportStatus(),
+      serviceWorkerControlled,
       cacheName: this.cacheName,
       total: this.lastProgress.total,
+      totalCount: this.lastProgress.total,
       cached: this.lastProgress.cached,
+      cachedCount: this.lastProgress.cached,
       failed: this.lastProgress.failed,
       progress: this.lastProgress.progress,
       estimatedBytes: this.lastProgress.estimatedBytes,
@@ -458,7 +466,64 @@ export class AssetBulkCacheManager {
       storageQuota: this.lastProgress.storageQuota,
       lastUpdatedBuild: this.lastProgress.lastUpdatedBuild,
       oldCachesCount: this.lastProgress.oldCachesCount,
+      firstRunAfterDownload: this.lastProgress.lastUpdatedBuild === this.build && this.lastProgress.cached > 0,
+      ...this.fetchStats,
     };
+  }
+
+  installServiceWorkerStatsListener() {
+    if (!isBrowser() || !('serviceWorker' in navigator) || AssetBulkCacheManager.serviceWorkerStatsListenerInstalled) {
+      return;
+    }
+
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data?.type !== 'ASSET_CACHE_STATS') {
+        return;
+      }
+
+      AssetBulkCacheManager.latestFetchStats = {
+        ...AssetBulkCacheManager.latestFetchStats,
+        ...(event.data.stats ?? {}),
+      };
+      window.__EVOLUTION_ZERO_ASSET_CACHE_STATS__ = AssetBulkCacheManager.latestFetchStats;
+    });
+    AssetBulkCacheManager.serviceWorkerStatsListenerInstalled = true;
+  }
+
+  requestServiceWorkerStats() {
+    if (!isBrowser() || !('serviceWorker' in navigator)) {
+      return;
+    }
+
+    try {
+      navigator.serviceWorker.controller?.postMessage({ type: 'GET_ASSET_CACHE_STATS' });
+      navigator.serviceWorker.ready
+        ?.then((registration) => registration.active?.postMessage({ type: 'GET_ASSET_CACHE_STATS' }))
+        .catch(() => {});
+    } catch {
+      // Diagnostics are best-effort only.
+    }
+
+    this.fetchStats = {
+      ...this.fetchStats,
+      ...AssetBulkCacheManager.latestFetchStats,
+    };
+  }
+
+  mergeFetchDiagnosticsIntoProgress() {
+    this.fetchStats = {
+      ...this.fetchStats,
+      ...AssetBulkCacheManager.latestFetchStats,
+    };
+    this.lastProgress = {
+      ...this.lastProgress,
+      serviceWorkerControlled: this.isServiceWorkerControlled(),
+      ...this.fetchStats,
+    };
+  }
+
+  isServiceWorkerControlled() {
+    return isBrowser() && 'serviceWorker' in navigator && Boolean(navigator.serviceWorker.controller);
   }
 
   getLastUpdatedBuild() {

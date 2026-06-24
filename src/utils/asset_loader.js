@@ -1,5 +1,6 @@
 import { Assets } from 'pixi.js';
 import { flattenAssetManifest } from '../data/asset_manifest.js';
+import { toAssetAbsoluteUrl } from './asset_url.js';
 
 const DEFAULT_LOAD_TIMEOUT_MS = 8000;
 const CRITICAL_LOAD_TIMEOUT_MS = 20000;
@@ -44,6 +45,16 @@ export class AssetLoader {
       deferredLoadCount: 0,
       duplicateLoadAvoided: 0,
       cacheHitApprox: 0,
+      loaderCacheHitCount: 0,
+      loaderCacheMissCount: 0,
+      textureCacheHitCount: 0,
+      decodeDurationMs: 0,
+      decodeDurationTotalMs: 0,
+      decodeDurationCount: 0,
+      decodeDurationMaxMs: 0,
+      gpuUploadEstimateMs: 0,
+      lastLoadUrl: '',
+      lastNormalizedLoadUrl: '',
       lastCriticalLabel: null,
       lastCriticalMissingKeys: [],
       lastCriticalTimedOutKeys: [],
@@ -76,6 +87,7 @@ export class AssetLoader {
 
     if (this.cache.has(key)) {
       this.diagnostics.cacheHitApprox += 1;
+      this.diagnostics.loaderCacheHitCount += 1;
       return this.cache.get(key);
     }
 
@@ -102,8 +114,20 @@ export class AssetLoader {
     }
 
     let task = null;
-    const assetTask = Assets.load(this.toUrl(item.path, cacheBust ? this.reloadVersion : null))
+    const loadUrl = this.toUrl(item.path, cacheBust ? this.reloadVersion : null);
+    const normalizedLoadUrl = this.toNormalizedUrl(item.path);
+    const loadStartedAt = this.now();
+
+    this.diagnostics.loaderCacheMissCount += 1;
+    this.diagnostics.lastLoadUrl = loadUrl;
+    this.diagnostics.lastNormalizedLoadUrl = normalizedLoadUrl;
+    if (this.hasPixiTextureCache(loadUrl) || this.hasPixiTextureCache(normalizedLoadUrl)) {
+      this.diagnostics.textureCacheHitCount += 1;
+    }
+
+    const assetTask = Assets.load(loadUrl)
       .then((texture) => {
+        this.recordDecodeDuration(loadStartedAt);
         this.cache.set(key, texture);
         if (this.pending.get(key) === task) {
           this.pending.delete(key);
@@ -121,6 +145,7 @@ export class AssetLoader {
         return texture;
       })
       .catch(() => {
+        this.recordDecodeDuration(loadStartedAt);
         if (this.pending.get(key) === task) {
           this.pending.delete(key);
         }
@@ -251,6 +276,7 @@ export class AssetLoader {
 
   getDiagnostics() {
     const count = this.diagnostics.effectRequestToDisplayCount;
+    const decodeCount = this.diagnostics.decodeDurationCount;
     return {
       ...this.diagnostics,
       permanentMissingKeys: [...this.missing],
@@ -260,6 +286,9 @@ export class AssetLoader {
       criticalPermanentMissingKeys: [...(this.diagnostics.lastCriticalPermanentMissingKeys ?? [])],
       effectRequestToDisplayAverageMs: count > 0
         ? Math.round(this.diagnostics.effectRequestToDisplayTotalMs / count)
+        : 0,
+      decodeDurationAverageMs: decodeCount > 0
+        ? Math.round(this.diagnostics.decodeDurationTotalMs / decodeCount)
         : 0,
     };
   }
@@ -553,6 +582,10 @@ export class AssetLoader {
     return this.withCacheBust(`${import.meta.env.BASE_URL}${path}`, cacheBust);
   }
 
+  toNormalizedUrl(path) {
+    return toAssetAbsoluteUrl(path, { stripQuery: true });
+  }
+
   withCacheBust(url, cacheBust = null) {
     if (cacheBust === null || cacheBust === undefined) {
       return url;
@@ -560,6 +593,31 @@ export class AssetLoader {
 
     const separator = url.includes('?') ? '&' : '?';
     return `${url}${separator}asset_reload=${encodeURIComponent(cacheBust)}`;
+  }
+
+  hasPixiTextureCache(url) {
+    if (!url) {
+      return false;
+    }
+
+    try {
+      return Boolean(
+        Assets.cache?.has?.(url)
+        || Assets.cache?.get?.(url)
+        || Assets.get?.(url),
+      );
+    } catch {
+      return false;
+    }
+  }
+
+  recordDecodeDuration(startedAt) {
+    const duration = Math.max(0, Math.round(this.now() - startedAt));
+
+    this.diagnostics.decodeDurationMs = duration;
+    this.diagnostics.decodeDurationTotalMs += duration;
+    this.diagnostics.decodeDurationCount += 1;
+    this.diagnostics.decodeDurationMaxMs = Math.max(this.diagnostics.decodeDurationMaxMs, duration);
   }
 
   subscribeLateLoad(key, callback) {

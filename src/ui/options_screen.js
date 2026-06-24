@@ -1296,16 +1296,21 @@ export class OptionsScreen {
     const supportLine = !state.supported && support.unsupportedReason
       ? this.getAssetCacheUnsupportedMessage(support)
       : '';
+    const debugLine = isDebugMode()
+      ? `SW:${state.serviceWorkerControlled ? 'ON' : 'OFF'} hit:${state.fetchCacheHits ?? 0} miss:${state.fetchCacheMisses ?? 0}`
+      : '';
     const currentLine = state.currentCategory
       ? `処理中: ${state.currentCategory}`
-      : (state.message || '画像データのみダウンロードします。音声はPhase 1対象外です。');
+      : (state.message || (state.serviceWorkerControlled === false
+        ? '反映には再読み込みが必要です。'
+        : '画像データのみダウンロードします。音声はPhase 1対象外です。'));
 
     overlay.status.text = [
       statusLine,
       countLine,
       [sizeLine, failedLine, oldLine].filter(Boolean).join(' / '),
     ].filter(Boolean).join('\n');
-    overlay.detail.text = [currentLine, supportLine].filter(Boolean).join('\n');
+    overlay.detail.text = [currentLine, supportLine, debugLine].filter(Boolean).join('\n');
     this.renderAssetCacheOverlayButton(overlay.buttons.save, {
       enabled: state.supported && !state.isDownloading,
       accent: UI_COLORS.dna,
