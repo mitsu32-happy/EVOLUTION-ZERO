@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'critical-texture-warmup-v1-2026-06-25',
+    date: '2026/06/25',
+    category: 'UPDATE',
+    title: '読み込み速度とエフェクト表示を改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・選択中の恐竜・敵・ボスなどをプレイ開始前に事前準備するよう改善しました。',
+      '・高負荷時でもプレイヤーの通常攻撃エフェクトが見えなくならないよう調整しました。',
+    ],
+  },
+  {
     id: 'asset-cache-effectiveness-v1-2026-06-25',
     date: '2026/06/25',
     category: 'UPDATE',
