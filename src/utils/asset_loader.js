@@ -4,6 +4,7 @@ import { toAssetAbsoluteUrl } from './asset_url.js';
 
 const DEFAULT_LOAD_TIMEOUT_MS = 8000;
 const CRITICAL_LOAD_TIMEOUT_MS = 20000;
+const TEXTURE_WARMUP_TIMEOUT_MS = 9000;
 
 class AssetLoadTimeoutError extends Error {
   constructor(key, timeoutMs) {
@@ -67,6 +68,26 @@ export class AssetLoader {
       fallbackBecauseTimeoutCount: 0,
       fallbackBecausePermanentMissingCount: 0,
       lateAssetSwapCount: 0,
+    };
+    this.textureWarmupDiagnostics = this.createTextureWarmupDiagnostics();
+  }
+
+  createTextureWarmupDiagnostics() {
+    return {
+      enabled: false,
+      requested: 0,
+      completed: 0,
+      failed: 0,
+      skipped: 0,
+      durationMs: 0,
+      cacheHits: 0,
+      textureCacheHits: 0,
+      gpuUploadEstimateMs: 0,
+      selectedRunReady: false,
+      criticalReadyBeforePlay: false,
+      lastLabel: null,
+      lastFailedKeys: [],
+      lastSkippedKeys: [],
     };
   }
 
@@ -230,6 +251,100 @@ export class AssetLoader {
     };
   }
 
+  async warmupCritical(keys = [], options = {}) {
+    const {
+      label = 'texture-warmup',
+      enabled = true,
+      maxCount = 36,
+      timeoutMs = TEXTURE_WARMUP_TIMEOUT_MS,
+      onProgress = null,
+    } = options;
+    const uniqueKeys = [...new Set((Array.isArray(keys) ? keys : [keys]).filter(Boolean))];
+    const limit = Math.max(0, Math.floor(maxCount));
+    const selectedKeys = enabled ? uniqueKeys.slice(0, limit) : [];
+    const skippedKeys = enabled ? uniqueKeys.slice(limit) : uniqueKeys;
+    const startedAt = this.now();
+    const diagnostics = {
+      ...this.createTextureWarmupDiagnostics(),
+      enabled: Boolean(enabled),
+      requested: selectedKeys.length,
+      skipped: skippedKeys.length,
+      lastLabel: label,
+      lastSkippedKeys: skippedKeys.slice(0, 12),
+    };
+
+    if (!enabled || selectedKeys.length === 0) {
+      diagnostics.durationMs = Math.round(this.now() - startedAt);
+      diagnostics.selectedRunReady = selectedKeys.length === 0;
+      diagnostics.criticalReadyBeforePlay = diagnostics.selectedRunReady;
+      this.textureWarmupDiagnostics = diagnostics;
+      return { ...diagnostics };
+    }
+
+    for (const key of selectedKeys) {
+      const item = this.getItem(key);
+      const progressBase = {
+        label,
+        key,
+        completed: diagnostics.completed,
+        failed: diagnostics.failed,
+        total: selectedKeys.length,
+      };
+
+      if (!item) {
+        diagnostics.failed += 1;
+        diagnostics.lastFailedKeys.push(key);
+        onProgress?.({ ...progressBase, failed: diagnostics.failed });
+        await this.yieldToMainThread();
+        continue;
+      }
+
+      const loadUrl = this.toUrl(item.path);
+      const normalizedUrl = this.toNormalizedUrl(item.path);
+      if (this.cache.has(key)) {
+        diagnostics.cacheHits += 1;
+        diagnostics.completed += 1;
+        if (this.hasPixiTextureCache(loadUrl) || this.hasPixiTextureCache(normalizedUrl)) {
+          diagnostics.textureCacheHits += 1;
+        }
+        onProgress?.({ ...progressBase, completed: diagnostics.completed });
+        await this.yieldToMainThread();
+        continue;
+      }
+
+      if (this.hasPixiTextureCache(loadUrl) || this.hasPixiTextureCache(normalizedUrl)) {
+        diagnostics.textureCacheHits += 1;
+      }
+
+      const texture = await this.load(key, {
+        timeoutMs,
+        assetType: this.getAssetType(key),
+      });
+
+      if (texture) {
+        diagnostics.completed += 1;
+      } else {
+        diagnostics.failed += 1;
+        diagnostics.lastFailedKeys.push(key);
+      }
+
+      onProgress?.({
+        ...progressBase,
+        completed: diagnostics.completed,
+        failed: diagnostics.failed,
+      });
+      await this.yieldToMainThread();
+    }
+
+    diagnostics.durationMs = Math.round(this.now() - startedAt);
+    diagnostics.gpuUploadEstimateMs = Math.max(0, diagnostics.durationMs - (this.diagnostics.decodeDurationMs ?? 0));
+    diagnostics.lastFailedKeys = diagnostics.lastFailedKeys.slice(0, 12);
+    diagnostics.selectedRunReady = diagnostics.requested > 0 && diagnostics.completed > 0;
+    diagnostics.criticalReadyBeforePlay = diagnostics.failed === 0;
+    this.textureWarmupDiagnostics = diagnostics;
+    return { ...diagnostics };
+  }
+
   recordEffectFallback() {
     this.diagnostics.effectFallbackCount += 1;
   }
@@ -284,6 +399,7 @@ export class AssetLoader {
       retryableTimeoutKeys: [...this.retryableTimeouts],
       criticalTimedOutKeys: [...(this.diagnostics.lastCriticalTimedOutKeys ?? [])],
       criticalPermanentMissingKeys: [...(this.diagnostics.lastCriticalPermanentMissingKeys ?? [])],
+      textureWarmup: { ...this.textureWarmupDiagnostics },
       effectRequestToDisplayAverageMs: count > 0
         ? Math.round(this.diagnostics.effectRequestToDisplayTotalMs / count)
         : 0,
@@ -313,6 +429,16 @@ export class AssetLoader {
       if (timeoutId !== null) {
         window.clearTimeout(timeoutId);
       }
+    });
+  }
+
+  yieldToMainThread() {
+    if (typeof window === 'undefined') {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      window.setTimeout(resolve, 0);
     });
   }
 

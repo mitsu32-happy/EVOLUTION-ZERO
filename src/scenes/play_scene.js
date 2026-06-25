@@ -2657,6 +2657,7 @@ export class PlayScene {
       hazardCount,
       warningGuideCount,
       effectCount: combatStats.combatEffects ?? 0,
+      effects: combatStats.effects ?? null,
       ultimateEffectCount: this.ultimateSystem?.effects?.length ?? 0,
       adaptationEffects: combatStats.adaptationEffects ?? null,
       normalAttackEffect: combatStats.normalAttackEffect ?? null,
@@ -5257,6 +5258,9 @@ export class PlayScene {
     if (this.emergencyPerformance) {
       this.emergencyPerformance.suppressedEffects = (this.emergencyPerformance.suppressedEffects ?? 0) + 1;
     }
+    if (this.isEmergencyPerformanceActive()) {
+      this.combatSystem?.recordEffectSkippedByEmergency?.('miniPack');
+    }
   }
 
   shouldSpawnMiniPackAttackEffect(actor) {
@@ -5315,6 +5319,7 @@ export class PlayScene {
       this.combatSystem.normalAttackDefinition,
       facing,
       {
+        source: 'miniPack',
         sizeScale: MINIPACK_ATTACK_EFFECT_SCALE,
         effectScale: MINIPACK_ATTACK_EFFECT_SCALE,
         durationScale: 0.9,
@@ -6552,6 +6557,7 @@ export class PlayScene {
         this.companionPerfStats.effectSuppressed += 1;
         this.emergencyPerformance.suppressedEffects += 1;
         this.emergencyPerformance.suppressedDamagePopups += 1;
+        this.combatSystem?.recordEffectSkippedByEmergency?.('companion');
       }
     });
     this.companionLastAction = `${this.activeCompanion.type} hit`;
@@ -6669,6 +6675,7 @@ export class PlayScene {
       this.companionPerfStats.effectSuppressed += 1;
       if (this.isEmergencyPerformanceActive()) {
         this.emergencyPerformance.suppressedEffects += 1;
+        this.combatSystem?.recordEffectSkippedByEmergency?.('companion');
       }
       return;
     }
@@ -7026,6 +7033,7 @@ export class PlayScene {
   spawnEnemyProjectile(enemy) {
     if (this.isEmergencyPerformanceActive() && this.enemyProjectiles.length >= EMERGENCY_MAX_ENEMY_PROJECTILES) {
       this.emergencyPerformance.suppressedEffects += 1;
+      this.combatSystem?.recordEffectSkippedByEmergency?.('enemy');
       return;
     }
 
@@ -7063,6 +7071,7 @@ export class PlayScene {
   spawnEnemyElectroPulse(enemy) {
     if (this.isEmergencyPerformanceActive() && this.enemyProjectiles.length >= EMERGENCY_MAX_ENEMY_PROJECTILES) {
       this.emergencyPerformance.suppressedEffects += 1;
+      this.combatSystem?.recordEffectSkippedByEmergency?.('enemy');
       return;
     }
 
@@ -9097,6 +9106,7 @@ export class PlayScene {
   spawnPickupBurst(x, y, value = 1, type = 'exp') {
     if (this.isEmergencyPerformanceActive()) {
       this.emergencyPerformance.suppressedEffects += 1;
+      this.combatSystem?.recordEffectSkippedByEmergency?.('enemy');
       return;
     }
 

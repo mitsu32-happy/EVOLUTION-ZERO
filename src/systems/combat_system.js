@@ -10,6 +10,8 @@ const MAX_CRITICAL_DAMAGE_NUMBERS = 24;
 const MAX_DAMAGE_NUMBER_POOL = 64;
 const MAX_GRAPHICS_POOL = 80;
 const MAX_SPRITE_POOL = 64;
+const PLAYER_NORMAL_EFFECT_MIN_INTERVAL_MS = 420;
+const PLAYER_NORMAL_EFFECT_EMERGENCY_CAP = 2;
 const ADAPTATION_EFFECT_STAT_KEYS = [
   'textureEffectCount',
   'graphicsFallbackCount',
@@ -66,6 +68,22 @@ export class CombatSystem {
     this.projectiles = [];
     this.performancePressureLevel = 0;
     this.emergencyPerformanceMode = false;
+    this.lastPlayerNormalEffectAt = -Infinity;
+    this.effectDiagnostics = this.createEffectDiagnostics();
+  }
+
+  createEffectDiagnostics() {
+    return {
+      playerNormalRequested: 0,
+      playerNormalDisplayed: 0,
+      playerNormalSkippedByBudget: 0,
+      playerNormalSkippedByMissing: 0,
+      playerNormalDisplayedDuringEmergency: 0,
+      companionSkippedByEmergency: 0,
+      miniPackSkippedByEmergency: 0,
+      enemyEffectSkippedByEmergency: 0,
+      effectBudgetReservedForPlayer: PLAYER_NORMAL_EFFECT_EMERGENCY_CAP,
+    };
   }
 
   trimRuntimeList(list, maxCount) {
@@ -95,6 +113,7 @@ export class CombatSystem {
       graphicsPoolFree: this.graphicsPool.length,
       spritePoolFree: this.spritePool.length,
       adaptationEffects: this.getAdaptationEffectStats(),
+      effects: { ...this.effectDiagnostics },
       normalAttackEffect: {
         key: this.normalAttackEffectKey,
         loaded: Boolean(this.normalAttackEffectTexture),
@@ -180,6 +199,35 @@ export class CombatSystem {
 
   setEmergencyPerformanceMode(active = false) {
     this.emergencyPerformanceMode = Boolean(active);
+  }
+
+  recordEffectSkippedByEmergency(source = 'enemy') {
+    if (source === 'companion') {
+      this.effectDiagnostics.companionSkippedByEmergency += 1;
+      return;
+    }
+    if (source === 'miniPack') {
+      this.effectDiagnostics.miniPackSkippedByEmergency += 1;
+      return;
+    }
+
+    this.effectDiagnostics.enemyEffectSkippedByEmergency += 1;
+  }
+
+  countActivePlayerNormalEffects() {
+    return this.effects.filter((effect) => effect?.source === 'playerNormal').length;
+  }
+
+  trimNonPlayerNormalEffects(maxCount) {
+    while (this.effects.length > maxCount) {
+      const index = this.effects.findIndex((effect) => effect?.source !== 'playerNormal');
+      if (index < 0) {
+        break;
+      }
+
+      const [entry] = this.effects.splice(index, 1);
+      this.releasePooledView(entry?.view);
+    }
   }
 
   acquirePooledView(texture = null) {
@@ -1475,6 +1523,11 @@ export class CombatSystem {
 
   spawnNormalAttackEffect(player, target, effectLayer, attack, facing, options = {}) {
     const requestedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const source = options.source ?? 'playerNormal';
+    const isPlayerNormal = source === 'playerNormal';
+    if (isPlayerNormal) {
+      this.effectDiagnostics.playerNormalRequested += 1;
+    }
     const expectsEvolutionEffect = Boolean(this.evolutionNormalAttackEffectKey);
     const texture = expectsEvolutionEffect
       ? this.evolutionNormalAttackEffectTexture
@@ -1485,34 +1538,51 @@ export class CombatSystem {
     const y = origin.y + facing.y * distance;
     const angle = Math.atan2(facing.y, facing.x);
     const duration = attack.effectDuration ?? 0.22;
+    const emergencyPlayerEffect = this.emergencyPerformanceMode && isPlayerNormal;
     const baseSize = this.evolutionNormalAttackEffectTexture
       ? this.getEvolutionNormalAttackEffectSize(this.attackPattern)
       : (attack.effectSize ?? { width: 112, height: 92 });
-    const sizeScale = Math.max(0.1, options.sizeScale ?? 1);
+    const sizeScale = Math.max(0.1, (options.sizeScale ?? 1) * (emergencyPlayerEffect ? 0.86 : 1));
     const size = {
       width: baseSize.width * sizeScale,
       height: baseSize.height * sizeScale,
     };
 
-    const pressureEffectCap = this.emergencyPerformanceMode ? 0
+    const pressureEffectCap = this.emergencyPerformanceMode
+      ? (isPlayerNormal ? PLAYER_NORMAL_EFFECT_EMERGENCY_CAP : 0)
       : this.performancePressureLevel >= 2 ? Math.floor(MAX_COMBAT_EFFECTS * 0.38)
         : this.performancePressureLevel >= 1 ? Math.floor(MAX_COMBAT_EFFECTS * 0.58)
           : MAX_COMBAT_EFFECTS;
+    const canUseEmergencyPlayerSlot = emergencyPlayerEffect
+      && this.countActivePlayerNormalEffects() < PLAYER_NORMAL_EFFECT_EMERGENCY_CAP
+      && requestedAt - this.lastPlayerNormalEffectAt >= PLAYER_NORMAL_EFFECT_MIN_INTERVAL_MS;
 
-    if (pressureEffectCap <= 0 || this.effects.length >= pressureEffectCap) {
+    if ((pressureEffectCap <= 0 || this.effects.length >= pressureEffectCap) && !canUseEmergencyPlayerSlot) {
+      if (isPlayerNormal) {
+        this.effectDiagnostics.playerNormalSkippedByBudget += 1;
+      } else if (this.emergencyPerformanceMode) {
+        this.recordEffectSkippedByEmergency(source);
+      }
       this.assetLoader?.recordEffectSkippedBecauseBudget?.();
       return;
+    }
+
+    if (canUseEmergencyPlayerSlot) {
+      this.trimNonPlayerNormalEffects(Math.max(0, pressureEffectCap - 1));
     }
 
     if (texture) {
       const sprite = this.acquirePooledView(texture);
       const effect = {
         age: 0,
-        duration: this.simpleEffects ? Math.min(duration, 0.18) : duration * (options.durationScale ?? 1),
+        duration: this.simpleEffects
+          ? Math.min(duration, 0.18)
+          : duration * (options.durationScale ?? 1) * (emergencyPlayerEffect ? 0.72 : 1),
         style: attack.id,
-        scale: this.simpleEffects ? 0.78 : (options.effectScale ?? 1),
+        scale: this.simpleEffects ? 0.78 : (options.effectScale ?? 1) * (emergencyPlayerEffect ? 0.88 : 1),
         side: 0,
         sprite: true,
+        source,
         baseWidth: size.width,
         baseHeight: size.height,
         view: sprite,
@@ -1528,10 +1598,20 @@ export class CombatSystem {
       effectLayer.addChild(sprite);
       this.effects.push(effect);
       this.assetLoader?.recordEffectDisplayed?.(requestedAt);
+      if (isPlayerNormal) {
+        this.effectDiagnostics.playerNormalDisplayed += 1;
+        this.lastPlayerNormalEffectAt = requestedAt;
+        if (this.emergencyPerformanceMode) {
+          this.effectDiagnostics.playerNormalDisplayedDuringEmergency += 1;
+        }
+      }
       return;
     }
 
     this.assetLoader?.recordEffectSkippedBecauseMissing?.();
+    if (isPlayerNormal) {
+      this.effectDiagnostics.playerNormalSkippedByMissing += 1;
+    }
     if (this.assetLoader && expectsEvolutionEffect && this.evolutionNormalAttackEffectKey && !this.evolutionNormalAttackEffectLoadPending) {
       this.assetLoader.recordEffectRetried?.();
       this.loadEvolutionNormalAttackEffect(this.evolutionNormalAttackEffectKey, this.evolutionNormalAttackEffectId);
