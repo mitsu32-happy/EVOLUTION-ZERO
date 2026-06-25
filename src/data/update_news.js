@@ -1,5 +1,17 @@
 export const UPDATE_NEWS = [
   {
+    id: 'asset-cache-effectiveness-v1-2026-06-25',
+    date: '2026/06/25',
+    category: 'UPDATE',
+    title: 'データダウンロード機能を改善しました',
+    isImportant: true,
+    body: [
+      '今回の主な更新内容',
+      '・データダウンロード済みアセットがより利用されやすくなるよう改善しました。',
+      '・アセットURLの正規化、Service Workerのキャッシュ利用改善、読み込み診断情報の追加を行いました。',
+    ],
+  },
+  {
     id: 'asset-bulk-download-v1-2026-06-23',
     date: '2026/06/23',
     category: 'UPDATE',
