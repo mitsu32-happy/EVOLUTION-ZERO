@@ -602,11 +602,13 @@ export class ScreenManager {
       playSceneStart: null,
       firstControllableFrame: null,
       criticalAssetsReady: null,
+      textureWarmupComplete: null,
       appBootToTitleVisibleMs: null,
       titleToHomeVisibleMs: null,
       homeToPlaySceneStartMs: null,
       playSceneStartToFirstControllableFrameMs: null,
       playSceneStartToCriticalAssetsReadyMs: null,
+      playStartToWarmupCompleteMs: null,
     };
   }
 
@@ -632,6 +634,9 @@ export class ScreenManager {
     }
     if (this.loadingTimings.playSceneStart !== null && this.loadingTimings.criticalAssetsReady !== null) {
       this.loadingTimings.playSceneStartToCriticalAssetsReadyMs = Math.round(this.loadingTimings.criticalAssetsReady - this.loadingTimings.playSceneStart);
+    }
+    if (this.loadingTimings.playSceneStart !== null && this.loadingTimings.textureWarmupComplete !== null) {
+      this.loadingTimings.playStartToWarmupCompleteMs = Math.round(this.loadingTimings.textureWarmupComplete - this.loadingTimings.playSceneStart);
     }
 
     this.publishLoadingDiagnostics();
@@ -722,6 +727,49 @@ export class ScreenManager {
 
     if (dinoId === 'compsognathus') {
       keys.push(normalAttack?.effectKey);
+    }
+
+    return [...new Set(keys.filter(Boolean))];
+  }
+
+  getSelectedRunStageBackgroundKey(stageId, difficultyId) {
+    if (stageId === 'ruins' && difficultyId === 'zero' && ASSET_KEYS.stageBackgrounds?.ruinsZero) {
+      return ASSET_KEYS.stageBackgrounds.ruinsZero;
+    }
+
+    return ASSET_KEYS.stageBackgrounds?.[stageId] ?? ASSET_KEYS.stageBackgrounds?.jungle;
+  }
+
+  getTextureWarmupLimit() {
+    const preset = getDebugParams().get('debugPerfPreset')
+      ?? this.saveManager?.getOptionsSettings?.()?.performancePreset
+      ?? null;
+
+    if (preset === 'battery') {
+      return 22;
+    }
+    if (preset === 'performance') {
+      return 30;
+    }
+
+    return 48;
+  }
+
+  getSelectedRunTextureWarmupAssetKeys() {
+    const dinoId = this.gameState.selectedDino ?? 'velociraptor';
+    const stageId = this.gameState.selectedStage ?? 'jungle';
+    const difficultyId = this.gameState.selectedDifficulty ?? 'normal';
+    const keys = [
+      ...this.getSelectedRunCriticalAssetKeys(),
+      this.getSelectedRunStageBackgroundKey(stageId, difficultyId),
+      ASSET_KEYS.pickups?.expSmall,
+      ASSET_KEYS.pickups?.expMedium,
+      ASSET_KEYS.pickups?.expLarge,
+      ASSET_KEYS.pickups?.companionEgg,
+    ];
+
+    if (dinoId === 'compsognathus') {
+      keys.push(ASSET_KEYS.normalAttackEffects?.compsognathusPackBite);
     }
 
     return [...new Set(keys.filter(Boolean))];
@@ -1725,6 +1773,27 @@ export class ScreenManager {
     await this.loadAssetGroups(playGroups, 'プレイ資源読み込み中', 'ロード中');
     await criticalPreloadTask;
     this.recordLoadingTiming('criticalAssetsReady');
+    this.loadingUi.show({
+      title: 'ロード中',
+      detail: '表示準備中',
+      progress: 0.86,
+    });
+    await this.assetLoader.warmupCritical(
+      this.getSelectedRunTextureWarmupAssetKeys(),
+      {
+        label: 'play:selected-run',
+        maxCount: this.getTextureWarmupLimit(),
+        onProgress: ({ completed, failed, total }) => {
+          const done = completed + failed;
+          this.loadingUi.update({
+            detail: '表示準備中',
+            progress: total > 0 ? 0.86 + (done / total) * 0.12 : 0.98,
+          });
+        },
+      },
+    );
+    this.recordLoadingTiming('textureWarmupComplete');
+    this.loadingUi.hide();
     this.audioManager.preload([
       'home_bgm',
       'jungle_bgm',
